@@ -34,3 +34,8 @@
 ## [2026-10-12] ingest | 교착의 대기 지점 확인
 
 - 같은 빌드 ID의 심볼 포함 `libcef.so`로 멈춘 메인 스레드의 스택을 풀어 [F14](pages/reference/verified-findings.md)를 갱신했습니다. UI 스레드는 합성기가 GPU 프로세스에 보낸 동기 mojo 호출의 응답을 기다리고, IO 스레드는 PHP 호출을 기다리는 교착입니다.
+
+## [2026-10-12] ingest | IO 스레드 핸들러의 비동기 처리
+
+- IO 스레드에서 불리는 핸들러 중 비동기로 처리할 수 있는 것을 `ext/src/async.cc`로 옮겼습니다. 결정과 범위는 [D12](pages/reference/design-decisions.md)에, 검증 결과는 [F14](pages/reference/verified-findings.md)에 기록했습니다. 즉시 반환값이 필요한 콜백은 사용자 결정에 따라 그대로 PHP를 동기로 호출합니다.
+- [주의 사항](pages/reference/cautions.md) 4번과 5번을 갱신했습니다.

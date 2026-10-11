@@ -135,6 +135,10 @@ static const zend_function_entry methods_CefRequestHandler[] = {
   ZEND_FE_END
 };
 
+namespace cl_async {
+bool CefRequestHandler_GetAuthCredentials(CefRefPtr<CefRequestHandler> self, zend_object* object, zend_function* fn, CefRefPtr<CefBrowser> browser, const CefString& origin_url, bool isProxy, const CefString& host, int port, const CefString& realm, const CefString& scheme, CefRefPtr<CefAuthCallback> callback);
+}
+
 namespace {
 
 const char* const kHookNames_CefRequestHandler[] = {"onbeforebrowse", "onopenurlfromtab", "getresourcerequesthandler", "getauthcredentials", "oncertificateerror", "onselectclientcertificate", "onrenderviewready", "onrenderprocessunresponsive", "onrenderprocessresponsive", "onrenderprocessterminated", "ondocumentavailableinmainframe"};
@@ -251,32 +255,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return CefRequestHandler::GetAuthCredentials(browser, origin_url, isProxy, host, port, realm, scheme, callback);
     }
-    bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
-      zval cl_args[8];
-      cl_wrap_CefBrowser(&cl_args[0], browser.get());
-      cl::ret_str(&cl_args[1], origin_url);
-      ZVAL_BOOL(&cl_args[2], isProxy);
-      cl::ret_str(&cl_args[3], host);
-      ZVAL_LONG(&cl_args[4], static_cast<zend_long>(port));
-      cl::ret_str(&cl_args[5], realm);
-      cl::ret_str(&cl_args[6], scheme);
-      cl_wrap_CefAuthCallback(&cl_args[7], callback.get());
-      zval cl_rv;
-      ZVAL_UNDEF(&cl_rv);
-      bool cl_ok = cl::call_method(object(), cl_fn, 8, cl_args, &cl_rv);
-      if (cl_ok) {
-        if (zval* cl_r = cl::result_at(&cl_rv, 1, 0)) {
-          cl_result = zend_is_true(cl_r);
-        }
-      }
-      if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-      for (int cl_i = 0; cl_i < 8; ++cl_i) {
-        cl::invalidate_buffers(&cl_args[cl_i]);
-        zval_ptr_dtor(&cl_args[cl_i]);
-      }
-    });
-    return cl_result;
+    return cl_async::CefRequestHandler_GetAuthCredentials(CefRefPtr<CefRequestHandler>(this), object(), cl_fn, browser, origin_url, isProxy, host, port, realm, scheme, callback);
   }
 
   bool OnCertificateError(CefRefPtr<CefBrowser> browser, cef_errorcode_t cert_error, const CefString& request_url, CefRefPtr<CefSSLInfo> ssl_info, CefRefPtr<CefCallback> callback) override {

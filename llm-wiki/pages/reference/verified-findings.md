@@ -10,6 +10,7 @@ sources:
   - cefloom/tests/t_thread_tasks.php
   - cefloom/tests/t_scheme.php
   - cefloom/tests/run.sh
+  - cefloom/ext/src/async.cc
 updated: 2026-10-12
 ---
 
@@ -104,7 +105,7 @@ updated: 2026-10-12
 - **결과**: `Chrome_IOThread`는 `ResourceHandler::GetResponseHeaders`의 프록시에서 `cl::run_on_php_thread`(`cl_runtime.cc`)로 진입해 UI 스레드가 작업을 실행하기를 기다렸습니다. 같은 순간 PHP 메인 스레드는 `CefDoMessageLoopWork()` 안에서 다음 순서로 멈춰 있었습니다. 합성기의 `cc::Scheduler::OnBeginImplFrameDeadline`이 `SingleThreadProxy::DoComposite`와 `LayerTreeHostImpl::DrawLayers`를 거쳐 `GpuChannelHost::VerifyFlush`를 부르고, 이것이 GPU 프로세스에 동기 mojo 호출(`GpuChannelProxy::GetSharedMemoryForFlushId`)을 보낸 뒤 `WaitableEvent::Wait`로 응답을 기다렸습니다.
 - **해석**: Chromium의 IO 스레드는 브라우저 프로세스의 mojo 통신도 처리합니다. IO 스레드가 PHP 호출 때문에 막히면 GPU 프로세스의 응답을 받지 못하고, UI 스레드는 그 응답을 기다리느라 IO 스레드가 기다리는 작업을 실행하지 못합니다. 두 스레드가 서로를 기다립니다. 화면을 그리는 시점과 사용자 정의 스킴이나 리소스 요청이 겹칠 때만 일어나므로 무작위로 보입니다.
 - **한계**: 위 호출 순서는 한 번의 멈춤에서 얻은 것입니다. 표식을 넣은 사본에서는 15회 모두 통과해 멈춤을 재현하지 못했습니다. 응답을 보내지 못하는 구체적 경로(IO 스레드가 막혀서 GPU 응답을 처리하지 못한다는 부분)는 소스로 확인하지 않은 해석입니다.
-- **영향**: [주의 사항](cautions.md) 5번의 우려가 실제로 일어난다는 증거입니다. IO 스레드에서 불리는 핸들러는 PHP의 실행을 기다리며 IO 스레드를 막으면 안 됩니다. 현재 구조(`run_on_php_thread`)는 수정이 필요합니다. 비동기 방식의 해결안은 제안 단계이며 구현하지 않았습니다.
+- **영향**: [주의 사항](cautions.md) 5번의 우려가 실제로 일어난다는 증거입니다. IO 스레드에서 불리는 핸들러는 PHP의 실행을 기다리며 IO 스레드를 막으면 안 됩니다. 현재 구조(`run_on_php_thread`)는 수정이 필요합니다. - **조치와 결과**: IO 스레드에서 불리는 핸들러 가운데 비동기로 처리할 수 있는 것을 `ext/src/async.cc`에서 비동기로 바꾸었습니다([설계 결정 D12](design-decisions.md)). 바꾼 뒤 `t_scheme` 30회, `t_browser_nav`와 `t_handlers` 각 20회, 전체 9개 테스트 5회를 모두 하나씩 순차로 실행했고 실패와 멈춤이 없었습니다. 바꾸기 전에는 같은 방식의 `t_scheme` 실행 27회 안팎에서 멈춤이 3회 있었습니다. 실행 횟수가 적으므로 해결을 증명한 것은 아니며, 즉시 반환값이 필요한 콜백이 남아 있으므로 교착 가능성이 없어진 것도 아닙니다.
 
 ## 관련 페이지
 

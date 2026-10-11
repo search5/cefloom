@@ -95,6 +95,14 @@ static const zend_function_entry methods_CefResourceRequestHandler[] = {
   ZEND_FE_END
 };
 
+namespace cl_async {
+cef_return_value_t CefResourceRequestHandler_OnBeforeResourceLoad(CefRefPtr<CefResourceRequestHandler> self, zend_object* object, zend_function* fn, CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback);
+}
+
+namespace cl_async {
+void CefResourceRequestHandler_OnResourceLoadComplete(CefRefPtr<CefResourceRequestHandler> self, zend_object* object, zend_function* fn, CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefResponse> response, cef_urlrequest_status_t status, int64_t received_content_length);
+}
+
 namespace {
 
 const char* const kHookNames_CefResourceRequestHandler[] = {"getcookieaccessfilter", "onbeforeresourceload", "getresourcehandler", "onresourceredirect", "onresourceresponse", "getresourceresponsefilter", "onresourceloadcomplete", "onprotocolexecution"};
@@ -143,28 +151,7 @@ class Proxy_CefResourceRequestHandler : public CefResourceRequestHandler, public
     if (!cl_fn) {
       return CefResourceRequestHandler::OnBeforeResourceLoad(browser, frame, request, callback);
     }
-    ReturnValue cl_result = ReturnValue();
-    cl::run_on_php_thread([&]() {
-      zval cl_args[4];
-      cl_wrap_CefBrowser(&cl_args[0], browser.get());
-      cl_wrap_CefFrame(&cl_args[1], frame.get());
-      cl_wrap_CefRequest(&cl_args[2], request.get());
-      cl_wrap_CefCallback(&cl_args[3], callback.get());
-      zval cl_rv;
-      ZVAL_UNDEF(&cl_rv);
-      bool cl_ok = cl::call_method(object(), cl_fn, 4, cl_args, &cl_rv);
-      if (cl_ok) {
-        if (zval* cl_r = cl::result_at(&cl_rv, 1, 0)) {
-          cl_result = static_cast<ReturnValue>(zval_get_long(cl_r));
-        }
-      }
-      if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-      for (int cl_i = 0; cl_i < 4; ++cl_i) {
-        cl::invalidate_buffers(&cl_args[cl_i]);
-        zval_ptr_dtor(&cl_args[cl_i]);
-      }
-    });
-    return cl_result;
+    return cl_async::CefResourceRequestHandler_OnBeforeResourceLoad(CefRefPtr<CefResourceRequestHandler>(this), object(), cl_fn, browser, frame, request, callback);
   }
 
   CefRefPtr<CefResourceHandler> GetResourceHandler(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request) override {
@@ -294,23 +281,7 @@ class Proxy_CefResourceRequestHandler : public CefResourceRequestHandler, public
       CefResourceRequestHandler::OnResourceLoadComplete(browser, frame, request, response, status, received_content_length);
       return;
     }
-    cl::run_on_php_thread([&]() {
-      zval cl_args[6];
-      cl_wrap_CefBrowser(&cl_args[0], browser.get());
-      cl_wrap_CefFrame(&cl_args[1], frame.get());
-      cl_wrap_CefRequest(&cl_args[2], request.get());
-      cl_wrap_CefResponse(&cl_args[3], response.get());
-      ZVAL_LONG(&cl_args[4], static_cast<zend_long>(status));
-      ZVAL_LONG(&cl_args[5], static_cast<zend_long>(received_content_length));
-      zval cl_rv;
-      ZVAL_UNDEF(&cl_rv);
-      bool cl_ok = cl::call_method(object(), cl_fn, 6, cl_args, &cl_rv);
-      if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-      for (int cl_i = 0; cl_i < 6; ++cl_i) {
-        cl::invalidate_buffers(&cl_args[cl_i]);
-        zval_ptr_dtor(&cl_args[cl_i]);
-      }
-    });
+    cl_async::CefResourceRequestHandler_OnResourceLoadComplete(CefRefPtr<CefResourceRequestHandler>(this), object(), cl_fn, browser, frame, request, response, status, received_content_length);
   }
 
   void OnProtocolExecution(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool& allow_os_execution) override {

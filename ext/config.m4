@@ -24,7 +24,7 @@ if test "$PHP_CEFLOOM" != "no"; then
   fi
 
   m4_include([generated/sources.m4])
-  CEFLOOM_SOURCES="src/cefloom.cc src/core.cc src/bridge.cc runtime/cl_runtime.cc $CL_GENERATED_SOURCES"
+  CEFLOOM_SOURCES="src/cefloom.cc src/core.cc src/bridge.cc src/async.cc runtime/cl_runtime.cc $CL_GENERATED_SOURCES"
 
   dnl The wrapper library of CEF is built without exceptions and RTTI, so are we (the classes we derive from
   dnl CEF's refer to its type information).

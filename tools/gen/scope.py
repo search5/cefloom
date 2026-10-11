@@ -44,6 +44,19 @@ NATIVE_ONLY = {
     ("CefBrowserProcessHandler", "OnScheduleMessagePumpWork"): "cl_core_schedule_pump_work(delay_ms);",
 }
 
+# Client classes whose C++ proxy is written by hand (ext/src/async.cc): the generator emits the PHP class only. The
+# proxy must not make the thread that CEF calls it on wait for PHP: CEF's IO thread also carries the IPC of the
+# browser process, and while it waits for the PHP thread, the PHP thread can wait for an IPC reply (llm-wiki, F14).
+CUSTOM_PROXY = {"CefResourceHandler", "CefSchemeHandlerFactory"}
+
+# Methods of the other client classes whose proxy hands the call to PHP without waiting for it (the function
+# cl_async::<Class>_<Method> of ext/src/async.cc, declared in the generated file). The PHP method is unchanged.
+ASYNC_METHODS = {
+    ("CefResourceRequestHandler", "OnBeforeResourceLoad"),
+    ("CefResourceRequestHandler", "OnResourceLoadComplete"),
+    ("CefRequestHandler", "GetAuthCredentials"),
+}
+
 # Static functions (and global functions) that end the process when CEF is not running: PHP gets a
 # RuntimeError instead. (Measured in cefweaver: CefImage::CreateImage and CefIsRTL.)
 NEEDS_CEF_RUNNING = {

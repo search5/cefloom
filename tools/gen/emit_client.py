@@ -12,10 +12,12 @@ an in/out value is), and it returns the C++ return value followed by the outputs
 itself for one, an array for several.
 """
 
+import re
+
 from emit_common import (NS, Names, arg_entry, begin_arginfo, ce_var, cstr, element_cpp, php_fqn_c, to_zval,
                          type_of, wrap_call)
 from model import py_class_name
-from scope import NATIVE_ONLY
+from scope import ASYNC_METHODS, CUSTOM_PROXY, NATIVE_ONLY
 from typesys import (REMEMBER, Buffer, ClientRef, Enum, Ignored, LibRef, Planes, Prim, Str, Struct, Time, Vector,
                      Void)
 
@@ -137,6 +139,12 @@ class ClientEmitter:
         L.append("    if (!cl_fn) {")
         L += ["  " + f for f in fallback]
         L.append("    }")
+
+        if (cls, plan.cef_name) in ASYNC_METHODS:
+            args = ", ".join(["CefRefPtr<%s>(this)" % cls, "object()", "cl_fn"] + call_arguments(plan))
+            L.append("    %scl_async::%s_%s(%s);" % ("" if plan.void_return else "return ", cls, plan.cef_name, args))
+            L.append("  }")
+            return L
 
         for remembered, member in [REMEMBER.get((cls, plan.cef_name), (None, None))][:1]:
             if remembered:
@@ -320,6 +328,28 @@ class ClientEmitter:
         L.append("static const zend_function_entry methods_%s[] = {" % cls)
         L += entries
         L += ["  ZEND_FE_END", "};", ""]
+
+        for async_cls, async_method in sorted(ASYNC_METHODS):
+            if async_cls != cls:
+                continue
+            plan = next(p for p in plans if p.cef_name == async_method)
+            params = ", ".join(["CefRefPtr<%s> self, zend_object* object, zend_function* fn" % cls] +
+                               [declaration(p) for p in plan.params if not p.is_return])
+            line = "%s %s_%s(%s);" % (plan.ret_spelled, cls, async_method, params)
+            # typedefs of the CEF class are not visible in the namespace of the async functions
+            for local, global_name in (("ReturnValue", "cef_return_value_t"), ("URLRequestStatus", "cef_urlrequest_status_t")):
+                line = re.sub(r"\b%s\b" % local, global_name, line)
+            L += ["namespace cl_async {", line, "}", ""]
+
+        if cls in CUSTOM_PROXY:
+            L.append("void cl_register_%s() {" % cls)
+            L.append("  zend_class_entry ce;")
+            L.append('  INIT_NS_CLASS_ENTRY(ce, "%s", %s, methods_%s);' % (NS, cstr(py_class_name(cls)), cls))
+            L.append("  %s = zend_register_internal_class_ex(&ce, nullptr);" % ce_var(cls))
+            if abstract:
+                L.append("  %s->ce_flags |= ZEND_ACC_EXPLICIT_ABSTRACT_CLASS;" % ce_var(cls))
+            L += ["}", ""]
+            return "\n".join(L), listing
 
         # the proxy
         L.append("namespace {")

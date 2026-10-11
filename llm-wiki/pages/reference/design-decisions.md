@@ -3,6 +3,8 @@ title: 설계 결정 기록
 type: reference
 sources:
   - cefloom/experiments/ffi-precheck/verify.php
+  - cefloom/ext/src/async.cc
+  - cefloom/tools/gen/scope.py
   - cefweaver_clone/cefweaver/llm-wiki/pages/concepts/process-model-and-threads.md
 updated: 2026-10-12
 ---
@@ -69,6 +71,14 @@ updated: 2026-10-12
 
 - 상태: **확정**
 - 이유: 임시 디렉터리에 둔 스크립트는 세션이 끝나면 사라질 수 있고, 위키의 사실이 재현 가능한 근거를 가져야 하기 때문입니다.
+
+## D12. IO 스레드의 핸들러는 PHP를 기다리지 않는다
+
+- **상태**: 확정(사용자 결정). 구현과 반복 검증을 마쳤습니다.
+- **내용**: CEF의 IO 스레드에서 불리는 핸들러는 즉시 답하고, PHP는 UI 스레드(PHP 메인 스레드)에서 나중에 실행하며, 결과는 CEF가 제공하는 콜백으로 전달합니다. 근거는 [F14](verified-findings.md)입니다.
+- **비동기로 바꾼 것**: `ResourceHandler`의 `open`, `processRequest`, `getResponseHeaders`, `skip`, `read`, `cancel`, `SchemeHandlerFactory::create`, `ResourceRequestHandler`의 `onBeforeResourceLoad`와 `onResourceLoadComplete`, `RequestHandler::getAuthCredentials`. PHP에서 보이는 메서드 이름과 반환 형식은 그대로입니다. `getResponseHeaders`는 요청을 열 때 미리 PHP를 실행해 결과를 저장했다가 IO 스레드에서 즉시 돌려줍니다.
+- **그대로 PHP를 기다리는 것(사용자 결정)**: 즉시 반환값이 필요한 콜백입니다. `getResourceRequestHandler`(`disableDefaultHandling`을 즉시 알려야 함), `getResourceHandler`(`null`이면 네트워크 로드), `getCookieAccessFilter`, `canSendCookie`, `canSaveCookie`, `onResourceResponse`, `onResourceRedirect`, `onProtocolExecution`, 응답 필터(`getResourceResponseFilter`, `initFilter`, `filter`), 그리고 구형 `readResponse`. 이 콜백을 PHP에서 구현하면 IO 스레드가 막히므로 [F14](verified-findings.md)의 교착이 일어날 수 있습니다.
+- **영향**: 생성기는 `tools/gen/scope.py`의 `CUSTOM_PROXY`(프록시를 직접 작성하는 클래스)와 `ASYNC_METHODS`(비동기 본문으로 위임하는 메서드)를 따릅니다.
 
 ## 미결 질문
 

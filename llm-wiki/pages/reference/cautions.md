@@ -3,6 +3,7 @@ title: 주의 사항
 type: reference
 sources:
   - cefloom/experiments/ffi-precheck/verify.php
+  - cefloom/ext/src/async.cc
   - cefloom/experiments/ffi-precheck/refshim.c
   - cefweaver_clone/cefweaver/llm-wiki/pages/reference/verified-findings.md
   - cefweaver_clone/cefweaver/llm-wiki/pages/concepts/runtime-layout.md
@@ -19,8 +20,8 @@ updated: 2026-10-12
 1. **PHP 코드는 PHP 메인 스레드에서만 실행합니다.** 다른 스레드에서 PHP 클로저가 실행되면 PHP가 스택 한도 오류를 내고 세그멘테이션 오류로 종료됩니다. (확인: [F3, F5](verified-findings.md))
 2. **참조 카운트 함수와 `on_schedule_message_pump_work`는 PHP를 건드리지 않는 네이티브 코드여야 합니다.** CEF 내부 스레드에서 호출됩니다. (확인: F4, F5)
 3. **콜백의 예외를 CEF로 전파하지 않습니다.** 진입점에서 모두 잡아 PHP 오류 처리기로 보고합니다. (확인: F12, FFI에서 관찰)
-4. **UI 스레드가 아닌 스레드에서 불리는 핸들러를 PHP로 바로 부르지 않습니다.** 리소스, 스킴 핸들러 같은 것이 해당합니다. (기록: `cefweaver`의 위키가 시험으로 확인. PHP에서는 미검증)
-5. **UI 스레드로 넘기고 기다리는 구조는 교착에 주의합니다.** UI 스레드가 호출 스레드를 기다리는 경로가 있으면 서로 기다리게 됩니다. (해석)
+4. **UI 스레드가 아닌 스레드에서 불리는 핸들러를 PHP로 바로 부르지 않습니다.** 리소스, 스킴 핸들러 같은 것이 해당합니다. (기록: `cefweaver`의 위키가 시험으로 확인. PHP에서는 미검증) 새 핸들러를 만들 때는 [D12](design-decisions.md)의 방식으로 비동기 처리할 수 있는지 먼저 확인합니다.
+5. **UI 스레드로 넘기고 기다리는 구조는 교착에 주의합니다.** UI 스레드가 호출 스레드를 기다리는 경로가 있으면 서로 기다리게 됩니다. (확인: [F14](verified-findings.md), `Chrome_IOThread`가 PHP를 기다리는 동안 UI 스레드가 GPU 프로세스의 응답을 기다려 교착이 일어났습니다.) IO 스레드를 PHP 실행 때문에 막지 않습니다. 즉시 반환값이 필요한 콜백은 아직 이 규칙을 지키지 못합니다([D12](design-decisions.md)).
 
 ## 수명과 종료
 
