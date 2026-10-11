@@ -2,7 +2,7 @@
 // Tasks: Cef::postTask / postDelayedTask on several CEF threads run PHP on the main thread.
 require __DIR__ . '/support.php';
 
-use Cefloom\{Cef, Task};
+use Cefloom\{BrowserHost, BrowserSettings, Cef, Client, LifeSpanHandler, Task, WindowInfo};
 use Cefloom\Types\ThreadId;
 
 final class Probe extends Task
@@ -39,7 +39,29 @@ final class Chain extends Task
     }
 }
 
+final class Life extends LifeSpanHandler
+{
+    public bool $created = false;
+    public function onAfterCreated($browser): void { $this->created = true; }
+}
+
+final class App extends Client
+{
+    public Life $life;
+    public function __construct() { $this->life = new Life(); }
+    public function getLifeSpanHandler(): ?LifeSpanHandler { return $this->life; }
+}
+
 start_cef();
+
+// Chromium holds back best effort work (FILE_BACKGROUND) until a browser has started: without one the task
+// never runs and Cef::shutdown() waits for it. Measured: it runs about 2.5 s after the browser exists.
+$app = new App();
+$info = new WindowInfo();
+$info->bounds->width = 320;
+$info->bounds->height = 240;
+check(BrowserHost::createBrowser($info, $app, 'about:blank', new BrowserSettings(), null, null), 'createBrowser');
+wait_until(fn() => $app->life->created, 'browser created');
 
 same(true, Cef::currentlyOn(ThreadId::UI), 'PHP main thread is the UI thread');
 same(false, Cef::currentlyOn(ThreadId::IO), 'main thread is not IO');

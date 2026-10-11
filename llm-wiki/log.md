@@ -15,3 +15,22 @@
 - 확인하지 못한 항목은 [known-constraints](pages/reference/known-constraints.md)에 모았습니다(K1부터 K23).
 - 변경한 시스템 상태: `php8.5-cli`, `php8.5-dev` 패키지 설치. 제거 방법은 [환경 준비](pages/procedures/setup-php-environment.md)에 있습니다.
 - 점검 도구 `lint.py`를 추가했습니다.
+
+## [2026-10-12] schema | 버전 관리 절에 커밋 규칙 추가
+
+- `cefloom`을 git 저장소로 초기화한 상태를 [SCHEMA.md](SCHEMA.md)의 "10. 버전 관리" 절에 반영했습니다.
+- 커밋 메시지와 PR 설명에 공동 저작자 표시와 Claude 세션 링크를 넣지 않는 규칙을 같은 절에 추가했습니다. 이 규칙을 임시로 기록했던 `CLAUDE.md`는 삭제했습니다.
+
+## [2026-10-12] schema | 테스트 동시 실행 금지 규칙 추가
+
+- 테스트는 한 번에 하나만 실행한다는 사람의 지시를 [주의 사항](pages/reference/cautions.md) 25번에 기록했습니다. 멈춤의 원인이 메모리 소비라는 것은 사람의 추정이며 아직 확인하지 않았습니다.
+- 이전 실행에서 5시간 넘게 남아 있던 `php` 테스트 프로세스 4개(`t_scheme`, `t_browser_nav`, `t_thread_tasks` 2개)를 종료했습니다. 이 시점에 시스템 메모리는 30Gi 중 25Gi가 가용 상태였습니다.
+
+## [2026-10-12] ingest | 테스트 멈춤 원인 조사
+
+- 전체 테스트가 멈추는 원인을 조사해 [실험으로 확인한 사실](pages/reference/verified-findings.md)에 F13과 F14를 추가했습니다. F13은 브라우저가 없으면 `FILE_BACKGROUND` 작업이 실행되지 않는다는 것이고, F14는 IO 스레드의 핸들러가 UI 스레드를 기다리다 교착이 일어난다는 것입니다.
+- `tests/run.sh`를 고쳤습니다. 테스트마다 별도 세션으로 실행하고, 시간 초과나 종료하지 않는 프로세스를 세션 단위로 정리합니다.
+
+## [2026-10-12] ingest | 교착의 대기 지점 확인
+
+- 같은 빌드 ID의 심볼 포함 `libcef.so`로 멈춘 메인 스레드의 스택을 풀어 [F14](pages/reference/verified-findings.md)를 갱신했습니다. UI 스레드는 합성기가 GPU 프로세스에 보낸 동기 mojo 호출의 응답을 기다리고, IO 스레드는 PHP 호출을 기다리는 교착입니다.

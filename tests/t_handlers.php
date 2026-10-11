@@ -128,6 +128,8 @@ check(BrowserHost::createBrowser($info, $app, 'https://app.test/index.html', new
 
 wait_until(fn() => $app->life->created, 'browser created');
 wait_until(fn() => $app->display->title === 't:served by php', 'page served by the PHP resource handler');
+// the title changes before the script logs and before onLoadEnd arrives
+wait_until(fn() => $app->load->status !== null && $app->display->console !== [], 'load end and console message');
 same(200, $app->load->status, 'load status from the PHP response');
 check(in_array('script ran', $app->display->console, true), 'the page script ran (console message)');
 check(in_array('before:https://app.test/index.html', $GLOBALS['events'], true), 'onBeforeResourceLoad saw the url');

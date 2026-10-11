@@ -132,4 +132,9 @@ grep "^## \[" cefloom/llm-wiki/log.md | tail -5   # 최근 다섯 항목
 
 ## 10. 버전 관리
 
-위키와 `experiments/`는 마크다운과 스크립트이므로 git으로 관리할 수 있습니다. 현재 `cefloom`은 아직 git 저장소가 아닙니다. 저장소를 만들면 위키 변경은 관련 코드 변경과 같은 커밋에 넣습니다.
+`cefloom`은 2026-10-12에 git 저장소(`main` 브랜치)로 초기화했습니다. 위키 변경은 관련 코드 변경과 같은 커밋에 넣습니다. `build/`와 Python 캐시(`__pycache__/`, `*.pyc`)는 `.gitignore`로 제외합니다.
+
+커밋 규칙은 다음과 같습니다. 사람이 정한 규칙이므로 LLM은 예외 없이 따릅니다.
+
+- 커밋 메시지와 PR 설명에 공동 저작자 표시(`Co-Authored-By`)를 넣지 않습니다.
+- 커밋 메시지와 PR 설명에 Claude 세션 링크(`Claude-Session`)를 넣지 않습니다.

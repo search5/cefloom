@@ -6,6 +6,10 @@ sources:
   - cefloom/experiments/ffi-precheck/refshim.c
   - cefloom/experiments/ffi-precheck/mkcdef.py
   - cefloom/experiments/ffi-precheck/run.sh
+  - cefloom/ext/runtime/cl_runtime.cc
+  - cefloom/tests/t_thread_tasks.php
+  - cefloom/tests/t_scheme.php
+  - cefloom/tests/run.sh
 updated: 2026-10-12
 ---
 
@@ -86,6 +90,21 @@ updated: 2026-10-12
 - **방법**: 검증 스크립트를 고치는 동안 콜백 안에서 의도하지 않은 예외가 네 번 났습니다(F2의 메서드 호출 문법 오류, `FFI::cast`의 타입 이름 오류, `pack('U')`의 지원하지 않는 형식, 그리고 F3의 스택 한도 오류).
 - **결과**: 모두 `PHP Fatal error: Throwing from FFI callbacks is not allowed`로 끝났습니다. 이 가운데 `pack('U')`와 F3의 경우에는 `Segmentation fault (core dumped)`가 함께 출력되었습니다. 나머지는 치명 오류 메시지 뒤에 세그멘테이션 오류가 출력되지 않았습니다. 차이가 생기는 이유는 확인하지 않았습니다.
 - **영향**: 확장의 콜백 진입점은 예외를 잡아야 합니다([규칙 4](../concepts/threading-and-message-loop.md)). 이 동작은 FFI 콜백에서 관찰한 것이며 확장 모듈에서 어떨지는 구현 후에 확인해야 합니다.
+
+## F13. 브라우저가 없으면 `FILE_BACKGROUND` 작업이 실행되지 않는다
+
+- **방법**: 확장 모듈(`cefloom.so`)에서 `Cef::postTask`로 스레드별 작업을 보내고 PHP 메인 스레드에서 실행되기를 기다렸습니다. 브라우저를 만들기 전과 만든 뒤를 비교했습니다. 같은 조건에서 `FILE_USER_VISIBLE`, `FILE_USER_BLOCKING`, `IO` 스레드로 보낸 작업은 즉시 실행되었습니다.
+- **결과**: 브라우저가 없을 때 `FILE_BACKGROUND` 작업은 4초와 5초 동안 실행되지 않았습니다. 브라우저를 만든 뒤에는 약 2.5초에서 2.9초 사이에 실행되었습니다. 보류된 작업이 남은 상태에서 `t_thread_tasks`가 17분 넘게 끝나지 않았는데, `Cef::shutdown()`이 그 작업을 기다리기 때문으로 추정합니다.
+- **해석**: Chromium이 우선순위가 낮은 작업을 브라우저 시작이 끝날 때까지 보류하는 것으로 해석합니다. 소스에서 확인하지는 않았습니다.
+- **영향**: `FILE_BACKGROUND`를 검증하는 테스트는 브라우저를 먼저 만들어야 합니다. 라이브러리 사용자에게는 브라우저 없이 이 스레드로 작업을 보내면 실행이 늦어질 수 있다고 안내해야 합니다.
+
+## F14. IO 스레드의 핸들러가 UI 스레드를 기다리면 교착이 일어난다
+
+- **방법**: `t_scheme`와 `t_browser_nav`가 전체 실행 중 무작위로 멈추는 현상을 추적했습니다. `gdb` 아래에서 `t_scheme`를 반복 실행하다가 멈춘 순간에 모든 스레드의 호출 스택을 받았습니다. 30회 안팎의 실행에서 1회에서 3회 멈췄습니다. `libcef.so`에는 심볼이 없으므로, 같은 빌드 ID(`77be730099aeb3ce0aa9af524f13eecdb69b04e4`)를 가진 심볼 포함본(`cefweaver_clone/cefweaver/third_party/cef/cef_binary_154.0.34+g14c5a08+chromium-154.0.8037.98_linux64/Release/libcef.so`)으로 메인 스레드 스택의 반환 주소를 `addr2line`으로 풀었습니다.
+- **결과**: `Chrome_IOThread`는 `ResourceHandler::GetResponseHeaders`의 프록시에서 `cl::run_on_php_thread`(`cl_runtime.cc`)로 진입해 UI 스레드가 작업을 실행하기를 기다렸습니다. 같은 순간 PHP 메인 스레드는 `CefDoMessageLoopWork()` 안에서 다음 순서로 멈춰 있었습니다. 합성기의 `cc::Scheduler::OnBeginImplFrameDeadline`이 `SingleThreadProxy::DoComposite`와 `LayerTreeHostImpl::DrawLayers`를 거쳐 `GpuChannelHost::VerifyFlush`를 부르고, 이것이 GPU 프로세스에 동기 mojo 호출(`GpuChannelProxy::GetSharedMemoryForFlushId`)을 보낸 뒤 `WaitableEvent::Wait`로 응답을 기다렸습니다.
+- **해석**: Chromium의 IO 스레드는 브라우저 프로세스의 mojo 통신도 처리합니다. IO 스레드가 PHP 호출 때문에 막히면 GPU 프로세스의 응답을 받지 못하고, UI 스레드는 그 응답을 기다리느라 IO 스레드가 기다리는 작업을 실행하지 못합니다. 두 스레드가 서로를 기다립니다. 화면을 그리는 시점과 사용자 정의 스킴이나 리소스 요청이 겹칠 때만 일어나므로 무작위로 보입니다.
+- **한계**: 위 호출 순서는 한 번의 멈춤에서 얻은 것입니다. 표식을 넣은 사본에서는 15회 모두 통과해 멈춤을 재현하지 못했습니다. 응답을 보내지 못하는 구체적 경로(IO 스레드가 막혀서 GPU 응답을 처리하지 못한다는 부분)는 소스로 확인하지 않은 해석입니다.
+- **영향**: [주의 사항](cautions.md) 5번의 우려가 실제로 일어난다는 증거입니다. IO 스레드에서 불리는 핸들러는 PHP의 실행을 기다리며 IO 스레드를 막으면 안 됩니다. 현재 구조(`run_on_php_thread`)는 수정이 필요합니다. 비동기 방식의 해결안은 제안 단계이며 구현하지 않았습니다.
 
 ## 관련 페이지
 
