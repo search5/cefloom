@@ -71,7 +71,7 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
       return CefCommandHandler::OnChromeCommand(browser, command_id, disposition);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(command_id));
@@ -89,7 +89,9 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefCommandHandler::OnChromeCommand(browser, command_id, disposition);
+    }
     return cl_result;
   }
 
@@ -99,7 +101,7 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
       return CefCommandHandler::IsChromeAppMenuItemVisible(browser, command_id);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(command_id));
@@ -116,7 +118,9 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefCommandHandler::IsChromeAppMenuItemVisible(browser, command_id);
+    }
     return cl_result;
   }
 
@@ -126,7 +130,7 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
       return CefCommandHandler::IsChromeAppMenuItemEnabled(browser, command_id);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(command_id));
@@ -143,7 +147,9 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefCommandHandler::IsChromeAppMenuItemEnabled(browser, command_id);
+    }
     return cl_result;
   }
 
@@ -153,7 +159,7 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
       return CefCommandHandler::IsChromePageActionIconVisible(icon_type);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       ZVAL_LONG(&cl_args[0], static_cast<zend_long>(icon_type));
       zval cl_rv;
@@ -169,7 +175,9 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefCommandHandler::IsChromePageActionIconVisible(icon_type);
+    }
     return cl_result;
   }
 
@@ -179,7 +187,7 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
       return CefCommandHandler::IsChromeToolbarButtonVisible(button_type);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       ZVAL_LONG(&cl_args[0], static_cast<zend_long>(button_type));
       zval cl_rv;
@@ -195,7 +203,9 @@ class Proxy_CefCommandHandler : public CefCommandHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefCommandHandler::IsChromeToolbarButtonVisible(button_type);
+    }
     return cl_result;
   }
 

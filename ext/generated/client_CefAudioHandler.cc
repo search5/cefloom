@@ -74,7 +74,7 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
     }
     bool cl_result = bool();
     CefAudioParameters o_params = params;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -95,7 +95,9 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefAudioHandler::GetAudioParameters(browser, params);
+    }
     params = o_params;
     return cl_result;
   }
@@ -106,7 +108,7 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
       return;
     }
     audio_channels_ = channels;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_to_zval_cef_audio_parameters_t(&cl_args[1], params);
@@ -119,7 +121,9 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnAudioStreamPacket(CefRefPtr<CefBrowser> browser, const float** data, int frames, int64_t pts) override {
@@ -127,7 +131,7 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       array_init(&cl_args[1]);
@@ -145,7 +149,9 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnAudioStreamStopped(CefRefPtr<CefBrowser> browser) override {
@@ -153,7 +159,7 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -164,7 +170,9 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnAudioStreamError(CefRefPtr<CefBrowser> browser, const CefString& message) override {
@@ -172,7 +180,7 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], message);
@@ -184,7 +192,9 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
  private:

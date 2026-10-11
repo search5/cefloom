@@ -51,7 +51,7 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
       return size_t();
     }
     size_t cl_result = size_t();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl::buffer_new(&cl_args[0], const_cast<void*>(static_cast<const void*>(ptr)), static_cast<size_t>(size) * static_cast<size_t>(n), true);
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(size));
@@ -68,7 +68,9 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return size_t();
+    }
     if (cl_result > n) cl_result = n;
     return cl_result;
   }
@@ -79,7 +81,7 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
       return int();
     }
     int cl_result = int();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       ZVAL_LONG(&cl_args[0], static_cast<zend_long>(offset));
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(whence));
@@ -96,7 +98,9 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return int();
+    }
     return cl_result;
   }
 
@@ -106,7 +110,7 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
       return int64_t();
     }
     int64_t cl_result = int64_t();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -117,7 +121,9 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return int64_t();
+    }
     return cl_result;
   }
 
@@ -127,7 +133,7 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
       return int();
     }
     int cl_result = int();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -138,7 +144,9 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return int();
+    }
     return cl_result;
   }
 
@@ -148,7 +156,7 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
       return bool();
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -159,7 +167,9 @@ class Proxy_CefReadHandler : public CefReadHandler, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return bool();
+    }
     return cl_result;
   }
 

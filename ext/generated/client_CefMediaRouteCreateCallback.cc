@@ -33,7 +33,7 @@ class Proxy_CefMediaRouteCreateCallback : public CefMediaRouteCreateCallback, pu
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       ZVAL_LONG(&cl_args[0], static_cast<zend_long>(result));
       cl::ret_str(&cl_args[1], error);
@@ -46,7 +46,9 @@ class Proxy_CefMediaRouteCreateCallback : public CefMediaRouteCreateCallback, pu
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
  private:

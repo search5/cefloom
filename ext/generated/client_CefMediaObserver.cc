@@ -48,7 +48,7 @@ class Proxy_CefMediaObserver : public CefMediaObserver, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       array_init(&cl_args[0]);
       for (const auto& cl_e : sinks) {
@@ -64,7 +64,9 @@ class Proxy_CefMediaObserver : public CefMediaObserver, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnRoutes(const std::vector<CefRefPtr<CefMediaRoute>>& routes) override {
@@ -72,7 +74,7 @@ class Proxy_CefMediaObserver : public CefMediaObserver, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       array_init(&cl_args[0]);
       for (const auto& cl_e : routes) {
@@ -88,7 +90,9 @@ class Proxy_CefMediaObserver : public CefMediaObserver, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnRouteStateChanged(CefRefPtr<CefMediaRoute> route, ConnectionState state) override {
@@ -96,7 +100,7 @@ class Proxy_CefMediaObserver : public CefMediaObserver, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefMediaRoute(&cl_args[0], route.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(state));
@@ -108,7 +112,9 @@ class Proxy_CefMediaObserver : public CefMediaObserver, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnRouteMessageReceived(CefRefPtr<CefMediaRoute> route, const void* message, size_t message_size) override {
@@ -116,7 +122,7 @@ class Proxy_CefMediaObserver : public CefMediaObserver, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefMediaRoute(&cl_args[0], route.get());
       cl::buffer_new(&cl_args[1], const_cast<void*>(static_cast<const void*>(message)), message_size, false);
@@ -128,7 +134,9 @@ class Proxy_CefMediaObserver : public CefMediaObserver, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
  private:

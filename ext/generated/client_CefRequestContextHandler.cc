@@ -57,7 +57,7 @@ class Proxy_CefRequestContextHandler : public CefRequestContextHandler, public c
       CefRequestContextHandler::OnRequestContextInitialized(request_context);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefRequestContext(&cl_args[0], request_context.get());
       zval cl_rv;
@@ -68,7 +68,10 @@ class Proxy_CefRequestContextHandler : public CefRequestContextHandler, public c
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefRequestContextHandler::OnRequestContextInitialized(request_context);
+      return;
+    }
   }
 
   CefRefPtr<CefResourceRequestHandler> GetResourceRequestHandler(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool is_navigation, bool is_download, const CefString& request_initiator, bool& disable_default_handling) override {
@@ -78,7 +81,7 @@ class Proxy_CefRequestContextHandler : public CefRequestContextHandler, public c
     }
     CefRefPtr<CefResourceRequestHandler> cl_result;
     bool o_disable_default_handling = disable_default_handling;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[6];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -104,7 +107,9 @@ class Proxy_CefRequestContextHandler : public CefRequestContextHandler, public c
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefRequestContextHandler::GetResourceRequestHandler(browser, frame, request, is_navigation, is_download, request_initiator, disable_default_handling);
+    }
     disable_default_handling = o_disable_default_handling;
     return cl_result;
   }

@@ -63,13 +63,16 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
       CefBrowserProcessHandler::OnContextInitialized();
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
       bool cl_ok = cl::call_method(object(), cl_fn, 0, cl_args, &cl_rv);
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      CefBrowserProcessHandler::OnContextInitialized();
+      return;
+    }
   }
 
   void OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) override {
@@ -78,7 +81,7 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
       CefBrowserProcessHandler::OnBeforeChildProcessLaunch(command_line);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefCommandLine(&cl_args[0], command_line.get());
       zval cl_rv;
@@ -89,7 +92,10 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefBrowserProcessHandler::OnBeforeChildProcessLaunch(command_line);
+      return;
+    }
   }
 
   bool OnAlreadyRunningAppRelaunch(CefRefPtr<CefCommandLine> command_line, const CefString& current_directory) override {
@@ -98,7 +104,7 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
       return CefBrowserProcessHandler::OnAlreadyRunningAppRelaunch(command_line, current_directory);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefCommandLine(&cl_args[0], command_line.get());
       cl::ret_str(&cl_args[1], current_directory);
@@ -115,7 +121,9 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefBrowserProcessHandler::OnAlreadyRunningAppRelaunch(command_line, current_directory);
+    }
     return cl_result;
   }
 
@@ -129,7 +137,7 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
       return CefBrowserProcessHandler::GetDefaultClient();
     }
     CefRefPtr<CefClient> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -142,7 +150,9 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefBrowserProcessHandler::GetDefaultClient();
+    }
     return cl_result;
   }
 
@@ -152,7 +162,7 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
       return CefBrowserProcessHandler::GetDefaultRequestContextHandler();
     }
     CefRefPtr<CefRequestContextHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -165,7 +175,9 @@ class Proxy_CefBrowserProcessHandler : public CefBrowserProcessHandler, public c
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefBrowserProcessHandler::GetDefaultRequestContextHandler();
+    }
     return cl_result;
   }
 

@@ -69,7 +69,7 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
       CefFrameHandler::OnFrameCreated(browser, frame);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -81,7 +81,10 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefFrameHandler::OnFrameCreated(browser, frame);
+      return;
+    }
   }
 
   void OnFrameDestroyed(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame) override {
@@ -90,7 +93,7 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
       CefFrameHandler::OnFrameDestroyed(browser, frame);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -102,7 +105,10 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefFrameHandler::OnFrameDestroyed(browser, frame);
+      return;
+    }
   }
 
   void OnFrameAttached(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, bool reattached) override {
@@ -111,7 +117,7 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
       CefFrameHandler::OnFrameAttached(browser, frame, reattached);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -124,7 +130,10 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefFrameHandler::OnFrameAttached(browser, frame, reattached);
+      return;
+    }
   }
 
   void OnFrameDetached(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame) override {
@@ -133,7 +142,7 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
       CefFrameHandler::OnFrameDetached(browser, frame);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -145,7 +154,10 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefFrameHandler::OnFrameDetached(browser, frame);
+      return;
+    }
   }
 
   void OnMainFrameChanged(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> old_frame, CefRefPtr<CefFrame> new_frame) override {
@@ -154,7 +166,7 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
       CefFrameHandler::OnMainFrameChanged(browser, old_frame, new_frame);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], old_frame.get());
@@ -167,7 +179,10 @@ class Proxy_CefFrameHandler : public CefFrameHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefFrameHandler::OnMainFrameChanged(browser, old_frame, new_frame);
+      return;
+    }
   }
 
  private:

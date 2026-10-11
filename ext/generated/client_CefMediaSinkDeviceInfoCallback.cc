@@ -31,7 +31,7 @@ class Proxy_CefMediaSinkDeviceInfoCallback : public CefMediaSinkDeviceInfoCallba
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_to_zval_cef_media_sink_device_info_t(&cl_args[0], device_info);
       zval cl_rv;
@@ -42,7 +42,9 @@ class Proxy_CefMediaSinkDeviceInfoCallback : public CefMediaSinkDeviceInfoCallba
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
  private:

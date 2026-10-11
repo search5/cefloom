@@ -56,7 +56,7 @@ class Proxy_CefKeyboardHandler : public CefKeyboardHandler, public cl::ProxyBase
     }
     bool cl_result = bool();
     bool o_is_keyboard_shortcut = is_keyboard_shortcut ? *is_keyboard_shortcut : bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_to_zval_cef_key_event_t(&cl_args[1], event);
@@ -76,7 +76,9 @@ class Proxy_CefKeyboardHandler : public CefKeyboardHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefKeyboardHandler::OnPreKeyEvent(browser, event, os_event, is_keyboard_shortcut);
+    }
     if (is_keyboard_shortcut) *is_keyboard_shortcut = o_is_keyboard_shortcut;
     return cl_result;
   }
@@ -87,7 +89,7 @@ class Proxy_CefKeyboardHandler : public CefKeyboardHandler, public cl::ProxyBase
       return CefKeyboardHandler::OnKeyEvent(browser, event, os_event);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_to_zval_cef_key_event_t(&cl_args[1], event);
@@ -104,7 +106,9 @@ class Proxy_CefKeyboardHandler : public CefKeyboardHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefKeyboardHandler::OnKeyEvent(browser, event, os_event);
+    }
     return cl_result;
   }
 

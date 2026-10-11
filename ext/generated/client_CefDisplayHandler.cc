@@ -163,7 +163,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       CefDisplayHandler::OnAddressChange(browser, frame, url);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -176,7 +176,10 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDisplayHandler::OnAddressChange(browser, frame, url);
+      return;
+    }
   }
 
   void OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title) override {
@@ -185,7 +188,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       CefDisplayHandler::OnTitleChange(browser, title);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], title);
@@ -197,7 +200,10 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDisplayHandler::OnTitleChange(browser, title);
+      return;
+    }
   }
 
   void OnFaviconURLChange(CefRefPtr<CefBrowser> browser, const std::vector<CefString>& icon_urls) override {
@@ -206,7 +212,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       CefDisplayHandler::OnFaviconURLChange(browser, icon_urls);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       array_init(&cl_args[1]);
@@ -223,7 +229,10 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDisplayHandler::OnFaviconURLChange(browser, icon_urls);
+      return;
+    }
   }
 
   void OnFullscreenModeChange(CefRefPtr<CefBrowser> browser, bool fullscreen) override {
@@ -232,7 +241,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       CefDisplayHandler::OnFullscreenModeChange(browser, fullscreen);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_BOOL(&cl_args[1], fullscreen);
@@ -244,7 +253,10 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDisplayHandler::OnFullscreenModeChange(browser, fullscreen);
+      return;
+    }
   }
 
   bool OnTooltip(CefRefPtr<CefBrowser> browser, CefString& text) override {
@@ -254,7 +266,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
     }
     bool cl_result = bool();
     CefString o_text = text;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -273,7 +285,9 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDisplayHandler::OnTooltip(browser, text);
+    }
     text = o_text;
     return cl_result;
   }
@@ -284,7 +298,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       CefDisplayHandler::OnStatusMessage(browser, value);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], value);
@@ -296,7 +310,10 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDisplayHandler::OnStatusMessage(browser, value);
+      return;
+    }
   }
 
   bool OnConsoleMessage(CefRefPtr<CefBrowser> browser, cef_log_severity_t level, const CefString& message, const CefString& source, int line) override {
@@ -305,7 +322,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       return CefDisplayHandler::OnConsoleMessage(browser, level, message, source, line);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(level));
@@ -325,7 +342,9 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDisplayHandler::OnConsoleMessage(browser, level, message, source, line);
+    }
     return cl_result;
   }
 
@@ -335,7 +354,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       return CefDisplayHandler::OnAutoResize(browser, new_size);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_to_zval_cef_size_t(&cl_args[1], new_size);
@@ -352,7 +371,9 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDisplayHandler::OnAutoResize(browser, new_size);
+    }
     return cl_result;
   }
 
@@ -362,7 +383,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       CefDisplayHandler::OnLoadingProgressChange(browser, progress);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_DOUBLE(&cl_args[1], static_cast<double>(progress));
@@ -374,7 +395,10 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDisplayHandler::OnLoadingProgressChange(browser, progress);
+      return;
+    }
   }
 
   bool OnCursorChange(CefRefPtr<CefBrowser> browser, CefCursorHandle cursor, cef_cursor_type_t type, const CefCursorInfo& custom_cursor_info) override {
@@ -383,7 +407,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       return CefDisplayHandler::OnCursorChange(browser, cursor, type, custom_cursor_info);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(type));
@@ -400,7 +424,9 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDisplayHandler::OnCursorChange(browser, cursor, type, custom_cursor_info);
+    }
     return cl_result;
   }
 
@@ -410,7 +436,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       CefDisplayHandler::OnMediaAccessChange(browser, has_video_access, has_audio_access);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_BOOL(&cl_args[1], has_video_access);
@@ -423,7 +449,10 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDisplayHandler::OnMediaAccessChange(browser, has_video_access, has_audio_access);
+      return;
+    }
   }
 
   bool OnContentsBoundsChange(CefRefPtr<CefBrowser> browser, const CefRect& new_bounds) override {
@@ -432,7 +461,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
       return CefDisplayHandler::OnContentsBoundsChange(browser, new_bounds);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_to_zval_cef_rect_t(&cl_args[1], new_bounds);
@@ -449,7 +478,9 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDisplayHandler::OnContentsBoundsChange(browser, new_bounds);
+    }
     return cl_result;
   }
 
@@ -460,7 +491,7 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
     }
     bool cl_result = bool();
     CefRect o_rect = rect;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -481,7 +512,9 @@ class Proxy_CefDisplayHandler : public CefDisplayHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDisplayHandler::GetRootWindowScreenRect(browser, rect);
+    }
     rect = o_rect;
     return cl_result;
   }

@@ -158,7 +158,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       return CefRequestHandler::OnBeforeBrowse(browser, frame, request, user_gesture, is_redirect);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -178,7 +178,9 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefRequestHandler::OnBeforeBrowse(browser, frame, request, user_gesture, is_redirect);
+    }
     return cl_result;
   }
 
@@ -188,7 +190,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       return CefRequestHandler::OnOpenURLFromTab(browser, frame, target_url, target_disposition, user_gesture);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -208,7 +210,9 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefRequestHandler::OnOpenURLFromTab(browser, frame, target_url, target_disposition, user_gesture);
+    }
     return cl_result;
   }
 
@@ -219,7 +223,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
     }
     CefRefPtr<CefResourceRequestHandler> cl_result;
     bool o_disable_default_handling = disable_default_handling;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[6];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -245,7 +249,9 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefRequestHandler::GetResourceRequestHandler(browser, frame, request, is_navigation, is_download, request_initiator, disable_default_handling);
+    }
     disable_default_handling = o_disable_default_handling;
     return cl_result;
   }
@@ -264,7 +270,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       return CefRequestHandler::OnCertificateError(browser, cert_error, request_url, ssl_info, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(cert_error));
@@ -284,7 +290,9 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefRequestHandler::OnCertificateError(browser, cert_error, request_url, ssl_info, callback);
+    }
     return cl_result;
   }
 
@@ -294,7 +302,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       return CefRequestHandler::OnSelectClientCertificate(browser, isProxy, host, port, certificates, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[6];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_BOOL(&cl_args[1], isProxy);
@@ -320,7 +328,9 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefRequestHandler::OnSelectClientCertificate(browser, isProxy, host, port, certificates, callback);
+    }
     return cl_result;
   }
 
@@ -330,7 +340,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       CefRequestHandler::OnRenderViewReady(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -341,7 +351,10 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefRequestHandler::OnRenderViewReady(browser);
+      return;
+    }
   }
 
   bool OnRenderProcessUnresponsive(CefRefPtr<CefBrowser> browser, CefRefPtr<CefUnresponsiveProcessCallback> callback) override {
@@ -350,7 +363,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       return CefRequestHandler::OnRenderProcessUnresponsive(browser, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefUnresponsiveProcessCallback(&cl_args[1], callback.get());
@@ -367,7 +380,9 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefRequestHandler::OnRenderProcessUnresponsive(browser, callback);
+    }
     return cl_result;
   }
 
@@ -377,7 +392,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       CefRequestHandler::OnRenderProcessResponsive(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -388,7 +403,10 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefRequestHandler::OnRenderProcessResponsive(browser);
+      return;
+    }
   }
 
   void OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, TerminationStatus status, int error_code, const CefString& error_string) override {
@@ -397,7 +415,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       CefRequestHandler::OnRenderProcessTerminated(browser, status, error_code, error_string);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(status));
@@ -411,7 +429,10 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefRequestHandler::OnRenderProcessTerminated(browser, status, error_code, error_string);
+      return;
+    }
   }
 
   void OnDocumentAvailableInMainFrame(CefRefPtr<CefBrowser> browser) override {
@@ -420,7 +441,7 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
       CefRequestHandler::OnDocumentAvailableInMainFrame(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -431,7 +452,10 @@ class Proxy_CefRequestHandler : public CefRequestHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefRequestHandler::OnDocumentAvailableInMainFrame(browser);
+      return;
+    }
   }
 
  private:

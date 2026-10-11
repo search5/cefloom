@@ -61,7 +61,7 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefURLRequest(&cl_args[0], request.get());
       zval cl_rv;
@@ -72,7 +72,9 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnUploadProgress(CefRefPtr<CefURLRequest> request, int64_t current, int64_t total) override {
@@ -80,7 +82,7 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefURLRequest(&cl_args[0], request.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(current));
@@ -93,7 +95,9 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnDownloadProgress(CefRefPtr<CefURLRequest> request, int64_t current, int64_t total) override {
@@ -101,7 +105,7 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefURLRequest(&cl_args[0], request.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(current));
@@ -114,7 +118,9 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnDownloadData(CefRefPtr<CefURLRequest> request, const void* data, size_t data_length) override {
@@ -122,7 +128,7 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefURLRequest(&cl_args[0], request.get());
       cl::buffer_new(&cl_args[1], const_cast<void*>(static_cast<const void*>(data)), data_length, false);
@@ -134,7 +140,9 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   bool GetAuthCredentials(bool isProxy, const CefString& host, int port, const CefString& realm, const CefString& scheme, CefRefPtr<CefAuthCallback> callback) override {
@@ -143,7 +151,7 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
       return bool();
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[6];
       ZVAL_BOOL(&cl_args[0], isProxy);
       cl::ret_str(&cl_args[1], host);
@@ -164,7 +172,9 @@ class Proxy_CefURLRequestClient : public CefURLRequestClient, public cl::ProxyBa
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return bool();
+    }
     return cl_result;
   }
 

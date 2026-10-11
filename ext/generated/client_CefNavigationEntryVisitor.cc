@@ -35,7 +35,7 @@ class Proxy_CefNavigationEntryVisitor : public CefNavigationEntryVisitor, public
       return bool();
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefNavigationEntry(&cl_args[0], entry.get());
       ZVAL_BOOL(&cl_args[1], current);
@@ -54,7 +54,9 @@ class Proxy_CefNavigationEntryVisitor : public CefNavigationEntryVisitor, public
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return bool();
+    }
     return cl_result;
   }
 

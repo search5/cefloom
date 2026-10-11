@@ -160,7 +160,7 @@ class ClientEmitter:
         for p in plan.outs:
             L.append("    " + self.out_local(p))
 
-        L.append("    cl::run_on_php_thread([&]() {")
+        L.append("    if (!cl::run_on_php_thread([&]() {")
         n = len(ins)
         if n:
             L.append("      zval cl_args[%d];" % n)
@@ -190,7 +190,9 @@ class ClientEmitter:
                   "        cl::invalidate_buffers(&cl_args[cl_i]);",
                   "        zval_ptr_dtor(&cl_args[cl_i]);",
                   "      }"]
-        L.append("    });")
+        L.append("    })) {")
+        L += ["  " + f for f in fallback]
+        L.append("    }")
 
         if plan.clamp_return:
             L.append("    if (cl_result > %s) cl_result = %s;" % (plan.clamp_return, plan.clamp_return))

@@ -69,7 +69,7 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
       return CefDevToolsMessageObserver::OnDevToolsMessage(browser, message, message_size);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::buffer_new(&cl_args[1], const_cast<void*>(static_cast<const void*>(message)), message_size, false);
@@ -86,7 +86,9 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDevToolsMessageObserver::OnDevToolsMessage(browser, message, message_size);
+    }
     return cl_result;
   }
 
@@ -96,7 +98,7 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
       CefDevToolsMessageObserver::OnDevToolsMethodResult(browser, message_id, success, result, result_size);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(message_id));
@@ -110,7 +112,10 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDevToolsMessageObserver::OnDevToolsMethodResult(browser, message_id, success, result, result_size);
+      return;
+    }
   }
 
   void OnDevToolsEvent(CefRefPtr<CefBrowser> browser, const CefString& method, const void* params, size_t params_size) override {
@@ -119,7 +124,7 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
       CefDevToolsMessageObserver::OnDevToolsEvent(browser, method, params, params_size);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], method);
@@ -132,7 +137,10 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDevToolsMessageObserver::OnDevToolsEvent(browser, method, params, params_size);
+      return;
+    }
   }
 
   void OnDevToolsAgentAttached(CefRefPtr<CefBrowser> browser) override {
@@ -141,7 +149,7 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
       CefDevToolsMessageObserver::OnDevToolsAgentAttached(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -152,7 +160,10 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDevToolsMessageObserver::OnDevToolsAgentAttached(browser);
+      return;
+    }
   }
 
   void OnDevToolsAgentDetached(CefRefPtr<CefBrowser> browser) override {
@@ -161,7 +172,7 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
       CefDevToolsMessageObserver::OnDevToolsAgentDetached(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -172,7 +183,10 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDevToolsMessageObserver::OnDevToolsAgentDetached(browser);
+      return;
+    }
   }
 
  private:

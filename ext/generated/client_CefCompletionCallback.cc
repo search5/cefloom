@@ -30,13 +30,15 @@ class Proxy_CefCompletionCallback : public CefCompletionCallback, public cl::Pro
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
       bool cl_ok = cl::call_method(object(), cl_fn, 0, cl_args, &cl_rv);
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return;
+    }
   }
 
  private:

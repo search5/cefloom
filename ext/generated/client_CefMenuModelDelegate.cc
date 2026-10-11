@@ -89,7 +89,7 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefMenuModel(&cl_args[0], menu_model.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(command_id));
@@ -102,7 +102,9 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void MouseOutsideMenu(CefRefPtr<CefMenuModel> menu_model, const CefPoint& screen_point) override {
@@ -111,7 +113,7 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
       CefMenuModelDelegate::MouseOutsideMenu(menu_model, screen_point);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefMenuModel(&cl_args[0], menu_model.get());
       cl_to_zval_cef_point_t(&cl_args[1], screen_point);
@@ -123,7 +125,10 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefMenuModelDelegate::MouseOutsideMenu(menu_model, screen_point);
+      return;
+    }
   }
 
   void UnhandledOpenSubmenu(CefRefPtr<CefMenuModel> menu_model, bool is_rtl) override {
@@ -132,7 +137,7 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
       CefMenuModelDelegate::UnhandledOpenSubmenu(menu_model, is_rtl);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefMenuModel(&cl_args[0], menu_model.get());
       ZVAL_BOOL(&cl_args[1], is_rtl);
@@ -144,7 +149,10 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefMenuModelDelegate::UnhandledOpenSubmenu(menu_model, is_rtl);
+      return;
+    }
   }
 
   void UnhandledCloseSubmenu(CefRefPtr<CefMenuModel> menu_model, bool is_rtl) override {
@@ -153,7 +161,7 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
       CefMenuModelDelegate::UnhandledCloseSubmenu(menu_model, is_rtl);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefMenuModel(&cl_args[0], menu_model.get());
       ZVAL_BOOL(&cl_args[1], is_rtl);
@@ -165,7 +173,10 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefMenuModelDelegate::UnhandledCloseSubmenu(menu_model, is_rtl);
+      return;
+    }
   }
 
   void MenuWillShow(CefRefPtr<CefMenuModel> menu_model) override {
@@ -174,7 +185,7 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
       CefMenuModelDelegate::MenuWillShow(menu_model);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefMenuModel(&cl_args[0], menu_model.get());
       zval cl_rv;
@@ -185,7 +196,10 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefMenuModelDelegate::MenuWillShow(menu_model);
+      return;
+    }
   }
 
   void MenuClosed(CefRefPtr<CefMenuModel> menu_model) override {
@@ -194,7 +208,7 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
       CefMenuModelDelegate::MenuClosed(menu_model);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefMenuModel(&cl_args[0], menu_model.get());
       zval cl_rv;
@@ -205,7 +219,10 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefMenuModelDelegate::MenuClosed(menu_model);
+      return;
+    }
   }
 
   bool FormatLabel(CefRefPtr<CefMenuModel> menu_model, CefString& label) override {
@@ -215,7 +232,7 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
     }
     bool cl_result = bool();
     CefString o_label = label;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefMenuModel(&cl_args[0], menu_model.get());
       zval cl_rv;
@@ -234,7 +251,9 @@ class Proxy_CefMenuModelDelegate : public CefMenuModelDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefMenuModelDelegate::FormatLabel(menu_model, label);
+    }
     label = o_label;
     return cl_result;
   }

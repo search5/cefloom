@@ -42,7 +42,7 @@ class Proxy_CefDialogHandler : public CefDialogHandler, public cl::ProxyBase {
       return CefDialogHandler::OnFileDialog(browser, mode, title, default_file_path, accept_filters, accept_extensions, accept_descriptions, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[8];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(mode));
@@ -80,7 +80,9 @@ class Proxy_CefDialogHandler : public CefDialogHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDialogHandler::OnFileDialog(browser, mode, title, default_file_path, accept_filters, accept_extensions, accept_descriptions, callback);
+    }
     return cl_result;
   }
 

@@ -5,6 +5,8 @@ sources:
   - cefloom/experiments/ffi-precheck/verify.php
   - cefloom/ext/src/async.cc
   - cefloom/tools/gen/scope.py
+  - cefloom/ext/runtime/cl_runtime.cc
+  - cefloom/tests/t_sync_timeout.php
   - cefweaver_clone/cefweaver/llm-wiki/pages/concepts/process-model-and-threads.md
 updated: 2026-10-12
 ---
@@ -78,6 +80,7 @@ updated: 2026-10-12
 - **내용**: CEF의 IO 스레드에서 불리는 핸들러는 즉시 답하고, PHP는 UI 스레드(PHP 메인 스레드)에서 나중에 실행하며, 결과는 CEF가 제공하는 콜백으로 전달합니다. 근거는 [F14](verified-findings.md)입니다.
 - **비동기로 바꾼 것**: `ResourceHandler`의 `open`, `processRequest`, `getResponseHeaders`, `skip`, `read`, `cancel`, `SchemeHandlerFactory::create`, `ResourceRequestHandler`의 `onBeforeResourceLoad`와 `onResourceLoadComplete`, `RequestHandler::getAuthCredentials`. PHP에서 보이는 메서드 이름과 반환 형식은 그대로입니다. `getResponseHeaders`는 요청을 열 때 미리 PHP를 실행해 결과를 저장했다가 IO 스레드에서 즉시 돌려줍니다.
 - **그대로 PHP를 기다리는 것(사용자 결정)**: 즉시 반환값이 필요한 콜백입니다. `getResourceRequestHandler`(`disableDefaultHandling`을 즉시 알려야 함), `getResourceHandler`(`null`이면 네트워크 로드), `getCookieAccessFilter`, `canSendCookie`, `canSaveCookie`, `onResourceResponse`, `onResourceRedirect`, `onProtocolExecution`, 응답 필터(`getResourceResponseFilter`, `initFilter`, `filter`), 그리고 구형 `readResponse`. 이 콜백을 PHP에서 구현하면 IO 스레드가 막히므로 [F14](verified-findings.md)의 교착이 일어날 수 있습니다.
+- **완화**: 이 콜백이 PHP를 기다리다 `CEFLOOM_SYNC_WAIT_MS`(기본 5000)밀리초를 넘기면(PHP 스레드가 메시지 루프 안에서 호출을 가져가지 않을 때만) 기다림을 포기하고 CEF의 기본 동작을 씁니다. 생성된 프록시는 `run_on_php_thread`가 `false`를 돌려주면 PHP를 부르지 않았을 때와 같은 기본 동작으로 되돌아갑니다. 교착을 풀어 줄 뿐 PHP의 판단은 그 요청에서 무시됩니다.
 - **영향**: 생성기는 `tools/gen/scope.py`의 `CUSTOM_PROXY`(프록시를 직접 작성하는 클래스)와 `ASYNC_METHODS`(비동기 본문으로 위임하는 메서드)를 따릅니다.
 
 ## 미결 질문

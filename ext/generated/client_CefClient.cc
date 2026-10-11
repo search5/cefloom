@@ -164,7 +164,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetAudioHandler();
     }
     CefRefPtr<CefAudioHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -177,7 +177,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetAudioHandler();
+    }
     return cl_result;
   }
 
@@ -187,7 +189,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetCommandHandler();
     }
     CefRefPtr<CefCommandHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -200,7 +202,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetCommandHandler();
+    }
     return cl_result;
   }
 
@@ -210,7 +214,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetContextMenuHandler();
     }
     CefRefPtr<CefContextMenuHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -223,7 +227,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetContextMenuHandler();
+    }
     return cl_result;
   }
 
@@ -233,7 +239,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetDialogHandler();
     }
     CefRefPtr<CefDialogHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -246,7 +252,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetDialogHandler();
+    }
     return cl_result;
   }
 
@@ -256,7 +264,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetDisplayHandler();
     }
     CefRefPtr<CefDisplayHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -269,7 +277,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetDisplayHandler();
+    }
     return cl_result;
   }
 
@@ -279,7 +289,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetDownloadHandler();
     }
     CefRefPtr<CefDownloadHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -292,7 +302,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetDownloadHandler();
+    }
     return cl_result;
   }
 
@@ -302,7 +314,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetDragHandler();
     }
     CefRefPtr<CefDragHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -315,7 +327,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetDragHandler();
+    }
     return cl_result;
   }
 
@@ -325,7 +339,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetFindHandler();
     }
     CefRefPtr<CefFindHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -338,7 +352,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetFindHandler();
+    }
     return cl_result;
   }
 
@@ -348,7 +364,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetFocusHandler();
     }
     CefRefPtr<CefFocusHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -361,7 +377,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetFocusHandler();
+    }
     return cl_result;
   }
 
@@ -371,7 +389,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetFrameHandler();
     }
     CefRefPtr<CefFrameHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -384,7 +402,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetFrameHandler();
+    }
     return cl_result;
   }
 
@@ -394,7 +414,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetPermissionHandler();
     }
     CefRefPtr<CefPermissionHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -407,7 +427,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetPermissionHandler();
+    }
     return cl_result;
   }
 
@@ -417,7 +439,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetJSDialogHandler();
     }
     CefRefPtr<CefJSDialogHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -430,7 +452,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetJSDialogHandler();
+    }
     return cl_result;
   }
 
@@ -440,7 +464,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetKeyboardHandler();
     }
     CefRefPtr<CefKeyboardHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -453,7 +477,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetKeyboardHandler();
+    }
     return cl_result;
   }
 
@@ -463,7 +489,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetLifeSpanHandler();
     }
     CefRefPtr<CefLifeSpanHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -476,7 +502,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetLifeSpanHandler();
+    }
     return cl_result;
   }
 
@@ -486,7 +514,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetLoadHandler();
     }
     CefRefPtr<CefLoadHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -499,7 +527,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetLoadHandler();
+    }
     return cl_result;
   }
 
@@ -509,7 +539,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetPrintHandler();
     }
     CefRefPtr<CefPrintHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -522,7 +552,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetPrintHandler();
+    }
     return cl_result;
   }
 
@@ -532,7 +564,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetRenderHandler();
     }
     CefRefPtr<CefRenderHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -545,7 +577,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetRenderHandler();
+    }
     return cl_result;
   }
 
@@ -555,7 +589,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::GetRequestHandler();
     }
     CefRefPtr<CefRequestHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -568,7 +602,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefClient::GetRequestHandler();
+    }
     return cl_result;
   }
 
@@ -578,7 +614,7 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
       return CefClient::OnProcessMessageReceived(browser, frame, source_process, message);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -597,7 +633,9 @@ class Proxy_CefClient : public CefClient, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefClient::OnProcessMessageReceived(browser, frame, source_process, message);
+    }
     return cl_result;
   }
 

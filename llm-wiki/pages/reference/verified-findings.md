@@ -11,6 +11,9 @@ sources:
   - cefloom/tests/t_scheme.php
   - cefloom/tests/run.sh
   - cefloom/ext/src/async.cc
+  - cefloom/tests/t_sync_timeout.php
+  - cefloom/subprocess/cefloomsubprocess.cc
+  - cefloom/tools/build.sh
 updated: 2026-10-12
 ---
 
@@ -106,6 +109,14 @@ updated: 2026-10-12
 - **해석**: Chromium의 IO 스레드는 브라우저 프로세스의 mojo 통신도 처리합니다. IO 스레드가 PHP 호출 때문에 막히면 GPU 프로세스의 응답을 받지 못하고, UI 스레드는 그 응답을 기다리느라 IO 스레드가 기다리는 작업을 실행하지 못합니다. 두 스레드가 서로를 기다립니다. 화면을 그리는 시점과 사용자 정의 스킴이나 리소스 요청이 겹칠 때만 일어나므로 무작위로 보입니다.
 - **한계**: 위 호출 순서는 한 번의 멈춤에서 얻은 것입니다. 표식을 넣은 사본에서는 15회 모두 통과해 멈춤을 재현하지 못했습니다. 응답을 보내지 못하는 구체적 경로(IO 스레드가 막혀서 GPU 응답을 처리하지 못한다는 부분)는 소스로 확인하지 않은 해석입니다.
 - **영향**: [주의 사항](cautions.md) 5번의 우려가 실제로 일어난다는 증거입니다. IO 스레드에서 불리는 핸들러는 PHP의 실행을 기다리며 IO 스레드를 막으면 안 됩니다. 현재 구조(`run_on_php_thread`)는 수정이 필요합니다. - **조치와 결과**: IO 스레드에서 불리는 핸들러 가운데 비동기로 처리할 수 있는 것을 `ext/src/async.cc`에서 비동기로 바꾸었습니다([설계 결정 D12](design-decisions.md)). 바꾼 뒤 `t_scheme` 30회, `t_browser_nav`와 `t_handlers` 각 20회, 전체 9개 테스트 5회를 모두 하나씩 순차로 실행했고 실패와 멈춤이 없었습니다. 바꾸기 전에는 같은 방식의 `t_scheme` 실행 27회 안팎에서 멈춤이 3회 있었습니다. 실행 횟수가 적으므로 해결을 증명한 것은 아니며, 즉시 반환값이 필요한 콜백이 남아 있으므로 교착 가능성이 없어진 것도 아닙니다.
+- **완화**: 즉시 반환값이 필요한 콜백에서 CEF 스레드가 PHP 스레드를 기다릴 때, PHP 스레드가 `CefDoMessageLoopWork()` 안에 `CEFLOOM_SYNC_WAIT_MS`(기본 5000)밀리초 넘게 머물면서 호출을 가져가지 않으면 기다림을 포기하고 CEF의 기본 동작을 씁니다. 이때 표준 오류에 경고를 한 번 출력합니다. `t_sync_timeout`이 UI 스레드를 콜백 안에서 붙잡아 이 경로를 검증하며, 타임아웃을 크게 한 사본에서는 실패하는 것을 확인했습니다. 교착을 막는 것이 아니라 풀어 주는 방식이므로, 그 사이의 요청은 PHP의 판단 없이 기본 동작으로 처리됩니다.
+
+## F15. 서브프로세스의 스택 보호가 종료할 때 `stack smashing detected`를 일으킨다
+
+- **방법**: `t_thread_tasks`와 브라우저를 쓰는 실험 스크립트가 끝날 때 `*** stack smashing detected ***: terminated`를 두 번 출력했습니다. `strace -f -ff -e trace=execve,tgkill`로 `SIGABRT`를 보낸 프로세스를 찾았습니다.
+- **결과**: `SIGABRT`를 낸 것은 `cefloomsubprocess --type=zygote`가 fork한 자식 프로세스 2개였고, 둘 다 `__stack_chk_fail`로 종료했습니다(PHP 본체와 확장 코드는 아니었습니다). 서브프로세스의 `main`에는 스택 보호값(canary) 검사가 들어 있었고(`objdump`로 확인), `CefExecuteProcess`에는 없었습니다. 서브프로세스를 `-fno-stack-protector`로 빌드하자 같은 테스트 3회에서 메시지가 사라졌고, 전체 테스트에서도 나오지 않았습니다.
+- **해석**: Chromium의 zygote는 `--change-stack-guard-on-fork=enable`로 fork한 프로세스의 스택 보호값을 바꿉니다. fork 이전부터 호출 스택에 있던 `main`은 이전 값을 저장하고 있으므로, 프로세스가 종료하며 `main`에서 반환할 때 검사에 실패하는 것으로 해석합니다. 이 인과 관계는 소스로 확인하지 않았습니다.
+- **영향**: 서브프로세스(`tools/build.sh`)는 스택 보호 없이 빌드합니다. 우분투의 기본 컴파일러 옵션은 `-fstack-protector-strong`이므로 다른 환경에서 서브프로세스를 빌드할 때도 같은 옵션이 필요합니다.
 
 ## 관련 페이지
 

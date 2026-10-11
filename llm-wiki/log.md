@@ -39,3 +39,8 @@
 
 - IO 스레드에서 불리는 핸들러 중 비동기로 처리할 수 있는 것을 `ext/src/async.cc`로 옮겼습니다. 결정과 범위는 [D12](pages/reference/design-decisions.md)에, 검증 결과는 [F14](pages/reference/verified-findings.md)에 기록했습니다. 즉시 반환값이 필요한 콜백은 사용자 결정에 따라 그대로 PHP를 동기로 호출합니다.
 - [주의 사항](pages/reference/cautions.md) 4번과 5번을 갱신했습니다.
+
+## [2026-10-12] ingest | 교착 완화와 stack smashing 원인
+
+- [F15](pages/reference/verified-findings.md)를 추가했습니다. 서브프로세스의 스택 보호 때문에 종료할 때 `stack smashing detected`가 나왔고, `-fno-stack-protector`로 빌드해 없앴습니다.
+- 즉시 반환값이 필요한 콜백의 교착을 풀어 주는 타임아웃을 넣고 F14, [D12](pages/reference/design-decisions.md), [주의 사항](pages/reference/cautions.md) 5번에 반영했습니다. `t_sync_timeout`을 추가했습니다.

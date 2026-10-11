@@ -188,9 +188,16 @@ zend_function* find_override(zend_class_entry* ce, zend_class_entry* base, const
 
 // ---- calling PHP -----------------------------------------------------------------------------------
 
-// Run |fn| on the PHP thread and wait for it (directly when already there). If CEF or PHP is going away
-// the function does not run.
-void run_on_php_thread(const std::function<void()>& fn);
+// Milliseconds on the steady clock at which the PHP thread entered CefDoMessageLoopWork(), 0 while it is outside.
+extern std::atomic<int64_t> g_pump_since_ms;
+int64_t steady_ms();
+
+// Run |fn| on the PHP thread and wait for it (directly when already there). Returns whether it ran. It does not
+// run if CEF or PHP is going away, or if the call waited longer than CEFLOOM_SYNC_WAIT_MS (default 5000) while the
+// PHP thread sat inside CefDoMessageLoopWork() without taking it: CEF's IO thread must not wait for ever for a PHP
+// thread that waits for the IO thread (llm-wiki, verified-findings F14). The caller then does what CEF does
+// without a handler.
+bool run_on_php_thread(const std::function<void()>& fn);
 
 // Call a method of a PHP object. An exception (including the one exit() throws) stays pending in PHP and
 // the callbacks that follow do not run PHP until it has surfaced. Returns false if the call did not run

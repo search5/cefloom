@@ -66,7 +66,7 @@ class Proxy_CefLoadHandler : public CefLoadHandler, public cl::ProxyBase {
       CefLoadHandler::OnLoadingStateChange(browser, isLoading, canGoBack, canGoForward);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_BOOL(&cl_args[1], isLoading);
@@ -80,7 +80,10 @@ class Proxy_CefLoadHandler : public CefLoadHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefLoadHandler::OnLoadingStateChange(browser, isLoading, canGoBack, canGoForward);
+      return;
+    }
   }
 
   void OnLoadStart(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, TransitionType transition_type) override {
@@ -89,7 +92,7 @@ class Proxy_CefLoadHandler : public CefLoadHandler, public cl::ProxyBase {
       CefLoadHandler::OnLoadStart(browser, frame, transition_type);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -102,7 +105,10 @@ class Proxy_CefLoadHandler : public CefLoadHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefLoadHandler::OnLoadStart(browser, frame, transition_type);
+      return;
+    }
   }
 
   void OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int httpStatusCode) override {
@@ -111,7 +117,7 @@ class Proxy_CefLoadHandler : public CefLoadHandler, public cl::ProxyBase {
       CefLoadHandler::OnLoadEnd(browser, frame, httpStatusCode);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -124,7 +130,10 @@ class Proxy_CefLoadHandler : public CefLoadHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefLoadHandler::OnLoadEnd(browser, frame, httpStatusCode);
+      return;
+    }
   }
 
   void OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl) override {
@@ -133,7 +142,7 @@ class Proxy_CefLoadHandler : public CefLoadHandler, public cl::ProxyBase {
       CefLoadHandler::OnLoadError(browser, frame, errorCode, errorText, failedUrl);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -148,7 +157,10 @@ class Proxy_CefLoadHandler : public CefLoadHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefLoadHandler::OnLoadError(browser, frame, errorCode, errorText, failedUrl);
+      return;
+    }
   }
 
  private:

@@ -70,7 +70,7 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -81,7 +81,9 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnPrintSettings(CefRefPtr<CefBrowser> browser, CefRefPtr<CefPrintSettings> settings, bool get_defaults) override {
@@ -89,7 +91,7 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefPrintSettings(&cl_args[1], settings.get());
@@ -102,7 +104,9 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   bool OnPrintDialog(CefRefPtr<CefBrowser> browser, bool has_selection, CefRefPtr<CefPrintDialogCallback> callback) override {
@@ -111,7 +115,7 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
       return bool();
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_BOOL(&cl_args[1], has_selection);
@@ -129,7 +133,9 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return bool();
+    }
     return cl_result;
   }
 
@@ -139,7 +145,7 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
       return bool();
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], document_name);
@@ -158,7 +164,9 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return bool();
+    }
     return cl_result;
   }
 
@@ -167,7 +175,7 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -178,7 +186,9 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   CefSize GetPdfPaperSize(CefRefPtr<CefBrowser> browser, int device_units_per_inch) override {
@@ -187,7 +197,7 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
       return CefPrintHandler::GetPdfPaperSize(browser, device_units_per_inch);
     }
     CefSize o_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(device_units_per_inch));
@@ -206,7 +216,9 @@ class Proxy_CefPrintHandler : public CefPrintHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefPrintHandler::GetPdfPaperSize(browser, device_units_per_inch);
+    }
     return o_result;
   }
 

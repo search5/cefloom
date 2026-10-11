@@ -136,7 +136,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       return CefButtonDelegate::GetPreferredSize(view);
     }
     CefSize o_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -154,7 +154,9 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefButtonDelegate::GetPreferredSize(view);
+    }
     return o_result;
   }
 
@@ -164,7 +166,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       return CefButtonDelegate::GetMinimumSize(view);
     }
     CefSize o_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -182,7 +184,9 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefButtonDelegate::GetMinimumSize(view);
+    }
     return o_result;
   }
 
@@ -192,7 +196,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       return CefButtonDelegate::GetMaximumSize(view);
     }
     CefSize o_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -210,7 +214,9 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefButtonDelegate::GetMaximumSize(view);
+    }
     return o_result;
   }
 
@@ -220,7 +226,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       return CefButtonDelegate::GetHeightForWidth(view, width);
     }
     int cl_result = int();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefView(&cl_args[0], view.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(width));
@@ -237,7 +243,9 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefButtonDelegate::GetHeightForWidth(view, width);
+    }
     return cl_result;
   }
 
@@ -247,7 +255,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       CefButtonDelegate::OnParentViewChanged(view, added, parent);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefView(&cl_args[0], view.get());
       ZVAL_BOOL(&cl_args[1], added);
@@ -260,7 +268,10 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefButtonDelegate::OnParentViewChanged(view, added, parent);
+      return;
+    }
   }
 
   void OnChildViewChanged(CefRefPtr<CefView> view, bool added, CefRefPtr<CefView> child) override {
@@ -269,7 +280,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       CefButtonDelegate::OnChildViewChanged(view, added, child);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefView(&cl_args[0], view.get());
       ZVAL_BOOL(&cl_args[1], added);
@@ -282,7 +293,10 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefButtonDelegate::OnChildViewChanged(view, added, child);
+      return;
+    }
   }
 
   void OnWindowChanged(CefRefPtr<CefView> view, bool added) override {
@@ -291,7 +305,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       CefButtonDelegate::OnWindowChanged(view, added);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefView(&cl_args[0], view.get());
       ZVAL_BOOL(&cl_args[1], added);
@@ -303,7 +317,10 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefButtonDelegate::OnWindowChanged(view, added);
+      return;
+    }
   }
 
   void OnLayoutChanged(CefRefPtr<CefView> view, const CefRect& new_bounds) override {
@@ -312,7 +329,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       CefButtonDelegate::OnLayoutChanged(view, new_bounds);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefView(&cl_args[0], view.get());
       cl_to_zval_cef_rect_t(&cl_args[1], new_bounds);
@@ -324,7 +341,10 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefButtonDelegate::OnLayoutChanged(view, new_bounds);
+      return;
+    }
   }
 
   void OnFocus(CefRefPtr<CefView> view) override {
@@ -333,7 +353,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       CefButtonDelegate::OnFocus(view);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -344,7 +364,10 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefButtonDelegate::OnFocus(view);
+      return;
+    }
   }
 
   void OnBlur(CefRefPtr<CefView> view) override {
@@ -353,7 +376,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       CefButtonDelegate::OnBlur(view);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -364,7 +387,10 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefButtonDelegate::OnBlur(view);
+      return;
+    }
   }
 
   void OnThemeChanged(CefRefPtr<CefView> view) override {
@@ -373,7 +399,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       CefButtonDelegate::OnThemeChanged(view);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -384,7 +410,10 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefButtonDelegate::OnThemeChanged(view);
+      return;
+    }
   }
 
   void OnButtonPressed(CefRefPtr<CefButton> button) override {
@@ -392,7 +421,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefButton(&cl_args[0], button.get());
       zval cl_rv;
@@ -403,7 +432,9 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnButtonStateChanged(CefRefPtr<CefButton> button) override {
@@ -412,7 +443,7 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
       CefButtonDelegate::OnButtonStateChanged(button);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefButton(&cl_args[0], button.get());
       zval cl_rv;
@@ -423,7 +454,10 @@ class Proxy_CefButtonDelegate : public CefButtonDelegate, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefButtonDelegate::OnButtonStateChanged(button);
+      return;
+    }
   }
 
  private:

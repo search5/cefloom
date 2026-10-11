@@ -39,7 +39,7 @@ class Proxy_CefFindHandler : public CefFindHandler, public cl::ProxyBase {
       CefFindHandler::OnFindResult(browser, identifier, count, selectionRect, activeMatchOrdinal, finalUpdate);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[6];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(identifier));
@@ -55,7 +55,10 @@ class Proxy_CefFindHandler : public CefFindHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefFindHandler::OnFindResult(browser, identifier, count, selectionRect, activeMatchOrdinal, finalUpdate);
+      return;
+    }
   }
 
  private:

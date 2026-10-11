@@ -173,7 +173,9 @@ void pump_once() {
   if (deadline >= 0 && deadline <= now_ms()) {
     g_deadline_ms = -1;
   }
+  cl::g_pump_since_ms = cl::steady_ms();
   CefDoMessageLoopWork();
+  cl::g_pump_since_ms = 0;
   cl::drain_releases();
 }
 

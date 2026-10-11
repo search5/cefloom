@@ -140,7 +140,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       return CefTextfieldDelegate::GetPreferredSize(view);
     }
     CefSize o_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -158,7 +158,9 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefTextfieldDelegate::GetPreferredSize(view);
+    }
     return o_result;
   }
 
@@ -168,7 +170,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       return CefTextfieldDelegate::GetMinimumSize(view);
     }
     CefSize o_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -186,7 +188,9 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefTextfieldDelegate::GetMinimumSize(view);
+    }
     return o_result;
   }
 
@@ -196,7 +200,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       return CefTextfieldDelegate::GetMaximumSize(view);
     }
     CefSize o_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -214,7 +218,9 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefTextfieldDelegate::GetMaximumSize(view);
+    }
     return o_result;
   }
 
@@ -224,7 +230,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       return CefTextfieldDelegate::GetHeightForWidth(view, width);
     }
     int cl_result = int();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefView(&cl_args[0], view.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(width));
@@ -241,7 +247,9 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefTextfieldDelegate::GetHeightForWidth(view, width);
+    }
     return cl_result;
   }
 
@@ -251,7 +259,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       CefTextfieldDelegate::OnParentViewChanged(view, added, parent);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefView(&cl_args[0], view.get());
       ZVAL_BOOL(&cl_args[1], added);
@@ -264,7 +272,10 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefTextfieldDelegate::OnParentViewChanged(view, added, parent);
+      return;
+    }
   }
 
   void OnChildViewChanged(CefRefPtr<CefView> view, bool added, CefRefPtr<CefView> child) override {
@@ -273,7 +284,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       CefTextfieldDelegate::OnChildViewChanged(view, added, child);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefView(&cl_args[0], view.get());
       ZVAL_BOOL(&cl_args[1], added);
@@ -286,7 +297,10 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefTextfieldDelegate::OnChildViewChanged(view, added, child);
+      return;
+    }
   }
 
   void OnWindowChanged(CefRefPtr<CefView> view, bool added) override {
@@ -295,7 +309,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       CefTextfieldDelegate::OnWindowChanged(view, added);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefView(&cl_args[0], view.get());
       ZVAL_BOOL(&cl_args[1], added);
@@ -307,7 +321,10 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefTextfieldDelegate::OnWindowChanged(view, added);
+      return;
+    }
   }
 
   void OnLayoutChanged(CefRefPtr<CefView> view, const CefRect& new_bounds) override {
@@ -316,7 +333,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       CefTextfieldDelegate::OnLayoutChanged(view, new_bounds);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefView(&cl_args[0], view.get());
       cl_to_zval_cef_rect_t(&cl_args[1], new_bounds);
@@ -328,7 +345,10 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefTextfieldDelegate::OnLayoutChanged(view, new_bounds);
+      return;
+    }
   }
 
   void OnFocus(CefRefPtr<CefView> view) override {
@@ -337,7 +357,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       CefTextfieldDelegate::OnFocus(view);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -348,7 +368,10 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefTextfieldDelegate::OnFocus(view);
+      return;
+    }
   }
 
   void OnBlur(CefRefPtr<CefView> view) override {
@@ -357,7 +380,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       CefTextfieldDelegate::OnBlur(view);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -368,7 +391,10 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefTextfieldDelegate::OnBlur(view);
+      return;
+    }
   }
 
   void OnThemeChanged(CefRefPtr<CefView> view) override {
@@ -377,7 +403,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       CefTextfieldDelegate::OnThemeChanged(view);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefView(&cl_args[0], view.get());
       zval cl_rv;
@@ -388,7 +414,10 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefTextfieldDelegate::OnThemeChanged(view);
+      return;
+    }
   }
 
   bool OnKeyEvent(CefRefPtr<CefTextfield> textfield, const CefKeyEvent& event) override {
@@ -397,7 +426,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       return CefTextfieldDelegate::OnKeyEvent(textfield, event);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefTextfield(&cl_args[0], textfield.get());
       cl_to_zval_cef_key_event_t(&cl_args[1], event);
@@ -414,7 +443,9 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefTextfieldDelegate::OnKeyEvent(textfield, event);
+    }
     return cl_result;
   }
 
@@ -424,7 +455,7 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
       CefTextfieldDelegate::OnAfterUserAction(textfield);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefTextfield(&cl_args[0], textfield.get());
       zval cl_rv;
@@ -435,7 +466,10 @@ class Proxy_CefTextfieldDelegate : public CefTextfieldDelegate, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefTextfieldDelegate::OnAfterUserAction(textfield);
+      return;
+    }
   }
 
  private:

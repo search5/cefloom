@@ -76,7 +76,7 @@ class Proxy_CefJSDialogHandler : public CefJSDialogHandler, public cl::ProxyBase
     }
     bool cl_result = bool();
     bool o_suppress_message = suppress_message;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[6];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], origin_url);
@@ -100,7 +100,9 @@ class Proxy_CefJSDialogHandler : public CefJSDialogHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefJSDialogHandler::OnJSDialog(browser, origin_url, dialog_type, message_text, default_prompt_text, callback, suppress_message);
+    }
     suppress_message = o_suppress_message;
     return cl_result;
   }
@@ -111,7 +113,7 @@ class Proxy_CefJSDialogHandler : public CefJSDialogHandler, public cl::ProxyBase
       return CefJSDialogHandler::OnBeforeUnloadDialog(browser, message_text, is_reload, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], message_text);
@@ -130,7 +132,9 @@ class Proxy_CefJSDialogHandler : public CefJSDialogHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefJSDialogHandler::OnBeforeUnloadDialog(browser, message_text, is_reload, callback);
+    }
     return cl_result;
   }
 
@@ -140,7 +144,7 @@ class Proxy_CefJSDialogHandler : public CefJSDialogHandler, public cl::ProxyBase
       CefJSDialogHandler::OnResetDialogState(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -151,7 +155,10 @@ class Proxy_CefJSDialogHandler : public CefJSDialogHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefJSDialogHandler::OnResetDialogState(browser);
+      return;
+    }
   }
 
   void OnDialogClosed(CefRefPtr<CefBrowser> browser) override {
@@ -160,7 +167,7 @@ class Proxy_CefJSDialogHandler : public CefJSDialogHandler, public cl::ProxyBase
       CefJSDialogHandler::OnDialogClosed(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -171,7 +178,10 @@ class Proxy_CefJSDialogHandler : public CefJSDialogHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefJSDialogHandler::OnDialogClosed(browser);
+      return;
+    }
   }
 
  private:

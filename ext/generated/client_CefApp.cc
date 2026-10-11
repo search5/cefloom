@@ -49,7 +49,7 @@ class Proxy_CefApp : public CefApp, public cl::ProxyBase {
       CefApp::OnBeforeCommandLineProcessing(process_type, command_line);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl::ret_str(&cl_args[0], process_type);
       cl_wrap_CefCommandLine(&cl_args[1], command_line.get());
@@ -61,7 +61,10 @@ class Proxy_CefApp : public CefApp, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefApp::OnBeforeCommandLineProcessing(process_type, command_line);
+      return;
+    }
   }
 
   CefRefPtr<CefResourceBundleHandler> GetResourceBundleHandler() override {
@@ -70,7 +73,7 @@ class Proxy_CefApp : public CefApp, public cl::ProxyBase {
       return CefApp::GetResourceBundleHandler();
     }
     CefRefPtr<CefResourceBundleHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -83,7 +86,9 @@ class Proxy_CefApp : public CefApp, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefApp::GetResourceBundleHandler();
+    }
     return cl_result;
   }
 
@@ -93,7 +98,7 @@ class Proxy_CefApp : public CefApp, public cl::ProxyBase {
       return CefApp::GetBrowserProcessHandler();
     }
     CefRefPtr<CefBrowserProcessHandler> cl_result;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -106,7 +111,9 @@ class Proxy_CefApp : public CefApp, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return CefApp::GetBrowserProcessHandler();
+    }
     return cl_result;
   }
 

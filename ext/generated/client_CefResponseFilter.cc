@@ -37,7 +37,7 @@ class Proxy_CefResponseFilter : public CefResponseFilter, public cl::ProxyBase {
       return bool();
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval* cl_args = nullptr;
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
@@ -48,7 +48,9 @@ class Proxy_CefResponseFilter : public CefResponseFilter, public cl::ProxyBase {
         }
       }
       if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-    });
+    })) {
+      return bool();
+    }
     return cl_result;
   }
 
@@ -60,7 +62,7 @@ class Proxy_CefResponseFilter : public CefResponseFilter, public cl::ProxyBase {
     FilterStatus cl_result = FilterStatus();
     size_t o_data_in_read = data_in_read;
     size_t o_data_out_written = data_out_written;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl::buffer_new(&cl_args[0], const_cast<void*>(static_cast<const void*>(data_in)), data_in_size, true);
       cl::buffer_new(&cl_args[1], const_cast<void*>(static_cast<const void*>(data_out)), data_out_size, true);
@@ -83,7 +85,9 @@ class Proxy_CefResponseFilter : public CefResponseFilter, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return FilterStatus();
+    }
     data_in_read = o_data_in_read;
     data_out_written = o_data_out_written;
     return cl_result;

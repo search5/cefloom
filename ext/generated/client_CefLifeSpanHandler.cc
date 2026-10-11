@@ -72,7 +72,7 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
       return CefLifeSpanHandler::OnBeforePopup(browser, frame, popup_id, target_url, target_frame_name, target_disposition, user_gesture, popupFeatures, windowInfo, client, settings, extra_info, no_javascript_access);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[8];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -95,7 +95,9 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefLifeSpanHandler::OnBeforePopup(browser, frame, popup_id, target_url, target_frame_name, target_disposition, user_gesture, popupFeatures, windowInfo, client, settings, extra_info, no_javascript_access);
+    }
     return cl_result;
   }
 
@@ -105,7 +107,7 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
       CefLifeSpanHandler::OnBeforePopupAborted(browser, popup_id);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(popup_id));
@@ -117,7 +119,10 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefLifeSpanHandler::OnBeforePopupAborted(browser, popup_id);
+      return;
+    }
   }
 
   void OnAfterCreated(CefRefPtr<CefBrowser> browser) override {
@@ -126,7 +131,7 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
       CefLifeSpanHandler::OnAfterCreated(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -137,7 +142,10 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefLifeSpanHandler::OnAfterCreated(browser);
+      return;
+    }
   }
 
   bool DoClose(CefRefPtr<CefBrowser> browser) override {
@@ -146,7 +154,7 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
       return CefLifeSpanHandler::DoClose(browser);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -162,7 +170,9 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefLifeSpanHandler::DoClose(browser);
+    }
     return cl_result;
   }
 
@@ -172,7 +182,7 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
       CefLifeSpanHandler::OnBeforeClose(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -183,7 +193,10 @@ class Proxy_CefLifeSpanHandler : public CefLifeSpanHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefLifeSpanHandler::OnBeforeClose(browser);
+      return;
+    }
   }
 
  private:

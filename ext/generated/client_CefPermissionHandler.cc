@@ -60,7 +60,7 @@ class Proxy_CefPermissionHandler : public CefPermissionHandler, public cl::Proxy
       return CefPermissionHandler::OnRequestMediaAccessPermission(browser, frame, requesting_origin, requested_permissions, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -80,7 +80,9 @@ class Proxy_CefPermissionHandler : public CefPermissionHandler, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefPermissionHandler::OnRequestMediaAccessPermission(browser, frame, requesting_origin, requested_permissions, callback);
+    }
     return cl_result;
   }
 
@@ -90,7 +92,7 @@ class Proxy_CefPermissionHandler : public CefPermissionHandler, public cl::Proxy
       return CefPermissionHandler::OnShowPermissionPrompt(browser, prompt_id, requesting_origin, requested_permissions, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(prompt_id));
@@ -110,7 +112,9 @@ class Proxy_CefPermissionHandler : public CefPermissionHandler, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefPermissionHandler::OnShowPermissionPrompt(browser, prompt_id, requesting_origin, requested_permissions, callback);
+    }
     return cl_result;
   }
 
@@ -120,7 +124,7 @@ class Proxy_CefPermissionHandler : public CefPermissionHandler, public cl::Proxy
       CefPermissionHandler::OnDismissPermissionPrompt(browser, prompt_id, result);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(prompt_id));
@@ -133,7 +137,10 @@ class Proxy_CefPermissionHandler : public CefPermissionHandler, public cl::Proxy
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefPermissionHandler::OnDismissPermissionPrompt(browser, prompt_id, result);
+      return;
+    }
   }
 
  private:

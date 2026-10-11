@@ -50,7 +50,7 @@ class Proxy_CefCookieAccessFilter : public CefCookieAccessFilter, public cl::Pro
       return CefCookieAccessFilter::CanSendCookie(browser, frame, request, cookie);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -69,7 +69,9 @@ class Proxy_CefCookieAccessFilter : public CefCookieAccessFilter, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefCookieAccessFilter::CanSendCookie(browser, frame, request, cookie);
+    }
     return cl_result;
   }
 
@@ -79,7 +81,7 @@ class Proxy_CefCookieAccessFilter : public CefCookieAccessFilter, public cl::Pro
       return CefCookieAccessFilter::CanSaveCookie(browser, frame, request, response, cookie);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -99,7 +101,9 @@ class Proxy_CefCookieAccessFilter : public CefCookieAccessFilter, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefCookieAccessFilter::CanSaveCookie(browser, frame, request, response, cookie);
+    }
     return cl_result;
   }
 

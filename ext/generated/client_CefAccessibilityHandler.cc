@@ -36,7 +36,7 @@ class Proxy_CefAccessibilityHandler : public CefAccessibilityHandler, public cl:
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefValue(&cl_args[0], value.get());
       zval cl_rv;
@@ -47,7 +47,9 @@ class Proxy_CefAccessibilityHandler : public CefAccessibilityHandler, public cl:
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnAccessibilityLocationChange(CefRefPtr<CefValue> value) override {
@@ -55,7 +57,7 @@ class Proxy_CefAccessibilityHandler : public CefAccessibilityHandler, public cl:
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefValue(&cl_args[0], value.get());
       zval cl_rv;
@@ -66,7 +68,9 @@ class Proxy_CefAccessibilityHandler : public CefAccessibilityHandler, public cl:
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
  private:

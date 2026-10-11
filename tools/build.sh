@@ -51,7 +51,9 @@ for f in "$CEFLOOM_RUNTIME"/*; do
   esac
   cp -alf "$f" "$BUILD/dist/$name" 2>/dev/null || cp -rf "$f" "$BUILD/dist/$name"
 done
-g++ -std=c++20 -fno-rtti -fno-exceptions -O2 -pthread -DWRAPPING_CEF_SHARED -D_FILE_OFFSET_BITS=64 \
+# No stack protector: Chromium's zygote changes the stack guard value in every process it forks
+# (--change-stack-guard-on-fork), so main() would fail its canary check when the process exits.
+g++ -std=c++20 -fno-stack-protector -fno-rtti -fno-exceptions -O2 -pthread -DWRAPPING_CEF_SHARED -D_FILE_OFFSET_BITS=64 \
   -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -I"$CEF_ROOT" "$here/subprocess/cefloomsubprocess.cc" \
   "$CEFLOOM_WRAPPER_LIB" -L"$BUILD/dist" -lcef -Wl,-rpath,'$ORIGIN' -o "$BUILD/dist/cefloomsubprocess"
 patchelf --set-rpath '$ORIGIN' "$BUILD/dist/cefloom.so"

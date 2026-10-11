@@ -35,7 +35,7 @@ class Proxy_CefCookieVisitor : public CefCookieVisitor, public cl::ProxyBase {
     }
     bool cl_result = bool();
     bool o_deleteCookie = deleteCookie;
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_to_zval_cef_cookie_t(&cl_args[0], cookie);
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(count));
@@ -56,7 +56,9 @@ class Proxy_CefCookieVisitor : public CefCookieVisitor, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return bool();
+    }
     deleteCookie = o_deleteCookie;
     return cl_result;
   }

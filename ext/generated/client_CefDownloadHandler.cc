@@ -57,7 +57,7 @@ class Proxy_CefDownloadHandler : public CefDownloadHandler, public cl::ProxyBase
       return CefDownloadHandler::CanDownload(browser, url, request_method);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], url);
@@ -75,7 +75,9 @@ class Proxy_CefDownloadHandler : public CefDownloadHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDownloadHandler::CanDownload(browser, url, request_method);
+    }
     return cl_result;
   }
 
@@ -85,7 +87,7 @@ class Proxy_CefDownloadHandler : public CefDownloadHandler, public cl::ProxyBase
       return CefDownloadHandler::OnBeforeDownload(browser, download_item, suggested_name, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefDownloadItem(&cl_args[1], download_item.get());
@@ -104,7 +106,9 @@ class Proxy_CefDownloadHandler : public CefDownloadHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefDownloadHandler::OnBeforeDownload(browser, download_item, suggested_name, callback);
+    }
     return cl_result;
   }
 
@@ -114,7 +118,7 @@ class Proxy_CefDownloadHandler : public CefDownloadHandler, public cl::ProxyBase
       CefDownloadHandler::OnDownloadUpdated(browser, download_item, callback);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefDownloadItem(&cl_args[1], download_item.get());
@@ -127,7 +131,10 @@ class Proxy_CefDownloadHandler : public CefDownloadHandler, public cl::ProxyBase
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefDownloadHandler::OnDownloadUpdated(browser, download_item, callback);
+      return;
+    }
   }
 
  private:

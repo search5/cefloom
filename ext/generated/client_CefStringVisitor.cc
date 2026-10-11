@@ -31,7 +31,7 @@ class Proxy_CefStringVisitor : public CefStringVisitor, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl::ret_str(&cl_args[0], string);
       zval cl_rv;
@@ -42,7 +42,9 @@ class Proxy_CefStringVisitor : public CefStringVisitor, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
  private:

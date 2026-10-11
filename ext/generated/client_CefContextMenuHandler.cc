@@ -101,7 +101,7 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
       CefContextMenuHandler::OnBeforeContextMenu(browser, frame, params, model);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -115,7 +115,10 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefContextMenuHandler::OnBeforeContextMenu(browser, frame, params, model);
+      return;
+    }
   }
 
   bool RunContextMenu(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefContextMenuParams> params, CefRefPtr<CefMenuModel> model, CefRefPtr<CefRunContextMenuCallback> callback) override {
@@ -124,7 +127,7 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
       return CefContextMenuHandler::RunContextMenu(browser, frame, params, model, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -144,7 +147,9 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefContextMenuHandler::RunContextMenu(browser, frame, params, model, callback);
+    }
     return cl_result;
   }
 
@@ -154,7 +159,7 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
       return CefContextMenuHandler::OnContextMenuCommand(browser, frame, params, command_id, event_flags);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -174,7 +179,9 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefContextMenuHandler::OnContextMenuCommand(browser, frame, params, command_id, event_flags);
+    }
     return cl_result;
   }
 
@@ -184,7 +191,7 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
       CefContextMenuHandler::OnContextMenuDismissed(browser, frame);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -196,7 +203,10 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefContextMenuHandler::OnContextMenuDismissed(browser, frame);
+      return;
+    }
   }
 
   bool RunQuickMenu(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefPoint& location, const CefSize& size, QuickMenuEditStateFlags edit_state_flags, CefRefPtr<CefRunQuickMenuCallback> callback) override {
@@ -205,7 +215,7 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
       return CefContextMenuHandler::RunQuickMenu(browser, frame, location, size, edit_state_flags, callback);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[6];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -226,7 +236,9 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefContextMenuHandler::RunQuickMenu(browser, frame, location, size, edit_state_flags, callback);
+    }
     return cl_result;
   }
 
@@ -236,7 +248,7 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
       return CefContextMenuHandler::OnQuickMenuCommand(browser, frame, command_id, event_flags);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -255,7 +267,9 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefContextMenuHandler::OnQuickMenuCommand(browser, frame, command_id, event_flags);
+    }
     return cl_result;
   }
 
@@ -265,7 +279,7 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
       CefContextMenuHandler::OnQuickMenuDismissed(browser, frame);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl_wrap_CefFrame(&cl_args[1], frame.get());
@@ -277,7 +291,10 @@ class Proxy_CefContextMenuHandler : public CefContextMenuHandler, public cl::Pro
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefContextMenuHandler::OnQuickMenuDismissed(browser, frame);
+      return;
+    }
   }
 
  private:

@@ -78,7 +78,7 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefServer(&cl_args[0], server.get());
       zval cl_rv;
@@ -89,7 +89,9 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnServerDestroyed(CefRefPtr<CefServer> server) override {
@@ -97,7 +99,7 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefServer(&cl_args[0], server.get());
       zval cl_rv;
@@ -108,7 +110,9 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnClientConnected(CefRefPtr<CefServer> server, int connection_id) override {
@@ -116,7 +120,7 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefServer(&cl_args[0], server.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(connection_id));
@@ -128,7 +132,9 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnClientDisconnected(CefRefPtr<CefServer> server, int connection_id) override {
@@ -136,7 +142,7 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefServer(&cl_args[0], server.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(connection_id));
@@ -148,7 +154,9 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnHttpRequest(CefRefPtr<CefServer> server, int connection_id, const CefString& client_address, CefRefPtr<CefRequest> request) override {
@@ -156,7 +164,7 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[4];
       cl_wrap_CefServer(&cl_args[0], server.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(connection_id));
@@ -170,7 +178,9 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnWebSocketRequest(CefRefPtr<CefServer> server, int connection_id, const CefString& client_address, CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback) override {
@@ -178,7 +188,7 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[5];
       cl_wrap_CefServer(&cl_args[0], server.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(connection_id));
@@ -193,7 +203,9 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnWebSocketConnected(CefRefPtr<CefServer> server, int connection_id) override {
@@ -201,7 +213,7 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefServer(&cl_args[0], server.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(connection_id));
@@ -213,7 +225,9 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
   void OnWebSocketMessage(CefRefPtr<CefServer> server, int connection_id, const void* data, size_t data_size) override {
@@ -221,7 +235,7 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[3];
       cl_wrap_CefServer(&cl_args[0], server.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(connection_id));
@@ -234,7 +248,9 @@ class Proxy_CefServerHandler : public CefServerHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return;
+    }
   }
 
  private:

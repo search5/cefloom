@@ -1,6 +1,10 @@
 #include "cl_runtime.h"
 
 #include <chrono>
+#include <cstdio>
+#include <cstdlib>
+
+#include <chrono>
 #include <cstdarg>
 #include <cstring>
 
@@ -439,6 +443,7 @@ struct SyncState {
   std::mutex mutex;
   std::condition_variable cv;
   bool started = false;
+  bool ran = false;
   bool done = false;
   bool abandoned = false;
 };
@@ -456,11 +461,14 @@ class SyncTask : public CefTask {
       }
       state_->started = true;
     }
+    bool ran = false;
     if (g_php_alive) {
       fn_();
+      ran = true;
     }
     {
       std::lock_guard<std::mutex> lock(state_->mutex);
+      state_->ran = ran;
       state_->done = true;
     }
     state_->cv.notify_all();
@@ -471,31 +479,60 @@ class SyncTask : public CefTask {
   std::shared_ptr<SyncState> state_;
   IMPLEMENT_REFCOUNTING(SyncTask);
 };
+
+int64_t sync_wait_limit_ms() {
+  static const int64_t limit = [] {
+    const char* text = std::getenv("CEFLOOM_SYNC_WAIT_MS");
+    long value = text ? std::atol(text) : 0;
+    return static_cast<int64_t>(value > 0 ? value : 5000);
+  }();
+  return limit;
+}
 }  // namespace
 
-void run_on_php_thread(const std::function<void()>& fn) {
+std::atomic<int64_t> g_pump_since_ms{0};
+
+int64_t steady_ms() {
+  return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch())
+      .count();
+}
+
+bool run_on_php_thread(const std::function<void()>& fn) {
   if (!g_php_alive) {
-    return;
+    return false;
   }
   if (on_php_thread()) {
     fn();
-    return;
+    return true;
   }
   if (!g_cef_running) {
-    return;
+    return false;
   }
   auto state = std::make_shared<SyncState>();
   if (!CefPostTask(TID_UI, new SyncTask(fn, state))) {
-    return;
+    return false;
   }
   std::unique_lock<std::mutex> lock(state->mutex);
   while (!state->done) {
     state->cv.wait_for(lock, std::chrono::milliseconds(50));
-    if (!state->done && !state->started && (!g_cef_running || !g_php_alive)) {
+    if (state->done || state->started) {
+      continue;
+    }
+    if (!g_cef_running || !g_php_alive) {
       state->abandoned = true;  // nobody will run it any more
-      return;
+      return false;
+    }
+    int64_t since = g_pump_since_ms.load();
+    if (since != 0 && steady_ms() - since >= sync_wait_limit_ms()) {
+      state->abandoned = true;
+      std::fprintf(stderr,
+                   "cefloom: a CEF thread waited %lld ms for the PHP thread, which sat inside CefDoMessageLoopWork() "
+                   "without taking the call; CEF's default is used instead (verified-findings F14)\n",
+                   static_cast<long long>(sync_wait_limit_ms()));
+      return false;
     }
   }
+  return state->ran;
 }
 
 bool call_method(zend_object* obj, zend_function* fn, uint32_t argc, zval* argv, zval* retval) {

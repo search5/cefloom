@@ -51,7 +51,7 @@ class Proxy_CefFocusHandler : public CefFocusHandler, public cl::ProxyBase {
       CefFocusHandler::OnTakeFocus(browser, next);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_BOOL(&cl_args[1], next);
@@ -63,7 +63,10 @@ class Proxy_CefFocusHandler : public CefFocusHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefFocusHandler::OnTakeFocus(browser, next);
+      return;
+    }
   }
 
   bool OnSetFocus(CefRefPtr<CefBrowser> browser, FocusSource source) override {
@@ -72,7 +75,7 @@ class Proxy_CefFocusHandler : public CefFocusHandler, public cl::ProxyBase {
       return CefFocusHandler::OnSetFocus(browser, source);
     }
     bool cl_result = bool();
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(source));
@@ -89,7 +92,9 @@ class Proxy_CefFocusHandler : public CefFocusHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      return CefFocusHandler::OnSetFocus(browser, source);
+    }
     return cl_result;
   }
 
@@ -99,7 +104,7 @@ class Proxy_CefFocusHandler : public CefFocusHandler, public cl::ProxyBase {
       CefFocusHandler::OnGotFocus(browser);
       return;
     }
-    cl::run_on_php_thread([&]() {
+    if (!cl::run_on_php_thread([&]() {
       zval cl_args[1];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       zval cl_rv;
@@ -110,7 +115,10 @@ class Proxy_CefFocusHandler : public CefFocusHandler, public cl::ProxyBase {
         cl::invalidate_buffers(&cl_args[cl_i]);
         zval_ptr_dtor(&cl_args[cl_i]);
       }
-    });
+    })) {
+      CefFocusHandler::OnGotFocus(browser);
+      return;
+    }
   }
 
  private:
