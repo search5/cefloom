@@ -6,6 +6,8 @@ sources:
   - cefweaver_clone/cefweaver/llm-wiki/pages/concepts/runtime-layout.md
   - https://packagist.org/packages/kingbes/pebview
   - https://root.packagist.org/packages/nativephp/laravel/stats
+  - https://github.com/php/pie/blob/1.6.x/docs/extension-maintainers.md
+  - cefloom/tools/build.sh
 updated: 2026-10-12
 ---
 
@@ -28,7 +30,17 @@ updated: 2026-10-12
 | CEF 런타임 | `libcef.so`, 리소스 `.pak`, `icudtl.dat`, `locales/` 등 | 첫 실행 때 내려받기(크기 때문). `cefweaver`의 `prepare.py`가 이미 내려받기를 구현 |
 | PHP 쪽 보조 | 스텁(IDE용), 예제, 설치 보조 | Composer 패키지 |
 
-PHP 확장 전용 설치 도구(PIE 등)의 현재 상태와 규칙은 이번 조사에서 확인하지 않았습니다. 구현 전에 조사해야 합니다([알려진 제약](../reference/known-constraints.md)).
+## PIE와 Composer (조사: 2026-10-12)
+
+PIE 1.6.x의 확장 관리자용 문서(`docs/extension-maintainers.md`)를 읽고 정리했습니다. 실제로 PIE를 실행해 보지는 않았습니다.
+
+- `composer require`로 확장 모듈을 설치할 수는 없습니다. 확장 모듈은 PECL의 후속 도구인 PIE(`pie install 공급자/패키지`)로 설치합니다. 패키지 정보는 Composer와 같은 `composer.json`과 Packagist를 쓰며, `"type": "php-ext"`와 `"php-ext"` 객체로 확장임을 선언합니다.
+- 미리 빌드한 바이너리를 쓰려면 `"download-url-method": ["pre-packaged-binary", "composer-default"]`처럼 선언하고, 릴리스에 `php_{확장이름}-{버전}_php{PHP버전}-{아키텍처}-{운영체제}-{libc}-{debug}-{스레드모드}.{zip|tgz}` 형식의 파일을 첨부합니다. 아키텍처는 `x86_64`, `arm64` 등, libc는 `glibc`, `musl`입니다. 일치 규칙의 세부는 문서에 적혀 있지 않습니다. 문서는 이름을 맞춘 자산을 만드는 `php/pie-ext-binary-builder` GitHub Action을 권합니다.
+- 문서는 동적 라이브러리에 연결된 확장에는 미리 빌드한 바이너리를 쓰지 말라고 경고합니다. 사용자 시스템에 맞는 라이브러리가 없을 수 있기 때문입니다. cefloom은 `libcef.so`에 동적으로 연결됩니다(`readelf`로 확인: NEEDED `libcef.so`, RUNPATH `$ORIGIN`).
+- PIE가 설치하는 것은 확장 파일입니다. Windows가 아닌 환경에서 추가 파일(런타임 라이브러리 등)을 함께 배치하거나 설치 후 명령을 실행하는 기능은 문서에 없습니다. CEF 런타임(`libcef.so`, 리소스, `cefloomsubprocess`)은 PIE로 배치할 수 없습니다.
+- 소스 빌드(`composer-default`)는 사용할 수 없습니다. `config.m4`가 CEF 배포본의 헤더와 래퍼 라이브러리를 요구하기 때문입니다.
+- 판단(제안): 확장 바이너리는 PIE와 Packagist로, PHP 쪽 보조(스텁, 설치 보조 명령)는 `composer require`로, CEF 런타임은 별도 내려받기로 나눕니다. 이 구성은 구현하지 않았습니다.
+- 미해결: 확장을 php.ini에 켜 두면 모든 PHP 프로세스가 로드할 때 `libcef.so`를 찾아야 합니다. 런타임이 없는 환경에서 확장이 로드되지 않는 문제와 `libcef.so`의 위치 문제는 `libcef.so`를 필요할 때 불러오는 방식(`dlopen`)으로 바꿀 수 있는지 실험해야 합니다.
 
 런타임 파일 배치에는 확인된 규칙이 있습니다. `cefweaver`의 시험으로 `icudtl.dat`는 `libcef.so`가 있는 디렉터리에서만 찾는다는 것이 확인되었습니다(`cefweaver_clone/cefweaver/llm-wiki/pages/concepts/runtime-layout.md`). 내려받는 구조를 설계할 때 파일들을 한 디렉터리에 두어야 합니다.
 

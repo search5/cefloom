@@ -55,3 +55,7 @@
 
 - [로드맵](pages/reference/roadmap.md)의 1단계에서 3단계를 구현됨으로 고치고 "다음에 할 일"을 현재 상태에 맞게 다시 썼습니다. 근거는 코드, 커버리지 보고서(1262/1284), 통과한 테스트 11개입니다.
 - JS 브리지를 검증하는 `t_bridge`를 추가했습니다. `OnQuery`가 PHP를 실행하지 못할 때 JS의 약속이 영원히 대기하지 않도록 실패로 응답하게 고쳤습니다.
+
+## [2026-10-12] ingest | PIE와 Composer 조사
+
+- PIE 1.6.x 문서를 읽고 [배포 전략](pages/concepts/distribution-strategy.md)에 정리했습니다. 확장은 PIE로, PHP 쪽 보조는 `composer require`로, CEF 런타임은 별도로 내려받는 구성을 제안했습니다. [K17](pages/reference/known-constraints.md)을 문서 조사까지 한 상태로 고쳤습니다.
