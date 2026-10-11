@@ -7,7 +7,8 @@ Checks: front matter, `type` matching the folder, `sources` that exist (paths re
 the workspace root, the parent of the cefloom directory; https URLs are accepted without
 a check), relative links that resolve and stay inside cefloom, pages missing from index.md,
 pages that no other page links to (orphans), pages over 200 lines (unless the front matter
-says `generated: true`), em dashes, and the format of log.md entries.
+says `generated: true`), em dashes, the format and the date order of log.md entries, and the numbers that
+index.md quotes about other pages (how many cautions, the highest D, F and K number).
 Reading the pages for contradictions and stale claims is not something a script can do.
 """
 
@@ -71,6 +72,63 @@ def links(text):
 def leaves_project(resolved):
     """True for a link to a file outside cefloom: it exists on one computer only."""
     return not resolved.is_relative_to(PROJECT)
+
+
+def check_index_numbers(index_text, errors):
+    """The index quotes counts of other pages ("rule 25", "D1 to D12"); they must match those pages.
+
+    Each entry: (the page, how the index quotes it, how to count in the page, what it is).
+    """
+    reference = PAGES / "reference"
+
+    def numbers(page, pattern):
+        text = (reference / page).read_text(encoding="utf-8")
+        return [int(n) for n in re.findall(pattern, text, re.M)]
+
+    def line_about(page):
+        for line in index_text.splitlines():
+            if f"reference/{page})" in line:
+                return line
+        return ""
+
+    checks = [
+        ("cautions.md", r"규칙 (\d+)개", None, "cautions"),
+        ("design-decisions.md", r"D1부터 D(\d+)", r"^## D(\d+)\.", "decisions"),
+        ("verified-findings.md", None, r"^## F(\d+)\.", "findings"),
+        ("known-constraints.md", r"K1부터 K(\d+)", r"^\| K(\d+) \|", "constraints"),
+    ]
+    for page, quoted, counted, what in checks:
+        line = line_about(page)
+        if not line:
+            continue  # the missing entry is reported elsewhere
+        if page == "cautions.md":
+            actual = len(numbers(page, r"^(\d+)\. \*\*"))
+            found = re.search(quoted, line)
+            quoted_value = int(found.group(1)) if found else None
+        elif page == "verified-findings.md":
+            actual = max(numbers(page, counted), default=0)
+            ids = [int(n) for n in re.findall(r"F(\d+)", line)]
+            quoted_value = max(ids) if ids else None
+        else:
+            actual = max(numbers(page, counted), default=0)
+            found = re.search(quoted, line)
+            quoted_value = int(found.group(1)) if found else None
+        if quoted_value is None:
+            errors.append(f"index.md: the entry of {page} does not say how many {what} there are")
+        elif quoted_value != actual:
+            errors.append(f"index.md: says {quoted_value} {what} for {page}, the page has {actual}")
+
+
+def check_log_order(log_text, errors):
+    previous = ""
+    for number, line in enumerate(log_text.splitlines(), 1):
+        match = LOG_ENTRY.match(line)
+        if not match:
+            continue
+        date = line[4:14]
+        if date < previous:
+            errors.append(f"log.md:{number}: entry dated {date} comes after an entry dated {previous}")
+        previous = max(previous, date)
 
 
 def main():
@@ -159,6 +217,9 @@ def main():
     for number, line in enumerate(log_text.splitlines(), 1):
         if line.startswith("## ") and not LOG_ENTRY.match(line):
             errors.append(f"log.md:{number}: entry does not match `## [YYYY-MM-DD] ingest|query|lint|schema | title`")
+
+    check_index_numbers(index_text, errors)
+    check_log_order(log_text, errors)
 
     for message in errors:
         print("error:   " + message)

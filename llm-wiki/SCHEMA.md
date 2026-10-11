@@ -60,7 +60,7 @@ updated: YYYY-MM-DD
 - `type`: 위 여섯 값 중 하나이며 페이지가 놓인 폴더와 일치해야 합니다(`concepts`는 `concept`처럼 단수형).
 - `sources`: 근거가 된 파일의 경로 목록입니다. 경로는 **작업 영역(`cefloom`의 부모 디렉터리) 기준**이므로 `cef_origin/tools/cef_parser.py`, `cefloom/experiments/ffi-precheck/verify.php`처럼 씁니다. 웹 조사가 근거이면 `https://` URL도 적을 수 있습니다(존재 여부는 점검하지 않으므로 조회일을 본문에 적습니다). 최소 한 개이고, 파일은 모두 실제로 존재해야 하며, 실제로 읽은 것만 적습니다.
 - `updated`: 마지막으로 내용을 확인하고 고친 날짜입니다.
-- `generated`(선택): `true`이면 도구가 만드는 페이지입니다. 직접 고치지 않고 길이 제한을 적용하지 않습니다. 지금은 없습니다.
+- `generated`(선택): `true`이면 도구가 만드는 페이지입니다. 직접 고치지 않고 길이 제한을 적용하지 않습니다. 다른 페이지와 같이 index.md에 등재하고 다른 페이지에서 링크합니다. 지금은 [생성기 커버리지 보고서](pages/reference/coverage-report.md) 하나이며 `python tools/gen/generate.py`가 만듭니다.
 
 본문은 `# 제목` 한 개로 시작하고 `##` 절로 나눕니다. 한 페이지는 한 주제에 집중하며 200줄 이내로 유지하고, 넘으면 주제별로 나눕니다. 끝에 `## 관련 페이지` 절을 두어 교차 참조를 나열합니다.
 
@@ -108,7 +108,7 @@ grep -rl "cefloom/experiments/ffi-precheck/verify.php" cefloom/llm-wiki/pages
 
 주기적으로, 그리고 큰 변경 뒤에 점검합니다. 먼저 `python cefloom/llm-wiki/lint.py`로 기계적으로 확인할 수 있는 항목을 점검하고, 나머지는 읽어서 확인합니다.
 
-기계적 점검(`lint.py`): 상대 링크가 실제 파일을 가리키는지(cefloom 밖을 가리키면 오류), 모든 페이지가 index.md에 등재되었는지, frontmatter 항목과 `type`과 폴더의 일치, `sources` 존재 여부, 고아 페이지, 200줄 초과, 엠대시, log.md 항목 형식.
+기계적 점검(`lint.py`): 상대 링크가 실제 파일을 가리키는지(cefloom 밖을 가리키면 오류), 모든 페이지가 index.md에 등재되었는지, frontmatter 항목과 `type`과 폴더의 일치, `sources` 존재 여부, 고아 페이지, 200줄 초과, 엠대시, log.md 항목 형식, log.md 항목의 날짜 순서, index.md가 다른 페이지에 대해 적은 개수(주의 사항의 규칙 수, D와 F와 K의 가장 큰 번호)가 실제 페이지와 같은지.
 
 읽어서 확인하는 항목: 페이지 사이의 모순, 원본이나 환경이 바뀌어 사실과 달라진 서술(특히 "제안"이 "확인된 사실"로 승격되었는지), 자기 페이지가 없는 개념, 빠진 교차 참조, 추가 조사로 채울 빈틈.
 

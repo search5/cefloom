@@ -63,3 +63,4 @@ PHP 확장에서 인자 정보(arginfo)와 클래스 등록 코드를 만드는 
 - [검증 하네스](../components/ffi-precheck-harness.md)
 - [입력 소스 프로젝트](../components/source-projects.md)
 - [로드맵](../reference/roadmap.md)
+- [생성기 커버리지 보고서](../reference/coverage-report.md)

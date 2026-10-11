@@ -44,3 +44,9 @@
 
 - [F15](pages/reference/verified-findings.md)를 추가했습니다. 서브프로세스의 스택 보호 때문에 종료할 때 `stack smashing detected`가 나왔고, `-fno-stack-protector`로 빌드해 없앴습니다.
 - 즉시 반환값이 필요한 콜백의 교착을 풀어 주는 타임아웃을 넣고 F14, [D12](pages/reference/design-decisions.md), [주의 사항](pages/reference/cautions.md) 5번에 반영했습니다. `t_sync_timeout`을 추가했습니다.
+
+## [2026-10-12] lint | 점검 도구 갱신
+
+- `lint.py`에 검사 두 가지를 추가했습니다. index.md가 다른 페이지에 대해 적은 개수(주의 사항의 규칙 수, D와 F와 K의 가장 큰 번호)가 실제 페이지와 같은지, log.md 항목의 날짜가 거꾸로 가지 않는지입니다. 일부러 틀린 값을 넣은 사본에서 다섯 가지 불일치를 모두 잡는 것을 확인했습니다.
+- 생성 페이지 [생성기 커버리지 보고서](pages/reference/coverage-report.md)를 index.md에 등재하고 [바인딩 생성기 계획](pages/concepts/binding-generator-plan.md)에서 링크했습니다. 이 페이지가 등재되지 않아 나던 오류와 고아 경고가 없어졌습니다.
+- [SCHEMA.md](SCHEMA.md)의 `generated` 설명과 점검 항목 목록을 현재 상태에 맞게 고쳤습니다.

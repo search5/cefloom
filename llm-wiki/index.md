@@ -31,6 +31,7 @@
 - [실험으로 확인한 사실](pages/reference/verified-findings.md): 사전 검증 F1부터 F12와 확장 모듈 검증 F13부터 F15, 방법과 결과와 영향
 - [알려진 제약과 미검증 항목](pages/reference/known-constraints.md): K1부터 K23, 확인하지 못한 이유와 확인 방법
 - [용어집](pages/reference/glossary.md): CEF, 외부 메시지 펌프, 참조 카운트, 트램펄린, shim 등
+- [생성기 커버리지 보고서](pages/reference/coverage-report.md): 생성기가 만든 메서드와 만들지 못한 이유, 클래스별 표 (생성 페이지, 직접 고치지 않음)
 
 ## 요약 (summaries)
 
