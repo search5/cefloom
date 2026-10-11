@@ -33,7 +33,9 @@ class Bridge : public CefMessageRouterBrowserSide::Handler {
   bool OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64_t query_id, const CefString& request,
                bool persistent, CefRefPtr<Callback> callback) override {
     std::string text = request.ToString();
-    cl::run_on_php_thread([&]() { handle(text, callback); });
+    if (!cl::run_on_php_thread([&]() { handle(text, callback); })) {
+      callback->Failure(500, "PHP is not available");  // the JavaScript promise must not wait for ever
+    }
     return true;
   }
 
