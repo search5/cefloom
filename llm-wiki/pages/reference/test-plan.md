@@ -15,7 +15,7 @@ updated: 2026-10-12
 
 # 테스트 보강 계획
 
-[테스트 커버리지 분석](../analyses/test-coverage.md)이 찾은 공백을 메우는 계획입니다. 이 페이지는 **제안**이며 아직 실행하지 않았습니다. 규모는 S(반나절 안팎), M(1에서 2일), L(3일 이상)의 대략적 추정이고 실제 소요로 검증한 값이 아닙니다.
+[테스트 커버리지 분석](../analyses/test-coverage.md)이 찾은 공백을 메우는 계획입니다. 이 페이지는 계획이며, 아래 "진행 상황"에 실행한 결과를 적습니다. 규모는 S(반나절 안팎), M(1에서 2일), L(3일 이상)의 대략적 추정이고 실제 소요로 검증한 값이 아닙니다.
 
 ## 원칙
 
@@ -68,6 +68,35 @@ updated: 2026-10-12
 | C9 | 인증서와 SSL | `openssl`로 자체 서명 인증서를 만든 로컬 HTTPS 서버, `onCertificateError`, `SSLInfo`, `SSLStatus`, `X509Certificate`와 `X509CertPrincipal`, 클라이언트 인증서 선택 | `openssl` | M |
 | C10 | 앱과 기타 | `Cef::initialize($settings, $app)`로 `CefApp`과 `BrowserProcessHandler`의 콜백(`onBeforeCommandLineProcessing`, `onContextInitialized` 등), `ResourceBundle`과 핸들러, `ComponentUpdater`, `TaskManager`, 추적(`beginTracing`, `endTracing`), 크래시 보고 | 없음 | S |
 | C11 | Cast 옵저버 | K26이 풀릴 때까지 **예상된 실패 시험**으로 현상(옵저버를 등록하면 `shutdown`이 `SIGTRAP`)을 고정하고, 풀리면 정상 시험으로 바꿈 | 가상 화면 | S |
+
+## 진행 상황 (2026-10-12)
+
+| ID | 상태 | 시험 | 찾아서 고친 결함 또는 기록한 제약 |
+| --- | --- | --- | --- |
+| A2, A3, A4, A5, A6, A7 | 완료 | `t_fixtures`, `t_stub_consistency`, `t_generated_fresh`, `t_docs`, `t_runner`, `t_lint` | 스텁과 확장의 불일치 여럿(생성기 수정), `check-docs.py` |
+| A1 | 측정 대기 | `tools/coverage.sh`, 기준선 파일 | 전체 시험을 모은 뒤 한 번 측정 |
+| B1 | 완료 | `t_resources` | |
+| B2 | 완료 | `t_requests`, `t_redirect_change`(기대 실패) | 로그인 창 때문에 `getAuthCredentials`가 불리지 않던 것, 선택적 버퍼가 무효한 `Buffer`로 오던 것, [K30](known-constraints.md) |
+| B3, B4 | 완료 | `t_core`, `t_exceptions` | 시작 전 `createBrowser`와 종료 뒤 `initialize` 충돌 |
+| B5 | 완료 | `t_runtime` | 시간 인자 변환, `getClient()`가 `null`이던 것, 종료 때 힙 손상 |
+| B6 | 완료 | `t_runtime_tool` | |
+| B7 | 완료 | `t_bridge_more` | |
+| B8 | 완료 | `t_package` | |
+| B9 | 완료 | `tests/gen/test_generator.py`(`t_generator`) | |
+| B10 | 완료 | `t_build` | |
+| C1 | 완료 | `t_mapping` | |
+| C2 | 완료 | `t_lib_pure` | 파일 함수와 `WaitableEvent` 대기가 UI 스레드에서 거부됨([K31](known-constraints.md), [K32](known-constraints.md)) |
+| C3 | 완료 | `t_urlrequest`, `t_cookies`, `t_context`, `t_download`, `t_server` | 널 콜백에서 CEF가 죽던 것([K33](known-constraints.md)), [K34](known-constraints.md), [K35](known-constraints.md) |
+| C4 | 완료 | `t_dialogs`, `t_input` | |
+| C5 | 완료 | `t_browser_host` | [K36](known-constraints.md) |
+| C6 | 완료 | `t_osr` | K14 해결, [K37](known-constraints.md)(오디오) |
+| C7 | 완료 | `t_views_more` | 창 관리자가 없어 `maximize()`는 시험 못함 |
+| C8 | 완료 | `t_print` | [K39](known-constraints.md)(`print()`는 `PrintHandler`를 부르지 않음) |
+| C9 | 완료 | `t_ssl` | |
+| C10 | 완료 | `t_app_misc` | [K38](known-constraints.md) |
+| C11 | 완료 | `t_cast_observer`(기대 실패) | K26 |
+
+시험 제외 목록(D)에 더해 환경 때문에 시험하지 못한 것: 창 관리자가 필요한 최대화와 최소화, 소리 장치가 필요한 `AudioHandler`, 진짜 프린터와 인쇄 미리보기, 실제 Cast 기기, 클라이언트 인증서 선택(목록이 비어 있는 경우만 시험).
 
 ## D. 현재 환경에서 시험할 수 없는 것
 

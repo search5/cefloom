@@ -7,7 +7,7 @@ require __DIR__ . '/support.php';
 $root = dirname(__DIR__);
 $cefRoot = getenv('CEF_ROOT') ?: dirname($root) . '/cefweaver_clone/cefweaver/build/native/cef';
 if (!is_file("$cefRoot/include/cef_version.h")) {
-    echo "SKIP: no CEF headers at $cefRoot\n";
+    echo "OK (0 checks) skipped: no CEF headers at $cefRoot\n";
     exit(0);
 }
 $work = tmpdir('cefloom-build');

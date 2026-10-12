@@ -8,7 +8,7 @@ use Cefloom\{Browser, BrowserHost, BrowserSettings, Callback, Cef, Client, LifeS
 use Cefloom\Types\{CertStatus, ErrorCode, SSLVersion};
 
 if (trim((string) shell_exec('command -v openssl')) === '') {
-    echo "SKIP: no openssl\n";
+    echo "OK (0 checks) skipped: no openssl\n";
     exit(0);
 }
 

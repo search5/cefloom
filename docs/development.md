@@ -38,6 +38,24 @@ Each test is a PHP script that runs in its own process (CEF starts once per proc
 
 `tests/t_examples.php` runs the programs in `examples/`.
 
+### What the tests cover
+
+| Group | Tests |
+| --- | --- |
+| The extension itself | `t_core` (start and stop), `t_exceptions` (exceptions in handlers), `t_runtime` (time values, maps, `Buffer`, object identity, lifetime), `t_mapping` (one method per kind of argument and result, and the errors for wrong types), `t_sync_timeout`, `t_no_runtime` |
+| Generated code | `t_stub_consistency` (the stub against Reflection), `t_generated_fresh` (the generated files are current), `t_generator` (unit tests of `tools/gen`, `tests/gen/test_generator.py`) |
+| Tools and scripts | `t_runtime_tool` (`bin/cefloom-runtime`), `t_package` (`tools/package.sh`), `t_build` (`tools/build.sh`, with fake compilers), `t_runner`, `t_lint`, `t_docs` (the links and the PHP examples of `docs/`) |
+| Pure library classes | `t_values`, `t_lib_values`, `t_structs`, `t_lib_pure` (encoding, URLs, files, ZIP, XML, streams, command line, images, post data, events, threads) |
+| Network | `t_requests` and `t_resources` (the callbacks of a request, resource and scheme handlers), `t_urlrequest`, `t_cookies`, `t_context` (request contexts and preferences), `t_download`, `t_server`, `t_ssl` |
+| Browser and handlers | `t_browser_*`, `t_browser_host` (zoom, find, DevTools, history, popups), `t_handlers`, `t_dialogs`, `t_input` (keyboard, focus, context menu), `t_osr` (off-screen rendering with pixel checks), `t_app_misc`, `t_bridge`, `t_bridge_more`, `t_thread_tasks` |
+| Views, printing, Cast | `t_views`, `t_views_input`, `t_views_more`, `t_print`, `t_pdf`, `t_cast` |
+
+The network tests talk to a local HTTP server (`tests/fixtures/server.php`, started by `start_http_server()` on a free port) and, for TLS, to a PHP child process with a certificate that `openssl` makes (`start_https_server()`). Nothing leaves the machine. Tests that need `xdotool` or `openssl` skip themselves without it.
+
+A test that documents a known problem starts with a line `// xfail: reason`. The runner counts it as passed while it fails, and fails it when it passes ("unexpectedly passed"), which is the sign to turn it into an ordinary test and to update `llm-wiki/pages/reference/known-constraints.md`.
+
+Writing a test: `require __DIR__ . '/support.php';`, call `start_cef()` once, use `check()` and `same()`, wait for CEF with `wait_until()` or `pump()` instead of sleeping, and end with `Cef::shutdown(); finish();`. Run a new test ten times and in both loop modes before it is committed: a test that fails one time in ten costs more than it finds.
+
 ### Coverage
 
 ```sh

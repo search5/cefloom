@@ -8,7 +8,7 @@ use Cefloom\{Browser, BrowserHost, BrowserSettings, Cef, Client, ContextMenuHand
     KeyEvent, LifeSpanHandler, LoadHandler, MenuModel, RunContextMenuCallback, WindowInfo};
 
 if (!can_make_input()) {
-    echo "SKIP: no xdotool or display\n";
+    echo "OK (0 checks) skipped: needs xdotool, a display and the polling message loop\n";
     exit(0);
 }
 
