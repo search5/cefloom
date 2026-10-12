@@ -88,14 +88,22 @@ zend_object* lib_create(zend_class_entry* ce) {
 
 size_t release_all_lib_objects() {
   size_t count = 0;
-  for (LibObject* obj : live_objects()) {
+  // Releasing a CEF object can free the last PHP object that a proxy held, and with it more library objects, which
+  // erase themselves from the set: go through a copy, and skip what has gone meanwhile.
+  std::vector<LibObject*> snapshot(live_objects().begin(), live_objects().end());
+  for (LibObject* obj : snapshot) {
+    if (live_objects().count(obj) == 0) {
+      continue;
+    }
     if (obj->ptr) {
-      obj->ptr->Release();
+      // Forget the pointer first: the release can free |obj| itself (a proxy that goes frees the PHP objects it held)
+      CefBaseRefCounted* ptr = obj->ptr;
       obj->ptr = nullptr;
       for (void*& up : obj->up) {
         up = nullptr;
       }
       ++count;
+      ptr->Release();
     }
   }
   return count;
@@ -154,6 +162,25 @@ int64_t time_from(zval* zv) {
   }
   double seconds = zval_get_double(zv);
   return static_cast<int64_t>(seconds * 1000000.0) + kEpochDelta;
+}
+
+bool time_normalize(zval* src, zval* dst) {
+  ZVAL_DEREF(src);
+  if (Z_TYPE_P(src) == IS_OBJECT) {
+    static zend_class_entry* interface_ce = nullptr;
+    if (!interface_ce) {
+      zend_string* name = zend_string_init("DateTimeInterface", sizeof("DateTimeInterface") - 1, false);
+      interface_ce = zend_lookup_class(name);
+      zend_string_release(name);
+    }
+    if (!interface_ce || !instanceof_function(Z_OBJCE_P(src), interface_ce)) {
+      return false;
+    }
+  } else if (Z_TYPE_P(src) != IS_LONG && Z_TYPE_P(src) != IS_DOUBLE) {
+    return false;
+  }
+  ret_time(dst, time_from(src));
+  return true;
 }
 
 // ---- string maps -----------------------------------------------------------------------------------
@@ -422,6 +449,19 @@ zend_object* ProxyBase::find(const CefBaseRefCounted* object) {
   std::lock_guard<std::mutex> lock(g_proxy_mutex);
   auto found = proxy_registry().find(object);
   return found == proxy_registry().end() ? nullptr : found->second;
+}
+
+void ProxyBase::alias(const CefBaseRefCounted* wrapper, const CefBaseRefCounted* proxy) {
+  std::lock_guard<std::mutex> lock(g_proxy_mutex);
+  auto found = proxy_registry().find(proxy);
+  if (found != proxy_registry().end()) {
+    proxy_registry()[wrapper] = found->second;
+  }
+}
+
+void ProxyBase::unalias(const CefBaseRefCounted* wrapper) {
+  std::lock_guard<std::mutex> lock(g_proxy_mutex);
+  proxy_registry().erase(wrapper);
 }
 
 zend_function* find_override(zend_class_entry* ce, zend_class_entry* base, const char* lower_name) {

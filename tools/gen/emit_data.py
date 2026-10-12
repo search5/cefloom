@@ -144,7 +144,12 @@ class DataEmitter:
             if kind == "string":
                 L.append("  ZVAL_STR_COPY(p, v%d);" % i)
             elif kind == "time":
-                L.append("  if (v%d && Z_TYPE_P(v%d) != IS_NULL) { ZVAL_COPY(p, v%d); } else { ZVAL_NULL(p); }" % (i, i, i))
+                # a DateTimeInterface, an int or a float becomes the DateTimeImmutable the property is typed as
+                L.append("  ZVAL_NULL(p);")
+                L.append("  if (v%d && Z_TYPE_P(v%d) != IS_NULL && !cl::time_normalize(v%d, p)) {" % (i, i, i))
+                L.append("    zend_argument_type_error(%d, \"must be of type DateTimeInterface|int|float|null, %%s given\", zend_zval_type_name(v%d));" % (i + 1, i))
+                L.append("    RETURN_THROWS();")
+                L.append("  }")
             elif kind == "struct":
                 L.append("  if (v%d) { ZVAL_OBJ_COPY(p, v%d); } else { cl_default_%s(p); }" % (
                     i, i, self.model.structs[f.struct].cname))

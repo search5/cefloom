@@ -55,6 +55,7 @@ updated: 2026-10-12
 | K27 | 인쇄 대화상자(`PrintHandler`), 실제 Cast 기기, 데스크톱 환경의 창 관리자와 Wayland에서의 Views | 창과 PDF 출력과 라우터 호출과 입력(가상 화면)만 시험함([F18](verified-findings.md), [F19](verified-findings.md)) | 데스크톱 환경의 화면에서 입력을 보내 보고, 인쇄 핸들러를 구현해 `print()`를 호출 |
 | K28 | 저장소의 라이선스 | 라이선스 파일이 없음(공개 저장소이므로 기본적으로 사용 권리가 없음). 소유자가 아직 정하지 않았고, K18과 K25에 따라 선택이 달라질 수 있음 | 소유자가 선택하고, 포함한 제3자 코드(`tools/gen/vendor/`), `cefweaver` 재사용분(K18), CEF 재배포 고지(K25)를 확인해 `LICENSE`를 추가 |
 | K29 | 테스트가 없는 구현 | 전체 메서드의 79.3%가 어떤 테스트에서도 실행되지 않고, 손으로 쓴 `async.cc`는 줄 커버리지 57.8%, 런타임 설치 도구와 패키징과 생성기에는 자동 시험이 없음([테스트 커버리지 분석](../analyses/test-coverage.md)) | [테스트 보강 계획](test-plan.md)의 A에서 D를 실행하고 `tools/coverage.sh`로 측정 |
+| K30 | `onResourceRedirect`가 돌려준 URL이 적용되지 않음 | 핸들러는 올바른 인자로 불리고 새 URL을 돌려주지만, 로드는 서버가 알려 준 원래 URL에서 끝납니다. CEF 래퍼의 cpptoc 함수(`resource_request_handler_cpptoc.cc`)가 `new_url`을 복사본으로 받고 되돌려 쓰지 않는 것이 유력한 원인입니다. `tests/t_redirect_change.php`가 기대 실패(xfail)로 기록하며, 고쳐지면 시험이 알려 줍니다. 우회: `onBeforeResourceLoad`에서 `Request::setURL()`로 바꿉니다(시험으로 확인). |
 
 ## 문서와 소스의 불일치
 

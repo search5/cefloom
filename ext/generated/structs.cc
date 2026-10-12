@@ -2197,16 +2197,28 @@ ZEND_METHOD(CefCookie, __construct) {
   ZVAL_LONG(p, v5);
   p = OBJ_PROP_NUM(o, 6);
   zval_ptr_dtor(p);
-  if (v6 && Z_TYPE_P(v6) != IS_NULL) { ZVAL_COPY(p, v6); } else { ZVAL_NULL(p); }
+  ZVAL_NULL(p);
+  if (v6 && Z_TYPE_P(v6) != IS_NULL && !cl::time_normalize(v6, p)) {
+    zend_argument_type_error(7, "must be of type DateTimeInterface|int|float|null, %s given", zend_zval_type_name(v6));
+    RETURN_THROWS();
+  }
   p = OBJ_PROP_NUM(o, 7);
   zval_ptr_dtor(p);
-  if (v7 && Z_TYPE_P(v7) != IS_NULL) { ZVAL_COPY(p, v7); } else { ZVAL_NULL(p); }
+  ZVAL_NULL(p);
+  if (v7 && Z_TYPE_P(v7) != IS_NULL && !cl::time_normalize(v7, p)) {
+    zend_argument_type_error(8, "must be of type DateTimeInterface|int|float|null, %s given", zend_zval_type_name(v7));
+    RETURN_THROWS();
+  }
   p = OBJ_PROP_NUM(o, 8);
   zval_ptr_dtor(p);
   ZVAL_LONG(p, v8);
   p = OBJ_PROP_NUM(o, 9);
   zval_ptr_dtor(p);
-  if (v9 && Z_TYPE_P(v9) != IS_NULL) { ZVAL_COPY(p, v9); } else { ZVAL_NULL(p); }
+  ZVAL_NULL(p);
+  if (v9 && Z_TYPE_P(v9) != IS_NULL && !cl::time_normalize(v9, p)) {
+    zend_argument_type_error(10, "must be of type DateTimeInterface|int|float|null, %s given", zend_zval_type_name(v9));
+    RETURN_THROWS();
+  }
   p = OBJ_PROP_NUM(o, 10);
   zval_ptr_dtor(p);
   ZVAL_LONG(p, v10);

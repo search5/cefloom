@@ -108,3 +108,8 @@
 ## [2026-10-12] ingest | 테스트 공백 측정과 보강 계획
 
 - 커버리지 빌드(`CEFLOOM_COVERAGE=1`)와 `tools/coverage.sh`, `tools/coverage_report.py`를 만들어 전체 테스트가 실행하는 메서드를 측정하고, 결과를 [테스트 커버리지 분석](pages/analyses/test-coverage.md)에, 이를 바탕으로 한 계획을 [테스트 보강 계획](pages/reference/test-plan.md)에 기록했습니다. 미시험 구현은 [K29](pages/reference/known-constraints.md)로, 로드맵에는 항목을 추가했습니다.
+
+## [2026-10-12] ingest | B2와 B5 시험, 시험이 찾은 결함 다섯 가지
+
+- `t_requests`(요청 콜백 21항목), `t_redirect_change`(기대 실패, [K30](pages/reference/known-constraints.md)), `t_runtime`(시간, 문자열 맵, Buffer, 객체 대응, 반복 생성과 종료 29항목)을 추가했습니다.
+- 시험이 찾아 고친 결함: (1) Chrome 런타임의 자체 로그인 창 때문에 `getAuthCredentials`가 호출되지 않던 것(`disable-chrome-login-prompt`를 기본으로 설정), (2) 선택적 버퍼 인자(`ResponseFilter::filter`의 `dataIn`)가 무효한 Buffer로 오던 것(이제 `null`, 스텁은 `?Buffer`), (3) 구조체 생성자의 시간 인자가 변환되지 않던 것(`DateTimeImmutable`로 정규화하고 잘못된 타입은 `TypeError`), (4) `BrowserHost::getClient()`가 `null`이던 것(CEF가 들고 있는 `NativeClient`를 사용자 클라이언트에 대응), (5) 종료 때 라이브러리 객체를 해제하다 자기 자신이 해제되어 힙이 손상되던 것(`release_all_lib_objects`).

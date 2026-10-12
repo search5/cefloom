@@ -130,6 +130,10 @@ inline void set_str(cef_string_t* field, zval* zv) {
 // CefBaseTime is microseconds since 1601-01-01; PHP gets a DateTimeImmutable (null for 0).
 void ret_time(zval* rv, int64_t microseconds_1601);
 int64_t time_from(zval* zv);  // DateTimeInterface, int or float seconds since the Unix epoch; null is 0
+// Store a time that a script gave (DateTimeInterface, int or float seconds since the Unix epoch) into a property
+// typed ?DateTimeImmutable: as a DateTimeImmutable. Returns false, and stores nothing, for any other type (null is the
+// caller's to handle).
+bool time_normalize(zval* src, zval* dst);
 
 // ---- value helpers ---------------------------------------------------------------------------------
 
@@ -180,6 +184,12 @@ class ProxyBase {
 
   // The PHP object of a proxy that CEF gave back (null if |object| is not one of ours).
   static zend_object* find(const CefBaseRefCounted* object);
+
+  // |wrapper| (a C++ object that CEF holds in place of a proxy and that keeps the proxy alive) answers find() with the
+  // PHP object of |proxy|; unalias() when the wrapper goes. This is how BrowserHost::getClient() gives back the client
+  // that createBrowser() got, although CEF holds the client of the extension around it.
+  static void alias(const CefBaseRefCounted* wrapper, const CefBaseRefCounted* proxy);
+  static void unalias(const CefBaseRefCounted* wrapper);
 
  protected:
   void register_as(const CefBaseRefCounted* self);

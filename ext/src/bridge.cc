@@ -119,7 +119,11 @@ std::unique_ptr<Bridge> g_bridge;  // the router keeps a plain pointer: the hand
 
 class NativeClient : public Fwd_CefClient, public Fwd_CefLifeSpanHandler, public Fwd_CefRequestHandler {
  public:
-  explicit NativeClient(CefRefPtr<CefClient> user) { Fwd_CefClient::forward_ = user; }
+  explicit NativeClient(CefRefPtr<CefClient> user) {
+    Fwd_CefClient::forward_ = user;
+    cl::ProxyBase::alias(static_cast<CefClient*>(this), user.get());
+  }
+  ~NativeClient() override { cl::ProxyBase::unalias(static_cast<CefClient*>(this)); }
 
   // Fwd_CefClient: the three handlers this class takes part in
   CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override {
