@@ -162,3 +162,7 @@
 ## [2026-10-12] ingest | 두 번째 커버리지 보강
 
 - `t_lib_more`(37), `t_views_widgets`(53), `t_host_more`(18)를 추가해 전체 메서드 실행 비율이 65.8%에서 84.0%가 되었습니다(요청한 상한 70%를 넘겨 여기서 멈춤). 외부 펌프 모드에서 붙여넣기 계열 명령 뒤에 IME와 드래그 입력이 멈추는 것을 [K41](pages/reference/known-constraints.md)에 적었습니다. 새 시험의 검증은 사용자의 요청대로 수정 뒤 3회 통과로 했습니다.
+
+## [2026-10-12] ingest | Views 보강
+
+- `t_views_rest`(26)를 추가해 Views를 79%에서 89%로, 전체를 84.0%에서 87.1%로 올렸습니다. 팝업 델리게이트는 [K42](pages/reference/known-constraints.md)에 적었습니다.
