@@ -213,3 +213,6 @@
 
 ## [2026-10-13] ingest | GitHub Pages 배포 완료
 사용자 요청으로 푸시하고 Pages(Source: GitHub Actions)를 켰다. 첫 실행이 성공했고 https://search5.github.io/cefloom/ 이 200으로 응답한다. 같은 방식으로 cefweaver도 배포했다.
+
+## [2026-10-13] ingest | 워크플로를 수동 실행으로, 액션을 Node 24로
+사용자 요청으로 docs 워크플로의 푸시 트리거를 없애고 `workflow_dispatch`만 남겼다. 액션을 Node 24 기반 최신 메이저로 올렸다. [문서 사이트](pages/procedures/docs-site.md) 갱신.

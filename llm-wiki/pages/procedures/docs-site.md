@@ -68,7 +68,7 @@ updated: 2026-10-13
 
 ## GitHub Pages 배포
 
-`.github/workflows/docs.yml`이 `main`에 푸시될 때(`docs/`, 스텁, `tools/docs`, `tools/gen`, 워크플로 자신이 바뀐 경우)와 수동 실행으로 `make -C docs site`를 돌려 `docs/_build/html`을 Pages에 올립니다. `site` 대상은 영어와 한국어를 빌드하고 시작 페이지(`index.html`, `en/`으로 이동)를 씁니다. 사이트에 CEF 런타임이 필요하지 않아서(API 쪽은 스텁에서 생성) 일반 러너에서 빌드됩니다.
+`.github/workflows/docs.yml`은 **수동으로 실행할 때만** 돕니다(Actions 탭의 docs, Run workflow. 푸시로는 돌지 않습니다). 실행하면 `make -C docs site`를 돌려 `docs/_build/html`을 Pages에 올립니다. 사용하는 액션은 모두 Node 24 기반의 최신 메이저입니다(2026-10-13에 `action.yml`의 `runs.using`으로 확인: checkout v7, setup-python v7, configure-pages v6, deploy-pages v5. upload-pages-artifact v5는 composite이며 upload-artifact v7을 부릅니다). `site` 대상은 영어와 한국어를 빌드하고 시작 페이지(`index.html`, `en/`으로 이동)를 씁니다. 사이트에 CEF 런타임이 필요하지 않아서(API 쪽은 스텁에서 생성) 일반 러너에서 빌드됩니다.
 
 - 확인한 것: `make -C docs site`가 이 컴퓨터에서 성공하고 워크플로의 YAML이 구문상 맞습니다.
 - 첫 실행(2026-10-13): 빌드 58초, 배포 10초로 성공했습니다. https://search5.github.io/cefloom/ 의 주요 주소(`en/`, `ko/`, `en/limitations.html`, `ko/wayland-gpu.html`, `en/api/gen-cef.html`)가 200으로 응답합니다.
