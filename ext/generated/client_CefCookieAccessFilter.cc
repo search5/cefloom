@@ -5,8 +5,8 @@
 zend_class_entry* ce_CefCookieAccessFilter = nullptr;
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefCookieAccessFilter_CanSendCookie, 0, 4, _IS_BOOL, 0)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_ARG_OBJ_INFO(0, cookie, Cefloom\\Cookie, 0)
 ZEND_END_ARG_INFO()
@@ -15,8 +15,8 @@ ZEND_METHOD(CefCookieAccessFilter, CanSendCookie) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefCookieAccessFilter_CanSaveCookie, 0, 5, _IS_BOOL, 0)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_ARG_OBJ_INFO(0, response, Cefloom\\Response, 0)
 ZEND_ARG_OBJ_INFO(0, cookie, Cefloom\\Cookie, 0)

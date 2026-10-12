@@ -7,7 +7,7 @@ zend_class_entry* ce_CefDownloadImageCallback = nullptr;
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefDownloadImageCallback_OnDownloadImageFinished, 0, 3, IS_VOID, 0)
 ZEND_ARG_TYPE_INFO(0, imageUrl, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, httpStatusCode, IS_LONG, 0)
-ZEND_ARG_OBJ_INFO(0, image, Cefloom\\Image, 0)
+ZEND_ARG_OBJ_INFO(0, image, Cefloom\\Image, 1)
 ZEND_END_ARG_INFO()
 
 static const zend_function_entry methods_CefDownloadImageCallback[] = {

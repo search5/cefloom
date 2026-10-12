@@ -35,8 +35,8 @@ ZEND_METHOD(CefFrameHandler, OnFrameDetached) {
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefFrameHandler_OnMainFrameChanged, 0, 3, IS_VOID, 0)
 ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, oldFrame, Cefloom\\Frame, 0)
-ZEND_ARG_OBJ_INFO(0, newFrame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, oldFrame, Cefloom\\Frame, 1)
+ZEND_ARG_OBJ_INFO(0, newFrame, Cefloom\\Frame, 1)
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefFrameHandler, OnMainFrameChanged) {
 }

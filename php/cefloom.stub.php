@@ -77,7 +77,7 @@ namespace Cefloom {
         public ?\DateTimeImmutable $expires;
         public int $sameSite;
         public int $priority;
-        public function __construct(string $name = "", string $value = "", string $domain = "", string $path = "", int $secure = 0, int $httponly = 0, ?\DateTimeImmutable $creation = null, ?\DateTimeImmutable $lastAccess = null, int $hasExpires = 0, ?\DateTimeImmutable $expires = null, int $sameSite = 0, int $priority = 0) {}
+        public function __construct(string $name = "", string $value = "", string $domain = "", string $path = "", int $secure = 0, int $httponly = 0, \DateTimeInterface|int|float|null $creation = null, \DateTimeInterface|int|float|null $lastAccess = null, int $hasExpires = 0, \DateTimeInterface|int|float|null $expires = null, int $sameSite = 0, int $priority = 0) {}
     }
 
     final class DraggableRegion {
@@ -403,7 +403,7 @@ namespace Cefloom {
         public function printToPDF(string $path, \Cefloom\PdfPrintSettings $settings, ?\Cefloom\PdfPrintCallback $callback): void {}
         public function find(string $searchText, bool $forward, bool $matchCase, bool $findNext): void {}
         public function stopFinding(bool $clearSelection): void {}
-        public function showDevTools(\Cefloom\WindowInfo $windowInfo, ?\Cefloom\Client $client, \Cefloom\BrowserSettings $settings, \Cefloom\Point $inspectElementAt): void {}
+        public function showDevTools(?\Cefloom\WindowInfo $windowInfo, ?\Cefloom\Client $client, ?\Cefloom\BrowserSettings $settings, ?\Cefloom\Point $inspectElementAt): void {}
         public function closeDevTools(): void {}
         public function hasDevTools(): bool {}
         public function sendDevToolsMessage(string $message): bool {}
@@ -1621,7 +1621,7 @@ namespace Cefloom {
 
     final class StreamReader {
         private function __construct() {}
-        public function read(int $n, int $size = 1): string {}
+        public function read(int $n, int $size): string {}
         public function seek(int $offset, int $whence): int {}
         public function tell(): int {}
         public function eof(): int {}
@@ -1633,7 +1633,7 @@ namespace Cefloom {
 
     final class StreamWriter {
         private function __construct() {}
-        public function write(string $data, int $size = 1): int {}
+        public function write(string $data, int $size): int {}
         public function seek(int $offset, int $whence): int {}
         public function tell(): int {}
         public function flush(): int {}

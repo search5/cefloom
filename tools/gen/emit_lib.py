@@ -55,7 +55,7 @@ def build(names, scope, plan):
         if isinstance(k, Bytes):
             if p.out:
                 # PHP passes the size, gets the bytes
-                inp = Input(p.name, Prim("zend_long", "int"))
+                inp = Input("size", Prim("zend_long", "int"))
                 inp.decl = ["zend_long %s = 0;" % a]
                 inp.zpp = "Z_PARAM_LONG(%s)" % a
                 inp.conv = ["if (%s < 0) { zend_argument_value_error(%d, \"must not be negative\"); RETURN_THROWS(); }"

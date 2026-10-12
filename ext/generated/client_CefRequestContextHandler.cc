@@ -11,8 +11,8 @@ ZEND_METHOD(CefRequestContextHandler, OnRequestContextInitialized) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefRequestContextHandler_GetResourceRequestHandler, 0, 6, IS_ARRAY, 0)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_ARG_TYPE_INFO(0, isNavigation, _IS_BOOL, 0)
 ZEND_ARG_TYPE_INFO(0, isDownload, _IS_BOOL, 0)

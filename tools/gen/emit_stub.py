@@ -72,14 +72,18 @@ def signature(plan, client=False):
             continue
         if isinstance(p.kind, ItemBytes):
             if p.out:
-                ins += ["int $n", "int $size = 1"]
+                ins += ["int $n", "int $size"]
                 bytes_out = True
             else:
-                ins += ["string $data", "int $size = 1"]
+                ins += ["string $data", "int $size"]
             continue
         if p.out and not p.inout:
             continue
-        ins.append("%s $%s" % (php_type(p.kind, getattr(p, "optional", False)), p.name))
+        type_text = php_type(p.kind, getattr(p, "optional", False))
+        if not client and isinstance(p.kind, Struct) and getattr(p, "optional", False):
+            type_text = "?" + type_text      # a struct that a library method takes by pointer may be passed as null
+                                             # (a handler gets structs by reference: never null)
+        ins.append("%s $%s" % (type_text, p.name))
     if bytes_out:
         ret = "string"
     else:
@@ -123,7 +127,7 @@ def emit(model, scope, listings, version, banner):
             if f.string:
                 args.append('string $%s = ""' % f.name)
             elif f.time:
-                args.append("?\\DateTimeImmutable $%s = null" % f.name)
+                args.append("\\DateTimeInterface|int|float|null $%s = null" % f.name)
             elif f.struct:
                 args.append("?\\%s\\%s $%s = null" % (NS, py_class_name(f.struct), f.name))
             elif f.py == "bool":

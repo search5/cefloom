@@ -5,8 +5,8 @@
 zend_class_entry* ce_CefSchemeHandlerFactory = nullptr;
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_OBJ_INFO_EX(arginfo_CefSchemeHandlerFactory_Create, 0, 4, Cefloom\\ResourceHandler, 1)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_TYPE_INFO(0, schemeName, IS_STRING, 0)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_END_ARG_INFO()

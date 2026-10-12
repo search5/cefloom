@@ -5,8 +5,8 @@
 zend_class_entry* ce_CefResourceRequestHandler = nullptr;
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_OBJ_INFO_EX(arginfo_CefResourceRequestHandler_GetCookieAccessFilter, 0, 3, Cefloom\\CookieAccessFilter, 1)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefResourceRequestHandler, GetCookieAccessFilter) {
@@ -14,8 +14,8 @@ ZEND_METHOD(CefResourceRequestHandler, GetCookieAccessFilter) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefResourceRequestHandler_OnBeforeResourceLoad, 0, 4, IS_LONG, 0)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_ARG_OBJ_INFO(0, callback, Cefloom\\Callback, 0)
 ZEND_END_ARG_INFO()
@@ -24,8 +24,8 @@ ZEND_METHOD(CefResourceRequestHandler, OnBeforeResourceLoad) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_OBJ_INFO_EX(arginfo_CefResourceRequestHandler_GetResourceHandler, 0, 3, Cefloom\\ResourceHandler, 1)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefResourceRequestHandler, GetResourceHandler) {
@@ -33,8 +33,8 @@ ZEND_METHOD(CefResourceRequestHandler, GetResourceHandler) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefResourceRequestHandler_OnResourceRedirect, 0, 5, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_ARG_OBJ_INFO(0, response, Cefloom\\Response, 0)
 ZEND_ARG_TYPE_INFO(0, newUrl, IS_STRING, 0)
@@ -44,8 +44,8 @@ ZEND_METHOD(CefResourceRequestHandler, OnResourceRedirect) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefResourceRequestHandler_OnResourceResponse, 0, 4, _IS_BOOL, 0)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_ARG_OBJ_INFO(0, response, Cefloom\\Response, 0)
 ZEND_END_ARG_INFO()
@@ -54,8 +54,8 @@ ZEND_METHOD(CefResourceRequestHandler, OnResourceResponse) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_OBJ_INFO_EX(arginfo_CefResourceRequestHandler_GetResourceResponseFilter, 0, 4, Cefloom\\ResponseFilter, 1)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_ARG_OBJ_INFO(0, response, Cefloom\\Response, 0)
 ZEND_END_ARG_INFO()
@@ -64,8 +64,8 @@ ZEND_METHOD(CefResourceRequestHandler, GetResourceResponseFilter) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefResourceRequestHandler_OnResourceLoadComplete, 0, 6, IS_VOID, 0)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_ARG_OBJ_INFO(0, response, Cefloom\\Response, 0)
 ZEND_ARG_TYPE_INFO(0, status, IS_LONG, 0)
@@ -75,8 +75,8 @@ ZEND_METHOD(CefResourceRequestHandler, OnResourceLoadComplete) {
 }
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefResourceRequestHandler_OnProtocolExecution, 0, 3, _IS_BOOL, 0)
-ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
-ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 0)
+ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 1)
+ZEND_ARG_OBJ_INFO(0, frame, Cefloom\\Frame, 1)
 ZEND_ARG_OBJ_INFO(0, request, Cefloom\\Request, 0)
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefResourceRequestHandler, OnProtocolExecution) {

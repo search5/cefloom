@@ -91,7 +91,9 @@ class ClientEmitter:
         results = [(n, k) for n, k in plan.results]
         lines = [begin_arginfo(var, len(ins), results, True)]
         for p in ins:
-            lines.append(arg_entry(p.name, p.kind, False if isinstance(p.kind, (LibRef, ClientRef)) else None)
+            # the header's optional_param (a browser or frame that CEF may pass as NULL) is the one source of nullability
+            # for the stub and for the arginfo: a handler typed non-null would get a TypeError when CEF passes NULL
+            lines.append(arg_entry(p.name, p.kind, bool(getattr(p, "optional", False)) if isinstance(p.kind, (LibRef, ClientRef)) else None)
                          if not isinstance(p.kind, ClientRef) else
                          "ZEND_ARG_OBJ_INFO(0, %s, %s, 1)" % (p.name, php_fqn_c(p.kind.cls)))
         lines.append("ZEND_END_ARG_INFO()")

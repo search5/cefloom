@@ -77,7 +77,7 @@ ZEND_METHOD(CefBinaryValue, GetSize) {
 }
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_CefBinaryValue_GetData, 0, 2, IS_STRING, 0)
-ZEND_ARG_TYPE_INFO(0, buffer, IS_LONG, 0)
+ZEND_ARG_TYPE_INFO(0, size, IS_LONG, 0)
 ZEND_ARG_TYPE_INFO(0, dataOffset, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefBinaryValue, GetData) {
