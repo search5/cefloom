@@ -54,7 +54,7 @@ writes, with a `.sha256` next to each:
 
 To publish (not done yet):
 
-1. Put the repository on GitHub and choose the package name in `composer.json` (`name`) and a licence.
+1. The repository is on GitHub (`search5/cefloom`) and `composer.json` names the package `search5/cefloom`. Choose a licence and add it (there is none yet).
 2. Tag the version (`git tag <version>`; keep the tag and `CEFLOOM_VERSION` equal, and use a tag without a leading `v`: whether PIE strips it when it builds the asset name was not checked) and create a GitHub release with both files and their checksums as assets. PIE finds the prebuilt binary among the assets of the release **by tag name**.
 3. Submit the repository to [Packagist](https://packagist.org). Then `pie install <name>` works.
 4. Build the files for each PHP version you support (8.5 so far), on the platform each is for.

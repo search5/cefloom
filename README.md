@@ -35,7 +35,7 @@ Three parts, because they travel differently:
 1. **The extension** (`cefloom.so`, 4 MB) is installed with [PIE](https://github.com/php/pie), the PHP extension installer:
 
    ```sh
-   pie install cefloom/cefloom
+   pie install search5/cefloom
    ```
 
    PIE downloads the prebuilt `php_cefloom-<version>_php<X.Y>-<arch>-linux-glibc-nts.zip` that is attached to the release. The extension loads without the CEF runtime and costs a PHP process that does not use CEF almost nothing (about 4 MB more memory).

@@ -1,5 +1,5 @@
 {
-    "name": "cefloom/cefloom",
+    "name": "search5/cefloom",
     "description": "Chromium Embedded Framework for PHP: windows and web pages controlled from PHP, with a JavaScript bridge",
     "type": "php-ext",
     "keywords": ["cef", "chromium", "browser", "desktop", "gui"],

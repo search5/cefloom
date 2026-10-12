@@ -96,3 +96,7 @@
 ## [2026-10-12] ingest | 저장소 게시
 
 - 저장소를 `https://github.com/search5/cefloom`(공개, 기본 브랜치 `main`)으로 게시하고 지금까지의 커밋을 푸시했습니다. 게시 전에 비밀 정보, 개인 경로, 큰 파일을 점검했습니다(비밀 정보 없음, 추적 파일 248개 2.9MB). [패키징과 릴리스 절차](pages/procedures/package-and-release.md)를 갱신했습니다. 릴리스, Packagist 등록, 라이선스는 아직입니다.
+
+## [2026-10-12] ingest | 패키지 이름을 search5/cefloom으로
+
+- `composer.json`의 패키지 이름을 임시 값 `cefloom/cefloom`에서 `search5/cefloom`으로 바꾸고, `README.md`와 `docs/`의 `pie install`과 `pie uninstall` 명령, 런타임 내려받기 주소, 상태 안내를 맞추었습니다. PIE가 새 이름을 인식하는 것을 다시 확인했습니다([F17](pages/reference/verified-findings.md)).

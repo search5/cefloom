@@ -8,7 +8,7 @@ cefloom comes in three parts that are installed separately, because they are dif
 | The CEF runtime | Chromium: `libcef.so`, resources, `cefloomsubprocess` | about 150 MB compressed, 360 MB unpacked | `cefloom-runtime` |
 | The stub | `php/cefloom.stub.php`, declarations for an IDE | small | copy it, or point the IDE at it |
 
-> **Status.** The first release is not published. The commands below show the intended form; until the release exists, [build from source](development.md#building-from-source).
+> **Status.** The package is `search5/cefloom` (source: <https://github.com/search5/cefloom>), but no release is published and the package is not on Packagist yet. The commands below show how it will work; until then, [build from source](development.md#building-from-source).
 
 ## Requirements
 
@@ -22,7 +22,7 @@ cefloom comes in three parts that are installed separately, because they are dif
 Install PIE once (see the PIE documentation), then:
 
 ```sh
-pie install cefloom/cefloom
+pie install search5/cefloom
 ```
 
 PIE downloads the file `php_cefloom-<version>_php<X.Y>-x86_64-linux-glibc-nts.zip` that is attached to the release of the package, puts `cefloom.so` into PHP's extension directory and enables it in `php.ini`. cefloom does not need compiler tools for this: the extension is not built on your machine.
@@ -38,7 +38,7 @@ php --ri cefloom
 ## 2. The CEF runtime
 
 ```sh
-php bin/cefloom-runtime install --base-url=https://github.com/<owner>/cefloom/releases/download/<version>
+php bin/cefloom-runtime install --base-url=https://github.com/search5/cefloom/releases/download/<version>
 php bin/cefloom-runtime status
 ```
 
@@ -77,7 +77,7 @@ In a container (not tried), install the runtime while building the image, for ex
 ```sh
 pie upgrade                 # the extension
 php bin/cefloom-runtime install --force --base-url=...    # the runtime, when the CEF version changed
-pie uninstall cefloom/cefloom
+pie uninstall search5/cefloom
 rm -rf ~/.local/share/cefloom                            # the runtime
 ```
 

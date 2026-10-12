@@ -47,14 +47,14 @@ XDG_DATA_HOME=$PWD/data CEFLOOM_DIST=$PWD/module tests/run.sh
 
 ## 4. 릴리스 게시 (저장소만 게시, 릴리스는 아직)
 
-저장소는 2026-10-12에 `https://github.com/search5/cefloom`(공개)으로 게시했습니다. 아래의 태그와 릴리스 자산 첨부, Packagist 등록은 아직 하지 않았습니다. 저장소에는 라이선스 파일이 없고 `composer.json`의 패키지 이름은 임시 값(`cefloom/cefloom`)입니다.
+저장소는 2026-10-12에 `https://github.com/search5/cefloom`(공개)으로 게시했습니다. 아래의 태그와 릴리스 자산 첨부, Packagist 등록은 아직 하지 않았습니다. `composer.json`의 패키지 이름은 저장소 소유자에 맞춰 `search5/cefloom`으로 정했습니다(2026-10-12, 임시 값 `cefloom/cefloom`에서 변경). 저장소에는 라이선스 파일이 아직 없습니다.
 
-PIE는 GitHub 릴리스의 자산에서 바이너리를 찾습니다(PIE의 `PackageReleaseAssets`가 릴리스를 태그 이름으로 찾음). 따라서 저장소를 GitHub에 올리고, 태그를 만들고, 릴리스에 `build/release/`의 파일을 첨부해야 합니다. 이 작업은 외부에 공개되는 일이라 하지 않았고, 공급자 이름(`composer.json`의 `cefloom/cefloom`은 임시 값입니다), 저장소 위치, 라이선스를 정해야 합니다. Packagist에 저장소를 등록하면 `pie install 공급자/cefloom`이 동작합니다.
+PIE는 GitHub 릴리스의 자산에서 바이너리를 찾습니다(PIE의 `PackageReleaseAssets`가 릴리스를 태그 이름으로 찾음). 따라서 저장소를 GitHub에 올리고, 태그를 만들고, 릴리스에 `build/release/`의 파일을 첨부해야 합니다. 이 작업은 외부에 공개되는 일이라 하지 않았고, 라이선스를 정해야 합니다(공급자 이름은 `search5`, 저장소는 `github.com/search5/cefloom`으로 정했습니다). Packagist에 저장소를 등록하면 `pie install search5/cefloom`이 동작합니다.
 
 ## 5. 사용자 쪽
 
 ```sh
-pie install 공급자/cefloom
+pie install search5/cefloom
 php bin/cefloom-runtime install --base-url=<릴리스 자산 디렉터리>
 ```
 
