@@ -1,0 +1,151 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../cookbook.md:1
+msgid "Cookbook"
+msgstr "쿡북"
+
+#: ../../cookbook.md:3
+msgid ""
+"Short recipes for common jobs. Each one builds on [Getting started"
+"](getting-started.md) and [Concepts](concepts.md)."
+msgstr "자주 하는 작업을 위한 짧은 레시피입니다. 각 레시피는 [시작하기](getting-started.md)와 [개념](concepts.md)을 바탕으로 합니다."
+
+#: ../../cookbook.md:5
+msgid ""
+"The recipes come from one program, "
+"[`docs/recipes/cookbook.php`](recipes/cookbook.php). It was run under a "
+"virtual X server (`xvfb-run -a php -d extension=build/dist/cefloom.so "
+"docs/recipes/cookbook.php`) three times in a row and prints:"
+msgstr "레시피는 하나의 프로그램 [`docs/recipes/cookbook.php`](recipes/cookbook.php)에서 가져왔습니다. 이 프로그램을 가상 X 서버에서(`xvfb-run -a php -d extension=build/dist/cefloom.so docs/recipes/cookbook.php`) 연속으로 세 번 실행했으며, 출력은 다음과 같습니다."
+
+#: ../../cookbook.md:13
+msgid ""
+"`tests/t_docs.php` runs it with every test run. The pieces below are "
+"taken from it, in the order the program uses them."
+msgstr "`tests/t_docs.php`는 테스트를 실행할 때마다 이 프로그램을 실행합니다. 아래의 코드 조각은 이 프로그램에서 가져온 것이며, 프로그램이 사용하는 순서를 따릅니다."
+
+#: ../../cookbook.md:15
+msgid "Show a page that PHP serves"
+msgstr "PHP가 제공하는 페이지 표시하기"
+
+#: ../../cookbook.md:17
+msgid ""
+"A custom scheme answers `app://test/...` from PHP, without a network. "
+"Register the scheme **before** `Cef::initialize()` and the factory after "
+"it. A `ResourceHandler` answers each request ([Handlers](handlers.md"
+"#custom-schemes-and-resources) explains the four methods):"
+msgstr "커스텀 스킴은 네트워크 없이 PHP에서 `app://test/...` 요청에 응답합니다. 스킴은 `Cef::initialize()` **전에** 등록하고, 팩토리는 그 후에 등록하십시오. `ResourceHandler`가 각 요청에 응답합니다([핸들러](handlers.md#custom-schemes-and-resources)에서 네 가지 메서드를 설명합니다)."
+
+#: ../../cookbook.md:28
+msgid ""
+"`Factory::create()` returns a `Page` with the text of the answer; the "
+"program keeps the page in the constant `PAGE`."
+msgstr "`Factory::create()`는 응답 텍스트를 담은 `Page`를 반환하며, 프로그램은 이 페이지를 상수 `PAGE`에 보관합니다."
+
+#: ../../cookbook.md:30
+msgid "Call PHP from the page"
+msgstr "페이지에서 PHP 호출하기"
+
+#: ../../cookbook.md:32
+msgid ""
+"Expose the function with `Cef::expose()` and call it with "
+"`cefloom.call()`, which returns a `Promise` ([JavaScript bridge"
+"](javascript-bridge.md)):"
+msgstr "`Cef::expose()`로 함수를 노출하고 `cefloom.call()`로 호출하십시오. `cefloom.call()`은 `Promise`를 반환합니다([JavaScript 브리지](javascript-bridge.md))."
+
+#: ../../cookbook.md:42
+msgid ""
+"An exception in the function rejects the promise with the code `500` and "
+"the message of the exception."
+msgstr "함수에서 예외가 발생하면 프로미스가 코드 `500`과 예외 메시지로 거부(reject)됩니다."
+
+#: ../../cookbook.md:44
+msgid "React to a change of the page"
+msgstr "페이지의 변화에 반응하기"
+
+#: ../../cookbook.md:46
+msgid ""
+"A `DisplayHandler` is told when the title changes. Here the page sets the"
+" title to `sum=5` when `add` has answered, and the handler goes on from "
+"there:"
+msgstr "`DisplayHandler`는 제목이 바뀔 때 통지를 받습니다. 여기서는 `add`가 응답하면 페이지가 제목을 `sum=5`로 설정하고, 핸들러가 그 시점부터 이어서 처리합니다."
+
+#: ../../cookbook.md:58
+msgid ""
+"The `Client` of the browser returns the handler from "
+"`getDisplayHandler()`; return the same object every time."
+msgstr "브라우저의 `Client`는 `getDisplayHandler()`에서 핸들러를 반환합니다. 매번 같은 객체를 반환하십시오."
+
+#: ../../cookbook.md:60
+msgid "Run JavaScript and read the result"
+msgstr "JavaScript를 실행하고 결과 읽기"
+
+#: ../../cookbook.md:62
+msgid ""
+"`executeJavaScript()` returns nothing. Let the script print with "
+"`console.log`, and read the line in `DisplayHandler::onConsoleMessage()`:"
+msgstr "`executeJavaScript()`는 아무것도 반환하지 않습니다. 스크립트가 `console.log`로 출력하게 하고, `DisplayHandler::onConsoleMessage()`에서 그 줄을 읽으십시오."
+
+#: ../../cookbook.md:79
+msgid ""
+"The other way is to expose a function and finish the script with "
+"`cefloom.call('result', value)`."
+msgstr "다른 방법은 함수를 노출하고 스크립트를 `cefloom.call('result', value)`로 끝내는 것입니다."
+
+#: ../../cookbook.md:81
+msgid "Save the page as a PDF"
+msgstr "페이지를 PDF로 저장하기"
+
+#: ../../cookbook.md:83
+msgid ""
+"`printToPDF()` writes what the browser shows now. Set `scale` and the "
+"paper size, because a zero value is not a default ([Printing and "
+"PDF](printing.md)). The callback tells whether the file was written:"
+msgstr "`printToPDF()`는 브라우저가 지금 보여 주는 내용을 기록합니다. 값 0은 기본값이 아니므로 `scale`과 용지 크기를 설정하십시오([인쇄와 PDF](printing.md)). 콜백은 파일이 기록되었는지 알려 줍니다."
+
+#: ../../cookbook.md:101
+msgid "Leave the program"
+msgstr "프로그램 종료하기"
+
+#: ../../cookbook.md:103
+msgid ""
+"`Cef::quit()` ends `Cef::run()`; `Cef::shutdown()` after it releases CEF."
+" CEF can be started once per process, so a program that needs CEF again "
+"starts another PHP process."
+msgstr "`Cef::quit()`은 `Cef::run()`을 끝내고, 그 뒤의 `Cef::shutdown()`은 CEF를 해제합니다. CEF는 프로세스당 한 번만 시작할 수 있으므로, CEF가 다시 필요한 프로그램은 다른 PHP 프로세스를 시작합니다."
+
+#: ../../cookbook.md:113
+msgid "Run it without a display"
+msgstr "디스플레이 없이 실행하기"
+
+#: ../../cookbook.md:115
+msgid "On a machine without a screen, put the program under a virtual X server:"
+msgstr "화면이 없는 머신에서는 프로그램을 가상 X 서버 아래에서 실행하십시오."
+
+#: ../../cookbook.md:121
+msgid ""
+"Before `initialize()` the program calls `Cef::addSwitch('ozone-platform',"
+" 'x11')`, as the examples do, and `Cef::addSwitch('disable-gpu')`, as the"
+" tests do. [Troubleshooting](troubleshooting.md) describes the `Missing X"
+" server or $DISPLAY` message."
+msgstr "프로그램은 `initialize()` 전에 예제처럼 `Cef::addSwitch('ozone-platform', 'x11')`을 호출하고, 테스트처럼 `Cef::addSwitch('disable-gpu')`를 호출합니다. [문제 해결](troubleshooting.md)에서 `Missing X server or $DISPLAY` 메시지를 설명합니다."
+

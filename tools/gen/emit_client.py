@@ -66,7 +66,7 @@ def default_return(plan):
 
 
 def default_zval(names, kind, target, ind="  "):
-    """Return the lines that set |target| (a zval*) to the value a method of the PHP base class returns: false, 0, 0.0,
+    """Return the lines that set ``target`` (a zval*) to the value a method of the PHP base class returns: false, 0, 0.0,
     "", a default-constructed struct object, an empty array, else null."""
     if isinstance(kind, Prim):
         return [ind + ("ZVAL_FALSE(%s);" if kind.py == "bool" else "ZVAL_DOUBLE(%s, 0.0);" if kind.py == "float"
@@ -267,7 +267,7 @@ class ClientEmitter:
         return "%s o_%s = %s;" % (p.spelled, name, name)
 
     def to_php(self, p, target):
-        """Lines (inside the lambda) that put the parameter |p| into the zval at |target|."""
+        """Lines (inside the lambda) that put the parameter ``p`` into the zval at ``target``."""
         k = p.kind
         name = p.cef_name
         ind = "      "
@@ -292,7 +292,7 @@ class ClientEmitter:
         return to_zval(self.names, self.scope, k, expr, target, ind)
 
     def from_php(self, kind, spelled, target):
-        """Return the lines that read the zval |cl_r| the PHP method returned into the C++ value |target| (Prim, Str, Enum,
+        """Return the lines that read the zval ``cl_r`` the PHP method returned into the C++ value ``target`` (Prim, Str, Enum,
         LibRef, ClientRef, Struct; no lines for other kinds)."""
         if isinstance(kind, Prim):
             conv = {"bool": "zend_is_true(cl_r)", "float": "zval_get_double(cl_r)"}.get(kind.py, "zval_get_long(cl_r)")

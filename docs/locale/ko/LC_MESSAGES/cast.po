@@ -1,0 +1,58 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../cast.md:1
+msgid "Cast"
+msgstr "Cast"
+
+#: ../../cast.md:3
+msgid ""
+"CEF has a **media router** that finds Cast and DIAL devices on the "
+"network and starts sessions on them. `examples/cast.php` shows the "
+"sources, and with `--discover` the devices:"
+msgstr "CEF에는 네트워크에서 Cast 및 DIAL 장치를 찾아 그 장치에서 세션을 시작하는 **미디어 라우터**가 있습니다. `examples/cast.php`는 소스를 보여 주며, `--discover`를 사용하면 장치도 보여 줍니다."
+
+#: ../../cast.md:32
+msgid ""
+"`createRoute($source, $sink, $callback)` starts a session on a device. "
+"Devices are `MediaSink` objects (`getName()`, `isCastSink()`, "
+"`isDialSink()`, `isCompatibleWith($source)`)."
+msgstr "`createRoute($source, $sink, $callback)`는 장치에서 세션을 시작합니다. 장치는 `MediaSink` 객체입니다(`getName()`, `isCastSink()`, `isDialSink()`, `isCompatibleWith($source)`)."
+
+#: ../../cast.md:34
+msgid ""
+"**Known problem.** Once the media router has been asked for devices "
+"(`addObserver()` or `notifyCurrentSinks()`), **CEF 154 stops the process "
+"with a trap in `Cef::shutdown()`**. The observer works and receives its "
+"events; the crash comes at the end. Releasing the registration does not "
+"avoid it. The cause is inside CEF (a destructor of the media router "
+"during shutdown) and is not solved. Until it is, use the media router in "
+"a program that may end abruptly, or only read sources (which is safe). A "
+"reproduction is in `experiments/media-router-shutdown/`."
+msgstr "**알려진 문제.** 미디어 라우터에 장치를 요청하고 나면(`addObserver()` 또는 `notifyCurrentSinks()`), **CEF 154는 `Cef::shutdown()`에서 트랩으로 프로세스를 중단시킵니다**. 옵저버는 동작하며 이벤트도 받지만, 충돌은 마지막에 발생합니다. 등록을 해제해도 피할 수 없습니다. 원인은 CEF 내부(종료 중 미디어 라우터의 소멸자)에 있으며 아직 해결되지 않았습니다. 해결될 때까지는 갑자기 종료되어도 괜찮은 프로그램에서만 미디어 라우터를 사용하거나, 소스만 읽으십시오(소스 읽기는 안전합니다). 재현 예제는 `experiments/media-router-shutdown/`에 있습니다."
+
+#: ../../cast.md:36
+msgid ""
+"No Cast device was available when this was tried, so the device list and "
+"sessions were not exercised; only the calls, the sources and the "
+"observer's events (with no devices) were."
+msgstr "이 내용을 시도했을 때 사용할 수 있는 Cast 장치가 없었으므로, 장치 목록과 세션은 실행해 보지 못했습니다. 호출, 소스, 옵저버의 이벤트(장치가 없는 상태)만 실행해 보았습니다."
+

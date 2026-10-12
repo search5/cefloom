@@ -1,0 +1,33 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../api/index.rst:2
+msgid "API reference"
+msgstr "API 레퍼런스"
+
+#: ../../api/index.rst:4
+msgid ""
+"Every class, method, property and constant of the ``Cefloom`` namespace. "
+"The pages are written from ``php/cefloom.stub.php``, whose phpdoc comes "
+"from the comments of the CEF headers; the ``:see:`` line of each entry "
+"names the C++ declaration it binds."
+msgstr "``Cefloom`` 네임스페이스의 모든 클래스, 메서드, 프로퍼티, 상수를 다룹니다. 각 페이지는 ``php/cefloom.stub.php``에서 작성되며, 이 파일의 phpdoc은 CEF 헤더의 주석에서 가져온 것입니다. 각 항목의 ``:see:`` 줄은 그 항목이 바인딩하는 C++ 선언을 가리킵니다."
+

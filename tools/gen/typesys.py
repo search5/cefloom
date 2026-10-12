@@ -9,8 +9,10 @@ Pipeline role: third stage. ``plan_class`` and ``plan_method`` turn the methods 
 :class:`MethodPlan` objects that ``emit_lib``, ``emit_client`` and ``emit_stub`` render.
 
 To support a new kind of type:
-  1. add a `Kind` subclass here and recognise it in `classify()`;
-  2. teach the emitters (emit_lib.py, emit_client.py, emit_stub.py) how to convert it.
+
+1. add a ``Kind`` subclass here and recognise it in ``classify()``;
+2. teach the emitters (emit_lib.py, emit_client.py, emit_stub.py) how to convert it.
+
 The method planning below does not need to change.
 """
 

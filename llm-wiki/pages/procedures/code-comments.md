@@ -59,7 +59,7 @@ python3 tools/check-comments.py <경로>  # 일부만 점검합니다
 - `ext/generated`의 C++은 점검하지 않고 Doxygen 입력에서도 뺍니다. 사용자에게 보이는 API는 `php/cefloom.stub.php`가 담고, 그 phpdoc은 생성기(`tools/gen/emit_stub.py`)가 CEF 헤더 주석에서 옮겨 씁니다. 헤더에 설명이 없는 항목은 `@see`로 C++ 선언 이름만 답니다.
 - `tools/gen/vendor`는 CEF가 배포한 외부 코드입니다.
 - 템플릿 함수의 주석은 `template <...>` 줄 위에 둡니다(Doxygen이 붙이는 위치). 인클루드 가드의 `#define`은 점검에서 제외합니다.
-- Sphinx 설정(`conf.py`, Doxyfile)은 아직 만들지 않았습니다. 주석 형식만 준비한 상태입니다.
+- 문서 사이트(`docs/conf.py`)는 C++과 Python 주석을 아직 읽지 않습니다. Doxyfile과 Breathe, autodoc 설정은 만들지 않았습니다. 사이트가 읽는 것은 `docs/*.md`와 `php/cefloom.stub.php`입니다([문서 사이트](docs-site.md)).
 
 ## 진행 대장
 
@@ -79,3 +79,4 @@ python3 tools/check-comments.py <경로>  # 일부만 점검합니다
 - [개발 문서 규칙: 생성기](../concepts/binding-generator-plan.md)
 - [시험 계획](../reference/test-plan.md)
 - [패키징과 릴리스 절차](package-and-release.md)
+- [문서 사이트](docs-site.md)

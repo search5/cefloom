@@ -12,10 +12,15 @@ cefloom puts the Chromium Embedded Framework (CEF) into PHP: PHP opens the windo
 | [JavaScript bridge](javascript-bridge.md) | `Cef::expose()` and `cefloom.call()` |
 | [Windows with Views](views.md) | CEF's own windows, buttons and layout |
 | [Printing and PDF](printing.md) | `printToPDF()` |
+| [Context menu](context-menu.md) | `ContextMenuHandler`, `ContextMenuParams`, `MenuModel`: read, change and answer the right-click menu |
+| [Sound, microphone and camera](media.md) | `AudioHandler`, muting, and the permission to use a microphone or camera |
 | [Cast](cast.md) | Media sources and devices |
 | [Configuration](configuration.md) | Settings, switches, environment variables, files |
+| [Wayland and GPU](wayland-gpu.md) | Which display and GPU setups were tried, and the switches they need |
 | [Troubleshooting](troubleshooting.md) | Messages and what to do, known problems |
-| [Development](development.md) | Build, test, package and release |
+| [Cookbook](cookbook.md) | Short recipes: a page served by PHP, PHP and JavaScript calling each other, a PDF |
+| [Limitations](limitations.md) | Platforms, features and test scope that are not covered |
+| [Development](development.md) | Build, test, package, release and build these pages |
 
 The runnable programs are in [`../examples/`](../examples/); `php/cefloom.stub.php` declares every class for an IDE.
 

@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../getting-started.md:1
+msgid "Getting started"
+msgstr "시작하기"
+
+#: ../../getting-started.md:3
+msgid ""
+"This walks through `examples/hello.php`: a window that loads a page, in "
+"which JavaScript calls a PHP function. Install cefloom first "
+"([Installation](installation.md))."
+msgstr ""
+"여기서는 `examples/hello.php`를 살펴봅니다. 페이지를 로드하는 창이며, 그 페이지의"
+" JavaScript가 PHP 함수를 호출합니다. 먼저 cefloom을"
+" 설치하십시오([설치](installation.md))."
+
+#: ../../getting-started.md:9
+msgid "(Drop `-d extension=...` when the extension is enabled in `php.ini`.)"
+msgstr "(확장이 `php.ini`에서 활성화되어 있으면 `-d extension=...`을 생략하십시오.)"
+
+#: ../../getting-started.md:11
+msgid "The program"
+msgstr "프로그램"
+
+#: ../../getting-started.md:70
+msgid "What each part does"
+msgstr "각 부분의 역할"
+
+#: ../../getting-started.md:72
+msgid ""
+"**`Cef::addSwitch()`** adds a Chromium command line switch. It must come "
+"before `initialize()`. `ozone-platform=x11` makes Chromium use X11 even "
+"in a Wayland session."
+msgstr ""
+"**`Cef::addSwitch()`**는 Chromium 명령줄 스위치를 추가합니다."
+" `initialize()`보다 먼저 호출해야 합니다. `ozone-platform=x11`은 Wayland"
+" 세션에서도 Chromium이 X11을 사용하게 합니다."
+
+#: ../../getting-started.md:73
+msgid ""
+"**`Cef::initialize()`** starts CEF **inside this PHP process**: the PHP "
+"process is the browser process of CEF. CEF starts its other processes "
+"(renderer, GPU, network) from `cefloomsubprocess`, which runs no PHP. It "
+"takes optional [`Settings`](configuration.md#settings)."
+msgstr ""
+"**`Cef::initialize()`**는 CEF를 **이 PHP 프로세스 안에서** 시작합니다. PHP"
+" 프로세스가 CEF의 browser process입니다. CEF는 나머지 프로세스(렌더러, GPU,"
+" 네트워크)를 `cefloomsubprocess`에서 시작하며, 이 프로세스는 PHP를 실행하지 않습니다."
+" 선택적으로 [`Settings`](configuration.md#settings)를 받습니다."
+
+#: ../../getting-started.md:74
+msgid ""
+"**`Cef::expose()`** makes a PHP function callable from the page as "
+"`cefloom.call(name, ...args)`, which returns a Promise ([JavaScript "
+"bridge](javascript-bridge.md))."
+msgstr ""
+"**`Cef::expose()`**는 PHP 함수를 페이지에서 `cefloom.call(name,"
+" ...args)`로 호출할 수 있게 하며, 이 호출은 Promise를 반환합니다([JavaScript"
+" 브리지](javascript-bridge.md))."
+
+#: ../../getting-started.md:75
+msgid ""
+"**`Client`** is the object you hand to CEF for each browser. CEF asks it "
+"for handlers (`getLoadHandler()`, `getDisplayHandler()`, ...); every "
+"handler class has the methods CEF calls, and you override the ones you "
+"need ([Handlers](handlers.md)). A method you do not override is not "
+"called: CEF behaves as if there were no handler."
+msgstr ""
+"**`Client`**는 브라우저마다 CEF에 넘기는 객체입니다. CEF는 이 객체에"
+" 핸들러(`getLoadHandler()`, `getDisplayHandler()`, ...)를 요청합니다."
+" 모든 핸들러 클래스에는 CEF가 호출하는 메서드가 있으며, 필요한 것만"
+" 오버라이드합니다([핸들러](handlers.md)). 오버라이드하지 않은 메서드는 호출되지 않으며,"
+" CEF는 핸들러가 없는 것처럼 동작합니다."
+
+#: ../../getting-started.md:76
+msgid ""
+"**`BrowserHost::createBrowser()`** opens a browser window. `WindowInfo` "
+"says how big, `BrowserSettings` configures it."
+msgstr ""
+"**`BrowserHost::createBrowser()`**는 브라우저 창을 엽니다."
+" `WindowInfo`는 크기를 지정하고 `BrowserSettings`는 브라우저를 설정합니다."
+
+#: ../../getting-started.md:77
+msgid ""
+"**`Cef::run()`** is the message loop: it runs until the last browser "
+"closes ([The message loop](message-loop.md)). All your handlers run "
+"inside it, on the PHP thread."
+msgstr ""
+"**`Cef::run()`**은 메시지 루프입니다. 마지막 브라우저가 닫힐 때까지 실행됩니다([메시지"
+" 루프](message-loop.md)). 모든 핸들러는 그 안에서 PHP 스레드로 실행됩니다."
+
+#: ../../getting-started.md:78
+msgid ""
+"**`Cef::shutdown()`** closes what is left and stops CEF. It must come "
+"before the script ends, after you have dropped your references to CEF "
+"objects ([Concepts](concepts.md#lifetime-and-shutdown))."
+msgstr ""
+"**`Cef::shutdown()`**은 남은 것을 닫고 CEF를 중지합니다. 스크립트가 끝나기 전에,"
+" CEF 객체에 대한 참조를 버린 뒤 호출해야"
+" 합니다([개념](concepts.md#lifetime-and-shutdown))."
+
+#: ../../getting-started.md:80
+msgid "Next"
+msgstr "다음 단계"
+
+#: ../../getting-started.md:82
+msgid ""
+"A window drawn by CEF itself, with buttons and layout: [Windows with "
+"Views](views.md)."
+msgstr "CEF가 직접 그리는 창, 버튼과 레이아웃: [Views로 만드는 창](views.md)."
+
+#: ../../getting-started.md:83
+msgid ""
+"Serving pages from PHP: [Handlers](handlers.md#custom-schemes-and-"
+"resources)."
+msgstr ""
+"PHP에서 페이지 제공하기:"
+" [핸들러](handlers.md#custom-schemes-and-resources)."
+
+#: ../../getting-started.md:84
+msgid "Saving a page as a PDF: [Printing and PDF](printing.md)."
+msgstr "페이지를 PDF로 저장하기: [인쇄와 PDF](printing.md)."
+

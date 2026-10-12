@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 build-coverage/
 build-coverage.log
+docs/_build/
+docs/api/gen-*.rst
+docs/locale/**/*.mo

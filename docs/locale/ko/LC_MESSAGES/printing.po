@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../printing.md:1
+msgid "Printing and PDF"
+msgstr "인쇄와 PDF"
+
+#: ../../printing.md:3
+msgid ""
+"`BrowserHost::printToPDF()` saves what a browser shows as a PDF file. "
+"`examples/print-pdf.php` is a complete program:"
+msgstr ""
+"`BrowserHost::printToPDF()`는 브라우저가 표시하는 내용을 PDF 파일로 저장합니다."
+" `examples/print-pdf.php`는 완전한 프로그램입니다:"
+
+#: ../../printing.md:24
+msgid ""
+"Print **after the page has loaded** (`onLoadEnd` of the main frame): "
+"`printToPDF()` prints what the browser has at that moment."
+msgstr ""
+"**페이지가 로드된 뒤에** 인쇄하십시오(메인 프레임의 `onLoadEnd`). `printToPDF()`는"
+" 그 시점에 브라우저가 가진 내용을 인쇄합니다."
+
+#: ../../printing.md:25
+msgid ""
+"`PdfPrintSettings` has the page size and orientation (`landscape`), "
+"margins (`marginType`, `marginTop`, ...), `pageRanges` (such as "
+"`\"1-3,5\"`), header and footer templates (`displayHeaderFooter`, "
+"`headerTemplate`, `footerTemplate`), and `preferCssPageSize`. Set `scale`"
+" and the paper size: a zero value is not a default."
+msgstr ""
+"`PdfPrintSettings`에는 페이지 크기와 방향(`landscape`),"
+" 여백(`marginType`, `marginTop`, ...), `pageRanges`(예:"
+" `\"1-3,5\"`), 머리글과 바닥글 템플릿(`displayHeaderFooter`,"
+" `headerTemplate`, `footerTemplate`), `preferCssPageSize`가"
+" 있습니다. `scale`과 용지 크기를 설정하십시오. 0 값은 기본값이 아닙니다."
+
+#: ../../printing.md:26
+msgid ""
+"`onPdfPrintFinished()` is called when the file is written; `$ok` says "
+"whether it worked."
+msgstr "`onPdfPrintFinished()`는 파일이 기록되면 호출되며, `$ok`는 성공 여부를 나타냅니다."
+
+#: ../../printing.md:27
+msgid ""
+"The browser can be a normal window. `printToPDF()` does not need it to be"
+" visible."
+msgstr "브라우저는 일반 창이어도 됩니다. `printToPDF()`는 브라우저가 보일 필요가 없습니다."
+
+#: ../../printing.md:29
+msgid ""
+"`BrowserHost::print()` does not call a `PrintHandler` "
+"(`Client::getPrintHandler()`) in the default (Chrome) runtime style: it "
+"opens Chrome's own print preview and the handler is never asked "
+"(`tests/t_print.php` keeps that as it is). Use `printToPDF()` to print "
+"from a program, or the Alloy style below."
+msgstr ""
+"`BrowserHost::print()`는 기본(Chrome) 런타임 스타일에서"
+" `PrintHandler`(`Client::getPrintHandler()`)를 호출하지 않습니다."
+" Chrome 자체의 인쇄 미리보기를 열며 핸들러에는 묻지 않습니다(`tests/t_print.php`가 이"
+" 동작을 그대로 유지합니다). 프로그램에서 인쇄하려면 `printToPDF()`나 아래의 Alloy 스타일을"
+" 사용하십시오."
+
+#: ../../printing.md:31
+msgid ""
+"**Alloy runtime style.** A browser made with `$windowInfo->runtimeStyle ="
+" 2` asks the `PrintHandler` in a fixed order: `onPrintStart`, "
+"`onPrintSettings`, `onPrintDialog` (call `$callback->continue($settings)`"
+" or `cancel()`), `onPrintJob` (the path of a PDF and the name of the "
+"document; call `$callback->continue()`), and `onPrintReset`. When there "
+"is no real printer, start CEF with `Cef::addSwitch('disable-features', "
+"'EnableOopPrintDrivers')`: the out of process print service otherwise "
+"looks for the printer and fails before `onPrintJob`. "
+"`tests/t_print_alloy.php` shows the whole flow. `PrintSettings` can also "
+"be created and filled in as a plain object."
+msgstr ""
+"**Alloy 런타임 스타일.** `$windowInfo->runtimeStyle = 2`로 만든 브라우저는"
+" `PrintHandler`에 정해진 순서로 묻습니다: `onPrintStart`,"
+" `onPrintSettings`,"
+" `onPrintDialog`(`$callback->continue($settings)` 또는"
+" `cancel()`을 호출), `onPrintJob`(PDF의 경로와 문서 이름이며,"
+" `$callback->continue()`를 호출), `onPrintReset`입니다. 실제 프린터가 없을"
+" 때는 `Cef::addSwitch('disable-features',"
+" 'EnableOopPrintDrivers')`로 CEF를 시작하십시오. 그렇지 않으면 out of"
+" process print service가 프린터를 찾다가 `onPrintJob` 전에 실패합니다."
+" `tests/t_print_alloy.php`가 전체 흐름을 보여 줍니다. `PrintSettings`도"
+" 일반 객체로 만들어 채울 수 있습니다."
+

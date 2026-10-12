@@ -1,0 +1,173 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../views.md:1
+msgid "Windows with Views"
+msgstr "Views로 만드는 창"
+
+#: ../../views.md:3
+msgid ""
+"CEF can draw the window itself with its **Views** framework: top-level "
+"windows, panels, buttons, text fields, menus and layouts, all in "
+"Chromium's own toolkit. A program needs no GTK or Qt, and the same code "
+"is meant to work on every platform CEF supports (only Linux/X11 was "
+"tried). `examples/views.php` is a complete program: a toolbar with Back, "
+"Forward and Reload above a page."
+msgstr "CEF는 **Views** 프레임워크로 창을 직접 그릴 수 있습니다. 최상위 창, 패널, 버튼, 텍스트 필드, 메뉴, 레이아웃을 모두 Chromium 자체 툴킷으로 만듭니다. 프로그램에는 GTK나 Qt가 필요하지 않으며, 같은 코드가 CEF가 지원하는 모든 플랫폼에서 동작하도록 만들어졌습니다(Linux/X11에서만 시험했습니다). `examples/views.php`는 완전한 프로그램으로, 페이지 위에 Back, Forward, Reload 버튼이 있는 툴바를 갖추고 있습니다."
+
+#: ../../views.md:9
+msgid "The pieces"
+msgstr "구성 요소"
+
+#: ../../views.md
+msgid "Class"
+msgstr "클래스"
+
+#: ../../views.md
+msgid "Role"
+msgstr "역할"
+
+#: ../../views.md
+msgid "`Window::createTopLevelWindow($delegate)`"
+msgstr "`Window::createTopLevelWindow($delegate)`"
+
+#: ../../views.md
+msgid ""
+"makes the window; its `WindowDelegate` is told when it exists, closes and"
+" moves"
+msgstr "창을 만듭니다. `WindowDelegate`가 창의 생성, 닫힘, 이동을 통지받습니다"
+
+#: ../../views.md
+msgid ""
+"`BrowserView::createBrowserView($client, $url, $settings, null, null, "
+"null)`"
+msgstr "`BrowserView::createBrowserView($client, $url, $settings, null, null, null)`"
+
+#: ../../views.md
+msgid "a view that shows a page (and owns its browser: `$view->getBrowser()`)"
+msgstr "페이지를 보여 주는 뷰입니다(브라우저도 소유합니다: `$view->getBrowser()`)"
+
+#: ../../views.md
+msgid "`Panel::createPanel(null)`"
+msgstr "`Panel::createPanel(null)`"
+
+#: ../../views.md
+msgid ""
+"a container; `setToBoxLayout()` or `setToFillLayout()` arranges its "
+"children"
+msgstr "컨테이너입니다. `setToBoxLayout()` 또는 `setToFillLayout()`로 자식 뷰를 배치합니다"
+
+#: ../../views.md
+msgid ""
+"`LabelButton::createLabelButton($buttonDelegate, 'text')`, `Textfield`, "
+"`MenuButton`"
+msgstr "`LabelButton::createLabelButton($buttonDelegate, 'text')`, `Textfield`, `MenuButton`"
+
+#: ../../views.md
+msgid "controls; their delegates (`ButtonDelegate`, ...) receive the clicks"
+msgstr "컨트롤입니다. 각 델리게이트(`ButtonDelegate` 등)가 클릭을 받습니다"
+
+#: ../../views.md
+msgid "`MenuModel::create($menuDelegate)`"
+msgstr "`MenuModel::create($menuDelegate)`"
+
+#: ../../views.md
+msgid ""
+"a menu: `addItem()`, `addSeparator()`, `addCheckItem()`, and "
+"`Window::showMenu()`"
+msgstr "메뉴입니다: `addItem()`, `addSeparator()`, `addCheckItem()`, 그리고 `Window::showMenu()`"
+
+#: ../../views.md
+msgid "`BoxLayoutSettings`, `BoxLayout::setFlexForView()`"
+msgstr "`BoxLayoutSettings`, `BoxLayout::setFlexForView()`"
+
+#: ../../views.md
+msgid "rows and columns; a view with flex 1 takes the space that is left"
+msgstr "행과 열 배치입니다. flex가 1인 뷰가 남은 공간을 차지합니다"
+
+#: ../../views.md:20
+msgid "The shape of a program"
+msgstr "프로그램의 구조"
+
+#: ../../views.md:45
+msgid "Tips:"
+msgstr "팁:"
+
+#: ../../views.md:47
+msgid ""
+"Build the views in `onWindowCreated()`, not before: the window does not "
+"exist until CEF says so."
+msgstr "뷰는 `onWindowCreated()`에서 만드십시오. 그 전에는 만들지 마십시오. CEF가 알려 주기 전에는 창이 존재하지 않습니다."
+
+#: ../../views.md:48
+msgid ""
+"Keep references to what you need later (`LabelButton`, the `BrowserView`)"
+" in properties of your delegates; set them to `null` before "
+"`Cef::shutdown()`."
+msgstr "나중에 필요한 객체(`LabelButton`, `BrowserView`)의 참조는 델리게이트의 프로퍼티에 보관하고, `Cef::shutdown()` 전에 `null`로 설정하십시오."
+
+#: ../../views.md:49
+msgid ""
+"Update controls from handlers of the page: `examples/views.php` sets the "
+"window title from `DisplayHandler::onTitleChange()` and enables Back and "
+"Forward from `LoadHandler::onLoadingStateChange()`."
+msgstr "컨트롤은 페이지의 핸들러에서 갱신하십시오. `examples/views.php`는 `DisplayHandler::onTitleChange()`에서 창 제목을 설정하고, `LoadHandler::onLoadingStateChange()`에서 Back과 Forward를 활성화합니다."
+
+#: ../../views.md:50
+msgid ""
+"Closing: `Window::close()` asks the delegate `canClose()`, then "
+"`onWindowDestroyed()` follows; call `Cef::quit()` there."
+msgstr "닫기: `Window::close()`는 델리게이트의 `canClose()`에 먼저 확인하고, 이어서 `onWindowDestroyed()`가 호출됩니다. `Cef::quit()`은 거기서 호출하십시오."
+
+#: ../../views.md:52
+msgid "Input"
+msgstr "입력"
+
+#: ../../views.md:54
+msgid ""
+"Mouse clicks, the wheel and typing reach buttons and the page in both "
+"modes of the loop ([The message loop](message-loop.md#polling-and-the-"
+"external-pump)). A `BrowserView` with a live browser cannot be taken out "
+"of its window with `removeChildView()` or `removeAllChildViews()` (CEF "
+"ends the process when the browser closes afterwards): these throw an "
+"`Error`; close the browser first with `closeBrowser()`, or hide the view "
+"with `setVisible(false)`."
+msgstr "마우스 클릭, 휠, 키 입력은 루프의 두 모드 모두에서 버튼과 페이지에 전달됩니다([메시지 루프](message-loop.md#polling-and-the-external-pump)). 살아 있는 브라우저를 가진 `BrowserView`는 `removeChildView()`나 `removeAllChildViews()`로 창에서 떼어 낼 수 없습니다(그 뒤에 브라우저가 닫히면 CEF가 프로세스를 종료합니다). 이 호출들은 `Error`를 던집니다. 먼저 `closeBrowser()`로 브라우저를 닫거나, `setVisible(false)`로 뷰를 숨기십시오."
+
+#: ../../views.md:56
+msgid ""
+"`tests/t_views_input.php` sends clicks, the wheel and typing with "
+"`xdotool` and checks that they arrive, on a virtual display without a "
+"window manager and with the window manager `twm`. A desktop environment's"
+" window manager and Wayland were not tried."
+msgstr "`tests/t_views_input.php`는 `xdotool`로 클릭, 휠, 키 입력을 보내고 그것이 도착하는지 확인합니다. 윈도 매니저가 없는 가상 디스플레이와 윈도 매니저 `twm`이 있는 가상 디스플레이에서 시험했습니다. 데스크톱 환경의 윈도 매니저와 Wayland는 시험하지 않았습니다."
+
+#: ../../views.md:58
+msgid "Without a display"
+msgstr "디스플레이 없이 실행하기"
+
+#: ../../views.md:60
+msgid ""
+"`xvfb-run -a php ...` gives the window a virtual screen. Nothing is "
+"shown, but the program, its events and its input work as on a real "
+"screen."
+msgstr "`xvfb-run -a php ...`는 창에 가상 화면을 제공합니다. 아무것도 표시되지 않지만, 프로그램과 이벤트, 입력은 실제 화면에서처럼 동작합니다."
+

@@ -1,0 +1,319 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 07:24+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../wayland-gpu.md:1
+msgid "Wayland and GPU"
+msgstr "Wayland와 GPU"
+
+#: ../../wayland-gpu.md:3
+msgid ""
+"On Linux Chromium draws and receives input through a platform layer "
+"called ozone, and the `ozone-platform` switch chooses it (`x11`, "
+"`wayland`, `headless`). This page lists the combinations of display, "
+"platform and GPU switches that were run with cefloom, what each did, and "
+"what was not run. The switches are given with `Cef::addSwitch()` before "
+"`Cef::initialize()` ([Configuration](configuration.md#command-line-"
+"switches))."
+msgstr "Linux에서 Chromium은 ozone이라는 플랫폼 계층을 통해 화면을 그리고 입력을 받으며, `ozone-platform` 스위치로 이를 선택합니다(`x11`, `wayland`, `headless`). 이 페이지는 cefloom으로 실행해 본 디스플레이, 플랫폼, GPU 스위치의 조합과 각각의 결과, 그리고 실행하지 않은 것을 정리합니다. 스위치는 `Cef::initialize()` 전에 `Cef::addSwitch()`로 지정합니다([구성](configuration.md#command-line-switches))."
+
+#: ../../wayland-gpu.md:5
+msgid ""
+"**cefloom was run on a virtual X server (`xvfb-run`) only.** No test, "
+"example or recipe was run on a real Wayland session or against a physical"
+" GPU. Everything below that is about Wayland is either what Chromium did "
+"when no Wayland compositor was there, or what the existing pages say and "
+"was not checked further."
+msgstr "**cefloom은 가상 X 서버(`xvfb-run`)에서만 실행했습니다.** 실제 Wayland 세션이나 물리 GPU에서 실행한 테스트, 예제, 레시피는 없습니다. 아래 Wayland에 관한 내용은 Wayland 컴포지터가 없을 때 Chromium이 한 동작이거나, 기존 페이지의 설명을 더 확인하지 않고 옮긴 것입니다."
+
+#: ../../wayland-gpu.md:7
+msgid "What the tests and examples use"
+msgstr "테스트와 예제가 사용하는 설정"
+
+#: ../../wayland-gpu.md:9
+msgid "All of them add the same two switches before `initialize()`:"
+msgstr "모두 `initialize()` 전에 같은 두 스위치를 추가합니다."
+
+#: ../../wayland-gpu.md:16
+msgid ""
+"`examples/hello.php`, `examples/views.php` and `examples/print-pdf.php` "
+"set `ozone-platform=x11`; `tests/support.php` (`start_cef()`, used by "
+"every test) sets both, and `docs/recipes/cookbook.php` sets both. "
+"`tests/run.sh` starts each test under `env -u WAYLAND_DISPLAY xvfb-run "
+"-a`, so a test never finds a Wayland socket through `WAYLAND_DISPLAY`. "
+"The suite therefore runs one combination: X11 on a virtual screen, GPU "
+"off."
+msgstr "`examples/hello.php`, `examples/views.php`, `examples/print-pdf.php`는 `ozone-platform=x11`을 설정하고, `tests/support.php`(`start_cef()`, 모든 테스트가 사용)와 `docs/recipes/cookbook.php`는 두 스위치를 모두 설정합니다. `tests/run.sh`는 각 테스트를 `env -u WAYLAND_DISPLAY xvfb-run -a` 아래에서 시작하므로, 테스트는 `WAYLAND_DISPLAY`로 Wayland 소켓을 찾지 못합니다. 따라서 테스트 모음은 가상 화면의 X11과 GPU 끔이라는 한 가지 조합만 실행합니다."
+
+#: ../../wayland-gpu.md:18
+msgid "X11 or Wayland"
+msgstr "X11 또는 Wayland"
+
+#: ../../wayland-gpu.md:20
+msgid ""
+"On a Wayland desktop with no `ozone-platform` switch, Chromium may choose"
+" Wayland. This was run under a virtual X server with an empty "
+"`XDG_RUNTIME_DIR` (so that no Wayland socket existed) and "
+"`WAYLAND_DISPLAY` unset. The rows that failed were run three times; the "
+"others at least once:"
+msgstr "Wayland 데스크톱에서 `ozone-platform` 스위치가 없으면 Chromium이 Wayland를 선택할 수 있습니다. 이 경우를 가상 X 서버에서 `XDG_RUNTIME_DIR`를 비워(Wayland 소켓이 없도록) 두고 `WAYLAND_DISPLAY`를 설정하지 않은 상태로 실행했습니다. 실패한 행은 세 번 실행했고, 나머지는 최소 한 번 실행했습니다."
+
+#: ../../wayland-gpu.md
+msgid "`XDG_SESSION_TYPE`"
+msgstr "`XDG_SESSION_TYPE`"
+
+#: ../../wayland-gpu.md
+msgid "Switch"
+msgstr "스위치"
+
+#: ../../wayland-gpu.md
+msgid "Result"
+msgstr "결과"
+
+#: ../../wayland-gpu.md
+msgid "`wayland`"
+msgstr "`wayland`"
+
+#: ../../wayland-gpu.md
+msgid "none"
+msgstr "없음"
+
+#: ../../wayland-gpu.md
+msgid ""
+"`Cef::initialize()` returned `false`. Standard error: `Failed to connect "
+"to Wayland display` (followed by the system's message for a missing "
+"file), `Failed to initialize Wayland platform`, `The platform failed to "
+"initialize.  Exiting.`"
+msgstr "`Cef::initialize()`가 `false`를 반환했습니다. 표준 오류: `Failed to connect to Wayland display`(뒤에 파일이 없다는 시스템 메시지가 이어집니다), `Failed to initialize Wayland platform`, `The platform failed to initialize.  Exiting.`"
+
+#: ../../wayland-gpu.md
+msgid "`ozone-platform=wayland`"
+msgstr "`ozone-platform=wayland`"
+
+#: ../../wayland-gpu.md
+msgid "the same"
+msgstr "같음"
+
+#: ../../wayland-gpu.md
+msgid "`ozone-platform-hint=x11`"
+msgstr "`ozone-platform-hint=x11`"
+
+#: ../../wayland-gpu.md
+msgid "`initialize()` returned `false`, the same Wayland messages (one run)"
+msgstr "`initialize()`가 `false`를 반환했고 같은 Wayland 메시지가 나왔습니다(한 번 실행)"
+
+#: ../../wayland-gpu.md
+msgid "`ozone-platform=x11`"
+msgstr "`ozone-platform=x11`"
+
+#: ../../wayland-gpu.md
+msgid "worked"
+msgstr "동작했습니다"
+
+#: ../../wayland-gpu.md
+msgid "`x11` or unset"
+msgstr "`x11` 또는 설정 없음"
+
+#: ../../wayland-gpu.md:30
+msgid ""
+"So with `XDG_SESSION_TYPE=wayland` in the environment, the choice of "
+"Chromium followed it even though `WAYLAND_DISPLAY` was unset. What a "
+"program without the switch does on a real Wayland session, where a "
+"compositor answers, was not run. To stay on X11 (XWayland on a Wayland "
+"desktop) give the switch, which is what the examples do:"
+msgstr "따라서 환경에 `XDG_SESSION_TYPE=wayland`가 있으면 `WAYLAND_DISPLAY`가 설정되지 않았어도 Chromium의 선택은 이를 따랐습니다. 컴포지터가 응답하는 실제 Wayland 세션에서 스위치 없는 프로그램이 어떻게 동작하는지는 실행하지 않았습니다. X11(Wayland 데스크톱에서는 XWayland)에 머무르려면 스위치를 지정하십시오. 예제들이 그렇게 합니다."
+
+#: ../../wayland-gpu.md:36
+msgid ""
+"[Troubleshooting](troubleshooting.md#messages) lists the same switch for "
+"`Missing X server or $DISPLAY`."
+msgstr "[문제 해결](troubleshooting.md#messages)도 `Missing X server or $DISPLAY`에 같은 스위치를 안내합니다."
+
+#: ../../wayland-gpu.md:38
+msgid ""
+"`ozone-platform=x11` needs a reachable X server: with `DISPLAY` and "
+"`WAYLAND_DISPLAY` unset it failed with `Missing X server or $DISPLAY` and"
+" `initialize()` returned `false`."
+msgstr "`ozone-platform=x11`에는 접근 가능한 X 서버가 필요합니다. `DISPLAY`와 `WAYLAND_DISPLAY`를 설정하지 않으면 `Missing X server or $DISPLAY`로 실패했고 `initialize()`가 `false`를 반환했습니다."
+
+#: ../../wayland-gpu.md:40
+msgid "GPU on and off"
+msgstr "GPU 켬과 끔"
+
+#: ../../wayland-gpu.md:42
+msgid ""
+"`Cef::addSwitch('disable-gpu')` is what the tests use. What the switch "
+"changes was measured with `docs/recipes/gpu-probe.php`, which starts CEF "
+"with the switches in `PROBE_SWITCHES`, loads a page served by PHP that "
+"asks for a WebGL and a WebGL 2 context, and reports what it got. Each "
+"line was run three times under `xvfb-run` with `ozone-platform=x11` "
+"(except where noted):"
+msgstr "`Cef::addSwitch('disable-gpu')`는 테스트가 사용하는 스위치입니다. 이 스위치가 무엇을 바꾸는지는 `docs/recipes/gpu-probe.php`로 측정했습니다. 이 프로그램은 `PROBE_SWITCHES`의 스위치로 CEF를 시작하고, PHP가 제공하는 페이지를 불러와 WebGL과 WebGL 2 컨텍스트를 요청한 다음 결과를 보고합니다. 각 줄은 (별도 표기가 없으면) `ozone-platform=x11`로 `xvfb-run` 아래에서 세 번씩 실행했습니다."
+
+#: ../../wayland-gpu.md
+msgid "Switches"
+msgstr "스위치"
+
+#: ../../wayland-gpu.md
+msgid "WebGL and WebGL 2 in the page"
+msgstr "페이지의 WebGL과 WebGL 2"
+
+#: ../../wayland-gpu.md
+msgid "`disable-gpu`"
+msgstr "`disable-gpu`"
+
+#: ../../wayland-gpu.md
+msgid "none (no context)"
+msgstr "없음(컨텍스트 없음)"
+
+#: ../../wayland-gpu.md
+msgid "none; standard error: `WebGL1 blocklisted`, `WebGL2 blocklisted`"
+msgstr "없음. 표준 오류: `WebGL1 blocklisted`, `WebGL2 blocklisted`"
+
+#: ../../wayland-gpu.md
+msgid "`disable-gpu`, `enable-unsafe-swiftshader`"
+msgstr "`disable-gpu`, `enable-unsafe-swiftshader`"
+
+#: ../../wayland-gpu.md
+msgid ""
+"a context; the renderer string is `ANGLE (Google, Vulkan 1.3.0 "
+"(SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)`"
+msgstr "컨텍스트가 만들어졌습니다. 렌더러 문자열은 `ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)`입니다"
+
+#: ../../wayland-gpu.md
+msgid "`use-gl=angle`, `use-angle=swiftshader`"
+msgstr "`use-gl=angle`, `use-angle=swiftshader`"
+
+#: ../../wayland-gpu.md
+msgid "the same SwiftShader context (one run)"
+msgstr "같은 SwiftShader 컨텍스트(한 번 실행)"
+
+#: ../../wayland-gpu.md:55
+msgid ""
+"The virtual X server has no GPU, so the second line says what Chromium "
+"did on that screen, not what it does on a machine with a GPU. A run on a "
+"real X11 screen with a GPU was not made."
+msgstr "가상 X 서버에는 GPU가 없으므로, 두 번째 줄은 Chromium이 그 화면에서 한 동작을 보여 줄 뿐 GPU가 있는 머신에서의 동작을 보여 주지는 않습니다. GPU가 있는 실제 X11 화면에서는 실행하지 않았습니다."
+
+#: ../../wayland-gpu.md:56
+msgid ""
+"With `disable-gpu` a process of type `gpu-process` was still running (in "
+"every run above): the switch turns off hardware acceleration, not the GPU"
+" process."
+msgstr "`disable-gpu`를 지정해도 `gpu-process` 유형의 프로세스는 (위의 모든 실행에서) 계속 실행 중이었습니다. 이 스위치는 하드웨어 가속을 끌 뿐 GPU 프로세스를 끄지는 않습니다."
+
+#: ../../wayland-gpu.md:57
+msgid ""
+"The runtime directory (`build/dist/`) holds `libvk_swiftshader.so` and "
+"`vk_swiftshader_icd.json` next to `libcef.so`."
+msgstr "런타임 디렉터리(`build/dist/`)에는 `libcef.so` 옆에 `libvk_swiftshader.so`와 `vk_swiftshader_icd.json`이 있습니다."
+
+#: ../../wayland-gpu.md:58
+msgid ""
+"WebGL is therefore off in the test suite and in the examples. A program "
+"that needs WebGL on a machine without a GPU can add `enable-unsafe-"
+"swiftshader` as in the third line (software rendering, slow; its speed "
+"was not measured)."
+msgstr "따라서 테스트 모음과 예제에서는 WebGL이 꺼져 있습니다. GPU가 없는 머신에서 WebGL이 필요한 프로그램은 세 번째 줄처럼 `enable-unsafe-swiftshader`를 추가할 수 있습니다(소프트웨어 렌더링이며 느립니다. 속도는 측정하지 않았습니다)."
+
+#: ../../wayland-gpu.md:60
+msgid ""
+"Video and sound were not tried. Whether a given video plays with the GPU "
+"on or off was not checked on any machine. What the page reports for "
+"codecs is under [Limitations](limitations.md#media)."
+msgstr "영상과 소리는 시험하지 않았습니다. 특정 영상이 GPU를 켠 상태와 끈 상태에서 재생되는지는 어느 머신에서도 확인하지 않았습니다. 페이지가 코덱에 대해 보고하는 내용은 [한계와 알려진 제약](limitations.md#media)에 있습니다."
+
+#: ../../wayland-gpu.md:62
+msgid "A page that draws by itself"
+msgstr "스스로 그리는 페이지"
+
+#: ../../wayland-gpu.md:64
+msgid ""
+"Off-screen rendering (`windowlessRenderingEnabled`) was run with "
+"`disable-gpu` and `ozone-platform=x11` only (`tests/t_osr.php`, which "
+"reads the pixels). Off-screen with the GPU on was not tried."
+msgstr "오프스크린 렌더링(`windowlessRenderingEnabled`)은 `disable-gpu`와 `ozone-platform=x11`로만 실행했습니다(픽셀을 읽는 `tests/t_osr.php`). GPU를 켠 오프스크린은 시험하지 않았습니다."
+
+#: ../../wayland-gpu.md:66
+msgid "Without a screen"
+msgstr "화면 없이"
+
+#: ../../wayland-gpu.md:68
+msgid "Two ways were run."
+msgstr "두 가지 방법을 실행했습니다."
+
+#: ../../wayland-gpu.md:70
+msgid ""
+"**`xvfb-run -a php ...`**: a virtual X server. The windows, the Views "
+"windows, the input from `xdotool` and the tests all work on it "
+"([Views](views.md#without-a-display), `tests/t_views_input.php`). Run it "
+"with `env -u WAYLAND_DISPLAY` and, if the session is Wayland, with the "
+"`ozone-platform=x11` switch, so that nothing reaches the real compositor."
+msgstr "**`xvfb-run -a php ...`**: 가상 X 서버입니다. 창, Views 창, `xdotool`의 입력, 테스트가 모두 여기서 동작합니다([Views](views.md#without-a-display), `tests/t_views_input.php`). 실제 컴포지터에 아무것도 전달되지 않도록 `env -u WAYLAND_DISPLAY`와 함께 실행하고, 세션이 Wayland이면 `ozone-platform=x11` 스위치도 지정하십시오."
+
+#: ../../wayland-gpu.md:71
+msgid ""
+"**`ozone-platform=headless`** with `DISPLAY` and `WAYLAND_DISPLAY` unset:"
+" `initialize()` returned `true`, and a browser created with "
+"`BrowserHost::createBrowser()` and a `WindowInfo` loaded the page and ran"
+" its script (the probe got its answer from `cefloom.call`), with "
+"`disable-gpu` (three runs) and without (one run). Only this one kind of "
+"window was tried; Views windows and off-screen rendering on the headless "
+"platform were not."
+msgstr "**`ozone-platform=headless`**를 `DISPLAY`와 `WAYLAND_DISPLAY`를 설정하지 않은 상태로 사용했을 때: `initialize()`가 `true`를 반환했고, `BrowserHost::createBrowser()`와 `WindowInfo`로 만든 브라우저가 페이지를 불러와 스크립트를 실행했습니다(프로브는 `cefloom.call`로 답을 받았습니다). `disable-gpu`를 지정한 경우(세 번 실행)와 지정하지 않은 경우(한 번 실행) 모두 그랬습니다. 이 한 종류의 창만 시험했고, headless 플랫폼에서의 Views 창과 오프스크린 렌더링은 시험하지 않았습니다."
+
+#: ../../wayland-gpu.md:73
+msgid ""
+"The switch `headless` (without `ozone-platform`) was tried once with "
+"`DISPLAY` unset: `initialize()` returned `true`, but the GPU process "
+"exited with `Exiting GPU process due to errors during initialization` "
+"(and ANGLE could not open the default X display), and the page's answer "
+"never arrived. It was not looked into further."
+msgstr "`headless` 스위치(`ozone-platform` 없이)는 `DISPLAY`를 설정하지 않고 한 번 시험했습니다. `initialize()`는 `true`를 반환했지만 GPU 프로세스가 `Exiting GPU process due to errors during initialization`로 종료했고(ANGLE이 기본 X 디스플레이를 열 수 없었습니다) 페이지의 답은 도착하지 않았습니다. 더 조사하지는 않았습니다."
+
+#: ../../wayland-gpu.md:75
+msgid "Not tried"
+msgstr "시험하지 않은 것"
+
+#: ../../wayland-gpu.md:77
+msgid ""
+"Any run on a real Wayland session: windows opened by CEF on a compositor,"
+" input, closing a window from code, `ozone-platform=wayland` with a "
+"compositor."
+msgstr "실제 Wayland 세션에서의 모든 실행: 컴포지터에서 CEF가 여는 창, 입력, 코드에서 창 닫기, 컴포지터가 있는 `ozone-platform=wayland`."
+
+#: ../../wayland-gpu.md:78
+msgid ""
+"A desktop environment's window manager (GNOME, KDE, Sway); only no window"
+" manager and `twm` were used for input tests ([Views](views.md#input))."
+msgstr "데스크톱 환경의 창 관리자(GNOME, KDE, Sway). 입력 테스트에는 창 관리자 없음과 `twm`만 사용했습니다([Views](views.md#input))."
+
+#: ../../wayland-gpu.md:79
+msgid ""
+"A GPU, with X11 or with Wayland: video playback, WebGL, the GPU process "
+"on a real screen, and the effect of other GPU switches."
+msgstr "X11 또는 Wayland에서의 GPU: 영상 재생, WebGL, 실제 화면에서의 GPU 프로세스, 다른 GPU 스위치의 효과."
+
+#: ../../wayland-gpu.md:80
+msgid ""
+"A toolkit using Wayland natively beside CEF (cefloom has no toolkit "
+"adapters)."
+msgstr "CEF 옆에서 Wayland를 네이티브로 사용하는 툴킷(cefloom에는 툴킷 어댑터가 없습니다)."
+

@@ -1,0 +1,279 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../installation.md:1
+msgid "Installation"
+msgstr "설치"
+
+#: ../../installation.md:3
+msgid ""
+"cefloom comes in three parts that are installed separately, because they "
+"are different in size and in how they travel:"
+msgstr "cefloom은 크기와 배포 방식이 서로 다르기 때문에, 별도로 설치하는 세 부분으로 구성됩니다:"
+
+#: ../../installation.md
+msgid "Part"
+msgstr "구성 요소"
+
+#: ../../installation.md
+msgid "What it is"
+msgstr "설명"
+
+#: ../../installation.md
+msgid "Size"
+msgstr "크기"
+
+#: ../../installation.md
+msgid "Installed by"
+msgstr "설치 도구"
+
+#: ../../installation.md
+msgid "The extension"
+msgstr "확장"
+
+#: ../../installation.md
+msgid "`cefloom.so`, the PHP side"
+msgstr "`cefloom.so`, PHP 쪽"
+
+#: ../../installation.md
+msgid "about 4 MB"
+msgstr "약 4 MB"
+
+#: ../../installation.md
+msgid "[PIE](https://github.com/php/pie)"
+msgstr "[PIE](https://github.com/php/pie)"
+
+#: ../../installation.md
+msgid "The CEF runtime"
+msgstr "CEF 런타임"
+
+#: ../../installation.md
+msgid "Chromium: `libcef.so`, resources, `cefloomsubprocess`"
+msgstr "Chromium: `libcef.so`, 리소스, `cefloomsubprocess`"
+
+#: ../../installation.md
+msgid "about 150 MB compressed, 360 MB unpacked"
+msgstr "압축 시 약 150 MB, 압축 해제 시 360 MB"
+
+#: ../../installation.md
+msgid "`cefloom-runtime`"
+msgstr "`cefloom-runtime`"
+
+#: ../../installation.md
+msgid "The stub"
+msgstr "스텁"
+
+#: ../../installation.md
+msgid "`php/cefloom.stub.php`, declarations for an IDE"
+msgstr "`php/cefloom.stub.php`, IDE용 선언"
+
+#: ../../installation.md
+msgid "small"
+msgstr "작음"
+
+#: ../../installation.md
+msgid "copy it, or point the IDE at it"
+msgstr "복사하거나, IDE가 이 파일을 참조하도록 설정"
+
+#: ../../installation.md:11
+msgid ""
+"**Status.** The package is `search5/cefloom` (source: "
+"<https://github.com/search5/cefloom>), but no release is published and "
+"the package is not on Packagist yet. The commands below show how it will "
+"work; until then, [build from source](development.md#building-from-"
+"source)."
+msgstr ""
+"**상태.** 패키지는 `search5/cefloom`(소스:"
+" <https://github.com/search5/cefloom>)이지만 릴리스가 게시되지 않았고 패키지가"
+" 아직 Packagist에 등록되어 있지 않습니다. 아래 명령은 앞으로의 동작 방식을 보여 줍니다."
+" 그때까지는 [소스에서 빌드](development.md#building-from-source)하십시오."
+
+#: ../../installation.md:13
+msgid "Requirements"
+msgstr "요구 사항"
+
+#: ../../installation.md:15
+msgid ""
+"Linux x86_64 with glibc. It was built and tested on Ubuntu only; other "
+"glibc distributions were not tried. CEF is built for glibc, so Alpine "
+"(musl) is not supported. arm64 is built the same way but was not tried."
+msgstr ""
+"glibc 기반 Linux x86_64입니다. Ubuntu에서만 빌드하고 테스트했으며, 다른 glibc"
+" 배포판은 시도하지 않았습니다. CEF는 glibc용으로 빌드되므로 Alpine(musl)은 지원하지"
+" 않습니다. arm64도 같은 방식으로 빌드되지만 시도하지 않았습니다."
+
+#: ../../installation.md:16
+msgid ""
+"PHP 8.5 CLI, non-thread-safe (NTS), with the `phar` and `zlib` extensions"
+" (a default CLI has both). PHP-FPM and thread-safe PHP were not tried; "
+"see [Concepts](concepts.md#where-php-runs)."
+msgstr ""
+"`phar`와 `zlib` 확장이 있는 PHP 8.5 CLI,"
+" non-thread-safe(NTS)입니다(기본 CLI에는 둘 다 있습니다). PHP-FPM과"
+" thread-safe PHP는 시도하지 않았습니다."
+" [개념](concepts.md#where-php-runs)을 참고하십시오."
+
+#: ../../installation.md:17
+msgid ""
+"A display for windows: an X server (X11), or `xvfb-run -a` on a machine "
+"without one. Wayland sessions were not tried; CEF is started with `ozone-"
+"platform=x11` in the examples."
+msgstr ""
+"창을 위한 디스플레이가 필요합니다. X 서버(X11)가 필요하며, 없는 머신에서는 `xvfb-run -a`를"
+" 사용합니다. Wayland 세션은 시도하지 않았으며, 예제에서는 CEF를"
+" `ozone-platform=x11`로 시작합니다."
+
+#: ../../installation.md:18
+msgid ""
+"The system libraries that Chromium loads (GTK 3, NSS, ALSA, and so on). A"
+" desktop installation has them; on a minimal server or in a container, "
+"`ldd ~/.local/share/cefloom/runtime/*/libcef.so | grep 'not found'` lists"
+" what is missing. The package names were not checked for any "
+"distribution."
+msgstr ""
+"Chromium이 로드하는 시스템 라이브러리(GTK 3, NSS, ALSA 등)가 필요합니다. 데스크톱"
+" 설치에는 이미 있습니다. 최소 구성 서버나 컨테이너에서는 `ldd"
+" ~/.local/share/cefloom/runtime/*/libcef.so | grep 'not"
+" found'`가 누락된 항목을 보여 줍니다. 패키지 이름은 어떤 배포판에서도 확인하지 않았습니다."
+
+#: ../../installation.md:20
+msgid "1. The extension"
+msgstr "1. 확장"
+
+#: ../../installation.md:22
+msgid "Install PIE once (see the PIE documentation), then:"
+msgstr "PIE를 한 번 설치한 뒤(PIE 문서를 참조하십시오) 다음을 실행하십시오:"
+
+#: ../../installation.md:28
+msgid ""
+"PIE downloads the file `php_cefloom-<version>_php<X.Y>-x86_64-linux-"
+"glibc-nts.zip` that is attached to the release of the package, puts "
+"`cefloom.so` into PHP's extension directory and enables it in `php.ini`. "
+"cefloom does not need compiler tools for this: the extension is not built"
+" on your machine."
+msgstr ""
+"PIE는 패키지 릴리스에 첨부된"
+" `php_cefloom-<version>_php<X.Y>-x86_64-linux-glibc-nts.zip`"
+" 파일을 내려받아 `cefloom.so`를 PHP의 확장 디렉터리에 넣고 `php.ini`에서 활성화합니다."
+" 이 과정에 컴파일러 도구는 필요하지 않습니다. 확장은 사용자의 머신에서 빌드되지 않습니다."
+
+#: ../../installation.md:30
+msgid ""
+"The extension **loads without the CEF runtime** and costs a PHP process "
+"that does not use CEF about 4 MB of memory and a few milliseconds at "
+"start (measured: 20.5 MB against 16 MB for PHP without the extension), so"
+" it can stay enabled in `php.ini` for every script. Calling CEF without "
+"the runtime throws an `Error` that says so."
+msgstr ""
+"확장은 **CEF 런타임 없이도 로드되며**, CEF를 사용하지 않는 PHP 프로세스에는 약 4 MB의"
+" 메모리와 시작 시 몇 밀리초의 비용만 듭니다(측정값: 확장이 없는 PHP의 16 MB에 비해 20.5"
+" MB). 따라서 모든 스크립트를 위해 `php.ini`에서 활성화한 채로 둘 수 있습니다. 런타임 없이"
+" CEF를 호출하면 그 사실을 알리는 `Error`가 발생합니다."
+
+#: ../../installation.md:32
+msgid "Check it:"
+msgstr "다음으로 확인하십시오:"
+
+#: ../../installation.md:38
+msgid "2. The CEF runtime"
+msgstr "2. CEF 런타임"
+
+#: ../../installation.md:45
+msgid ""
+"`install` downloads `cefloom-runtime-<CEF version>-linux-x86_64.tar.gz` "
+"and its `.sha256`, checks the checksum and that the archive holds the CEF"
+" version this extension was built against, and unpacks it into"
+msgstr ""
+"`install`은 `cefloom-runtime-<CEF"
+" version>-linux-x86_64.tar.gz`와 그 `.sha256`을 내려받고, 체크섬과"
+" 아카이브에 이 확장이 빌드된 CEF 버전이 들어 있는지를 확인한 뒤 다음 위치에 압축을 풉니다."
+
+#: ../../installation.md:51
+msgid ""
+"No administrator rights are needed. The extension looks for the runtime "
+"in this order: the directory named by `CEFLOOM_HOME`; the directory of "
+"`cefloom.so`, if `libcef.so` is there (the layout of a build directory); "
+"the user directory above. `cefloom-runtime path` prints the one in use, "
+"`status` tells whether it is there and which CEF version it holds."
+msgstr ""
+"관리자 권한은 필요하지 않습니다. 확장은 다음 순서로 런타임을 찾습니다: `CEFLOOM_HOME`이"
+" 가리키는 디렉터리, `libcef.so`가 있는 경우 `cefloom.so`가 있는 디렉터리(빌드"
+" 디렉터리의 구조), 위의 사용자 디렉터리입니다. `cefloom-runtime path`는 사용 중인"
+" 위치를 출력하고, `status`는 런타임이 있는지와 어떤 CEF 버전이 들어 있는지를 알려 줍니다."
+
+#: ../../installation.md:53
+msgid "Other ways to say where the runtime is:"
+msgstr "런타임 위치를 지정하는 다른 방법은 다음과 같습니다:"
+
+#: ../../installation.md:61
+msgid ""
+"Without `--sha256` the tool reads `<archive>.sha256` next to the archive;"
+" it refuses to install without a checksum."
+msgstr ""
+"`--sha256`을 지정하지 않으면 도구는 아카이브 옆의 `<archive>.sha256`을 읽으며,"
+" 체크섬이 없으면 설치를 거부합니다."
+
+#: ../../installation.md:63
+msgid "Offline and containers"
+msgstr "오프라인 및 컨테이너"
+
+#: ../../installation.md:65
+msgid ""
+"Download `php_cefloom-…zip` and `cefloom-runtime-…tar.gz` (with the "
+"`.sha256` files) from the release page on a machine with network access, "
+"then on the target:"
+msgstr ""
+"네트워크에 접근할 수 있는 머신에서 릴리스 페이지의 `php_cefloom-…zip`과"
+" `cefloom-runtime-…tar.gz`(`.sha256` 파일 포함)를 내려받은 다음, 대상"
+" 머신에서 다음을 실행하십시오:"
+
+#: ../../installation.md:73
+msgid ""
+"In a container (not tried), install the runtime while building the image,"
+" for example with `--dir=/opt/cefloom`, and set "
+"`CEFLOOM_HOME=/opt/cefloom`. The container needs the libraries Chromium "
+"needs (see Requirements) and, for windows, a display. `cefloom` starts "
+"CEF with the sandbox off (`no_sandbox`), because the sandbox needs "
+"`chrome-sandbox` set up as root; see [Configuration](configuration.md"
+"#the-sandbox)."
+msgstr ""
+"컨테이너(시도하지 않음)에서는 이미지를 빌드하는 동안 런타임을 설치하고(예:"
+" `--dir=/opt/cefloom`), `CEFLOOM_HOME=/opt/cefloom`을 설정하십시오."
+" 컨테이너에는 Chromium에 필요한 라이브러리(요구 사항 참조)가 필요하며, 창을 사용하려면 디스플레이도"
+" 필요합니다. 샌드박스에는 root로 설정된 `chrome-sandbox`가 필요하므로 `cefloom`은"
+" 샌드박스를 끈 상태(`no_sandbox`)로 CEF를 시작합니다."
+" [구성](configuration.md#the-sandbox)을 참고하십시오."
+
+#: ../../installation.md:75
+msgid "Update and remove"
+msgstr "업데이트 및 제거"
+
+#: ../../installation.md:84
+msgid ""
+"The extension and the runtime must be the same CEF version: `php -r 'echo"
+" Cefloom\\Cef::cefVersion();'` says which one the extension wants. A "
+"runtime of another version is not used, and `cefloom-runtime install` "
+"refuses it."
+msgstr ""
+"확장과 런타임은 CEF 버전이 같아야 합니다. `php -r 'echo"
+" Cefloom\\Cef::cefVersion();'`가 확장이 요구하는 버전을 알려 줍니다. 다른 버전의"
+" 런타임은 사용되지 않으며, `cefloom-runtime install`도 이를 거부합니다."
+

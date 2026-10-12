@@ -1,0 +1,492 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 07:24+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../development.md:1
+msgid "Development"
+msgstr "개발"
+
+#: ../../development.md:3
+msgid "Building from source"
+msgstr "소스에서 빌드하기"
+
+#: ../../development.md:5
+msgid ""
+"You need: PHP 8.5 with its development files (`phpize`), a C++20 "
+"compiler, `rsync`, `patchelf`, `python3`, and a **CEF distribution**: the"
+" headers, the wrapper library `libcef_dll_wrapper.a` built from them, and"
+" the runtime files (`libcef.so`, the `.pak` files, `icudtl.dat`, "
+"`locales/`, and so on). CEF 154.0.34 is the version this was built "
+"against."
+msgstr ""
+"다음이 필요합니다. 개발 파일(`phpize`)이 포함된 PHP 8.5, C++20 컴파일러, `rsync`, `patchelf`,"
+" `python3`, 그리고 **CEF 배포판**입니다. CEF 배포판은 헤더, 그 헤더로 빌드한 래퍼 라이브러리 "
+"`libcef_dll_wrapper.a`, 런타임 파일(`libcef.so`, `.pak` 파일, `icudtl.dat`, "
+"`locales/` 등)로 이루어집니다. 이 프로젝트는 CEF 154.0.34를 기준으로 빌드되었습니다."
+
+#: ../../development.md:12
+msgid ""
+"`tools/build.sh` reads its inputs from environment variables whose "
+"defaults are the layout of the workspace this repository grew in; set "
+"them for yours:"
+msgstr ""
+"`tools/build.sh`는 환경변수에서 입력을 읽으며, 기본값은 이 저장소가 만들어진 워크스페이스의 구조를 따릅니다. 사용 "
+"환경에 맞게 설정하십시오."
+
+#: ../../development.md
+msgid "Variable"
+msgstr "변수"
+
+#: ../../development.md
+msgid "Meaning"
+msgstr "의미"
+
+#: ../../development.md
+msgid "`CEF_ROOT`"
+msgstr "`CEF_ROOT`"
+
+#: ../../development.md
+msgid "the CEF distribution (the directory with `include/`)"
+msgstr "CEF 배포판(`include/`가 있는 디렉터리)"
+
+#: ../../development.md
+msgid "`CEFLOOM_WRAPPER_LIB`"
+msgstr "`CEFLOOM_WRAPPER_LIB`"
+
+#: ../../development.md
+msgid "`libcef_dll_wrapper.a` built from that distribution"
+msgstr "해당 배포판으로 빌드한 `libcef_dll_wrapper.a`"
+
+#: ../../development.md
+msgid "`CEFLOOM_RUNTIME`"
+msgstr "`CEFLOOM_RUNTIME`"
+
+#: ../../development.md
+msgid "a directory with `libcef.so`, the `.pak` files, `icudtl.dat`, `locales/`"
+msgstr "`libcef.so`, `.pak` 파일, `icudtl.dat`, `locales/`가 있는 디렉터리"
+
+#: ../../development.md
+msgid "`BUILD`"
+msgstr "`BUILD`"
+
+#: ../../development.md
+msgid "the build directory (default `build/`)"
+msgstr "빌드 디렉터리(기본값 `build/`)"
+
+#: ../../development.md
+msgid "`CEFLOOM_LAZY_LIBCEF=0`"
+msgstr "`CEFLOOM_LAZY_LIBCEF=0`"
+
+#: ../../development.md
+msgid ""
+"link `libcef.so` instead of loading it when needed (the default is to "
+"load it when needed)"
+msgstr "`libcef.so`를 필요할 때 불러오지 않고 링크합니다(기본값은 필요할 때 불러오는 것입니다)"
+
+#: ../../development.md
+msgid "`CEFLOOM_COVERAGE=1`"
+msgstr "`CEFLOOM_COVERAGE=1`"
+
+#: ../../development.md
+msgid "a build that counts executed functions (see Coverage); slow, not for use"
+msgstr "실행된 함수를 세는 빌드입니다(커버리지 참조). 느리므로 실사용에는 맞지 않습니다"
+
+#: ../../development.md
+msgid "`JOBS`"
+msgstr "`JOBS`"
+
+#: ../../development.md
+msgid "parallel compile jobs"
+msgstr "병렬 컴파일 작업 수"
+
+#: ../../development.md:24
+msgid ""
+"How to prepare a CEF distribution and its wrapper library is not "
+"automated here yet."
+msgstr "CEF 배포판과 그 래퍼 라이브러리를 준비하는 방법은 아직 여기에서 자동화되어 있지 않습니다."
+
+#: ../../development.md:26
+msgid ""
+"The extension is built **without** a link to `libcef.so`, so that it "
+"loads where the runtime is not installed "
+"([Installation](installation.md#1-the-extension)). A compile error stops "
+"the build; the build directory is rebuilt from scratch when "
+"`CEFLOOM_LAZY_LIBCEF` changes."
+msgstr ""
+"확장은 `libcef.so`에 대한 링크 **없이** 빌드되므로, 런타임이 설치되지 않은 곳에서도 "
+"로드됩니다([설치](installation.md#1-the-extension)). 컴파일 오류가 나면 빌드가 중단되며, "
+"`CEFLOOM_LAZY_LIBCEF`가 바뀌면 빌드 디렉터리를 처음부터 다시 빌드합니다."
+
+#: ../../development.md ../../development.md:28
+msgid "Tests"
+msgstr "테스트"
+
+#: ../../development.md:37
+msgid ""
+"Each test is a PHP script that runs in its own process (CEF starts once "
+"per process) under `xvfb-run`, and prints `OK (n checks)`. The runner "
+"puts each test in its own session, stops what is left of it, and fails a "
+"test that takes too long (`TEST_TIMEOUT`, default 120 s). **Run tests one"
+" at a time** (the runner does). Several CEF test processes at once were "
+"avoided because they were suspected of making tests hang; that was not "
+"confirmed. `xvfb-run` and `xdotool` are needed (`t_views_input` skips "
+"itself without `xdotool`)."
+msgstr ""
+"각 테스트는 `xvfb-run` 아래에서 자체 프로세스로 실행되는 PHP 스크립트이며(CEF는 프로세스마다 한 번 시작됩니다), "
+"`OK (n checks)`를 출력합니다. 러너는 각 테스트를 별도의 세션에 넣고, 테스트가 끝난 뒤 남은 프로세스를 정리하며, "
+"시간이 너무 오래 걸리는 테스트(`TEST_TIMEOUT`, 기본값 120초)를 실패로 처리합니다. **테스트는 한 번에 하나씩 "
+"실행하십시오**(러너는 그렇게 실행합니다). 여러 CEF 테스트 프로세스를 동시에 실행하는 것은 테스트가 멈추는 원인으로 의심되어 "
+"피했으나, 확인된 것은 아닙니다. `xvfb-run`과 `xdotool`이 필요합니다(`xdotool`이 없으면 "
+"`t_views_input`은 스스로 건너뜁니다)."
+
+#: ../../development.md:39
+msgid "`tests/t_examples.php` runs the programs in `examples/`."
+msgstr "`tests/t_examples.php`는 `examples/`의 프로그램을 실행합니다."
+
+#: ../../development.md:41
+msgid "What the tests cover"
+msgstr "테스트가 다루는 범위"
+
+#: ../../development.md
+msgid "Group"
+msgstr "그룹"
+
+#: ../../development.md
+msgid "The extension itself"
+msgstr "확장 자체"
+
+#: ../../development.md
+msgid ""
+"`t_core` (start and stop), `t_exceptions` (exceptions in handlers), "
+"`t_runtime` (time values, maps, `Buffer`, object identity, lifetime), "
+"`t_mapping` (one method per kind of argument and result, and the errors "
+"for wrong types), `t_sync_timeout`, `t_no_runtime`"
+msgstr ""
+"`t_core`(시작과 종료), `t_exceptions`(핸들러의 예외), `t_runtime`(시간 값, 맵, `Buffer`,"
+" 객체 식별, 수명), `t_mapping`(인자와 결과의 종류별 메서드 하나씩, 잘못된 타입에 대한 오류), "
+"`t_sync_timeout`, `t_no_runtime`"
+
+#: ../../development.md
+msgid "Generated code"
+msgstr "생성된 코드"
+
+#: ../../development.md
+msgid ""
+"`t_stub_consistency` (the stub against Reflection), `t_generated_fresh` "
+"(the generated files are current), `t_generator` (unit tests of "
+"`tools/gen`, `tests/gen/test_generator.py`)"
+msgstr ""
+"`t_stub_consistency`(스텁과 Reflection의 대조), `t_generated_fresh`(생성된 파일이 "
+"최신인지 확인), `t_generator`(`tools/gen`의 단위 테스트, "
+"`tests/gen/test_generator.py`)"
+
+#: ../../development.md
+msgid "Tools and scripts"
+msgstr "도구와 스크립트"
+
+#: ../../development.md
+msgid ""
+"`t_runtime_tool` (`bin/cefloom-runtime`), `t_package` "
+"(`tools/package.sh`), `t_build` (`tools/build.sh`, with fake compilers), "
+"`t_runner`, `t_lint`, `t_docs` (the links and the PHP examples of "
+"`docs/`)"
+msgstr ""
+"`t_runtime_tool`(`bin/cefloom-runtime`), `t_package`(`tools/package.sh`),"
+" `t_build`(가짜 컴파일러를 사용한 `tools/build.sh`), `t_runner`, `t_lint`, "
+"`t_docs`(`docs/`의 링크와 PHP 예제)"
+
+#: ../../development.md
+msgid "Pure library classes"
+msgstr "순수 라이브러리 클래스"
+
+#: ../../development.md
+msgid ""
+"`t_values`, `t_lib_values`, `t_structs`, `t_lib_pure` (encoding, URLs, "
+"files, ZIP, XML, streams, command line, images, post data, events, "
+"threads)"
+msgstr ""
+"`t_values`, `t_lib_values`, `t_structs`, `t_lib_pure`(인코딩, URL, 파일, ZIP, "
+"XML, 스트림, 명령줄, 이미지, post 데이터, 이벤트, 스레드)"
+
+#: ../../development.md
+msgid "Network"
+msgstr "네트워크"
+
+#: ../../development.md
+msgid ""
+"`t_requests` and `t_resources` (the callbacks of a request, resource and "
+"scheme handlers), `t_urlrequest`, `t_cookies`, `t_context` (request "
+"contexts and preferences), `t_download`, `t_server`, `t_ssl`"
+msgstr ""
+"`t_requests`와 `t_resources`(요청, 리소스, 스킴 핸들러의 콜백), `t_urlrequest`, "
+"`t_cookies`, `t_context`(요청 컨텍스트와 환경설정), `t_download`, `t_server`, "
+"`t_ssl`"
+
+#: ../../development.md
+msgid "Browser and handlers"
+msgstr "브라우저와 핸들러"
+
+#: ../../development.md
+msgid ""
+"`t_browser_*`, `t_browser_host` (zoom, find, DevTools, history, popups), "
+"`t_handlers`, `t_dialogs`, `t_input` (keyboard, focus, context menu), "
+"`t_osr` (off-screen rendering with pixel checks), `t_app_misc`, "
+"`t_bridge`, `t_bridge_more`, `t_thread_tasks`"
+msgstr ""
+"`t_browser_*`, `t_browser_host`(확대/축소, 찾기, DevTools, 기록, 팝업), "
+"`t_handlers`, `t_dialogs`, `t_input`(키보드, 포커스, 컨텍스트 메뉴), `t_osr`(픽셀 검사를 "
+"포함한 오프스크린 렌더링), `t_app_misc`, `t_bridge`, `t_bridge_more`, "
+"`t_thread_tasks`"
+
+#: ../../development.md
+msgid "Views, printing, Cast"
+msgstr "Views, 인쇄, Cast"
+
+#: ../../development.md
+msgid "`t_views`, `t_views_input`, `t_views_more`, `t_print`, `t_pdf`, `t_cast`"
+msgstr "`t_views`, `t_views_input`, `t_views_more`, `t_print`, `t_pdf`, `t_cast`"
+
+#: ../../development.md:53
+msgid ""
+"The network tests talk to a local HTTP server "
+"(`tests/fixtures/server.php`, started by `start_http_server()` on a free "
+"port) and, for TLS, to a PHP child process with a certificate that "
+"`openssl` makes (`start_https_server()`). Nothing leaves the machine. "
+"Tests that need `xdotool` or `openssl` skip themselves without it."
+msgstr ""
+"네트워크 테스트는 로컬 HTTP 서버(`tests/fixtures/server.php`이며, "
+"`start_http_server()`가 빈 포트에서 시작합니다)와 통신하고, TLS 테스트는 `openssl`이 만든 인증서를 "
+"가진 PHP 자식 프로세스(`start_https_server()`)와 통신합니다. 어떤 데이터도 머신 밖으로 나가지 않습니다. "
+"`xdotool` 또는 `openssl`이 필요한 테스트는 해당 도구가 없으면 스스로 건너뜁니다."
+
+#: ../../development.md:55
+msgid ""
+"A test that documents a known problem starts with a line `// xfail: "
+"reason`. The runner counts it as passed while it fails, and fails it when"
+" it passes (\"unexpectedly passed\"), which is the sign to turn it into "
+"an ordinary test and to update `llm-wiki/pages/reference/known-"
+"constraints.md`."
+msgstr ""
+"알려진 문제를 기록하는 테스트는 `// xfail: reason` 줄로 시작합니다. 러너는 이 테스트가 실패하면 통과한 것으로 "
+"세고, 통과하면 실패로 처리합니다(\"unexpectedly passed\"). 이는 그 테스트를 일반 테스트로 바꾸고 `llm-"
+"wiki/pages/reference/known-constraints.md`를 갱신해야 한다는 신호입니다."
+
+#: ../../development.md:57
+msgid ""
+"Writing a test: `require __DIR__ . '/support.php';`, call `start_cef()` "
+"once, use `check()` and `same()`, wait for CEF with `wait_until()` or "
+"`pump()` instead of sleeping, and end with `Cef::shutdown(); finish();`. "
+"Run a new test ten times and in both loop modes before it is committed: a"
+" test that fails one time in ten costs more than it finds."
+msgstr ""
+"테스트 작성 방법은 다음과 같습니다. `require __DIR__ . '/support.php';`를 사용하고, "
+"`start_cef()`를 한 번 호출하고, `check()`와 `same()`을 사용하고, 대기할 때는 sleep 대신 "
+"`wait_until()` 또는 `pump()`로 CEF를 기다리고, `Cef::shutdown(); finish();`로 "
+"끝냅니다. 새 테스트는 커밋하기 전에 열 번, 두 가지 루프 모드에서 모두 실행하십시오. 열 번에 한 번 실패하는 테스트는 찾아내는"
+" 것보다 더 큰 비용을 치르게 합니다."
+
+#: ../../development.md:59
+msgid "Coverage"
+msgstr "커버리지"
+
+#: ../../development.md:65
+msgid ""
+"The report counts which methods of the PHP API the tests run (by area of "
+"CEF) and the line coverage of the hand-written C++, and compares them "
+"with `tests/coverage-baseline.json`: it exits with 1 if a number fell. "
+"After adding tests, raise the baseline with `python3 "
+"tools/coverage_report.py build-coverage --write-baseline tests/coverage-"
+"baseline.json`. It measures execution, not the quality of the checks. "
+"`llm-wiki/pages/analyses/test-coverage.md` has the latest numbers and "
+"`llm-wiki/pages/reference/test-plan.md` the plan to raise them."
+msgstr ""
+"보고서는 테스트가 실행하는 PHP API의 메서드(CEF 영역별)와 직접 작성한 C++의 라인 커버리지를 세어 `tests"
+"/coverage-baseline.json`과 비교하며, 수치가 떨어졌으면 종료 코드 1로 끝납니다. 테스트를 추가한 뒤에는 "
+"`python3 tools/coverage_report.py build-coverage --write-baseline tests"
+"/coverage-baseline.json`으로 기준값을 올리십시오. 이 보고서는 실행 여부를 측정할 뿐, 검사의 품질을 측정하지는"
+" 않습니다. 최신 수치는 `llm-wiki/pages/analyses/test-coverage.md`에, 수치를 올리기 위한 계획은"
+" `llm-wiki/pages/reference/test-plan.md`에 있습니다."
+
+#: ../../development.md:67
+msgid "Packaging and release"
+msgstr "패키징과 릴리스"
+
+#: ../../development.md:73
+msgid "writes, with a `.sha256` next to each:"
+msgstr "각 파일 옆에 `.sha256`과 함께 다음을 생성합니다."
+
+#: ../../development.md
+msgid "File"
+msgstr "파일"
+
+#: ../../development.md
+msgid "For"
+msgstr "용도"
+
+#: ../../development.md
+msgid "`php_cefloom-<version>_php<X.Y>-<arch>-linux-glibc-nts.zip`"
+msgstr "`php_cefloom-<version>_php<X.Y>-<arch>-linux-glibc-nts.zip`"
+
+#: ../../development.md
+msgid "PIE; holds `cefloom.so` at its top"
+msgstr "PIE용이며, 최상위에 `cefloom.so`가 들어 있습니다"
+
+#: ../../development.md
+msgid "`cefloom-runtime-<CEF version>-linux-<arch>.tar.gz`"
+msgstr "`cefloom-runtime-<CEF version>-linux-<arch>.tar.gz`"
+
+#: ../../development.md
+msgid "`cefloom-runtime install`"
+msgstr "`cefloom-runtime install`"
+
+#: ../../development.md:80
+msgid ""
+"`<version>` is `CEFLOOM_VERSION` in `ext/src/cefloom.cc`. The first "
+"file's name follows PIE's rule (read from PIE 1.5.2: lower case, "
+"`php_<extension>-<version>_php<major.minor>-<arch>-<os>-<libc>[-debug](-nts|-zts)`,"
+" `.zip` or `.tgz`). `tools/package.sh` refuses a module that links "
+"`libcef.so`, a thread-safe or debug PHP, and a system without glibc."
+msgstr ""
+"`<version>`은 `ext/src/cefloom.cc`의 `CEFLOOM_VERSION`입니다. 첫 번째 파일의 이름은 "
+"PIE의 규칙을 따릅니다(PIE 1.5.2에서 확인한 내용: 소문자이며 "
+"`php_<extension>-<version>_php<major.minor>-<arch>-<os>-<libc>[-debug](-nts|-zts)`,"
+" 확장자는 `.zip` 또는 `.tgz`). `tools/package.sh`는 `libcef.so`를 링크하는 모듈, 스레드 안전"
+"(thread-safe) 또는 디버그 PHP, glibc가 없는 시스템을 거부합니다."
+
+#: ../../development.md:82
+msgid "To publish (not done yet):"
+msgstr "배포하려면(아직 하지 않았습니다):"
+
+#: ../../development.md:84
+msgid ""
+"The repository is on GitHub (`search5/cefloom`) and `composer.json` names"
+" the package `search5/cefloom`. Choose a licence and add it (there is "
+"none yet)."
+msgstr ""
+"저장소는 GitHub(`search5/cefloom`)에 있으며 `composer.json`은 패키지 이름을 "
+"`search5/cefloom`으로 지정합니다. 라이선스를 선택해 추가하십시오(아직 없습니다)."
+
+#: ../../development.md:85
+msgid ""
+"Tag the version (`git tag <version>`; keep the tag and `CEFLOOM_VERSION` "
+"equal, and use a tag without a leading `v`: whether PIE strips it when it"
+" builds the asset name was not checked) and create a GitHub release with "
+"both files and their checksums as assets. PIE finds the prebuilt binary "
+"among the assets of the release **by tag name**."
+msgstr ""
+"버전에 태그를 붙이고(`git tag <version>`, 태그와 `CEFLOOM_VERSION`을 같게 유지하며, 앞에 `v`가 "
+"없는 태그를 사용하십시오. PIE가 에셋 이름을 만들 때 `v`를 제거하는지는 확인하지 않았습니다), 두 파일과 그 체크섬을 "
+"에셋으로 하여 GitHub 릴리스를 만듭니다. PIE는 릴리스의 에셋 중에서 미리 빌드된 바이너리를 **태그 이름으로** 찾습니다."
+
+#: ../../development.md:86
+msgid ""
+"Submit the repository to [Packagist](https://packagist.org). Then `pie "
+"install <name>` works."
+msgstr ""
+"저장소를 [Packagist](https://packagist.org)에 등록합니다. 그러면 `pie install <name>`이"
+" 동작합니다."
+
+#: ../../development.md:87
+msgid ""
+"Build the files for each PHP version you support (8.5 so far), on the "
+"platform each is for."
+msgstr "지원하는 PHP 버전(현재까지는 8.5)마다, 각 파일이 대상으로 하는 플랫폼에서 파일을 빌드합니다."
+
+#: ../../development.md:88
+msgid ""
+"Tell users where the runtime archive is: `cefloom-runtime install --base-"
+"url=<the release's download directory>`."
+msgstr ""
+"사용자에게 런타임 아카이브의 위치를 알려 줍니다: `cefloom-runtime install --base-url=<the "
+"release's download directory>`."
+
+#: ../../development.md:90
+msgid ""
+"Not yet checked: a real `pie install` from a published release "
+"(everything before it was tried offline and with PIE's metadata checks), "
+"and the licence notices that redistributing the CEF runtime requires."
+msgstr ""
+"아직 확인하지 않은 항목은 다음과 같습니다. 게시된 릴리스에서의 실제 `pie install`(그 이전의 모든 단계는 오프라인과 "
+"PIE의 메타데이터 검사로 시도했습니다), 그리고 CEF 런타임을 재배포할 때 필요한 라이선스 고지입니다."
+
+#: ../../development.md:92
+msgid "Where the design is written down"
+msgstr "설계가 기록된 위치"
+
+#: ../../development.md:94
+msgid ""
+"`llm-wiki/` holds the architecture, the decisions (with the reasons), the"
+" experiments and what each established, and the list of what is not "
+"known. `llm-wiki/index.md` is the way in."
+msgstr ""
+"`llm-wiki/`에는 아키텍처, 결정 사항(이유 포함), 실험과 각 실험으로 확인된 내용, 그리고 아직 알려지지 않은 사항의 "
+"목록이 있습니다. 시작점은 `llm-wiki/index.md`입니다."
+
+#: ../../development.md:96
+msgid "Building this documentation"
+msgstr "이 문서 빌드하기"
+
+#: ../../development.md:98
+msgid ""
+"The pages are Sphinx with the Read the Docs theme. The guide is the "
+"Markdown of `docs/` (read by MyST); the API reference is written from "
+"`php/cefloom.stub.php` by `tools/docs/gen_api.py` on every build, and the"
+" pages it writes (`docs/api/gen-*.rst`) are not kept in git."
+msgstr ""
+"페이지는 Read the Docs 테마를 사용하는 Sphinx로 만듭니다. 가이드는 `docs/`의 Markdown(MyST가 "
+"읽습니다)이며, API 레퍼런스는 빌드할 때마다 `tools/docs/gen_api.py`가 "
+"`php/cefloom.stub.php`로부터 작성합니다. 이때 작성되는 페이지(`docs/api/gen-*.rst`)는 git에 "
+"보관하지 않습니다."
+
+#: ../../development.md:105
+msgid ""
+"`make -C docs html-all` also builds the Korean site (`_build/html/ko`) "
+"from the catalogs in `docs/locale/ko`. The guide, the cookbook and the "
+"index are translated. The descriptions in the API reference are the text "
+"of the CEF headers and stay in English, and so do the docstrings of the "
+"generator (`api/generator`, read by autodoc). After the English text of a"
+" page changes, `make -C docs update-po` brings the catalogs up to date "
+"and shows the entries that need a translation."
+msgstr "`make -C docs html-all`은 `docs/locale/ko`의 카탈로그로 한국어 사이트(`_build/html/ko`)도 빌드합니다. 가이드, 쿡북, 색인이 번역되어 있습니다. API 레퍼런스의 설명은 CEF 헤더의 텍스트이므로 영어로 남아 있으며, 생성기의 독스트링(`api/generator`, autodoc이 읽음)도 마찬가지입니다. 페이지의 영어 텍스트가 바뀐 뒤에는 `make -C docs update-po`로 카탈로그를 최신 상태로 만들 수 있으며, 번역이 필요한 항목이 표시됩니다."
+
+#: ../../development.md:107
+msgid ""
+"The C++ comments are Doxygen comments and are not on the site: Doxygen is"
+" not installed on the machine that built the pages, and no Breathe setup "
+"exists."
+msgstr "C++ 주석은 Doxygen 주석이며 사이트에 실려 있지 않습니다. 페이지를 빌드한 기기에 Doxygen이 설치되어 있지 않고, Breathe 설정도 없기 때문입니다."
+
+#~ msgid ""
+#~ "Only English exists; `make -C docs "
+#~ "gettext` and `update-po` are there "
+#~ "for translations, and none has been "
+#~ "written. The C++ and Python comments "
+#~ "are not part of this site yet: "
+#~ "they are Doxygen and reST comments "
+#~ "for a later Breathe or autodoc "
+#~ "setup."
+#~ msgstr ""
+#~ "영어 문서만 있습니다. `make -C docs "
+#~ "gettext`와 `update-po`는 번역을 위해 마련되어 "
+#~ "있으나, 번역은 아직 작성되지 않았습니다. C++ 및 "
+#~ "Python 주석은 아직 이 사이트에 포함되지 않습니다."
+#~ " 이 주석은 이후에 Breathe 또는 autodoc을 "
+#~ "설정할 때를 위한 Doxygen 및 reST 주석입니다."
+

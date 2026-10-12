@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../message-loop.md:1
+msgid "The message loop"
+msgstr "메시지 루프"
+
+#: ../../message-loop.md:3
+msgid ""
+"CEF does its work when PHP lets it: PHP calls the message loop, and "
+"everything CEF wants to tell you (every handler, delegate and exposed "
+"function) happens inside that call, on the PHP thread. There are two ways"
+" to run it."
+msgstr "CEF는 PHP가 허용할 때 작업을 수행합니다. PHP가 메시지 루프를 호출하고, CEF가 사용자에게 알리려는 모든 것(모든 핸들러, 델리게이트, 노출된 함수)은 그 호출 안에서 PHP 스레드에서 일어납니다. 메시지 루프를 실행하는 방법은 두 가지입니다."
+
+#: ../../message-loop.md:5
+msgid "`Cef::run()`"
+msgstr "`Cef::run()`"
+
+#: ../../message-loop.md:13
+msgid ""
+"`run()` returns when `Cef::quit()` is called, when `$tick` returns "
+"`false`, or (by default) when the last browser has closed. Windows made "
+"with Views end the loop when you call `Cef::quit()` from "
+"`WindowDelegate::onWindowDestroyed()`, as `examples/views.php` does."
+msgstr "`run()`은 `Cef::quit()`이 호출될 때, `$tick`이 `false`를 반환할 때, 또는 (기본적으로) 마지막 브라우저가 닫힐 때 반환됩니다. Views로 만든 창은 `examples/views.php`처럼 `WindowDelegate::onWindowDestroyed()`에서 `Cef::quit()`을 호출하면 루프를 끝냅니다."
+
+#: ../../message-loop.md:15
+msgid "Your own loop"
+msgstr "직접 만든 루프"
+
+#: ../../message-loop.md:25
+msgid ""
+"Keep each turn short: a handler or your own work that takes a second "
+"freezes every window and page for that second. "
+"`Cef::wait($maxMilliseconds)` sleeps, but wakes up early when CEF "
+"announces work (when the external pump is on)."
+msgstr "각 반복을 짧게 유지하십시오. 핸들러나 사용자의 작업이 1초가 걸리면 그 1초 동안 모든 창과 페이지가 멈춥니다. `Cef::wait($maxMilliseconds)`는 대기하지만, (외부 펌프가 켜져 있을 때) CEF가 작업이 있음을 알리면 일찍 깨어납니다."
+
+#: ../../message-loop.md:27
+msgid "Polling and the external pump"
+msgstr "폴링과 외부 펌프"
+
+#: ../../message-loop.md:29
+msgid ""
+"CEF can be driven in two ways, chosen with "
+"`Settings::externalMessagePump`:"
+msgstr "CEF는 `Settings::externalMessagePump`로 선택하는 두 가지 방식으로 구동할 수 있습니다."
+
+#: ../../message-loop.md
+msgid "Polling (**the default**)"
+msgstr "폴링(**기본값**)"
+
+#: ../../message-loop.md
+msgid "External pump (`externalMessagePump = 1`)"
+msgstr "외부 펌프(`externalMessagePump = 1`)"
+
+#: ../../message-loop.md
+msgid "How"
+msgstr "방식"
+
+#: ../../message-loop.md
+msgid ""
+"Your loop calls `doMessageLoopWork()` at least every few milliseconds; "
+"`Cef::run()` and `Cef::wait()` wait at most 5 ms"
+msgstr "루프가 최소 몇 밀리초마다 `doMessageLoopWork()`를 호출합니다. `Cef::run()`과 `Cef::wait()`는 최대 5 ms만 기다립니다"
+
+#: ../../message-loop.md
+msgid ""
+"CEF announces when it has work (`OnScheduleMessagePumpWork`); the waits "
+"can be long"
+msgstr "CEF가 작업이 있을 때 알려 줍니다(`OnScheduleMessagePumpWork`). 대기가 길 수 있습니다"
+
+#: ../../message-loop.md
+msgid "Windows made by CEF (Views, `WindowInfo` windows)"
+msgstr "CEF가 만든 창(Views, `WindowInfo` 창)"
+
+#: ../../message-loop.md
+msgid "**Receive mouse and keyboard input**"
+msgstr "**마우스와 키보드 입력을 받습니다**"
+
+#: ../../message-loop.md
+msgid ""
+"**Receive mouse and keyboard input** too: the wait also listens to the "
+"sockets of GLib's main context (the X11 connection), so input does not "
+"wait for the end of a long wait"
+msgstr "**마우스와 키보드 입력도 받습니다**: 대기 중에 GLib 메인 컨텍스트의 소켓(X11 연결)도 감시하므로, 긴 대기가 끝날 때까지 입력이 기다리지 않습니다"
+
+#: ../../message-loop.md
+msgid "Idle CPU"
+msgstr "유휴 시 CPU"
+
+#: ../../message-loop.md
+#, python-format
+msgid "measured 3.2 % of one core for the PHP process in a 5 s idle run"
+msgstr "5초 유휴 실행에서 PHP 프로세스가 코어 하나의 3.2 %를 사용하는 것으로 측정되었습니다"
+
+#: ../../message-loop.md
+msgid "2.7 %"
+msgstr "2.7 %"
+
+#: ../../message-loop.md
+msgid "Suited to"
+msgstr "적합한 경우"
+
+#: ../../message-loop.md
+msgid "everything; the simplest choice"
+msgstr "모든 경우. 가장 단순한 선택입니다"
+
+#: ../../message-loop.md
+msgid ""
+"programs that wait long between events, and pages without a window of "
+"CEF's own (off-screen rendering, or a toolkit that owns the window and "
+"its events)"
+msgstr "이벤트 사이에 오래 기다리는 프로그램, 그리고 CEF 자체의 창이 없는 페이지(오프스크린 렌더링, 또는 창과 그 이벤트를 소유하는 툴킷)"
+
+#: ../../message-loop.md:38
+msgid ""
+"Earlier builds left windows made by CEF without input in the external "
+"pump (nothing iterated GLib's main context); that is fixed, and the whole"
+" test suite runs in both modes, input tests included. The idle figures "
+"are for the PHP process only (CEF's helper processes are not included) "
+"and come from one measurement."
+msgstr "이전 빌드에서는 외부 펌프에서 CEF가 만든 창이 입력을 받지 못했습니다(GLib 메인 컨텍스트를 반복 처리하는 것이 없었습니다). 이 문제는 수정되었고, 입력 테스트를 포함한 전체 테스트 스위트가 두 모드에서 모두 실행됩니다. 유휴 수치는 PHP 프로세스만의 값이며(CEF의 헬퍼 프로세스는 포함하지 않습니다) 한 번의 측정에서 얻은 것입니다."
+
+#: ../../message-loop.md:46
+msgid "Stopping"
+msgstr "중지"
+
+#: ../../message-loop.md:48
+msgid ""
+"`Cef::quit()` makes `run()` return; it can be called from any handler. "
+"Then close the browsers and call `Cef::shutdown()` "
+"([Concepts](concepts.md#lifetime-and-shutdown))."
+msgstr "`Cef::quit()`은 `run()`이 반환되게 하며, 어떤 핸들러에서든 호출할 수 있습니다. 그다음 브라우저를 닫고 `Cef::shutdown()`을 호출하십시오([개념](concepts.md#lifetime-and-shutdown))."
+

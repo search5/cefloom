@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 06:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../troubleshooting.md:1
+msgid "Troubleshooting"
+msgstr "문제 해결"
+
+#: ../../troubleshooting.md:3
+msgid "Messages"
+msgstr "메시지"
+
+#: ../../troubleshooting.md:5
+msgid ""
+"**`The CEF runtime was not found: ... does not exist.`** The extension is"
+" loaded but the runtime is not installed (or is somewhere it does not "
+"look). The message lists the places. Run `php bin/cefloom-runtime install"
+" ...` ([Installation](installation.md#2-the-cef-runtime)), or set "
+"`CEFLOOM_HOME`. `php bin/cefloom-runtime status` shows what is found."
+msgstr "**`The CEF runtime was not found: ... does not exist.`** 확장은 로드되었지만 런타임이 설치되어 있지 않거나, 런타임을 찾는 위치에 없습니다. 메시지에 탐색한 위치가 나열됩니다. `php bin/cefloom-runtime install ...`을 실행하거나([설치](installation.md#2-the-cef-runtime)) `CEFLOOM_HOME`을 설정하십시오. `php bin/cefloom-runtime status`는 찾은 항목을 보여 줍니다."
+
+#: ../../troubleshooting.md:7
+msgid ""
+"**`The CEF subprocess executable ... was not found`** The runtime "
+"directory does not hold `cefloomsubprocess`. Reinstall the runtime with "
+"`--force`, or set `browserSubprocessPath` in the `Settings`."
+msgstr "**`The CEF subprocess executable ... was not found`** 런타임 디렉터리에 `cefloomsubprocess`가 없습니다. `--force`로 런타임을 다시 설치하거나, `Settings`에서 `browserSubprocessPath`를 설정하십시오."
+
+#: ../../troubleshooting.md:9
+msgid ""
+"**`Unable to load dynamic library 'cefloom.so'`** The file does not match"
+" this PHP: another PHP version, a thread-safe PHP, another architecture, "
+"or a musl system. The file name of the release says which (`php8.5`, "
+"`nts`, `x86_64`, `glibc`)."
+msgstr "**`Unable to load dynamic library 'cefloom.so'`** 이 파일이 현재 PHP와 맞지 않습니다. 다른 PHP 버전, 스레드 안전(thread-safe) PHP, 다른 아키텍처, 또는 musl 시스템일 수 있습니다. 릴리스의 파일 이름이 어느 쪽인지 알려 줍니다(`php8.5`, `nts`, `x86_64`, `glibc`)."
+
+#: ../../troubleshooting.md:11
+msgid ""
+"**The process stops at start with `Trace/breakpoint trap` or a crash "
+"inside `libcef.so`.** Most often an incomplete runtime: a missing or "
+"half-copied `locales/` directory (seen when a build copied the runtime "
+"wrongly). Check that `<runtime directory>/locales/` holds about 220 "
+"`.pak` files and reinstall with `--force`. Also check `ldd <runtime "
+"directory>/libcef.so | grep 'not found'`."
+msgstr "**시작할 때 프로세스가 `Trace/breakpoint trap`으로 멈추거나 `libcef.so` 내부에서 크래시합니다.** 대부분 런타임이 불완전한 경우입니다. `locales/` 디렉터리가 없거나 절반만 복사되어 있습니다(빌드가 런타임을 잘못 복사했을 때 나타났습니다). `<runtime directory>/locales/`에 `.pak` 파일이 약 220개 있는지 확인하고 `--force`로 다시 설치하십시오. `ldd <runtime directory>/libcef.so | grep 'not found'`도 확인하십시오."
+
+#: ../../troubleshooting.md:13
+msgid ""
+"**`Missing X server or $DISPLAY`, or no window appears.** There is no "
+"display. Use `xvfb-run -a php ...`, or log in to a graphical session. In "
+"a Wayland session add `Cef::addSwitch('ozone-platform', 'x11')` before "
+"`initialize()`."
+msgstr "**`Missing X server or $DISPLAY`가 나타나거나 창이 나타나지 않습니다.** 디스플레이가 없습니다. `xvfb-run -a php ...`를 사용하거나 그래픽 세션에 로그인하십시오. Wayland 세션에서는 `initialize()` 전에 `Cef::addSwitch('ozone-platform', 'x11')`을 추가하십시오."
+
+#: ../../troubleshooting.md:15
+msgid ""
+"**`CEF is already initialized (it can be started once per process)`.** "
+"CEF starts once per PHP process, and cannot start again after "
+"`Cef::shutdown()`."
+msgstr "**`CEF is already initialized (it can be started once per process)`.** CEF는 PHP 프로세스당 한 번만 시작되며, `Cef::shutdown()` 후에는 다시 시작할 수 없습니다."
+
+#: ../../troubleshooting.md:17
+msgid ""
+"**`Command line switches must be added before Cef::initialize()`.** Move "
+"`Cef::addSwitch()` and `Cef::registerCustomScheme()` before "
+"`initialize()`."
+msgstr "**`Command line switches must be added before Cef::initialize()`.** `Cef::addSwitch()`와 `Cef::registerCustomScheme()`을 `initialize()` 전으로 옮기십시오."
+
+#: ../../troubleshooting.md:19
+msgid ""
+"**`The ... object holds no native object (CEF has been shut down)`.** You"
+" used a CEF object after `Cef::shutdown()`."
+msgstr "**`The ... object holds no native object (CEF has been shut down)`.** `Cef::shutdown()` 후에 CEF 객체를 사용했습니다."
+
+#: ../../troubleshooting.md:21
+msgid ""
+"**`cefloom: a CEF thread waited ... ms for the PHP thread`** (on standard"
+" error). A [synchronous callback](handlers.md#callbacks-on-other-threads)"
+" waited for PHP while the PHP thread sat inside CEF; the wait was cut and"
+" CEF's default used for that request. Make the callback unnecessary, or "
+"use an asynchronous one."
+msgstr "**`cefloom: a CEF thread waited ... ms for the PHP thread`**(표준 오류에 출력됩니다). PHP 스레드가 CEF 내부에 있는 동안 [동기 콜백](handlers.md#callbacks-on-other-threads)이 PHP를 기다렸고, 대기가 중단되어 해당 요청에는 CEF의 기본값이 사용되었습니다. 해당 콜백이 필요 없게 만들거나 비동기 콜백을 사용하십시오."
+
+#: ../../troubleshooting.md:23
+msgid ""
+"**Lines like `[...:ERROR:...] Message 0 rejected by interface ...` on "
+"standard error.** Chromium's own log. It is usually harmless. "
+"`Settings::logSeverity` quiets it."
+msgstr "**표준 오류에 `[...:ERROR:...] Message 0 rejected by interface ...` 같은 줄이 나타납니다.** Chromium 자체의 로그이며 대개 무해합니다. `Settings::logSeverity`로 출력을 줄일 수 있습니다."
+
+#: ../../troubleshooting.md:25
+msgid "Behaviour"
+msgstr "동작"
+
+#: ../../troubleshooting.md:27
+msgid ""
+"**Clicks and typing do nothing in a window.** Check that your loop calls "
+"`Cef::doMessageLoopWork()` (or `Cef::run()`) often enough: in polling "
+"mode at least every few milliseconds. With `externalMessagePump` on, "
+"`Cef::wait()` wakes for input by itself ([The message loop](message-"
+"loop.md#polling-and-the-external-pump))."
+msgstr "**창에서 클릭과 입력이 동작하지 않습니다.** 루프가 `Cef::doMessageLoopWork()`(또는 `Cef::run()`)를 충분히 자주 호출하는지 확인하십시오. 폴링 모드에서는 최소 몇 밀리초마다 호출해야 합니다. `externalMessagePump`가 켜져 있으면 `Cef::wait()`가 입력이 오면 스스로 깨어납니다([메시지 루프](message-loop.md#polling-and-the-external-pump))."
+
+#: ../../troubleshooting.md:29
+msgid ""
+"**The page freezes while PHP works.** PHP's handlers run on the thread "
+"that drives the windows. Keep them short, or split the work into small "
+"steps with `Cef::postTask()`."
+msgstr "**PHP가 작업하는 동안 페이지가 멈춥니다.** PHP의 핸들러는 창을 구동하는 스레드에서 실행됩니다. 핸들러를 짧게 유지하거나, `Cef::postTask()`로 작업을 작은 단계로 나누십시오."
+
+#: ../../troubleshooting.md:31
+msgid ""
+"**A second program cannot start: the profile is locked.** Two processes "
+"cannot share one `rootCachePath`; give each its own."
+msgstr "**두 번째 프로그램이 시작되지 않습니다. 프로필이 잠겨 있습니다.** 두 프로세스는 하나의 `rootCachePath`를 공유할 수 없으므로, 각각 별도의 경로를 지정하십시오."
+
+#: ../../troubleshooting.md:33
+msgid "Known problems"
+msgstr "알려진 문제"
+
+#: ../../troubleshooting.md:35
+msgid ""
+"**The media router crashes CEF at shutdown.** After `addObserver()` or "
+"`notifyCurrentSinks()`, `Cef::shutdown()` ends the process with a trap. "
+"See [Cast](cast.md)."
+msgstr "**미디어 라우터가 종료 시 CEF를 크래시시킵니다.** `addObserver()` 또는 `notifyCurrentSinks()` 이후 `Cef::shutdown()`이 trap과 함께 프로세스를 종료합니다. [Cast](cast.md)를 참고하십시오."
+
+#: ../../troubleshooting.md:36
+msgid ""
+"**Rarely the PHP process does not exit by itself** after the program has "
+"finished and printed its last line (seen a few times in testing; the "
+"cause is not found). A program that must end can be run under `timeout`, "
+"and the test runner stops such a process by itself."
+msgstr "**드물게 PHP 프로세스가 스스로 종료되지 않습니다.** 프로그램이 끝나고 마지막 줄을 출력한 뒤에 발생합니다(테스트 중 몇 번 관찰되었으며, 원인은 찾지 못했습니다). 반드시 끝나야 하는 프로그램은 `timeout` 아래에서 실행할 수 있으며, 테스트 러너는 이런 프로세스를 스스로 중지합니다."
+
+#: ../../troubleshooting.md:37
+msgid ""
+"**Only Linux x86_64, glibc, PHP 8.5 NTS CLI** was built and tested. Not "
+"tried: Wayland, a desktop environment's window manager, PHP-FPM, thread-"
+"safe PHP, arm64, containers, Windows, macOS, a real Cast device, the "
+"print dialog."
+msgstr "**Linux x86_64, glibc, PHP 8.5 NTS CLI만** 빌드되고 테스트되었습니다. 시도하지 않은 환경: Wayland, 데스크톱 환경의 창 관리자, PHP-FPM, 스레드 안전 PHP, arm64, 컨테이너, Windows, macOS, 실제 Cast 장치, 인쇄 대화상자."
+

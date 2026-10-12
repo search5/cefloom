@@ -1,0 +1,5 @@
+sphinx>=8
+sphinx-rtd-theme>=3
+sphinx-intl>=2.3
+sphinxcontrib-phpdomain>=0.13
+myst-parser>=4

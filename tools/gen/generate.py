@@ -51,6 +51,7 @@ def build_all(cef_root):
     """Run the whole generation in memory.
 
     :param cef_root: CEF distribution directory.
+
     Removes from ``model.structs`` the structs that are raw C structs or have array fields.
 
     :returns: ``(model, scope, files, listings, version)``: ``files`` maps names under ``ext/generated`` to their text,

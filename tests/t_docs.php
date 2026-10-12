@@ -105,4 +105,11 @@ foreach ($found as [$page, $kind, $arg, $code]) {
     }
 }
 
+// the recipes of docs/cookbook.md come from one program: it prints what the page says it prints
+$script = "$root/docs/recipes/cookbook.php";
+check(is_file($script), 'docs/recipes/cookbook.php exists');
+[$exit, $output] = run_php($script, [], ['XDG_CACHE_HOME' => tmpdir('cefloom-docs-cache')], 90);
+same("title: sum=5\nevaluate: hello\npdf: true", trim($output), 'the cookbook program prints what docs/cookbook.md says (' . substr(str_replace("\n", ' | ', $output), 0, 200) . ')');
+same(0, $exit, 'the cookbook program exits with 0');
+
 finish();

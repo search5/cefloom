@@ -1,0 +1,543 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) cefloom contributors
+# This file is distributed under the same license as the cefloom package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: cefloom \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 07:24+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ko\n"
+"Language-Team: ko <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../limitations.md:1
+msgid "Limitations and known constraints"
+msgstr "한계와 알려진 제약"
+
+#: ../../limitations.md:3
+msgid ""
+"What does not work yet, and the known constraints. Each item says whether"
+" the cause was confirmed. Problems that were fixed are not listed. The "
+"design notes behind most items are in `llm-wiki/pages/reference/known-"
+"constraints.md`."
+msgstr "아직 동작하지 않는 것과 알려진 제약입니다. 각 항목은 원인이 확인되었는지를 밝힙니다. 수정된 문제는 싣지 않습니다. 대부분의 항목에 대한 설계 메모는 `llm-wiki/pages/reference/known-constraints.md`에 있습니다."
+
+#: ../../limitations.md:5
+msgid "Platforms"
+msgstr "플랫폼"
+
+#: ../../limitations.md
+msgid "Item"
+msgstr "항목"
+
+#: ../../limitations.md
+msgid "Status"
+msgstr "상태"
+
+#: ../../limitations.md
+msgid "Linux x86_64, glibc"
+msgstr "Linux x86_64, glibc"
+
+#: ../../limitations.md
+msgid ""
+"The only platform that was built and tested, on Ubuntu with PHP 8.5 (NTS,"
+" CLI) and CEF 154.0.34 ([Installation](installation.md#requirements))."
+msgstr "빌드와 시험을 거친 유일한 플랫폼으로, PHP 8.5(NTS, CLI)와 CEF 154.0.34를 쓰는 Ubuntu입니다([설치](installation.md#requirements))."
+
+#: ../../limitations.md
+msgid "Other glibc distributions"
+msgstr "그 밖의 glibc 배포판"
+
+#: ../../limitations.md
+msgid "Not tried."
+msgstr "시험하지 않았습니다."
+
+#: ../../limitations.md
+msgid "musl (Alpine)"
+msgstr "musl (Alpine)"
+
+#: ../../limitations.md
+msgid "Not supported: CEF is built for glibc."
+msgstr "지원하지 않습니다. CEF는 glibc용으로 빌드됩니다."
+
+#: ../../limitations.md
+msgid "arm64"
+msgstr "arm64"
+
+#: ../../limitations.md
+msgid "Built the same way, not tried."
+msgstr "같은 방식으로 빌드했으나 시험하지 않았습니다."
+
+#: ../../limitations.md
+msgid "Windows, macOS"
+msgstr "Windows, macOS"
+
+#: ../../limitations.md
+msgid "Not tried, not started."
+msgstr "시험하지 않았고 시작하지도 않았습니다."
+
+#: ../../limitations.md
+msgid "PHP versions other than 8.5"
+msgstr "8.5 외의 PHP 버전"
+
+#: ../../limitations.md
+msgid "Thread-safe PHP"
+msgstr "스레드 안전 PHP"
+
+#: ../../limitations.md
+msgid "PHP-FPM and other servers"
+msgstr "PHP-FPM과 그 밖의 서버"
+
+#: ../../limitations.md
+msgid ""
+"Not tried and not planned; only the command line is supported "
+"([Concepts](concepts.md#where-php-runs))."
+msgstr "시험하지 않았고 계획도 없습니다. 명령줄만 지원합니다([개념](concepts.md#where-php-runs))."
+
+#: ../../limitations.md
+msgid "Containers"
+msgstr "컨테이너"
+
+#: ../../limitations.md
+msgid "Not tried ([Installation](installation.md#offline-and-containers))."
+msgstr "시험하지 않았습니다([설치](installation.md#offline-and-containers))."
+
+#: ../../limitations.md
+msgid "X11"
+msgstr "X11"
+
+#: ../../limitations.md
+msgid "The platform of every test and example, on a virtual X server."
+msgstr "가상 X 서버에서 실행하는 모든 테스트와 예제의 플랫폼입니다."
+
+#: ../../limitations.md
+msgid "Wayland"
+msgstr "Wayland"
+
+#: ../../limitations.md
+msgid ""
+"Not run. With `XDG_SESSION_TYPE=wayland` and no compositor, a program "
+"without the `ozone-platform=x11` switch failed in `Cef::initialize()` "
+"([Wayland and GPU](wayland-gpu.md#x11-or-wayland))."
+msgstr "실행하지 않았습니다. `XDG_SESSION_TYPE=wayland`이고 컴포지터가 없을 때, `ozone-platform=x11` 스위치가 없는 프로그램은 `Cef::initialize()`에서 실패했습니다([Wayland와 GPU](wayland-gpu.md#x11-or-wayland))."
+
+#: ../../limitations.md
+msgid "GPU"
+msgstr "GPU"
+
+#: ../../limitations.md
+msgid ""
+"The tests run with `disable-gpu`. WebGL is off in that setting and on a "
+"virtual X server without the switch; nothing was run against a physical "
+"GPU ([Wayland and GPU](wayland-gpu.md#gpu-on-and-off))."
+msgstr "테스트는 `disable-gpu`로 실행합니다. 그 설정에서는 WebGL이 꺼지며, 스위치 없이 가상 X 서버에서 실행해도 꺼집니다. 물리적 GPU에서는 아무것도 실행하지 않았습니다([Wayland와 GPU](wayland-gpu.md#gpu-on-and-off))."
+
+#: ../../limitations.md
+msgid "Desktop window managers"
+msgstr "데스크톱 창 관리자"
+
+#: ../../limitations.md
+msgid ""
+"Not tried (GNOME, KDE, Sway). Input tests ran with no window manager and "
+"with `twm`. Maximizing and minimizing a window need a window manager and "
+"are not tested."
+msgstr "시험하지 않았습니다(GNOME, KDE, Sway). 입력 테스트는 창 관리자 없이 실행했고 `twm`으로도 실행했습니다. 창의 최대화와 최소화는 창 관리자가 필요하며 시험하지 않았습니다."
+
+#: ../../limitations.md
+msgid "Distribution"
+msgstr "배포"
+
+#: ../../limitations.md
+msgid ""
+"The package is not published: no release exists and the package is not on"
+" Packagist. A `pie install` from a release was never run; the steps were "
+"tried offline ([Installation](installation.md), "
+"[Development](development.md#packaging-and-release))."
+msgstr "패키지는 공개되지 않았습니다. 릴리스가 없고 패키지가 Packagist에도 없습니다. 릴리스에서 `pie install`을 실행한 적은 없으며, 절차는 오프라인에서 시험했습니다([설치](installation.md), [개발](development.md#packaging-and-release))."
+
+#: ../../limitations.md
+msgid "Licence"
+msgstr "라이선스"
+
+#: ../../limitations.md
+msgid ""
+"The repository has no licence file, and the licence notices that "
+"redistributing the CEF runtime requires were not collected."
+msgstr "저장소에 라이선스 파일이 없으며, CEF 런타임을 재배포할 때 필요한 라이선스 고지도 수집하지 않았습니다."
+
+#: ../../limitations.md:25
+msgid "Process and runtime"
+msgstr "프로세스와 런타임"
+
+#: ../../limitations.md
+msgid "CEF starts once per process"
+msgstr "CEF는 프로세스당 한 번만 시작합니다"
+
+#: ../../limitations.md
+msgid ""
+"After `Cef::shutdown()` it cannot be initialized again. A program that "
+"needs CEF again starts another PHP process "
+"([Concepts](concepts.md#processes))."
+msgstr "`Cef::shutdown()` 뒤에는 다시 초기화할 수 없습니다. CEF가 다시 필요한 프로그램은 다른 PHP 프로세스를 시작합니다([개념](concepts.md#processes))."
+
+#: ../../limitations.md
+msgid "Sandbox"
+msgstr "샌드박스"
+
+#: ../../limitations.md
+msgid ""
+"Off (`no_sandbox`). A run with the sandbox on was not tried "
+"([Configuration](configuration.md#the-sandbox))."
+msgstr "꺼져 있습니다(`no_sandbox`). 샌드박스를 켠 실행은 시험하지 않았습니다([구성](configuration.md#the-sandbox))."
+
+#: ../../limitations.md
+msgid "PHP runs on the UI thread only"
+msgstr "PHP는 UI 스레드에서만 실행됩니다"
+
+#: ../../limitations.md
+msgid ""
+"A handler that blocks freezes every window and page. A callback that CEF "
+"makes on another thread and that needs an answer at once waits for PHP at"
+" most 5 seconds, then CEF's default is used (`CEFLOOM_SYNC_WAIT_MS`; "
+"[Handlers](handlers.md#callbacks-on-other-threads))."
+msgstr "블로킹하는 핸들러는 모든 창과 페이지를 멈춥니다. CEF가 다른 스레드에서 호출하며 즉시 응답이 필요한 콜백은 PHP를 최대 5초 기다리고, 그 뒤에는 CEF의 기본값이 사용됩니다(`CEFLOOM_SYNC_WAIT_MS`, [핸들러](handlers.md#callbacks-on-other-threads))."
+
+#: ../../limitations.md
+msgid "Process that does not exit"
+msgstr "종료되지 않는 프로세스"
+
+#: ../../limitations.md
+msgid ""
+"Rarely the PHP process stayed alive after the program printed its last "
+"line. Seen a few times, cause not found "
+"([Troubleshooting](troubleshooting.md#known-problems))."
+msgstr "드물게 프로그램이 마지막 줄을 출력한 뒤에도 PHP 프로세스가 살아 있었습니다. 몇 번 관찰되었으며 원인은 찾지 못했습니다([문제 해결](troubleshooting.md#known-problems))."
+
+#: ../../limitations.md
+msgid "Long runs"
+msgstr "장시간 실행"
+
+#: ../../limitations.md
+msgid ""
+"Not tried: tests run a few seconds each; a long-running program, many "
+"browsers over time and memory growth were not measured."
+msgstr "시험하지 않았습니다. 테스트는 각각 몇 초 동안 실행되며, 오래 실행되는 프로그램, 시간에 따른 다수의 브라우저, 메모리 증가는 측정하지 않았습니다."
+
+#: ../../limitations.md
+msgid "One profile per process"
+msgstr "프로세스당 프로필 하나"
+
+#: ../../limitations.md
+msgid ""
+"Two processes cannot share one `rootCachePath` "
+"([Troubleshooting](troubleshooting.md#behaviour))."
+msgstr "두 프로세스가 하나의 `rootCachePath`를 공유할 수 없습니다([문제 해결](troubleshooting.md#behaviour))."
+
+#: ../../limitations.md
+msgid "`FILE_BACKGROUND` tasks"
+msgstr "`FILE_BACKGROUND` 작업"
+
+#: ../../limitations.md
+msgid ""
+"Chromium holds back work posted to `ThreadId::FILE_BACKGROUND` until a "
+"browser has started ([Concepts](concepts.md#threads-and-tasks))."
+msgstr "Chromium은 `ThreadId::FILE_BACKGROUND`에 게시된 작업을 브라우저가 시작될 때까지 보류합니다([개념](concepts.md#threads-and-tasks))."
+
+#: ../../limitations.md:37
+msgid "Features"
+msgstr "기능"
+
+#: ../../limitations.md
+msgid "Cast"
+msgstr "Cast"
+
+#: ../../limitations.md
+msgid ""
+"After `addObserver()` or `notifyCurrentSinks()`, `Cef::shutdown()` ends "
+"the process with a trap. Cause inside CEF, not solved. No Cast device was"
+" available: device lists and sessions were not exercised "
+"([Cast](cast.md))."
+msgstr "`addObserver()` 또는 `notifyCurrentSinks()` 이후 `Cef::shutdown()`이 trap과 함께 프로세스를 종료합니다. 원인은 CEF 내부에 있으며 해결하지 못했습니다. 사용할 수 있는 Cast 장치가 없었으므로 장치 목록과 세션은 실행해 보지 않았습니다([Cast](cast.md))."
+
+#: ../../limitations.md
+msgid "`BrowserHost::print()`"
+msgstr "`BrowserHost::print()`"
+
+#: ../../limitations.md
+msgid ""
+"In the default (Chrome) runtime style it opens Chrome's print preview and"
+" does not call a `PrintHandler`. The handler is called in the Alloy style"
+" (`runtimeStyle = 2`), and without a printer needs `disable-"
+"features=EnableOopPrintDrivers`. A real printer and the print dialog were"
+" not tried ([Printing and PDF](printing.md))."
+msgstr "기본 런타임 스타일(Chrome)에서는 Chrome의 인쇄 미리 보기를 열며 `PrintHandler`를 호출하지 않습니다. 핸들러는 Alloy 스타일(`runtimeStyle = 2`)에서 호출되며, 프린터가 없으면 `disable-features=EnableOopPrintDrivers`가 필요합니다. 실제 프린터와 인쇄 대화상자는 시험하지 않았습니다([인쇄와 PDF](printing.md))."
+
+#: ../../limitations.md
+msgid "`AudioHandler`"
+msgstr "`AudioHandler`"
+
+#: ../../limitations.md
+msgid ""
+"Asked only by Alloy-style browsers and only for a page that makes sound. "
+"Without a sound device it needs `disable-audio-output`. Playing to a real"
+" sound device was not tried ([Handlers](handlers.md))."
+msgstr "Alloy 스타일 브라우저만, 그리고 소리를 내는 페이지에 대해서만 요청합니다. 사운드 장치가 없으면 `disable-audio-output`이 필요합니다. 실제 사운드 장치로 재생하는 것은 시험하지 않았습니다([핸들러](handlers.md))."
+
+#: ../../limitations.md
+msgid "`LifeSpanHandler::doClose()`"
+msgstr "`LifeSpanHandler::doClose()`"
+
+#: ../../limitations.md
+msgid ""
+"Not called for browsers made with `BrowserHost::createBrowser()`. Closing"
+" goes straight to `onBeforeClose()`, and `doClose()` returning `true` "
+"does not stop it."
+msgstr "`BrowserHost::createBrowser()`로 만든 브라우저에는 호출되지 않습니다. 닫기는 곧바로 `onBeforeClose()`로 진행되며, `doClose()`가 `true`를 반환해도 막지 못합니다."
+
+#: ../../limitations.md
+msgid "Views"
+msgstr "Views"
+
+#: ../../limitations.md
+msgid ""
+"A `BrowserView` with a live browser cannot be removed from its window: "
+"`removeChildView()` and `removeAllChildViews()` throw an `Error` "
+"([Windows with Views](views.md#input)). Only Linux and X11 were tried."
+msgstr "살아 있는 브라우저를 가진 `BrowserView`는 창에서 제거할 수 없습니다. `removeChildView()`와 `removeAllChildViews()`는 `Error`를 던집니다([Views로 만드는 창](views.md#input)). Linux와 X11만 시험했습니다."
+
+#: ../../limitations.md
+msgid "`onResourceRedirect`"
+msgstr "`onResourceRedirect`"
+
+#: ../../limitations.md
+msgid ""
+"The URL it returns is not applied: the load ends at the URL the server "
+"gave. Probable cause: the CEF wrapper copies the argument and does not "
+"write it back (not confirmed). Workaround: `Request::setURL()` in "
+"`onBeforeResourceLoad`. `tests/t_redirect_change.php` records the failure"
+" and will report when it is fixed."
+msgstr "반환한 URL이 적용되지 않습니다. 로드는 서버가 준 URL에서 끝납니다. 추정 원인은 CEF 래퍼가 인자를 복사하고 다시 기록하지 않는 것입니다(확인되지 않았습니다). 우회 방법은 `onBeforeResourceLoad`에서 `Request::setURL()`을 쓰는 것입니다. `tests/t_redirect_change.php`는 이 실패를 기록하며 수정되면 알려 줍니다."
+
+#: ../../limitations.md
+msgid "`RequestContextHandler::getResourceRequestHandler()`"
+msgstr "`RequestContextHandler::getResourceRequestHandler()`"
+
+#: ../../limitations.md
+msgid ""
+"Synchronous on the IO thread; during the first navigation of a new "
+"context it waited for the whole limit (5 seconds by default) on every "
+"request, then CEF's default was used. Use "
+"`RequestHandler::getResourceRequestHandler()` of the browser, or lower "
+"`CEFLOOM_SYNC_WAIT_MS`."
+msgstr "IO 스레드에서 동기로 실행됩니다. 새 컨텍스트의 첫 탐색 중에는 모든 요청에서 제한 시간 전체(기본값 5초)를 기다렸고, 그 뒤에 CEF의 기본값이 사용되었습니다. 브라우저의 `RequestHandler::getResourceRequestHandler()`를 사용하거나 `CEFLOOM_SYNC_WAIT_MS`를 낮추십시오."
+
+#: ../../limitations.md
+msgid "`Server::isRunning()`"
+msgstr "`Server::isRunning()`"
+
+#: ../../limitations.md
+msgid ""
+"Always `false` when called from PHP, because CEF answers it on the server"
+" thread only. Use `ServerHandler::onServerCreated()` and "
+"`onServerDestroyed()`."
+msgstr "CEF가 서버 스레드에서만 응답하므로 PHP에서 호출하면 항상 `false`입니다. `ServerHandler::onServerCreated()`와 `onServerDestroyed()`를 사용하십시오."
+
+#: ../../limitations.md
+msgid "Calls CEF refuses on the UI thread"
+msgstr "CEF가 UI 스레드에서 거부하는 호출"
+
+#: ../../limitations.md
+msgid ""
+"`Cef::directoryExists()`, seven file functions, `WaitableEvent::wait()` "
+"and `timedWait()` return `false` on the UI and IO threads in CEF; the "
+"binding runs them on another thread."
+msgstr "`Cef::directoryExists()`, 파일 함수 일곱 개, `WaitableEvent::wait()`와 `timedWait()`는 CEF의 UI 스레드와 IO 스레드에서 `false`를 반환합니다. 바인딩은 이 호출들을 다른 스레드에서 실행합니다."
+
+#: ../../limitations.md
+msgid "`Thread::create(..., stoppable: false, ...)`"
+msgstr "`Thread::create(..., stoppable: false, ...)`"
+
+#: ../../limitations.md
+msgid ""
+"Releasing such a thread (or `Cef::shutdown()` releasing it) ends the "
+"process with a trap. The tests use `stoppable: true`."
+msgstr "이런 스레드를 해제하면(또는 `Cef::shutdown()`이 해제하면) 프로세스가 trap과 함께 종료됩니다. 테스트는 `stoppable: true`를 사용합니다."
+
+#: ../../limitations.md
+msgid "Observer registrations"
+msgstr "옵서버 등록"
+
+#: ../../limitations.md
+msgid ""
+"`addPreferenceObserver()` and `addSettingObserver()` stop observing when "
+"the returned `Registration` is released: keep it in a variable."
+msgstr "`addPreferenceObserver()`와 `addSettingObserver()`는 반환된 `Registration`이 해제되면 관찰을 멈춥니다. 변수에 보관하십시오."
+
+#: ../../limitations.md
+msgid "`null` completion callbacks"
+msgstr "`null` 완료 콜백"
+
+#: ../../limitations.md
+msgid ""
+"`RequestContext::clearHttpCache(null)`, `clearHttpAuthCredentials(null)` "
+"and `closeAllConnections(null)` crash in CEF itself, although its header "
+"says `NULL` is allowed. The binding passes a callback that does nothing "
+"instead."
+msgstr "`RequestContext::clearHttpCache(null)`, `clearHttpAuthCredentials(null)`, `closeAllConnections(null)`은 CEF의 헤더가 `NULL`을 허용한다고 적고 있는데도 CEF 자체에서 크래시합니다. 바인딩은 대신 아무 일도 하지 않는 콜백을 넘깁니다."
+
+#: ../../limitations.md
+msgid "`ResourceBundle` ids"
+msgstr "`ResourceBundle` id"
+
+#: ../../limitations.md
+msgid ""
+"An id that is not in the pack file ends the process "
+"(`getLocalizedString()`, `getDataResource()`). Use ids from "
+"`cef_pack_strings.h` and `cef_pack_resources.h`."
+msgstr "팩 파일에 없는 id는 프로세스를 종료시킵니다(`getLocalizedString()`, `getDataResource()`). `cef_pack_strings.h`와 `cef_pack_resources.h`의 id를 사용하십시오."
+
+#: ../../limitations.md
+msgid "`XmlReader::getAttribute(string)`"
+msgstr "`XmlReader::getAttribute(string)`"
+
+#: ../../limitations.md
+msgid ""
+"Only the index overloads exist; of overloads with the same name, the "
+"generator makes the first."
+msgstr "인덱스 오버로드만 있습니다. 이름이 같은 오버로드 중에서는 생성기가 첫 번째 것을 만듭니다."
+
+#: ../../limitations.md:56
+msgid "Media"
+msgstr "미디어"
+
+#: ../../limitations.md:58
+msgid ""
+"Run in the probe of [Wayland and GPU](wayland-gpu.md#gpu-on-and-off) with"
+" `canPlayType()` on a `<video>` and an `<audio>` element (`ozone-"
+"platform=x11`, `disable-gpu`, `xvfb-run`):"
+msgstr "[Wayland와 GPU](wayland-gpu.md#gpu-on-and-off)의 프로브에서 `<video>`와 `<audio>` 요소의 `canPlayType()`으로 실행했습니다(`ozone-platform=x11`, `disable-gpu`, `xvfb-run`):"
+
+#: ../../limitations.md
+msgid "Type"
+msgstr "유형"
+
+#: ../../limitations.md
+msgid "`canPlayType()`"
+msgstr "`canPlayType()`"
+
+#: ../../limitations.md
+msgid "`video/webm; codecs=\"vp9\"`"
+msgstr "`video/webm; codecs=\"vp9\"`"
+
+#: ../../limitations.md
+msgid "`probably`"
+msgstr "`probably`"
+
+#: ../../limitations.md
+msgid "`video/mp4; codecs=\"av01.0.05M.08\"` (AV1)"
+msgstr "`video/mp4; codecs=\"av01.0.05M.08\"` (AV1)"
+
+#: ../../limitations.md
+msgid "`video/mp4; codecs=\"avc1.42E01E\"` (H.264)"
+msgstr "`video/mp4; codecs=\"avc1.42E01E\"` (H.264)"
+
+#: ../../limitations.md
+msgid "empty: not supported"
+msgstr "비어 있음: 지원하지 않음"
+
+#: ../../limitations.md
+msgid "`audio/webm; codecs=\"opus\"`"
+msgstr "`audio/webm; codecs=\"opus\"`"
+
+#: ../../limitations.md
+msgid "`audio/mpeg` (MP3)"
+msgstr "`audio/mpeg` (MP3)"
+
+#: ../../limitations.md
+msgid "`audio/mp4; codecs=\"mp4a.40.2\"` (AAC)"
+msgstr "`audio/mp4; codecs=\"mp4a.40.2\"` (AAC)"
+
+#: ../../limitations.md:69
+msgid ""
+"This is one run of the runtime that `cefloom-runtime` installs. Playing "
+"actual files, the microphone and the camera were not tried. A runtime "
+"built with proprietary codecs was not tried."
+msgstr "이는 `cefloom-runtime`이 설치하는 런타임을 한 번 실행한 결과입니다. 실제 파일 재생, 마이크, 카메라는 시험하지 않았습니다. 독점 코덱으로 빌드한 런타임은 시험하지 않았습니다."
+
+#: ../../limitations.md:71
+msgid "JavaScript bridge and API"
+msgstr "JavaScript 브리지와 API"
+
+#: ../../limitations.md:73
+msgid ""
+"**Every page can call every exposed function.** `Cef::expose()` is not "
+"per page or per origin ([JavaScript bridge](javascript-bridge.md))."
+msgstr "**모든 페이지가 노출된 모든 함수를 호출할 수 있습니다.** `Cef::expose()`는 페이지별 또는 오리진별로 적용되지 않습니다([JavaScript 브리지](javascript-bridge.md))."
+
+#: ../../limitations.md:74
+msgid ""
+"**`executeJavaScript()` returns nothing.** A result comes back through "
+"`cefloom.call()` or `console.log` ([JavaScript bridge](javascript-"
+"bridge.md#php-calls-javascript))."
+msgstr "**`executeJavaScript()`는 아무것도 반환하지 않습니다.** 결과는 `cefloom.call()` 또는 `console.log`를 통해 돌아옵니다([JavaScript 브리지](javascript-bridge.md#php-calls-javascript))."
+
+#: ../../limitations.md:75
+msgid ""
+"**Bridge arguments and results are JSON.** A result that cannot be "
+"encoded rejects the promise."
+msgstr "**브리지의 인자와 결과는 JSON입니다.** 인코딩할 수 없는 결과는 프로미스를 거부합니다."
+
+#: ../../limitations.md:76
+msgid ""
+"**Handlers are called as long as the loop runs.** Nothing is delivered "
+"between calls of `Cef::doMessageLoopWork()` ([The message loop](message-"
+"loop.md))."
+msgstr "**핸들러는 루프가 실행되는 동안에만 호출됩니다.** `Cef::doMessageLoopWork()` 호출 사이에는 아무것도 전달되지 않습니다([메시지 루프](message-loop.md))."
+
+#: ../../limitations.md:77
+msgid ""
+"**The external pump** (`externalMessagePump = 1`) and polling both pass "
+"the tests, including input. The idle CPU figures on that page come from "
+"one measurement."
+msgstr "**외부 펌프**(`externalMessagePump = 1`)와 폴링은 입력을 포함해 모두 테스트를 통과합니다. 해당 페이지의 유휴 CPU 수치는 한 번의 측정에서 나온 것입니다."
+
+#: ../../limitations.md:79
+msgid "Scope of the tests"
+msgstr "테스트의 범위"
+
+#: ../../limitations.md:81
+msgid ""
+"Every test runs in its own PHP process under `xvfb-run`, in polling mode,"
+" and the suite is also run with `CEFLOOM_TEST_EXTERNAL_PUMP=1` "
+"([Development](development.md#tests))."
+msgstr "모든 테스트는 `xvfb-run` 아래에서 폴링 모드로 각자의 PHP 프로세스에서 실행되며, 스위트는 `CEFLOOM_TEST_EXTERNAL_PUMP=1`로도 실행됩니다([개발](development.md#tests))."
+
+#: ../../limitations.md:82
+msgid ""
+"Input tests send events with `xdotool` to a window without a window "
+"manager and to one under `twm`."
+msgstr "입력 테스트는 `xdotool`로 창 관리자가 없는 창과 `twm` 아래의 창에 이벤트를 보냅니다."
+
+#: ../../limitations.md:83
+msgid ""
+"Network tests use a local HTTP server and a local TLS server; nothing was"
+" tried against the internet."
+msgstr "네트워크 테스트는 로컬 HTTP 서버와 로컬 TLS 서버를 사용합니다. 인터넷에 대해서는 아무것도 시험하지 않았습니다."
+
+#: ../../limitations.md:84
+msgid ""
+"Not run at all: a real Wayland session, a physical GPU, a desktop "
+"environment's window manager, a real Cast device, a real printer and "
+"print dialog, a sound device, other PHP builds (8.3 and 8.4, thread-"
+"safe), arm64, other distributions, containers, Windows and macOS."
+msgstr "전혀 실행하지 않은 것: 실제 Wayland 세션, 물리적 GPU, 데스크톱 환경의 창 관리자, 실제 Cast 장치, 실제 프린터와 인쇄 대화상자, 사운드 장치, 다른 PHP 빌드(8.3과 8.4, 스레드 안전), arm64, 그 밖의 배포판, 컨테이너, Windows와 macOS."
+

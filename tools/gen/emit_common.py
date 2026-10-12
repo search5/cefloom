@@ -148,12 +148,12 @@ def element_cpp(kind):
 
 
 def wrap_call(scope, cls, target, pointer):
-    """Return the statement ``cl_wrap_<cls>(target, pointer);`` that wraps the CEF object |pointer| (a raw pointer expression) in the zval |target|. ``scope`` is unused."""
+    """Return the statement ``cl_wrap_<cls>(target, pointer);`` that wraps the CEF object ``pointer`` (a raw pointer expression) in the zval ``target``. ``scope`` is unused."""
     return "cl_wrap_%s(%s, %s);" % (cls, target, pointer)
 
 
 def to_zval(names, scope, kind, expr, target, ind="    "):
-    """Return the lines that put the C++ value |expr| into the zval pointer |target|; raise AssertionError for a kind that cannot be returned (Void, Ignored, Buffer, Planes, Bytes, ItemBytes). A ClientRef with no PHP object gives null."""
+    """Return the lines that put the C++ value ``expr`` into the zval pointer ``target``; raise AssertionError for a kind that cannot be returned (Void, Ignored, Buffer, Planes, Bytes, ItemBytes). A ClientRef with no PHP object gives null."""
     if isinstance(kind, Prim):
         if kind.py == "bool":
             return [ind + "ZVAL_BOOL(%s, %s);" % (target, expr)]
@@ -191,7 +191,7 @@ def to_zval(names, scope, kind, expr, target, ind="    "):
 
 
 def from_zval(names, scope, kind, zv, spelled, ind="    "):
-    """Return an expression (a string) for the C++ value of the zval pointer |zv| for Prim, Str and Enum; None for every other kind. ``names``, ``scope`` and ``ind`` are unused."""
+    """Return an expression (a string) for the C++ value of the zval pointer ``zv`` for Prim, Str and Enum; None for every other kind. ``names``, ``scope`` and ``ind`` are unused."""
     if isinstance(kind, Prim):
         if kind.py == "bool":
             return "zend_is_true(%s)" % zv

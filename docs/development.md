@@ -92,3 +92,16 @@ Not yet checked: a real `pie install` from a published release (everything befor
 ## Where the design is written down
 
 `llm-wiki/` holds the architecture, the decisions (with the reasons), the experiments and what each established, and the list of what is not known. `llm-wiki/index.md` is the way in.
+
+## Building this documentation
+
+The pages are Sphinx with the Read the Docs theme. The guide is the Markdown of `docs/` (read by MyST); the API reference is written from `php/cefloom.stub.php` by `tools/docs/gen_api.py` on every build, and the pages it writes (`docs/api/gen-*.rst`) are not kept in git.
+
+```sh
+pip install -r docs/requirements.txt
+make -C docs html          # docs/_build/html/en/index.html; warnings are errors
+```
+
+`make -C docs html-all` also builds the Korean site (`_build/html/ko`) from the catalogs in `docs/locale/ko`. The guide, the cookbook and the index are translated. The descriptions in the API reference are the text of the CEF headers and stay in English, and so do the docstrings of the generator (`api/generator`, read by autodoc). After the English text of a page changes, `make -C docs update-po` brings the catalogs up to date and shows the entries that need a translation.
+
+The C++ comments are Doxygen comments and are not on the site: Doxygen is not installed on the machine that built the pages, and no Breathe setup exists.

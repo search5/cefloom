@@ -190,3 +190,20 @@
 
 - 첫 작성본의 주석에 추정이 섞여 있어, 코드와 CEF 헤더(스레드 문장)에 대조해 다시 확인했습니다. 틀리거나 근거 없는 주장 약 85곳을 고치거나 지웠습니다(C++ 12곳, Python과 PHP 약 75곳).
 - 확인하지 못한 항목: 인증 흐름의 `Fetcher`와 HTTPS 서버(CEF 실행이 필요), `cefloom-runtime install`의 압축 파일 구성(실제 런타임 압축 파일 필요). 규칙은 [코드 주석 작성 규칙과 점검 절차](pages/procedures/code-comments.md)의 "사실 확인"에 추가했습니다.
+
+## [2026-10-13] ingest | 문서 사이트
+
+- cefweaver의 Sphinx 구성(RTD 테마, `-W` Makefile, gettext)을 따라 `docs/`에 `conf.py`, `index.rst`, `Makefile`, `requirements.txt`를 추가했습니다. 가이드는 기존 Markdown(MyST), API 명세는 `tools/docs/gen_api.py`가 스텁에서 생성하는 phpdomain reST입니다.
+- 쿡북 `docs/cookbook.md`와 원본 프로그램 `docs/recipes/cookbook.php`를 더했습니다. 프로그램은 3회 연속 같은 출력을 냈고 `t_docs`가 실행합니다.
+- phpdomain이 `NAME = 값` 시그니처에서 멈추는 문제를 확인해 값을 본문으로 옮겼습니다. 내용은 [문서 사이트](pages/procedures/docs-site.md)에 있습니다.
+
+## [2026-10-13] ingest | autodoc과 한국어 번역
+
+- `tools/gen`의 독스트링을 autodoc으로 사이트에 넣었습니다(`docs/api/generator.rst`). reST 경고가 난 독스트링 몇 곳(`|이름|`, 목록 앞 빈 줄)을 고쳤고 `generate.py --check`는 그대로 통과합니다.
+- 한국어 카탈로그(`docs/locale/ko`)를 가이드 12쪽, 쿡북, 목차에 채웠습니다. 한국어 빌드가 `-W`로 통과합니다. API 설명은 번역하지 않았습니다.
+- C++ 주석(Doxygen, Breathe)은 `doxygen`이 설치되어 있지 않아 설정하지 못했습니다.
+
+## [2026-10-13] ingest | 가이드 주제 맞추기
+
+- 사용자 요청으로 cefloom과 cefweaver의 가이드 주제를 맞췄습니다. cefloom에 컨텍스트 메뉴, 소리와 마이크와 카메라, Wayland와 GPU, 한계 4쪽을, cefweaver에 개념, 메시지 루프, JS 브리지, 인쇄, 구성, 문제 해결 6쪽을 더했습니다. 대응표는 [문서 사이트](pages/procedures/docs-site.md)에 있습니다.
+- 주장은 소스를 읽거나 실제 실행으로 확인했고, 확인하지 못한 항목은 쪽에 "not tried"로 적었습니다. 새 쪽의 한국어 번역도 더했습니다.
