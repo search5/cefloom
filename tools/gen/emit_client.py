@@ -93,7 +93,7 @@ class ClientEmitter:
         for p in ins:
             # the header's optional_param (a browser or frame that CEF may pass as NULL) is the one source of nullability
             # for the stub and for the arginfo: a handler typed non-null would get a TypeError when CEF passes NULL
-            lines.append(arg_entry(p.name, p.kind, bool(getattr(p, "optional", False)) if isinstance(p.kind, (LibRef, ClientRef)) else None)
+            lines.append(arg_entry(p.name, p.kind, bool(getattr(p, "optional", False)) if isinstance(p.kind, (LibRef, ClientRef, Buffer)) else None)
                          if not isinstance(p.kind, ClientRef) else
                          "ZEND_ARG_OBJ_INFO(0, %s, %s, 1)" % (p.name, php_fqn_c(p.kind.cls)))
         lines.append("ZEND_END_ARG_INFO()")
@@ -244,8 +244,13 @@ class ClientEmitter:
         ind = "      "
         if isinstance(k, Buffer):
             size = k.size_expr or p.size_name
-            return [ind + "cl::buffer_new(%s, const_cast<void*>(static_cast<const void*>(%s)), %s, %s);" % (
-                target, name, size, "false" if k.readonly else "true")]
+            make = "cl::buffer_new(%s, const_cast<void*>(static_cast<const void*>(%s)), %s, %s);" % (
+                target, name, size, "false" if k.readonly else "true")
+            if getattr(p, "optional", False):
+                # the header's optional_param: CEF passes NULL (the end of a response filter's stream): PHP gets null, not an
+                # invalid Buffer that throws when it is used
+                return [ind + "if (!%s) { ZVAL_NULL(%s); } else { %s }" % (name, target, make)]
+            return [ind + make]
         if isinstance(k, Planes):
             return [ind + "array_init(%s);" % target,
                     ind + "for (int cl_c = 0; cl_c < %s.load(); ++cl_c) {" % k.count_member,

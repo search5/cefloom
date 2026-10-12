@@ -38,6 +38,8 @@ check(str_contains($cookie, 'session=abc') && stripos($cookie, 'httponly') !== f
 same('a=1; b=2', $body, '/cookie/echo');
 [$st, $h] = http("$base/auth");
 same([401, true], [$st, str_contains(implode('', $h['www-authenticate'] ?? []), 'Basic')], '/auth asks for credentials');
+[$st, $h] = http("$base/a9/auth?realm=other");
+same([401, true], [$st, str_contains(implode('', $h['www-authenticate'] ?? []), 'realm="other"')], '/<dir>/auth?realm=R names the realm');
 [$st, , $body] = http("$base/auth", ['Authorization: Basic ' . base64_encode('u:p')]);
 same([200, 'authorized as u'], [$st, $body], '/auth accepts u:p');
 [$st] = http("$base/auth", ['Authorization: Basic ' . base64_encode('u:wrong')]);

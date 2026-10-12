@@ -53,7 +53,7 @@ def php_type(kind, nullable=False):
     if isinstance(kind, Time):
         return "?\\DateTimeImmutable" if nullable else "\\DateTimeInterface|int|float|null"
     if isinstance(kind, Buffer):
-        return "\\%s\\Buffer" % NS
+        return ("?" if nullable else "") + "\\%s\\Buffer" % NS
     return "mixed"
 
 

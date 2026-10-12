@@ -8,7 +8,7 @@ ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefResponseFilter_Init
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefResponseFilter_Filter, 0, 2, IS_ARRAY, 0)
-ZEND_ARG_OBJ_INFO(0, dataIn, Cefloom\\Buffer, 0)
+ZEND_ARG_OBJ_INFO(0, dataIn, Cefloom\\Buffer, 1)
 ZEND_ARG_OBJ_INFO(0, dataOut, Cefloom\\Buffer, 0)
 ZEND_END_ARG_INFO()
 
@@ -64,7 +64,7 @@ class Proxy_CefResponseFilter : public CefResponseFilter, public cl::ProxyBase {
     size_t o_data_out_written = data_out_written;
     if (!cl::run_on_php_thread([&]() {
       zval cl_args[2];
-      cl::buffer_new(&cl_args[0], const_cast<void*>(static_cast<const void*>(data_in)), data_in_size, true);
+      if (!data_in) { ZVAL_NULL(&cl_args[0]); } else { cl::buffer_new(&cl_args[0], const_cast<void*>(static_cast<const void*>(data_in)), data_in_size, true); }
       cl::buffer_new(&cl_args[1], const_cast<void*>(static_cast<const void*>(data_out)), data_out_size, true);
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);

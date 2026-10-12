@@ -98,6 +98,11 @@ class NativeApp : public Fwd_CefApp {
           command_line->AppendSwitchWithValue(entry.first, entry.second);
         }
       }
+      // Without this the Chrome runtime asks for credentials with Chrome's own login prompt, which an embedder never
+      // shows: the request waits for ever and RequestHandler::getAuthCredentials is never called (verified-findings F20).
+      if (!command_line->HasSwitch("disable-chrome-login-prompt")) {
+        command_line->AppendSwitch("disable-chrome-login-prompt");
+      }
     }
     Fwd_CefApp::OnBeforeCommandLineProcessing(process_type, command_line);
   }

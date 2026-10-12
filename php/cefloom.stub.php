@@ -668,8 +668,8 @@ namespace Cefloom {
 
     class DevToolsMessageObserver {
         public function onDevToolsMessage(\Cefloom\Browser $browser, \Cefloom\Buffer $message): bool {}
-        public function onDevToolsMethodResult(\Cefloom\Browser $browser, int $messageId, bool $success, \Cefloom\Buffer $result): void {}
-        public function onDevToolsEvent(\Cefloom\Browser $browser, string $method, \Cefloom\Buffer $params): void {}
+        public function onDevToolsMethodResult(\Cefloom\Browser $browser, int $messageId, bool $success, ?\Cefloom\Buffer $result): void {}
+        public function onDevToolsEvent(\Cefloom\Browser $browser, string $method, ?\Cefloom\Buffer $params): void {}
         public function onDevToolsAgentAttached(\Cefloom\Browser $browser): void {}
         public function onDevToolsAgentDetached(\Cefloom\Browser $browser): void {}
     }
@@ -1513,7 +1513,7 @@ namespace Cefloom {
 
     abstract class ResponseFilter {
         public abstract function initFilter(): bool ;
-        public abstract function filter(\Cefloom\Buffer $dataIn, \Cefloom\Buffer $dataOut): array ;
+        public abstract function filter(?\Cefloom\Buffer $dataIn, \Cefloom\Buffer $dataOut): array ;
     }
 
     final class RunContextMenuCallback {

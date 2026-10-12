@@ -438,7 +438,7 @@ def plan_method(model, scope, owner, method, *, client_side, static=False):
                     plan.params.append(ParamPlan(
                         name, py_param_name(name), "void*",
                         Buffer("size_t", size_expr=entry[0], readonly=entry[1]),
-                        const=entry[1]))
+                        const=entry[1], optional=name in optional_names))
                     i += 1
                     continue
                 direction = ITEM_BYTES.get((owner, method.get_name()))
@@ -480,7 +480,7 @@ def plan_method(model, scope, owner, method, *, client_side, static=False):
                 plan.params.append(
                     ParamPlan(name, py_param_name(name), "void*",
                               Buffer(size.cpp, readonly=analysis.is_const()),
-                              const=analysis.is_const()))
+                              const=analysis.is_const(), optional=name in optional_names))
                 plan.params[-1].size_name = arguments[i + 1].get_name()
                 i += 2
                 continue

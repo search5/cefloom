@@ -6,7 +6,9 @@
 //   /redirect?to=<url>&code=302   a redirect
 //   /cookie/set?name=a&value=b    Set-Cookie (&path=/x &maxage=60 &httponly=1 &samesite=Lax)
 //   /cookie/echo                  the Cookie header of the request
-//   /auth                         Basic auth, user "u" password "p": 401 with a challenge, else "authorized as u"
+//   /auth?realm=R, /<dir>/auth    Basic auth, user "u" password "p": 401 with a challenge for realm R (default "cefloom tests"),
+//                                 else "authorized as u". A browser sends the credentials of a success to every path under the same
+//                                 directory without asking again: use another <dir> (/a1/auth, /a2/auth) for another case
 //   /download?size=N              an attachment of N bytes (default 1000), named file.bin
 //   /big?size=N                   N bytes of text
 //   /range                        10000 bytes; honours the Range header (206)
@@ -45,13 +47,13 @@ if ($path === '/hello') {
 } elseif ($path === '/cookie/echo') {
     header('Content-Type: text/plain');
     echo $_SERVER['HTTP_COOKIE'] ?? '';
-} elseif ($path === '/auth') {
+} elseif (preg_match('#^(/[\w-]+)?/auth$#', $path)) {
     if (($_SERVER['PHP_AUTH_USER'] ?? '') === 'u' && ($_SERVER['PHP_AUTH_PW'] ?? '') === 'p') {
         header('Content-Type: text/plain');
         echo 'authorized as u';
     } else {
         http_response_code(401);
-        header('WWW-Authenticate: Basic realm="cefloom tests"');
+        header('WWW-Authenticate: Basic realm="' . ($q['realm'] ?? 'cefloom tests') . '"');
         header('Content-Type: text/plain');
         echo 'unauthorized';
     }

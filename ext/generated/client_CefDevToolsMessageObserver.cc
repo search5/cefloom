@@ -16,7 +16,7 @@ ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefDevToolsMessageObse
 ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
 ZEND_ARG_TYPE_INFO(0, messageId, IS_LONG, 0)
 ZEND_ARG_TYPE_INFO(0, success, _IS_BOOL, 0)
-ZEND_ARG_OBJ_INFO(0, result, Cefloom\\Buffer, 0)
+ZEND_ARG_OBJ_INFO(0, result, Cefloom\\Buffer, 1)
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefDevToolsMessageObserver, OnDevToolsMethodResult) {
 }
@@ -24,7 +24,7 @@ ZEND_METHOD(CefDevToolsMessageObserver, OnDevToolsMethodResult) {
 ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_TYPE_INFO_EX(arginfo_CefDevToolsMessageObserver_OnDevToolsEvent, 0, 3, IS_VOID, 0)
 ZEND_ARG_OBJ_INFO(0, browser, Cefloom\\Browser, 0)
 ZEND_ARG_TYPE_INFO(0, method, IS_STRING, 0)
-ZEND_ARG_OBJ_INFO(0, params, Cefloom\\Buffer, 0)
+ZEND_ARG_OBJ_INFO(0, params, Cefloom\\Buffer, 1)
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefDevToolsMessageObserver, OnDevToolsEvent) {
 }
@@ -103,7 +103,7 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       ZVAL_LONG(&cl_args[1], static_cast<zend_long>(message_id));
       ZVAL_BOOL(&cl_args[2], success);
-      cl::buffer_new(&cl_args[3], const_cast<void*>(static_cast<const void*>(result)), result_size, false);
+      if (!result) { ZVAL_NULL(&cl_args[3]); } else { cl::buffer_new(&cl_args[3], const_cast<void*>(static_cast<const void*>(result)), result_size, false); }
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
       bool cl_ok = cl::call_method(object(), cl_fn, 4, cl_args, &cl_rv);
@@ -128,7 +128,7 @@ class Proxy_CefDevToolsMessageObserver : public CefDevToolsMessageObserver, publ
       zval cl_args[3];
       cl_wrap_CefBrowser(&cl_args[0], browser.get());
       cl::ret_str(&cl_args[1], method);
-      cl::buffer_new(&cl_args[2], const_cast<void*>(static_cast<const void*>(params)), params_size, false);
+      if (!params) { ZVAL_NULL(&cl_args[2]); } else { cl::buffer_new(&cl_args[2], const_cast<void*>(static_cast<const void*>(params)), params_size, false); }
       zval cl_rv;
       ZVAL_UNDEF(&cl_rv);
       bool cl_ok = cl::call_method(object(), cl_fn, 3, cl_args, &cl_rv);
