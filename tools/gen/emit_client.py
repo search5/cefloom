@@ -143,7 +143,11 @@ class ClientEmitter:
         L.append("    }")
 
         if (cls, plan.cef_name) in ASYNC_METHODS:
-            args = ", ".join(["CefRefPtr<%s>(this)" % cls, "object()", "cl_fn"] + call_arguments(plan))
+            for remembered, member in [REMEMBER.get((cls, plan.cef_name), (None, None))][:1]:
+                if remembered:
+                    L.append("    %s = %s;" % (member, remembered))
+            extra = ["%s.load()" % p.kind.count_member for p in plan.params if isinstance(p.kind, Planes)]
+            args = ", ".join(["CefRefPtr<%s>(this)" % cls, "object()", "cl_fn"] + call_arguments(plan) + extra)
             L.append("    %scl_async::%s_%s(%s);" % ("" if plan.void_return else "return ", cls, plan.cef_name, args))
             L.append("  }")
             return L
@@ -343,7 +347,8 @@ class ClientEmitter:
                 continue
             plan = next(p for p in plans if p.cef_name == async_method)
             params = ", ".join(["CefRefPtr<%s> self, zend_object* object, zend_function* fn" % cls] +
-                               [declaration(p) for p in plan.params if not p.is_return])
+                               [declaration(p) for p in plan.params if not p.is_return] +
+                               ["int channels" for p in plan.params if isinstance(p.kind, Planes)])
             line = "%s %s_%s(%s);" % (plan.ret_spelled, cls, async_method, params)
             # typedefs of the CEF class are not visible in the namespace of the async functions
             for local, global_name in (("ReturnValue", "cef_return_value_t"), ("URLRequestStatus", "cef_urlrequest_status_t")):

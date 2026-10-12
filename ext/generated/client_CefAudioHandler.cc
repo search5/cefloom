@@ -54,6 +54,18 @@ static const zend_function_entry methods_CefAudioHandler[] = {
   ZEND_FE_END
 };
 
+namespace cl_async {
+void CefAudioHandler_OnAudioStreamError(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn, CefRefPtr<CefBrowser> browser, const CefString& message);
+}
+
+namespace cl_async {
+void CefAudioHandler_OnAudioStreamPacket(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn, CefRefPtr<CefBrowser> browser, const float** data, int frames, int64_t pts, int channels);
+}
+
+namespace cl_async {
+void CefAudioHandler_OnAudioStreamStarted(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn, CefRefPtr<CefBrowser> browser, const CefAudioParameters& params, int channels);
+}
+
 namespace {
 
 const char* const kHookNames_CefAudioHandler[] = {"getaudioparameters", "onaudiostreamstarted", "onaudiostreampacket", "onaudiostreamstopped", "onaudiostreamerror"};
@@ -108,22 +120,7 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
       return;
     }
     audio_channels_ = channels;
-    if (!cl::run_on_php_thread([&]() {
-      zval cl_args[3];
-      cl_wrap_CefBrowser(&cl_args[0], browser.get());
-      cl_to_zval_cef_audio_parameters_t(&cl_args[1], params);
-      ZVAL_LONG(&cl_args[2], static_cast<zend_long>(channels));
-      zval cl_rv;
-      ZVAL_UNDEF(&cl_rv);
-      bool cl_ok = cl::call_method(object(), cl_fn, 3, cl_args, &cl_rv);
-      if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-      for (int cl_i = 0; cl_i < 3; ++cl_i) {
-        cl::invalidate_buffers(&cl_args[cl_i]);
-        zval_ptr_dtor(&cl_args[cl_i]);
-      }
-    })) {
-      return;
-    }
+    cl_async::CefAudioHandler_OnAudioStreamStarted(CefRefPtr<CefAudioHandler>(this), object(), cl_fn, browser, params, channels);
   }
 
   void OnAudioStreamPacket(CefRefPtr<CefBrowser> browser, const float** data, int frames, int64_t pts) override {
@@ -131,27 +128,7 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    if (!cl::run_on_php_thread([&]() {
-      zval cl_args[3];
-      cl_wrap_CefBrowser(&cl_args[0], browser.get());
-      array_init(&cl_args[1]);
-      for (int cl_c = 0; cl_c < audio_channels_.load(); ++cl_c) {
-        zval cl_b;
-        cl::buffer_new(&cl_b, const_cast<float*>(data[cl_c]), static_cast<size_t>(frames) * sizeof(float), false);
-        add_next_index_zval(&cl_args[1], &cl_b);
-      }
-      ZVAL_LONG(&cl_args[2], static_cast<zend_long>(pts));
-      zval cl_rv;
-      ZVAL_UNDEF(&cl_rv);
-      bool cl_ok = cl::call_method(object(), cl_fn, 3, cl_args, &cl_rv);
-      if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-      for (int cl_i = 0; cl_i < 3; ++cl_i) {
-        cl::invalidate_buffers(&cl_args[cl_i]);
-        zval_ptr_dtor(&cl_args[cl_i]);
-      }
-    })) {
-      return;
-    }
+    cl_async::CefAudioHandler_OnAudioStreamPacket(CefRefPtr<CefAudioHandler>(this), object(), cl_fn, browser, data, frames, pts, audio_channels_.load());
   }
 
   void OnAudioStreamStopped(CefRefPtr<CefBrowser> browser) override {
@@ -180,21 +157,7 @@ class Proxy_CefAudioHandler : public CefAudioHandler, public cl::ProxyBase {
     if (!cl_fn) {
       return;
     }
-    if (!cl::run_on_php_thread([&]() {
-      zval cl_args[2];
-      cl_wrap_CefBrowser(&cl_args[0], browser.get());
-      cl::ret_str(&cl_args[1], message);
-      zval cl_rv;
-      ZVAL_UNDEF(&cl_rv);
-      bool cl_ok = cl::call_method(object(), cl_fn, 2, cl_args, &cl_rv);
-      if (Z_TYPE(cl_rv) != IS_UNDEF) zval_ptr_dtor(&cl_rv);
-      for (int cl_i = 0; cl_i < 2; ++cl_i) {
-        cl::invalidate_buffers(&cl_args[cl_i]);
-        zval_ptr_dtor(&cl_args[cl_i]);
-      }
-    })) {
-      return;
-    }
+    cl_async::CefAudioHandler_OnAudioStreamError(CefRefPtr<CefAudioHandler>(this), object(), cl_fn, browser, message);
   }
 
  private:

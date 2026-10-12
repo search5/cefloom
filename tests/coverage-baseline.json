@@ -1,68 +1,75 @@
 {
  "note": "Numbers that the tests must not fall below (tools/coverage_report.py --check). Raise them with --write-baseline after adding tests.",
- "methods": 0,
- "ran": 0,
+ "methods": 1256,
+ "ran": 1113,
  "areas": {
   "values and data": [
-   0,
-   0
+   162,
+   158
   ],
   "browser and frame": [
-   0,
-   0
+   135,
+   132
   ],
   "basic handlers": [
-   0,
-   0
+   64,
+   55
   ],
   "input and interaction handlers": [
-   0,
-   0
+   53,
+   35
   ],
   "download and rendering handlers": [
-   0,
-   0
+   60,
+   47
   ],
   "network and resources": [
-   0,
-   0
+   83,
+   80
   ],
   "cookies, request context, preferences": [
-   0,
-   0
+   47,
+   38
   ],
   "certificates and SSL": [
-   0,
-   0
+   25,
+   21
   ],
   "Views": [
-   0,
-   0
+   389,
+   351
   ],
   "Cast and media": [
-   0,
-   0
+   27,
+   5
   ],
   "printing": [
-   0,
-   0
+   33,
+   32
   ],
   "streams, zip, XML": [
-   0,
-   0
+   64,
+   64
   ],
   "threads and tasks": [
-   0,
-   0
+   26,
+   23
   ],
   "app, command line, updater, resources": [
-   0,
-   0
+   49,
+   38
   ],
   "global functions": [
-   0,
-   0
+   39,
+   34
   ]
  },
- "hand_written_line_percent": {}
+ "hand_written_line_percent": {
+  "runtime/cl_runtime.cc": 85.55,
+  "src/async.cc": 88.59,
+  "src/bridge.cc": 93.75,
+  "src/cefloom.cc": 66.67,
+  "src/core.cc": 94.15,
+  "src/lazy_stubs.cc": 5.0
+ }
 }

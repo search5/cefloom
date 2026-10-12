@@ -4,7 +4,7 @@ methods of the class Cefloom\\Cef that stand for the global functions of CEF."""
 from emit_common import (NS, Names, arg_entry, begin_arginfo, ce_var, cstr, element_cpp, php_fqn_c, result_type,
                          to_zval, type_of, wrap_call)
 from model import py_class_name, py_method_name
-from scope import HANDWRITTEN_METHODS, NEEDS_CEF_RUNNING, OFF_UI_THREAD
+from scope import HANDWRITTEN_METHODS, NEEDS_CEF_RUNNING, OFF_UI_THREAD, WRAP_CLIENT
 from typesys import (Buffer, Bytes, ClientRef, Enum, Ignored, ItemBytes, LibRef, Prim, Str, StrMap, Struct, Time,
                      Vector, Void)
 
@@ -163,6 +163,8 @@ def build(names, scope, plan):
                 # (CefRequestContext::ClearHttpCache binds callback->OnComplete): a NULL ends the process. A callback that
                 # does nothing means the same as none.
                 inp.conv = ["CefRefPtr<%s> %s(%s ? cl_make_%s(%s) : cl::noop_completion());" % (k.cls, c, a, k.cls, a)]
+            elif k.cls == "CefClient" and (plan.owner, plan.cef_name) in WRAP_CLIENT:
+                inp.conv = ["CefRefPtr<CefClient> %s(cl_bridge_wrap_client(%s ? cl_make_CefClient(%s) : nullptr));" % (c, a, a)]
             else:
                 inp.conv = ["CefRefPtr<%s> %s(%s ? cl_make_%s(%s) : nullptr);" % (k.cls, c, a, k.cls, a)]
             call_args.append(c)

@@ -210,7 +210,7 @@ check($browserView->getRuntimeStyle() >= 0, 'BrowserView::getRuntimeStyle');
 check($browserView->getChromeToolbar() === null || $browserView->getChromeToolbar() instanceof View, 'getChromeToolbar');
 $browserView->setPreferAccelerators(true);
 check(BrowserView::getForBrowser($browserView->getBrowser())?->isSame($browserView) ?? false, 'BrowserView::getForBrowser finds the view of a browser');
-// (a target=_blank link in a BrowserView did not reach getDelegateForPopupBrowserView here: K42)
+// (the popup of a BrowserView is in t_views_popup)
 
 // ---- overlays by bounds
 $overlayView = Panel::createPanel(null);
@@ -240,6 +240,11 @@ $spare->addChildView(Panel::createPanel(null));
 $spare->addChildView(Panel::createPanel(null));
 $spare->removeAllChildViews();
 same(0, $spare->getChildViewCount(), 'removeAllChildViews');
+$browserView->getBrowser()->getHost()->closeBrowser(true);
+pump(0.5);
+$panel->removeAllChildViews();
+pump(0.3);
+same(0, $panel->getChildViewCount(), 'removeAllChildViews on the panel that holds a BrowserView');
 
 $window->close();
 wait_until(fn() => seen('Windows:destroyed'), 'the window was destroyed', 15000);

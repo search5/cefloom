@@ -592,4 +592,68 @@ bool CefRequestHandler_GetAuthCredentials(CefRefPtr<CefRequestHandler> self, zen
       [callback]() { callback->Cancel(); });
 }
 
+void CefAudioHandler_OnAudioStreamStarted(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn,
+                                          CefRefPtr<CefBrowser> browser, const CefAudioParameters& params, int channels) {
+  CefAudioParameters copy = params;
+  post_php([self, object, fn, browser, copy, channels]() {
+    zval args[3];
+    cl_wrap_CefBrowser(&args[0], browser.get());
+    cl_to_zval_cef_audio_parameters_t(&args[1], copy);
+    ZVAL_LONG(&args[2], static_cast<zend_long>(channels));
+    zval rv;
+    call_hook(object, fn, args, 3, &rv);
+    release(&rv);
+  });
+}
+
+void CefAudioHandler_OnAudioStreamPacket(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn,
+                                         CefRefPtr<CefBrowser> browser, const float** data, int frames, int64_t pts,
+                                         int channels) {
+  // PHP gets a packet some time later, and a PHP script that does not pump for a while must not make the packets pile up
+  // without end: the ones that come while many are waiting are dropped.
+  static std::atomic<int> pending{0};
+  constexpr int kMaxPending = 200;
+  if (channels <= 0 || frames <= 0 || pending.load() >= kMaxPending) {
+    return;
+  }
+  auto samples = std::make_shared<std::vector<float>>(static_cast<size_t>(channels) * frames);
+  for (int c = 0; c < channels; ++c) {
+    std::copy(data[c], data[c] + frames, samples->begin() + static_cast<size_t>(c) * frames);
+  }
+  ++pending;
+  bool queued = post_php(
+      [self, object, fn, browser, samples, channels, frames, pts]() {
+        --pending;
+        zval args[3];
+        cl_wrap_CefBrowser(&args[0], browser.get());
+        array_init(&args[1]);
+        for (int c = 0; c < channels; ++c) {
+          zval b;
+          cl::buffer_new(&b, samples->data() + static_cast<size_t>(c) * frames, static_cast<size_t>(frames) * sizeof(float), false);
+          add_next_index_zval(&args[1], &b);
+        }
+        ZVAL_LONG(&args[2], static_cast<zend_long>(pts));
+        zval rv;
+        call_hook(object, fn, args, 3, &rv);
+        release(&rv);
+      },
+      [] { --pending; });
+  if (!queued) {
+    --pending;
+  }
+}
+
+void CefAudioHandler_OnAudioStreamError(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn,
+                                        CefRefPtr<CefBrowser> browser, const CefString& message) {
+  CefString text = message;
+  post_php([self, object, fn, browser, text]() {
+    zval args[2];
+    cl_wrap_CefBrowser(&args[0], browser.get());
+    cl::ret_str(&args[1], text);
+    zval rv;
+    call_hook(object, fn, args, 2, &rv);
+    release(&rv);
+  });
+}
+
 }  // namespace cl_async

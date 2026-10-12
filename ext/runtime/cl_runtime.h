@@ -37,6 +37,7 @@ extern "C" {
 // Make libcef.so available (src/core.cc). A build with CEFLOOM_LAZY_LIBCEF does not link it: it loads libcef.so from the
 // directory of the module, or CEFLOOM_HOME, the first time it is needed. Returns false and sets |error| if it cannot.
 bool cl_core_load_cef(std::string* error);
+CefRefPtr<CefClient> cl_bridge_wrap_client(CefRefPtr<CefClient> user);  // src/bridge.cc
 
 namespace cl {
 

@@ -144,6 +144,7 @@ def main():
     parser.add_argument("--check")
     args = parser.parse_args()
 
+    args.build = os.path.abspath(args.build)   # gcov is run from other directories: a relative path finds nothing there
     gcdas = []
     for root, _, names in os.walk(args.build):
         gcdas += [os.path.join(root, n) for n in names if n.endswith(".gcda")]
@@ -226,6 +227,8 @@ def main():
     for f, d in result["hand"].items():
         print("  %-26s %5.1f%% of %d lines" % (f, d["percent"], d["lines"]))
     if args.write_baseline:
+        if not baseline_of(result)["ran"]:
+            sys.exit("no method counted as run: the baseline is not written")
         with open(args.write_baseline, "w", encoding="utf-8") as fh:
             json.dump(baseline_of(result), fh, indent=1, ensure_ascii=False)
             fh.write("\n")

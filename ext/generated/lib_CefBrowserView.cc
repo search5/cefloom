@@ -79,7 +79,7 @@ ZEND_METHOD(CefBrowserView, CreateBrowserView) {
     }
   }
 #endif
-  CefRefPtr<CefClient> c_0(a_0 ? cl_make_CefClient(a_0) : nullptr);
+  CefRefPtr<CefClient> c_0(cl_bridge_wrap_client(a_0 ? cl_make_CefClient(a_0) : nullptr));
   CefString c_1 = cl::to_cef(a_1);
   CefBrowserSettings c_2;
   cl_from_zval_cef_browser_settings_t(a_2, &c_2);

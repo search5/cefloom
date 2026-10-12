@@ -102,7 +102,9 @@ class Bridge : public CefMessageRouterBrowserSide::Handler {
     smart_str buffer = {0};
     zval null_value;
     ZVAL_NULL(&null_value);
-    bool encoded = php_json_encode_ex(&buffer, Z_TYPE(rv) == IS_UNDEF ? &null_value : &rv, 0, 512) == SUCCESS;
+    // php_json_encode_ex() reports a value it cannot write (NAN, a bad UTF-8 string) only in the error code.
+    bool encoded = php_json_encode_ex(&buffer, Z_TYPE(rv) == IS_UNDEF ? &null_value : &rv, 0, 512) == SUCCESS &&
+                   JSON_G(error_code) == PHP_JSON_ERROR_NONE;
     if (Z_TYPE(rv) != IS_UNDEF) zval_ptr_dtor(&rv);
     if (!encoded) {
       smart_str_free(&buffer);

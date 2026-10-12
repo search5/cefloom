@@ -27,6 +27,10 @@ HANDWRITTEN_METHODS = {
     ("CefBrowserHost", "CreateBrowserSync"): "the router of the JS bridge is attached to the client",
 }
 
+# Static factories that take a client for the browser they create: the client is wrapped as for CreateBrowser, so the
+# JS bridge reaches the browser and Cef::shutdown() can close it (a Views window left open crashes CefShutdown).
+WRAP_CLIENT = {("CefBrowserView", "CreateBrowserView")}
+
 # Global functions written by hand: the PHP process owns CEF's lifetime and message loop.
 HANDWRITTEN_FUNCTIONS = {
     "CefInitialize": "Cef::initialize",
@@ -55,6 +59,11 @@ ASYNC_METHODS = {
     ("CefResourceRequestHandler", "OnBeforeResourceLoad"),
     ("CefResourceRequestHandler", "OnResourceLoadComplete"),
     ("CefRequestHandler", "GetAuthCredentials"),
+    # CEF calls these on the audio threads, which hold locks that its UI thread needs: waiting there for the PHP thread, which
+    # is inside CefDoMessageLoopWork(), waits for ever (llm-wiki, K37).
+    ("CefAudioHandler", "OnAudioStreamStarted"),
+    ("CefAudioHandler", "OnAudioStreamPacket"),
+    ("CefAudioHandler", "OnAudioStreamError"),
 }
 
 # Functions and methods that CEF refuses on its UI and IO threads (they return false: CefDirectoryExists says false for a

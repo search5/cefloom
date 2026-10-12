@@ -12,6 +12,8 @@ final class App extends Client
 
 The `Client` can return, among others: `getLifeSpanHandler()`, `getLoadHandler()`, `getDisplayHandler()`, `getRequestHandler()`, `getKeyboardHandler()`, `getFocusHandler()`, `getContextMenuHandler()`, `getDownloadHandler()`, `getDialogHandler()`, `getJSDialogHandler()`, `getPermissionHandler()`, `getFindHandler()`, `getDragHandler()`, `getRenderHandler()`, `getPrintHandler()`, `getAudioHandler()`, `getCommandHandler()`, `getFrameHandler()`. Return the same handler object every time (keep it in a property); CEF may ask often.
 
+`AudioHandler` (`getAudioHandler()`) works with the Alloy runtime style (`$windowInfo->runtimeStyle = 2`) and a page that makes sound; the default Chrome style never asks for it. `getAudioParameters()` returns `[true, new AudioParameters($channelLayout, $sampleRate, $framesPerBuffer)]` (the values are not pre-filled); the stream callbacks run on the PHP thread a little after the audio thread of CEF has made them, and packets are dropped while PHP is not keeping up. Without a sound device, add `Cef::addSwitch('disable-audio-output')`. `tests/t_audio.php` is an example.
+
 Return values and arguments follow one rule ([Concepts](concepts.md#what-a-handler-method-receives-and-returns)): inputs in order; the return value, followed by the outputs, comes back as an array when there are several.
 
 ## The ones you will use first

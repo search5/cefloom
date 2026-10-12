@@ -26,4 +26,6 @@ $browser->getHost()->printToPDF('/tmp/page.pdf', $settings, new Done());
 * `onPdfPrintFinished()` is called when the file is written; `$ok` says whether it worked.
 * The browser can be a normal window. `printToPDF()` does not need it to be visible.
 
-`BrowserHost::print()` does not call a `PrintHandler` (`Client::getPrintHandler()`) in this build: the Chrome runtime handles printing with its own print preview, and the handler is never asked (`tests/t_print.php` keeps that as it is). Use `printToPDF()` to print from a program. `PrintSettings` can still be created and filled in as a plain object.
+`BrowserHost::print()` does not call a `PrintHandler` (`Client::getPrintHandler()`) in the default (Chrome) runtime style: it opens Chrome's own print preview and the handler is never asked (`tests/t_print.php` keeps that as it is). Use `printToPDF()` to print from a program, or the Alloy style below.
+
+**Alloy runtime style.** A browser made with `$windowInfo->runtimeStyle = 2` asks the `PrintHandler` in a fixed order: `onPrintStart`, `onPrintSettings`, `onPrintDialog` (call `$callback->continue($settings)` or `cancel()`), `onPrintJob` (the path of a PDF and the name of the document; call `$callback->continue()`), and `onPrintReset`. When there is no real printer, start CEF with `Cef::addSwitch('disable-features', 'EnableOopPrintDrivers')`: the out of process print service otherwise looks for the printer and fails before `onPrintJob`. `tests/t_print_alloy.php` shows the whole flow. `PrintSettings` can also be created and filled in as a plain object.
