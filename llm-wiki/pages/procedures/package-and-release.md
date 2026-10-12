@@ -51,6 +51,17 @@ XDG_DATA_HOME=$PWD/data CEFLOOM_DIST=$PWD/module tests/run.sh
 
 PIE는 GitHub 릴리스의 자산에서 바이너리를 찾습니다(PIE의 `PackageReleaseAssets`가 릴리스를 태그 이름으로 찾음). 따라서 저장소를 GitHub에 올리고, 태그를 만들고, 릴리스에 `build/release/`의 파일을 첨부해야 합니다. 이 작업은 외부에 공개되는 일이라 하지 않았고, 라이선스를 정해야 합니다(공급자 이름은 `search5`, 저장소는 `github.com/search5/cefloom`으로 정했습니다). Packagist에 저장소를 등록하면 `pie install search5/cefloom`이 동작합니다.
 
+## 첫 릴리스 전에 남은 일 (체크리스트)
+
+2026-10-12 기준입니다. 순서대로 합니다. 1은 2와 3의 전제입니다.
+
+1. **라이선스 파일 추가** (미정). 저장소에는 라이선스 파일이 없습니다. 라이선스가 없는 공개 저장소는 다른 사람이 쓰거나 수정하거나 재배포할 권리가 없습니다. 정하기 전에 확인할 것: `tools/gen`이 가져온 CEF 파서(`tools/gen/vendor/`, 자체 `LICENSE.txt`가 있음), `cefweaver` 코드를 재사용한 부분의 라이선스([K18](../reference/known-constraints.md)), 런타임을 재배포할 때의 CEF와 Chromium 고지([K25](../reference/known-constraints.md)). 선택 결과는 [K28](../reference/known-constraints.md)을 닫으면서 기록합니다.
+2. **태그와 GitHub 릴리스**. 태그는 `v` 없이 `CEFLOOM_VERSION`과 같게(예: `0.1.0`) 만들고, `tools/package.sh`가 만든 파일 2개(`php_cefloom-…zip`, `cefloom-runtime-…tar.gz`)와 각 `.sha256`을 릴리스 자산으로 올립니다. 런타임 압축 파일에 CEF 라이선스 고지를 넣는 일([K25](../reference/known-constraints.md))은 이 단계 전에 합니다.
+3. **Packagist 등록**. `search5/cefloom`으로 저장소를 등록합니다. 등록하면 `pie install search5/cefloom`이 릴리스 자산을 찾습니다.
+4. **끝까지 시험**. 격리된 환경에서 `pie install search5/cefloom`과 `cefloom-runtime install`을 실행하고 전체 테스트를 돌립니다([K24](../reference/known-constraints.md)). 이 시험에서 PIE가 태그의 `v` 접두사를 다루는 방식과 `php.ini` 활성화도 확인합니다.
+
+2와 3은 외부에 공개되는 일이라 소유자의 확인을 받고 합니다.
+
 ## 5. 사용자 쪽
 
 ```sh

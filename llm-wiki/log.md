@@ -100,3 +100,7 @@
 ## [2026-10-12] ingest | 패키지 이름을 search5/cefloom으로
 
 - `composer.json`의 패키지 이름을 임시 값 `cefloom/cefloom`에서 `search5/cefloom`으로 바꾸고, `README.md`와 `docs/`의 `pie install`과 `pie uninstall` 명령, 런타임 내려받기 주소, 상태 안내를 맞추었습니다. PIE가 새 이름을 인식하는 것을 다시 확인했습니다([F17](pages/reference/verified-findings.md)).
+
+## [2026-10-12] ingest | 첫 릴리스 전 체크리스트
+
+- 라이선스 파일 추가, 태그와 릴리스 자산 업로드, Packagist 등록, 끝까지 시험을 [패키징과 릴리스 절차](pages/procedures/package-and-release.md)에 체크리스트로 모았습니다. 라이선스 미정을 [K28](pages/reference/known-constraints.md)로 기록하고, 로드맵의 낡은 서술(이미 정한 공급자 이름과 저장소 위치를 미정으로 적은 부분)을 고쳤습니다.

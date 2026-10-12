@@ -43,7 +43,7 @@ updated: 2026-10-12
 
 ## 다음에 할 일 (제안)
 
-1. **배포(4단계)**: 패키징은 구현하고 오프라인으로 시험했습니다([패키징과 릴리스 절차](../procedures/package-and-release.md)). 남은 일은 공급자 이름, 저장소 위치, 라이선스를 정하고 릴리스를 게시한 뒤 `pie install`을 끝까지 시험하는 것([K24](known-constraints.md))과 CEF 라이선스 고지([K25](known-constraints.md))입니다. 빌드는 아직 이 작업 영역의 `cefweaver_clone` 산출물(헤더, 래퍼 라이브러리, 런타임)에 의존합니다.
+1. **배포(4단계)**: 패키징은 구현하고 오프라인으로 시험했습니다. 저장소는 `github.com/search5/cefloom`(공개)이고 패키지 이름은 `search5/cefloom`입니다. 남은 일은 라이선스 파일 추가, 태그와 릴리스 자산 업로드, Packagist 등록, 그리고 `pie install`을 끝까지 시험하는 것입니다([체크리스트](../procedures/package-and-release.md), [K24, K25, K28](known-constraints.md)). 빌드는 아직 이 작업 영역의 `cefweaver_clone` 산출물(헤더, 래퍼 라이브러리, 런타임)에 의존합니다.
 2. **즉시 반환값이 필요한 IO 스레드 콜백**: 현재는 PHP를 동기로 부르며 5초 안에 풀리지 않으면 CEF 기본 동작으로 되돌아갑니다. `getResourceHandler`를 규칙 기반으로 등록하는 방식 등을 요구가 생길 때 설계합니다([D12](design-decisions.md)).
 3. **확인하지 못한 멈춤**: `t_browser_nav`가 전체 실행 중 한 번 멈춘 적이 있으나 핸들러를 쓰지 않는 테스트라서 [F14](verified-findings.md)와 같은 원인인지 확인하지 못했습니다. 이후 반복 실행에서는 재현되지 않았습니다.
 4. **추가 플랫폼(5단계)**: Windows, macOS는 시작하지 않았습니다. 서브프로세스의 스택 보호 옵션([F15](verified-findings.md)) 같은 컴파일러 옵션은 플랫폼마다 다시 확인해야 합니다.
