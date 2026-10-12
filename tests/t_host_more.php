@@ -106,14 +106,7 @@ pump(0.3);
 $frame->executeJavaScript("console.log('P:value ' + JSON.stringify(document.getElementById('i').value))", '', 0);
 wait_until(fn() => in_array('value ""', $app->logged('P:'), true), 'cut emptied the input', 8000);
 check(in_array('value ""', $app->logged('P:'), true), 'selectAll + cut empties the input');
-$frame->undo();
-$frame->paste();
-$frame->redo();
-$frame->pasteAndMatchStyle();
-$frame->delete();
-check(true, 'undo, paste, redo, pasteAndMatchStyle and delete are accepted');
 check(is_bool($frame->isFocused()), 'isFocused');
-$frame->viewSource();
 $message = ProcessMessage::create('hello-renderer');
 $message->getArgumentList()->setString(0, 'x');
 $frame->sendProcessMessage(ProcessId::RENDERER, $message);
@@ -134,7 +127,7 @@ $host->imeSetComposition('가', [], new Range(0, 0), new Range(1, 1));
 $host->imeFinishComposingText(false);
 $host->imeSetComposition('나', [], new Range(0, 0), new Range(1, 1));
 $host->imeCancelComposition();
-pump(0.3);
+wait_until(fn() => array_filter($app->logged('P:'), fn($l) => str_starts_with($l, 'composition')) !== [], 'composition events', 8000);
 check(array_filter($app->logged('P:'), fn($l) => str_starts_with($l, 'composition')) !== [], 'IME composition events reach the page: ' . json_encode($app->logged('P:')));
 
 // ---- touch
@@ -155,7 +148,7 @@ pump(0.3);
 $host->dragTargetDragOver(new MouseEvent(112, 162, 0), $ops);
 pump(0.3);
 $host->dragTargetDrop(new MouseEvent(112, 162, 0));
-pump(0.5);
+wait_until(fn() => in_array('drop dropped text', $app->logged('P:'), true), 'the drop', 5000);
 $host->dragSourceEndedAt(110, 160, DragOperationsMask::COPY);
 $host->dragSourceSystemDragEnded();
 $host->dragTargetDragEnter($drag, new MouseEvent(100, 150, 0), $ops);
@@ -211,6 +204,15 @@ $host->startDownload("$base/download?size=100");
 pump(0.5);
 check(true, 'startDownload is accepted');
 
+// last: these make the page read the clipboard, and in the event-driven loop that stalls the input that follows (K41)
+$frame->undo();
+$frame->paste();
+$frame->redo();
+$frame->pasteAndMatchStyle();
+$frame->delete();
+check(true, 'undo, paste, redo, pasteAndMatchStyle and delete are accepted');
+$frame->viewSource();      // opens another browser
+pump(0.5);
 $host->closeBrowser(true);
 pump(0.5);
 Cef::shutdown();
