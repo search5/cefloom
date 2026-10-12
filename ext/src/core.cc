@@ -30,6 +30,8 @@ std::atomic<bool> g_work_now{false};
 // window or a browser window made by CEF gets no mouse and keyboard input. The default is the polling loop CEF
 // recommends: Cef::doMessageLoopWork() at least every few milliseconds (verified-findings F19).
 std::atomic<bool> g_external_pump{false};
+// True once CefShutdown() has run: CEF cannot be initialized again in the same process (it crashes if tried).
+std::atomic<bool> g_was_shut_down{false};
 constexpr int kPollMs = 5;
 int g_wake_fd = -1;
 bool g_quit = false;
@@ -314,6 +316,7 @@ bool do_shutdown(bool from_script) {
   cl::release_all_lib_objects();
   g_app = nullptr;
   CefShutdown();
+  g_was_shut_down = true;
   cl::g_cef_running = false;
   g_context_ready = false;
   cl::drain_releases();
@@ -396,6 +399,10 @@ ZEND_METHOD(Cef, initialize) {
 
   if (cl::g_cef_running) {
     zend_throw_error(nullptr, "CEF is already initialized (it can be started once per process)");
+    RETURN_THROWS();
+  }
+  if (g_was_shut_down) {
+    zend_throw_error(nullptr, "CEF cannot be started again after Cef::shutdown(): it starts once per process");
     RETURN_THROWS();
   }
   std::string load_error;

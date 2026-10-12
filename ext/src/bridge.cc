@@ -250,7 +250,20 @@ bool parse_browser_args(INTERNAL_FUNCTION_PARAMETERS, BrowserArgs* out) {
 
 }  // namespace
 
+// BrowserArgs holds C++ structs of CEF whose destructors call libcef: they must not exist while CEF is not running (the
+// library is not even loaded then), so the check comes before them.
+static bool require_running() {
+  if (!cl::g_cef_running) {
+    zend_throw_error(nullptr, "CEF is not running; call Cef::initialize() first");
+    return false;
+  }
+  return true;
+}
+
 ZEND_METHOD(CefBrowserHost, CreateBrowser) {
+  if (!require_running()) {
+    RETURN_THROWS();
+  }
   BrowserArgs args;
   if (!parse_browser_args(INTERNAL_FUNCTION_PARAM_PASSTHRU, &args)) {
     RETURN_THROWS();
@@ -260,6 +273,9 @@ ZEND_METHOD(CefBrowserHost, CreateBrowser) {
 }
 
 ZEND_METHOD(CefBrowserHost, CreateBrowserSync) {
+  if (!require_running()) {
+    RETURN_THROWS();
+  }
   BrowserArgs args;
   if (!parse_browser_args(INTERNAL_FUNCTION_PARAM_PASSTHRU, &args)) {
     RETURN_THROWS();
