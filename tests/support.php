@@ -39,6 +39,9 @@ function start_cef(?Cefloom\Settings $settings = null, ?Cefloom\App $app = null)
     Cef::addSwitch('disable-gpu');
     // Every test process gets its own cache directory: Chromium locks it, and tests run in parallel.
     $settings ??= new Cefloom\Settings();
+    if (getenv('CEFLOOM_TEST_EXTERNAL_PUMP')) {
+        $settings->externalMessagePump = 1;   // run the tests in the event driven mode too (see run.sh)
+    }
     if ($settings->rootCachePath === '') {
         $base = getenv('CEFLOOM_TEST_TMP') ?: dirname(__DIR__) . '/build/tmp';
         $dir = $base . '/cache-' . getmypid();

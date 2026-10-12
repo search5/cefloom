@@ -19,6 +19,8 @@ sources:
   - cefloom/tests/t_pdf.php
   - cefloom/tests/t_views.php
   - cefloom/tests/t_cast.php
+  - cefloom/tests/t_views_input.php
+  - cefloom/ext/src/core.cc
   - cefloom/experiments/media-router-shutdown/repro.php
   - cefloom/tools/package.sh
   - cefloom/bin/cefloom-runtime
@@ -155,6 +157,14 @@ updated: 2026-10-12
 - **결과, 종료 때 중단**: 미디어 라우터 관리자가 만들어진 뒤(`addObserver` 또는 `notifyCurrentSinks` 호출) `Cef::shutdown()`을 부르면 프로세스가 `SIGTRAP`으로 중단됩니다. 옵저버 등록을 해제하거나 1초 동안 메시지 루프를 돌려도 같았고, 옵저버를 등록하지 않으면(`getSource`만 사용) 종료가 정상이었습니다. 심볼 포함 `libcef.so`로 풀어 보니 `CefBrowserContext::Shutdown`이 `CefMediaRouterManager`를 지우면서 `CefMediaRoutesObserver`의 소멸자(`media_router::MediaRoutesObserver::~MediaRoutesObserver`)에서 멈췄습니다.
 - **해석**: `CefMediaRouterManager`의 생성자가 `MediaRoutesObserver`를 만들고, 종료 때 이를 지우는 시점에 미디어 라우터 서비스가 이미 사라져 있어 확인에 실패하는 것으로 추정합니다. CEF 단독(PHP 없이)으로는 재현하지 않았으므로 CEF 쪽 문제인지 확정하지 못했습니다. 재현 스크립트는 `experiments/media-router-shutdown/repro.php`입니다.
 - **한계**: 실제 Cast 기기와의 세션(`createRoute`)은 시험하지 못했습니다. Views에서 키보드와 마우스 입력, 창 관리자가 있는 환경은 시험하지 않았습니다. 인쇄 대화상자(`PrintHandler`)도 시험하지 않았고 PDF 출력만 확인했습니다.
+
+## F19. 외부 메시지 펌프에서는 CEF 소유 창이 X11 입력을 받지 못한다
+
+- **방법**: 가상 X 서버(Xvfb)에서 `xdotool`(XTEST)로 마우스 이동, 클릭, 휠, 키 입력을 보내고, 툴바 버튼의 `onButtonPressed`와 페이지의 `mousedown`, `wheel`, `keydown`, `input` 이벤트가 오는지 시험했습니다(`t_views_input`). 같은 환경에서 `cefweaver`의 Views 스모크 시험(13개)을 실행해 비교 기준으로 삼았습니다.
+- **결과 1, 증상**: `cefloom` 기본 설정(`external_message_pump = true`)에서는 창이 보이고 활성 상태이며 포커스가 있는데도(`isActive`, `hasFocus`가 참, X 창 `IsViewable`) 페이지가 마우스 이동 이벤트를 하나도 받지 못했고 버튼도 눌리지 않았습니다. `WindowInfo`로 만든 일반 창에서도 같았습니다. 메시지 루프를 5밀리초 대기, 2밀리초 대기, 쉬지 않고 돌려도, `xdotool`을 비동기로 보내도, `disable-gpu`를 빼도, 화면을 계속 다시 그리게 해도 같았습니다.
+- **결과 2, 원인**: `cefweaver`의 Views 예제는 `external_message_pump`를 켜지 않고 `do_message_loop_work()`를 5밀리초마다 호출합니다(같은 환경에서 13개 통과). CEF 소스(`libcef/browser/browser_message_loop.cc`)에서 외부 펌프의 `MessagePumpExternal::Run`은 `DirectRunWork`로 작업만 실행하며 파일 디스크립터(X 연결의 소켓)를 폴링하지 않습니다. 이 때문에 CEF가 소유한 창의 X11 이벤트가 처리되지 않는 것으로 해석합니다.
+- **결과 3, 수정**: 확장이 `external_message_pump`를 강제로 켜지 않도록 고쳤습니다([D14](design-decisions.md)). 수정 뒤 `t_views_input`의 검사 6개(버튼 클릭, 페이지의 마우스 클릭, 휠, 키보드 입력)가 통과했고 10회 반복에서 실패가 없었습니다. 전체 테스트는 두 모드 모두 17개가 통과했습니다(외부 펌프 모드에서 입력 시험은 건너뜁니다).
+- **한계**: 창 관리자가 없는 가상 화면에서만 확인했습니다. 창 관리자가 있는 환경과 실제 화면(Wayland 포함)은 시험하지 않았습니다. 원인은 소스 읽기와 실험의 일치로 해석한 것이며, 외부 펌프에서 어떤 경로로도 입력이 오지 않는지는 확인하지 못했습니다.
 
 ## 관련 페이지
 

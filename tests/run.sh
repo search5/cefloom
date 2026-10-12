@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Run the tests: tests/run.sh [name ...]   (default: every t_*.php)
+# CEFLOOM_TEST_EXTERNAL_PUMP=1 tests/run.sh runs them with the external message pump (Settings::externalMessagePump).
 # Tests run one after another, each in its own PHP process (CEF can be started once per process) under a virtual X server.
 # Each test gets its own session, so a timeout or a process that does not exit after printing OK is cleaned up completely.
 set -uo pipefail

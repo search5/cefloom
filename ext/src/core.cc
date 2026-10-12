@@ -25,6 +25,12 @@ namespace {
 
 std::atomic<int64_t> g_deadline_ms{-1};  // when CEF wants to run (monotonic milliseconds), -1 for no request
 std::atomic<bool> g_work_now{false};
+// True when the script asked for CEF's external message pump (Settings::externalMessagePump). CEF then runs only the work
+// it announced (OnScheduleMessagePumpWork) and does not read the X11 socket of the windows it owns itself, so a Views
+// window or a browser window made by CEF gets no mouse and keyboard input. The default is the polling loop CEF
+// recommends: Cef::doMessageLoopWork() at least every few milliseconds (verified-findings F19).
+std::atomic<bool> g_external_pump{false};
+constexpr int kPollMs = 5;
 int g_wake_fd = -1;
 bool g_quit = false;
 bool g_context_ready = false;
@@ -223,8 +229,7 @@ void set_if_empty(cef_string_t* field, const std::string& value) {
 
 void apply_defaults(CefSettings& s) {
   const std::string home = home_dir();
-  s.external_message_pump = true;       // PHP owns the loop
-  s.multi_threaded_message_loop = false;
+  s.multi_threaded_message_loop = false;   // PHP owns the loop; external_message_pump stays what the script chose
   s.no_sandbox = true;                  // the sandbox needs chrome-sandbox set up; see cautions.md
   set_if_empty(&s.browser_subprocess_path, home + "/cefloomsubprocess");
   set_if_empty(&s.resources_dir_path, home);
@@ -256,6 +261,9 @@ void pump_once() {
 void wait_for_work(int max_ms) {
   if (g_work_now.load()) {
     return;
+  }
+  if (!g_external_pump.load()) {
+    max_ms = std::min(max_ms, kPollMs);  // CEF announces nothing in the polling mode: come back soon
   }
   int64_t deadline = g_deadline_ms.load();
   if (deadline >= 0) {
@@ -401,6 +409,7 @@ ZEND_METHOD(Cef, initialize) {
     cl_from_zval_cef_settings_t(settings_object, &settings);
   }
   apply_defaults(settings);
+  g_external_pump = settings.external_message_pump != 0;
 
   // Without its own subprocess CEF would start this PHP binary for its other processes.
   const std::string subprocess = CefString(&settings.browser_subprocess_path).ToString();

@@ -8,6 +8,7 @@ sources:
   - cefloom/ext/runtime/cl_runtime.cc
   - cefloom/tests/t_sync_timeout.php
   - cefloom/tools/build.sh
+  - cefloom/tests/t_views_input.php
   - cefloom/ext/src/lazy_stubs.cc
   - cefweaver_clone/cefweaver/llm-wiki/pages/concepts/process-model-and-threads.md
 updated: 2026-10-12
@@ -30,6 +31,7 @@ updated: 2026-10-12
 - 상태: **근거 확인** (F6, F8)
 - 내용: PHP 메인 스레드가 UI 스레드이고, `multi_threaded_message_loop`를 끄고 `external_message_pump`를 켠 채 PHP 루프가 `cef_do_message_loop_work()`를 호출합니다.
 - 대안: CEF가 별도 UI 스레드를 돌리는 `multi_threaded_message_loop`. 모든 핸들러가 PHP가 아닌 스레드에서 실행되므로 PHP 비안전성 때문에 채택하지 않습니다(해석).
+- 수정(2026-10-12, [D14](design-decisions.md)): 확장은 더 이상 `external_message_pump`를 켜지 않습니다. 이 설정에서는 CEF가 소유한 창(Views 창과 `WindowInfo`로 만든 창)이 마우스와 키보드 입력을 받지 못했기 때문입니다. 기본은 PHP 루프가 5밀리초 이내 간격으로 `cef_do_message_loop_work()`를 호출하는 방식입니다.
 
 ## D3. 참조 카운트와 펌프 예약은 네이티브 구현이다
 
@@ -91,6 +93,13 @@ updated: 2026-10-12
 - **내용**: 기본 빌드의 `cefloom.so`는 `libcef.so`에 링크하지 않고, CEF 런타임 디렉터리에서 처음 필요할 때 불러옵니다. 런타임이 없어도 모듈이 로드되고, 사용하지 않는 PHP 프로세스의 시작 비용이 거의 없습니다([F16](verified-findings.md)). 링크하는 빌드는 `CEFLOOM_LAZY_LIBCEF=0 tools/build.sh`로 만듭니다.
 - **이유**: PIE로 배포하려면 확장 모듈이 CEF 런타임 없이 설치되고 로드되어야 하기 때문입니다([배포 전략](../concepts/distribution-strategy.md)).
 - **영향**: CEF를 부르는 정적 함수는 런타임이 없으면 `Error`를 던집니다. 생성기가 이 확인을 넣습니다(`tools/gen/emit_lib.py`).
+
+## D14. 메시지 펌프는 기본이 폴링이고, 외부 펌프는 선택이다
+
+- **상태**: 확정(사용자가 Views 입력 시험을 하도록 정했고, 시험에서 원인과 해결을 확인했습니다). 구현과 시험을 마쳤습니다.
+- **내용**: `Settings::externalMessagePump`를 사용자가 정하게 하고 기본은 끕니다(CEF의 기본값). 끈 상태에서 `Cef::run()`과 `Cef::wait()`는 대기를 5밀리초로 제한하고, PHP 루프는 `Cef::doMessageLoopWork()`를 그 간격 안에 부릅니다. 켜면 CEF가 알린 작업만 실행하고 대기가 길어져 유휴 때 깨어나는 횟수가 줄지만, CEF 소유 창은 입력을 받지 못합니다([F19](verified-findings.md)).
+- **대안**: 이벤트 기반 외부 펌프를 유지하고 X11 소켓을 따로 감시하기. Chromium 내부 연결의 파일 디스크립터에 접근할 수 없어 채택하지 않았습니다.
+- **영향**: 유휴 CPU 사용량은 5초 측정에서 PHP 프로세스 기준 폴링 3.2%, 외부 펌프 2.7%로 거의 같았습니다([K11](known-constraints.md)의 일부). 오프스크린 모드나 툴킷이 창을 소유하는 응용은 `externalMessagePump = 1`을 선택할 수 있습니다.
 
 ## 미결 질문
 

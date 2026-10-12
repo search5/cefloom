@@ -19,7 +19,7 @@ updated: 2026-10-12
 
 [실험으로 확인한 사실](../reference/verified-findings.md)의 F3부터 F8까지가 근거입니다.
 
-- `multi_threaded_message_loop`를 끄고 `external_message_pump`를 켠 뒤, PHP 메인 스레드에서 `cef_do_message_loop_work()`를 반복 호출하면 CEF가 동작합니다. 이때 UI 스레드는 `cef_initialize()`를 호출한 PHP 메인 스레드입니다.
+- `multi_threaded_message_loop`를 끄고(사전 검증은 `external_message_pump`도 켰습니다. 확장은 이후 이를 기본으로 켜지 않습니다, [D14](../reference/design-decisions.md)), PHP 메인 스레드에서 `cef_do_message_loop_work()`를 반복 호출하면 CEF가 동작합니다. 이때 UI 스레드는 `cef_initialize()`를 호출한 PHP 메인 스레드입니다.
 - 이 루프 안에서 호출된 핸들러 콜백(`on_context_initialized`, `on_after_created`, `on_before_close`, `on_load_end`, `on_console_message`, 오프스크린 모드의 `get_view_rect`와 `on_paint`)은 모두 PHP 메인 스레드와 같은 스레드 번호에서 실행되었습니다.
 - **참조 카운트 함수(`add_ref`, `release` 등)는 메인 스레드 밖에서도 호출됩니다.** 한 번의 실행에서 375회 중 16회였습니다.
 - **`on_schedule_message_pump_work`도 대부분 메인 스레드 밖에서 호출됩니다.** 실행마다 44회 중 42회, 15회 중 13회, 53회 중 51회였습니다. CEF 헤더가 이 콜백이 어느 스레드에서든 호출될 수 있다고 명시하는 것과 일치합니다.

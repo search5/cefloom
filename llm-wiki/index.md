@@ -27,9 +27,9 @@
 ## 참조 (reference)
 
 - [주의 사항](pages/reference/cautions.md): 구현할 때 어기면 안 되는 규칙 25개와 근거(확인, 기록, 해석 구분)
-- [설계 결정 기록](pages/reference/design-decisions.md): D1부터 D13, 상태(확정, 근거 확인, 제안, 기본값), 미결 질문
+- [설계 결정 기록](pages/reference/design-decisions.md): D1부터 D14, 상태(확정, 근거 확인, 제안, 기본값), 미결 질문
 - [로드맵](pages/reference/roadmap.md): 단계별 기간 추정, 줄이고 늘리는 요소, 다음에 할 일
-- [실험으로 확인한 사실](pages/reference/verified-findings.md): 사전 검증 F1부터 F12와 확장 모듈 검증 F13부터 F18, 방법과 결과와 영향
+- [실험으로 확인한 사실](pages/reference/verified-findings.md): 사전 검증 F1부터 F12와 확장 모듈 검증 F13부터 F19, 방법과 결과와 영향
 - [알려진 제약과 미검증 항목](pages/reference/known-constraints.md): K1부터 K27, 확인하지 못한 이유와 확인 방법
 - [용어집](pages/reference/glossary.md): CEF, 외부 메시지 펌프, 참조 카운트, 트램펄린, shim 등
 - [생성기 커버리지 보고서](pages/reference/coverage-report.md): 생성기가 만든 메서드와 만들지 못한 이유, 클래스별 표 (생성 페이지, 직접 고치지 않음)

@@ -82,3 +82,8 @@
 ## [2026-10-12] ingest | Views, PDF, Cast 예제
 
 - `examples/`에 `views.php`(툴바가 있는 Views 창), `print-pdf.php`, `cast.php`를 추가하고 `README.md`에 목록을 넣었습니다. `tests/t_examples.php`가 `hello.php`를 포함한 예제 네 개를 실행해 확인합니다. `cast.php --discover`는 알려진 종료 문제([K26](pages/reference/known-constraints.md))를 예제 안에 적었습니다.
+
+## [2026-10-12] ingest | Views 입력과 메시지 펌프
+
+- Views와 CEF 소유 창이 마우스와 키보드 입력을 받지 못하는 원인을 찾아 [F19](pages/reference/verified-findings.md)에 기록하고, 확장이 `external_message_pump`를 강제로 켜지 않도록 고쳤습니다([D14](pages/reference/design-decisions.md)). [K12와 K27](pages/reference/known-constraints.md)을 갱신했습니다.
+- `t_views_input`을 추가하고, 테스트를 외부 펌프 모드로도 실행하는 `CEFLOOM_TEST_EXTERNAL_PUMP`를 추가했습니다.

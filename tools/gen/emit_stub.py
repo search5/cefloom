@@ -30,7 +30,7 @@ CORE_STUB = '''
         public static function registerCustomScheme(string $name, int $options = \\Cefloom\\Types\\SchemeOptions::STANDARD | \\Cefloom\\Types\\SchemeOptions::SECURE | \\Cefloom\\Types\\SchemeOptions::CORS_ENABLED | \\Cefloom\\Types\\SchemeOptions::FETCH_ENABLED): void {}
         /** Add a command line switch for CEF (before initialize()). */
         public static function addSwitch(string $name, string $value = ""): void {}
-        /** Sleep until CEF asks for work or $maxMilliseconds have passed (for your own loop). */
+        /** Sleep until CEF asks for work or $maxMilliseconds have passed (for your own loop). Without Settings::externalMessagePump CEF announces no work, so the wait is at most 5 ms. */
         public static function wait(int $maxMilliseconds = 30): void {}
         /** Expose a PHP function to JavaScript as cefloom.call(name, ...args), which returns a Promise. */
         public static function expose(string $name, callable $function): void {}
