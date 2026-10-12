@@ -11,7 +11,7 @@
 | `userAgent`, `userAgentProduct`, `acceptLanguageList`, `locale` | what the browser says about itself |
 | `logFile`, `logSeverity` | where CEF writes its log and how much; raise the severity to quiet it |
 | `remoteDebuggingPort` | open DevTools for the pages at `http://localhost:<port>` |
-| `externalMessagePump` | event-driven loop; **off by default** because windows made by CEF then get no input ([The message loop](message-loop.md#polling-and-the-external-pump)) |
+| `externalMessagePump` | event-driven loop; off by default (polling is the simplest; both modes handle input in windows made by CEF) ([The message loop](message-loop.md#polling-and-the-external-pump)) |
 | `windowlessRenderingEnabled` | off-screen rendering |
 | `backgroundColor`, `javascriptFlags`, `persistSessionCookies` | as in CEF |
 

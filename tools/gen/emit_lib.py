@@ -4,7 +4,7 @@ methods of the class Cefloom\\Cef that stand for the global functions of CEF."""
 from emit_common import (NS, Names, arg_entry, begin_arginfo, ce_var, cstr, element_cpp, php_fqn_c, result_type,
                          to_zval, type_of, wrap_call)
 from model import py_class_name, py_method_name
-from scope import HANDWRITTEN_METHODS, NEEDS_CEF_RUNNING, OFF_UI_THREAD, WRAP_CLIENT
+from scope import HANDWRITTEN_METHODS, NEEDS_CEF_RUNNING, OFF_UI_THREAD, WRAP_CLIENT, BEFORE_CALL
 from typesys import (Buffer, Bytes, ClientRef, Enum, Ignored, ItemBytes, LibRef, Prim, Str, StrMap, Struct, Time,
                      Vector, Void)
 
@@ -271,6 +271,8 @@ def function_lines(names, scope, class_key, owner_cpp, plan, inputs, call_args, 
     for inp in inputs:
         L += ["  " + c for c in inp.conv]
     L += ["  " + o for o in outs]
+    if (plan.owner, plan.cef_name) in BEFORE_CALL:
+        L.append("  " + BEFORE_CALL[(plan.owner, plan.cef_name)])
 
     call = "%s%s(%s)" % (target, plan.cef_name, ", ".join(call_args))
     if (plan.owner, plan.cef_name) in OFF_UI_THREAD:

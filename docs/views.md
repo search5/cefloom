@@ -51,7 +51,7 @@ Tips:
 
 ## Input
 
-Mouse clicks, the wheel and typing reach buttons and the page in **polling mode**, which is the default ([The message loop](message-loop.md#polling-and-the-external-pump)). With `Settings::externalMessagePump = 1` windows made by CEF receive no mouse or keyboard input.
+Mouse clicks, the wheel and typing reach buttons and the page in both modes of the loop ([The message loop](message-loop.md#polling-and-the-external-pump)). A `BrowserView` with a live browser cannot be taken out of its window with `removeChildView()` or `removeAllChildViews()` (CEF ends the process when the browser closes afterwards): these throw an `Error`; close the browser first with `closeBrowser()`, or hide the view with `setVisible(false)`.
 
 `tests/t_views_input.php` sends clicks, the wheel and typing with `xdotool` and checks that they arrive, on a virtual display without a window manager and with the window manager `twm`. A desktop environment's window manager and Wayland were not tried.
 

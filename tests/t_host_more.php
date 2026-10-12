@@ -118,6 +118,15 @@ $urlRequest = $frame->createURLRequest($request, $fetcher);
 wait_until(fn() => $fetcher->done, 'a URL request made by the frame', 20000);
 same([\Cefloom\Types\URLRequestStatus::SUCCESS, 'hello'], [$fetcher->status, $fetcher->body], 'Frame::createURLRequest fetches a URL in the context of the frame');
 
+// the commands that make the page read the clipboard stalled the input that followed in the event-driven loop (K41, gone since the loop
+// iterates GLib's main context): they come before the IME, touch and drag on purpose
+$frame->undo();
+$frame->paste();
+$frame->redo();
+$frame->pasteAndMatchStyle();
+$frame->delete();
+check(true, 'undo, paste, redo, pasteAndMatchStyle and delete are accepted');
+
 // ---- the IME
 $host->imeSetComposition('한', [new CompositionUnderline()], new Range(0, 0), new Range(1, 1));
 pump(0.3);
@@ -204,13 +213,6 @@ $host->startDownload("$base/download?size=100");
 pump(0.5);
 check(true, 'startDownload is accepted');
 
-// last: these make the page read the clipboard, and in the event-driven loop that stalls the input that follows (K41)
-$frame->undo();
-$frame->paste();
-$frame->redo();
-$frame->pasteAndMatchStyle();
-$frame->delete();
-check(true, 'undo, paste, redo, pasteAndMatchStyle and delete are accepted');
 $frame->viewSource();      // opens another browser
 pump(0.5);
 $host->closeBrowser(true);

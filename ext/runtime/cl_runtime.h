@@ -26,6 +26,7 @@
 #include "include/cef_base.h"
 #include "include/cef_callback.h"
 #include "include/cef_task.h"
+#include "include/views/cef_panel.h"
 
 extern "C" {
 #include "php.h"
@@ -176,6 +177,11 @@ size_t buffer_fill(zval* zv, void* data, size_t max);
 void release_later(zend_object* o);
 // A completion callback that does nothing, for the places where CEF takes a NULL callback and then calls it anyway.
 CefRefPtr<CefCompletionCallback> noop_completion();
+
+// A BrowserView that is taken out of its window while its browser lives cannot close that browser later: CEF ends the process
+// (K42). These throw a PHP error instead and return true; they look at the views given and their direct children only.
+bool refuse_live_browser_view(CefRefPtr<CefView> view);
+bool refuse_live_browser_views_of(CefRefPtr<CefPanel> panel);
 
 // Run |fn| on a helper thread and wait for it: for the CEF functions that refuse the UI and IO threads (scope.py,
 // OFF_UI_THREAD). |fn| must not call PHP.

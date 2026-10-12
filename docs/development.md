@@ -30,7 +30,7 @@ The extension is built **without** a link to `libcef.so`, so that it loads where
 ```sh
 tests/run.sh                    # every test, one after another
 tests/run.sh t_views t_pdf      # some
-CEFLOOM_TEST_EXTERNAL_PUMP=1 tests/run.sh      # the event-driven loop (the input test is skipped)
+CEFLOOM_TEST_EXTERNAL_PUMP=1 tests/run.sh      # the event-driven loop (the same tests, input included)
 CEFLOOM_DIST=/path/to/dist tests/run.sh        # another build directory
 ```
 

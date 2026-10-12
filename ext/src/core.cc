@@ -251,6 +251,51 @@ void apply_defaults(CefSettings& s) {
 
 // -- one step of the loop -----------------------------------------------------------------------------------
 
+// libcef links GLib; the X11 connection of its windows is a source of the default main context, and with the external message
+// pump nothing else would iterate that context (windows made by CEF then get no input, and a browser does not finish closing).
+// The functions are looked up in the process, so the extension does not need GLib to build.
+struct PollFd {  // GPollFD
+  int fd;
+  unsigned short events;
+  unsigned short revents;
+};
+struct Glib {
+  void* (*context_default)();
+  int (*acquire)(void*);
+  void (*release)(void*);
+  int (*prepare)(void*, int*);
+  int (*query)(void*, int, int*, PollFd*, int);
+  int (*check)(void*, int, PollFd*, int);
+  void (*dispatch)(void*);
+  int (*iteration)(void*, int);
+  bool ok = false;
+};
+
+const Glib& glib() {
+  static Glib g = [] {
+    Glib r;
+    r.context_default = reinterpret_cast<decltype(r.context_default)>(dlsym(RTLD_DEFAULT, "g_main_context_default"));
+    r.acquire = reinterpret_cast<decltype(r.acquire)>(dlsym(RTLD_DEFAULT, "g_main_context_acquire"));
+    r.release = reinterpret_cast<decltype(r.release)>(dlsym(RTLD_DEFAULT, "g_main_context_release"));
+    r.prepare = reinterpret_cast<decltype(r.prepare)>(dlsym(RTLD_DEFAULT, "g_main_context_prepare"));
+    r.query = reinterpret_cast<decltype(r.query)>(dlsym(RTLD_DEFAULT, "g_main_context_query"));
+    r.check = reinterpret_cast<decltype(r.check)>(dlsym(RTLD_DEFAULT, "g_main_context_check"));
+    r.dispatch = reinterpret_cast<decltype(r.dispatch)>(dlsym(RTLD_DEFAULT, "g_main_context_dispatch"));
+    r.iteration = reinterpret_cast<decltype(r.iteration)>(dlsym(RTLD_DEFAULT, "g_main_context_iteration"));
+    r.ok = r.context_default && r.acquire && r.release && r.prepare && r.query && r.check && r.dispatch && r.iteration;
+    return r;
+  }();
+  return g;
+}
+
+void iterate_glib() {
+  const Glib& g = glib();
+  if (g.ok) {
+    for (int i = 0; i < 100 && g.iteration(nullptr, 0); ++i) {
+    }
+  }
+}
+
 void pump_once() {
   cl::drain_releases();
   g_work_now = false;
@@ -260,6 +305,9 @@ void pump_once() {
   }
   cl::g_pump_since_ms = cl::steady_ms();
   CefDoMessageLoopWork();
+  if (g_external_pump.load()) {
+    iterate_glib();
+  }
   cl::g_pump_since_ms = 0;
   cl::drain_releases();
 }
@@ -282,6 +330,45 @@ void wait_for_work(int max_ms) {
   }
   if (g_wake_fd < 0) {
     usleep(static_cast<useconds_t>(max_ms) * 1000);
+    return;
+  }
+  const Glib& g = glib();
+  void* context = g_external_pump.load() && g.ok ? g.context_default() : nullptr;
+  if (context && g.acquire(context)) {
+    // Wait for the wake up of CEF and for the sockets of GLib's main context (the X11 connection) together, so that input
+    // does not wait for the end of a long wait.
+    int priority = 0;
+    int glib_timeout = -1;
+    std::vector<PollFd> glib_fds(16);
+    if (g.prepare(context, &priority)) {
+      max_ms = 0;
+    }
+    int count = g.query(context, priority, &glib_timeout, glib_fds.data(), static_cast<int>(glib_fds.size()));
+    if (count > static_cast<int>(glib_fds.size())) {
+      glib_fds.resize(count);
+      count = g.query(context, priority, &glib_timeout, glib_fds.data(), count);
+    }
+    if (glib_timeout >= 0) {
+      max_ms = std::min(max_ms, glib_timeout);
+    }
+    std::vector<struct pollfd> fds;
+    fds.push_back({g_wake_fd, POLLIN, 0});
+    for (int i = 0; i < count; ++i) {
+      fds.push_back({glib_fds[i].fd, static_cast<short>(glib_fds[i].events), 0});
+    }
+    poll(fds.data(), fds.size(), max_ms);
+    for (int i = 0; i < count; ++i) {
+      glib_fds[i].revents = static_cast<unsigned short>(fds[i + 1].revents);
+    }
+    if (fds[0].revents & POLLIN) {
+      uint64_t value;
+      ssize_t ignored = read(g_wake_fd, &value, sizeof(value));
+      (void)ignored;
+    }
+    if (g.check(context, priority, glib_fds.data(), count)) {
+      g.dispatch(context);
+    }
+    g.release(context);
     return;
   }
   struct pollfd fd = {g_wake_fd, POLLIN, 0};

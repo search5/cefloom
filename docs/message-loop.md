@@ -31,11 +31,11 @@ CEF can be driven in two ways, chosen with `Settings::externalMessagePump`:
 | | Polling (**the default**) | External pump (`externalMessagePump = 1`) |
 | --- | --- | --- |
 | How | Your loop calls `doMessageLoopWork()` at least every few milliseconds; `Cef::run()` and `Cef::wait()` wait at most 5 ms | CEF announces when it has work (`OnScheduleMessagePumpWork`); the waits can be long |
-| Windows made by CEF (Views, `WindowInfo` windows) | **Receive mouse and keyboard input** | **Receive no mouse or keyboard input**: CEF runs only the work it announced and never reads the X11 socket |
+| Windows made by CEF (Views, `WindowInfo` windows) | **Receive mouse and keyboard input** | **Receive mouse and keyboard input** too: the wait also listens to the sockets of GLib's main context (the X11 connection), so input does not wait for the end of a long wait |
 | Idle CPU | measured 3.2 % of one core for the PHP process in a 5 s idle run | 2.7 % |
-| Suited to | everything with windows made by CEF | pages without a window of CEF's own (off-screen rendering, or a toolkit that owns the window and its events) |
+| Suited to | everything; the simplest choice | programs that wait long between events, and pages without a window of CEF's own (off-screen rendering, or a toolkit that owns the window and its events) |
 
-The idle figures are for the PHP process only (CEF's helper processes are not included) and come from one measurement.
+Earlier builds left windows made by CEF without input in the external pump (nothing iterated GLib's main context); that is fixed, and the whole test suite runs in both modes, input tests included. The idle figures are for the PHP process only (CEF's helper processes are not included) and come from one measurement.
 
 ```php
 $settings = new Cefloom\Settings();

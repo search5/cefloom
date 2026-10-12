@@ -122,6 +122,7 @@ ZEND_METHOD(CefPanel, RemoveChildView) {
   if (!cl_self) { RETURN_THROWS(); }
   CefRefPtr<CefView> c_0(cl::lib_ptr<CefView>(a_0, 0));
   if (!c_0) { zend_argument_value_error(1, "holds no native object"); RETURN_THROWS(); }
+  if (cl::refuse_live_browser_view(c_0)) { RETURN_THROWS(); }
   cl_self->RemoveChildView(c_0);
 }
 
@@ -131,6 +132,7 @@ ZEND_METHOD(CefPanel, RemoveAllChildViews) {
   ZEND_PARSE_PARAMETERS_NONE();
   CefPanel* cl_self = cl::self<CefPanel>(Z_OBJ_P(ZEND_THIS), 1);
   if (!cl_self) { RETURN_THROWS(); }
+  if (cl::refuse_live_browser_views_of(cl_self)) { RETURN_THROWS(); }
   cl_self->RemoveAllChildViews();
 }
 

@@ -8,6 +8,8 @@
 #include <cstdarg>
 #include <cstring>
 
+#include "include/views/cef_browser_view.h"
+#include "include/views/cef_panel.h"
 #include "include/wrapper/cef_helpers.h"
 
 namespace cl {
@@ -107,6 +109,27 @@ size_t release_all_lib_objects() {
     }
   }
   return count;
+}
+
+bool refuse_live_browser_view(CefRefPtr<CefView> view) {
+  CefRefPtr<CefBrowserView> browser_view = view ? view->AsBrowserView() : nullptr;
+  CefRefPtr<CefBrowser> browser = browser_view ? browser_view->GetBrowser() : nullptr;
+  if (browser && browser->IsValid()) {
+    zend_throw_error(nullptr,
+                     "a BrowserView with a live browser cannot be taken out of its window (CEF would end the process when the "
+                     "browser closes): close the browser first with BrowserHost::closeBrowser(), or hide the view with setVisible(false)");
+    return true;
+  }
+  return false;
+}
+
+bool refuse_live_browser_views_of(CefRefPtr<CefPanel> panel) {
+  for (size_t i = 0; panel && i < panel->GetChildViewCount(); ++i) {
+    if (refuse_live_browser_view(panel->GetChildViewAt(static_cast<int>(i)))) {
+      return true;
+    }
+  }
+  return false;
 }
 
 namespace {

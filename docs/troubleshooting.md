@@ -24,7 +24,7 @@
 
 ## Behaviour
 
-**Clicks and typing do nothing in a window.** `externalMessagePump` is on. Leave it off ([The message loop](message-loop.md#polling-and-the-external-pump)).
+**Clicks and typing do nothing in a window.** Check that your loop calls `Cef::doMessageLoopWork()` (or `Cef::run()`) often enough: in polling mode at least every few milliseconds. With `externalMessagePump` on, `Cef::wait()` wakes for input by itself ([The message loop](message-loop.md#polling-and-the-external-pump)).
 
 **The page freezes while PHP works.** PHP's handlers run on the thread that drives the windows. Keep them short, or split the work into small steps with `Cef::postTask()`.
 

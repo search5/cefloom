@@ -65,11 +65,11 @@
   ]
  },
  "hand_written_line_percent": {
-  "runtime/cl_runtime.cc": 85.55,
+  "runtime/cl_runtime.cc": 85.97,
   "src/async.cc": 88.59,
   "src/bridge.cc": 93.75,
   "src/cefloom.cc": 66.67,
-  "src/core.cc": 94.15,
+  "src/core.cc": 95.6,
   "src/lazy_stubs.cc": 5.0
  }
 }

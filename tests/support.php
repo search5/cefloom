@@ -80,7 +80,7 @@ function xdo(string ...$args): void
 function can_make_input(): bool
 {
     exec('command -v xdotool', $found, $status);
-    return $status === 0 && (bool) getenv('DISPLAY') && !getenv('CEFLOOM_TEST_EXTERNAL_PUMP');
+    return $status === 0 && (bool) getenv('DISPLAY');
 }
 
 /** A new directory for this test, removed when the test ends. */

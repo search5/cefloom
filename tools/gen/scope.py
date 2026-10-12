@@ -78,6 +78,13 @@ OFF_UI_THREAD = {
 
 # Static functions (and global functions) that end the process when CEF is not running: PHP gets a
 # RuntimeError instead. (Measured in cefweaver: CefImage::CreateImage and CefIsRTL.)
+# Statements run before a library method, after its arguments are converted: {(class, method): statement}. They refuse a call that
+# CEF itself answers with a crash.
+BEFORE_CALL = {
+    ("CefPanel", "RemoveChildView"): "if (cl::refuse_live_browser_view(c_0)) { RETURN_THROWS(); }",
+    ("CefPanel", "RemoveAllChildViews"): "if (cl::refuse_live_browser_views_of(cl_self)) { RETURN_THROWS(); }",
+}
+
 NEEDS_CEF_RUNNING = {
     ("CefImage", "CreateImage"): "an Image can only be made after Cef::initialize()",
     ("", "CefIsRTL"): "isRtl() can only be called after Cef::initialize()",

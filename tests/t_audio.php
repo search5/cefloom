@@ -83,12 +83,6 @@ same(2, $audio->bufferCount, 'a packet has one buffer for each channel');
 same(480 * 4, $audio->bytesPerChannel, 'of frames * 4 bytes (floats)');
 check($audio->peak > 0.1 && $audio->peak <= 1.01, 'and the samples are the tone of the page: peak ' . round($audio->peak, 3));
 
-if (getenv('CEFLOOM_TEST_EXTERNAL_PUMP')) {
-    // K43: with the external message pump an Alloy style browser does not finish closing (no onBeforeClose), so no stop comes
-    // either; Cef::shutdown() ends it.
-    Cef::shutdown();
-    finish();
-}
 $app->life->browser->getHost()->closeBrowser(true);
 wait_until(fn() => in_array('stopped', $audio->events, true), 'the stream stops with the browser', 10000);
 check(in_array('stopped', $audio->events, true), 'onAudioStreamStopped follows when the browser closes');
