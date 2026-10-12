@@ -73,3 +73,8 @@
 
 - PIE용 `composer.json`, `tools/package.sh`, 런타임 설치 도구 `bin/cefloom-runtime`, `README.md`를 만들고 [패키징과 릴리스 절차](pages/procedures/package-and-release.md)를 추가했습니다. 결과는 [F17](pages/reference/verified-findings.md)에, 확인하지 못한 항목은 [K24와 K25](pages/reference/known-constraints.md)에 기록했습니다.
 - 확장이 런타임을 찾는 위치에 사용자 데이터 디렉터리를 추가했고, 빌드가 컴파일 실패를 숨기지 않도록 고쳤습니다.
+
+## [2026-10-12] ingest | Views, PDF, Cast 점검
+
+- Views, PDF 출력, Cast가 포함되어 있고 동작하는지 점검해 [F18](pages/reference/verified-findings.md)에 기록했습니다. 시험 `t_views`, `t_pdf`, `t_cast`를 추가했습니다.
+- 미디어 라우터 관리자를 만든 뒤 `Cef::shutdown()`이 중단되는 문제를 [K26](pages/reference/known-constraints.md)에, 시험하지 못한 범위를 K27에 기록했습니다. 재현 스크립트는 `experiments/media-router-shutdown/`에 있습니다.

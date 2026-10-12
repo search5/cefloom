@@ -16,6 +16,10 @@ sources:
   - cefloom/tools/build.sh
   - cefloom/ext/src/lazy_stubs.cc
   - cefloom/tests/t_no_runtime.php
+  - cefloom/tests/t_pdf.php
+  - cefloom/tests/t_views.php
+  - cefloom/tests/t_cast.php
+  - cefloom/experiments/media-router-shutdown/repro.php
   - cefloom/tools/package.sh
   - cefloom/bin/cefloom-runtime
   - cefloom/composer.json
@@ -141,6 +145,16 @@ updated: 2026-10-12
 - **결과 2, 오프라인 흐름**: 런타임 설치에 약 1.5초가 걸렸고(압축 150MB), 설치한 런타임으로 12개 테스트가 모두 통과했습니다.
 - **발견한 문제 3개**: ① `tar ... .`로 만든 런타임 압축 파일은 `PharData`가 `.` 항목을 풀지 못했습니다(항목을 이름으로 나열해 해결). ② PHP 8.5에서 `PHP_ZTS`와 `PHP_DEBUG`가 `bool`이라 `echo`하면 빈 문자열이 되어 패키징 스크립트의 판별이 틀렸습니다(정수로 변환). ③ `php -n`에서는 `phar`가 로드되지 않아 설치 도구가 실패했습니다(시작할 때 안내하도록 보강).
 - **한계**: 실제 GitHub 릴리스로 `pie install`을 끝까지 실행하지 않았습니다. 그래서 PIE가 우리 압축 파일을 자산으로 찾아 푸는 부분(자산 이름은 PIE 소스로, 압축 파일 안의 `cefloom.so` 위치는 PIE의 `UnixBuild`로 확인한 것이며 실행하지는 않았습니다), `php.ini` 활성화, 버전 태그(`0.1.0`과 `v0.1.0`)에 따른 자산 이름 차이는 확인하지 못했습니다. 리눅스 x86_64, PHP 8.5 NTS에서만 시험했습니다.
+
+## F18. Views, PDF 출력, Cast가 실제로 동작하고, 미디어 옵저버는 종료 때 CEF가 중단된다
+
+- **방법**: 생성기가 만든 클래스의 커버리지를 확인하고(생성하지 못한 메서드 0개), 세 영역을 실제로 실행하는 테스트 `t_views`, `t_pdf`, `t_cast`를 작성해 각각 10회 반복했습니다. 환경은 가상 X 서버(Xvfb), 창 관리자 없음입니다.
+- **결과, Views**: `Window::createTopLevelWindow`에 `WindowDelegate`를 주고 `onWindowCreated`에서 `BrowserView`를 `addChildView`한 뒤 `show`하자, 창이 보이고(`isVisible`), 제목과 크기가 설정되고, 페이지가 창 안에서 로드되었으며, `close()` 뒤에 `canClose`와 `onWindowDestroyed`가 호출되었습니다. 창 없이 만드는 `MenuModel`(항목 추가, 활성 상태 변경)과 `LabelButton`도 동작했습니다. 10회 반복에서 실패가 없었습니다.
+- **결과, PDF 출력**: `printToPDF`로 쓴 파일이 `%PDF-`로 시작하고 1000바이트 넘게 채워졌으며 `PdfPrintCallback`이 성공을 알렸습니다.
+- **결과, Cast**: `MediaRouter::getGlobalMediaRouter`, `getSource`가 동작했습니다. DIAL 소스의 스킴은 `dial:`이 아니라 `cast-dial:`입니다(`dial:`로 만든 소스는 `isCastSource()`가 참). Cast 기기가 없는 환경에서도 옵저버를 등록하고 `notifyCurrentSinks`와 `notifyCurrentRoutes`를 부르면 `onSinks`가 2에서 3회, `onRoutes`가 3에서 4회 호출되었습니다.
+- **결과, 종료 때 중단**: 미디어 라우터 관리자가 만들어진 뒤(`addObserver` 또는 `notifyCurrentSinks` 호출) `Cef::shutdown()`을 부르면 프로세스가 `SIGTRAP`으로 중단됩니다. 옵저버 등록을 해제하거나 1초 동안 메시지 루프를 돌려도 같았고, 옵저버를 등록하지 않으면(`getSource`만 사용) 종료가 정상이었습니다. 심볼 포함 `libcef.so`로 풀어 보니 `CefBrowserContext::Shutdown`이 `CefMediaRouterManager`를 지우면서 `CefMediaRoutesObserver`의 소멸자(`media_router::MediaRoutesObserver::~MediaRoutesObserver`)에서 멈췄습니다.
+- **해석**: `CefMediaRouterManager`의 생성자가 `MediaRoutesObserver`를 만들고, 종료 때 이를 지우는 시점에 미디어 라우터 서비스가 이미 사라져 있어 확인에 실패하는 것으로 추정합니다. CEF 단독(PHP 없이)으로는 재현하지 않았으므로 CEF 쪽 문제인지 확정하지 못했습니다. 재현 스크립트는 `experiments/media-router-shutdown/repro.php`입니다.
+- **한계**: 실제 Cast 기기와의 세션(`createRoute`)은 시험하지 못했습니다. Views에서 키보드와 마우스 입력, 창 관리자가 있는 환경은 시험하지 않았습니다. 인쇄 대화상자(`PrintHandler`)도 시험하지 않았고 PDF 출력만 확인했습니다.
 
 ## 관련 페이지
 
