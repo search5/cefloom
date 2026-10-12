@@ -29,7 +29,7 @@ updated: 2026-10-12
 | K11 | 지연 시간을 존중하는 펌프 대기의 효과 | 2밀리초 폴링만 사용하고 CPU 사용량을 측정하지 않음 | `on_schedule_message_pump_work`의 지연 값으로 대기하는 구현과 비교 |
 | K12 | Views(CEF 소유 창) 모드의 입력 처리 | 해결: 외부 펌프를 끄면 입력이 옴([F19](verified-findings.md), [D14](design-decisions.md)). 최소 창 관리자 `twm`에서는 확인함. 데스크톱 환경의 창 관리자와 Wayland는 시험하지 않음. `cefweaver`의 기록은 외부 펌프로는 입력이 처리되지 않았다는 것 | 하네스에 Views 모드를 추가 |
 | K13 | PHP의 요청 종료 단계와 `cef_shutdown()` 순서 | FFI 스크립트는 명시적으로 종료함 | 확장의 RSHUTDOWN과 객체 파괴 순서를 실험 |
-| K14 | 오프스크린 모드의 픽셀 내용 | `on_paint` 수신 횟수만 셈 | 버퍼를 읽어 비교 |
+| K14 | 오프스크린 모드의 픽셀 내용 | 해결: `t_osr`가 `onPaint`의 BGRA 버퍼를 읽어 배경과 버튼의 색을 확인하고, 클릭 뒤 다음 프레임에서 색이 바뀐 것까지 확인합니다 | |
 | K15 | 두 `libcef.so`의 크기 차이(272MB와 1.4GB)의 원인 | 이번에 조사하지 않음. 디버그 정보 유무로 추정 | 두 파일을 `readelf`나 `file`로 비교 |
 
 ## 조사 필요 항목
@@ -62,6 +62,7 @@ updated: 2026-10-12
 | K34 | 관찰자 등록은 반환된 `Registration`이 살아 있는 동안만 유효 | `PreferenceManager::addPreferenceObserver()`와 `RequestContext::addSettingObserver()`가 돌려주는 등록 객체를 버리면 관찰이 끝납니다(CEF의 규칙). 변수에 보관해야 합니다. |
 | K35 | `Server::isRunning()`는 PHP 스레드에서 항상 `false` | CEF는 이 호출을 서버 스레드에서만 답하도록 정해 두었고, PHP는 UI 스레드에서 돌기 때문에 서버가 돌고 있어도 `false`입니다(`hasConnection()`도 같은 제약일 수 있음). 서버가 만들어졌는지는 `ServerHandler::onServerCreated()`와 `onServerDestroyed()`로 판단합니다. `sendHttp200Response()` 등 응답 메서드는 UI 스레드에서 정상 동작함을 시험으로 확인했습니다. 서버 스레드로 넘겨 답하는 방법은 아직 구현하지 않았습니다. |
 | K36 | `LifeSpanHandler::doClose()`가 불리지 않음 | `createBrowser()`로 만든 브라우저는 CEF가 만든 최상위 창에서 돌아서 `closeBrowser()`와 `tryCloseBrowser()`가 `doClose()` 없이 곧바로 `onBeforeClose()`로 이어집니다. `doClose()`가 `true`를 돌려주어도 닫기를 막지 못합니다. 닫기를 막으려면 페이지의 `beforeunload`를 쓰거나 `closeBrowser(false)`를 부르는 쪽에서 판단합니다(`t_browser_host`로 확인). |
+| K37 | `AudioHandler`가 이 환경에서 불리지 않음 | 소리 장치가 없는 가상 화면 환경에서는 `AudioContext`와 `<audio>`를 재생해도 `getAudioParameters()`조차 호출되지 않습니다(창 모드와 오프스크린 모드 모두). 실제 오디오 서버가 있는 환경에서 확인이 필요하며, 시험 제외 목록에 있습니다. |
 
 ## 문서와 소스의 불일치
 

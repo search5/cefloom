@@ -133,3 +133,8 @@
 
 - `t_browser_host`(40)를 추가했습니다: 줌, 음소거, 페이지 안 찾기, DevTools 프로토콜(`Runtime.evaluate` 결과와 이벤트), 탐색 기록과 `NavigationEntry`, 프레임의 텍스트와 소스, `onBeforeBrowse`로 탐색 막기, 클릭한 `target=_blank` 링크의 `onBeforePopup`(`xdotool`), 닫기.
 - Chrome 런타임의 찾기 결과는 활성 일치 순번이 0이고, `doClose()`는 불리지 않습니다([K36](pages/reference/known-constraints.md)). 브라우저 창은 (10,10)에 있고 위쪽 약 100픽셀이 도구 모음이라 클릭은 그 안쪽에서 해야 합니다.
+
+## [2026-10-12] ingest | C4와 C6: 대화상자, 입력, 오프스크린 렌더링
+
+- `t_dialogs`(14), `t_input`(27), `t_osr`(17)를 추가했습니다. JS 대화상자, 권한 요청(수락한 권한은 출처별로 기억되므로 거부는 다른 출처로 시험), 파일 대화상자, 키보드와 포커스, 컨텍스트 메뉴와 `MenuModel`, `DragData`, 오프스크린 렌더링의 픽셀과 마우스, 휠, 키 입력, 크기 변경, 선택, 접근성 트리를 확인했습니다.
+- K14(픽셀 내용)가 해결되었습니다. `AudioHandler`는 소리 장치가 없는 환경에서 불리지 않아 [K37](pages/reference/known-constraints.md)에 적었습니다. 키 입력을 페이지에서 막으려면 `onKeyEvent`가 아니라 `onPreKeyEvent`에서 처리해야 합니다.
