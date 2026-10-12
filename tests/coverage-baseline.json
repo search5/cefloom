@@ -1,0 +1,68 @@
+{
+ "note": "Numbers that the tests must not fall below (tools/coverage_report.py --check). Raise them with --write-baseline after adding tests.",
+ "methods": 0,
+ "ran": 0,
+ "areas": {
+  "values and data": [
+   0,
+   0
+  ],
+  "browser and frame": [
+   0,
+   0
+  ],
+  "basic handlers": [
+   0,
+   0
+  ],
+  "input and interaction handlers": [
+   0,
+   0
+  ],
+  "download and rendering handlers": [
+   0,
+   0
+  ],
+  "network and resources": [
+   0,
+   0
+  ],
+  "cookies, request context, preferences": [
+   0,
+   0
+  ],
+  "certificates and SSL": [
+   0,
+   0
+  ],
+  "Views": [
+   0,
+   0
+  ],
+  "Cast and media": [
+   0,
+   0
+  ],
+  "printing": [
+   0,
+   0
+  ],
+  "streams, zip, XML": [
+   0,
+   0
+  ],
+  "threads and tasks": [
+   0,
+   0
+  ],
+  "app, command line, updater, resources": [
+   0,
+   0
+  ],
+  "global functions": [
+   0,
+   0
+  ]
+ },
+ "hand_written_line_percent": {}
+}

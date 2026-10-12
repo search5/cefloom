@@ -1,6 +1,10 @@
 """Which functions of the extension did the tests run? Reads the .gcda files of a coverage build.
 
     python3 tools/coverage_report.py <build directory of the coverage build> [--json out.json] [--markdown out.md]
+        [--write-baseline tests/coverage-baseline.json] [--check tests/coverage-baseline.json]
+
+--write-baseline saves the numbers that must not fall: the methods run in each area of CEF and the line coverage of the hand written
+files. --check compares this run with a baseline and exits 1 if any number is lower (a tolerance of 0.5 points for lines; none for methods).
 
 The build is made by `CEFLOOM_COVERAGE=1 BUILD=... tools/build.sh` and the tests are run with `CEFLOOM_DIST=<BUILD>/dist`
 (tools/coverage.sh does both). gcov (-n -f -m) gives, for every function, the lines it has and the share the tests ran.
@@ -88,11 +92,56 @@ def short(path):
     return path
 
 
+def area_numbers(result):
+    """{area: [methods, ran]} for the areas of AREAS."""
+    numbers = {}
+    for area, names in AREAS.items():
+        keys = [names] if names.startswith("(") else ["Cef" + n for n in names.split()]
+        have = [result["classes"][k] for k in keys if k in result["classes"]]
+        numbers[area] = [sum(c["methods"] for c in have), sum(c["ran"] for c in have)]
+    return numbers
+
+
+def baseline_of(result):
+    total = sum(c["methods"] for c in result["classes"].values())
+    ran = sum(c["ran"] for c in result["classes"].values())
+    return {
+        "note": "Numbers that the tests must not fall below (tools/coverage_report.py --check). Raise them with --write-baseline after adding tests.",
+        "methods": total,
+        "ran": ran,
+        "areas": area_numbers(result),
+        "hand_written_line_percent": {f: d["percent"] for f, d in sorted(result["hand"].items())},
+    }
+
+
+def check_baseline(result, path):
+    """Problems (a list of text) where this run is below the baseline in the file."""
+    with open(path, encoding="utf-8") as fh:
+        base = json.load(fh)
+    now = baseline_of(result)
+    problems = []
+    if now["ran"] < base["ran"]:
+        problems.append("methods run: %d, the baseline has %d" % (now["ran"], base["ran"]))
+    for area, (methods, ran) in base["areas"].items():
+        got = now["areas"].get(area, [0, 0])[1]
+        if got < ran:
+            problems.append("%s: %d methods run, the baseline has %d" % (area, got, ran))
+    for name, percent in base["hand_written_line_percent"].items():
+        got = now["hand_written_line_percent"].get(name)
+        if got is None:
+            problems.append("%s: not measured any more" % name)
+        elif got < percent - 0.5:
+            problems.append("%s: %.1f%% of lines, the baseline has %.1f%%" % (name, got, percent))
+    return problems
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("build")
     parser.add_argument("--json")
     parser.add_argument("--markdown")
+    parser.add_argument("--write-baseline")
+    parser.add_argument("--check")
     args = parser.parse_args()
 
     gcdas = []
@@ -176,6 +225,18 @@ def main():
     print("hand written files:")
     for f, d in result["hand"].items():
         print("  %-26s %5.1f%% of %d lines" % (f, d["percent"], d["lines"]))
+    if args.write_baseline:
+        with open(args.write_baseline, "w", encoding="utf-8") as fh:
+            json.dump(baseline_of(result), fh, indent=1, ensure_ascii=False)
+            fh.write("\n")
+        print("baseline written to", args.write_baseline)
+    if args.check:
+        problems = check_baseline(result, args.check)
+        for problem in problems:
+            print("BELOW THE BASELINE:", problem)
+        if problems:
+            sys.exit(1)
+        print("not below the baseline", args.check)
 
 
 if __name__ == "__main__":
