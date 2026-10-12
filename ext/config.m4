@@ -30,6 +30,10 @@ if test "$PHP_CEFLOOM" != "no"; then
   dnl CEF's refer to its type information).
   CEFLOOM_CXXFLAGS="-std=c++20 -g0 -O1 -pipe -fno-rtti -fno-exceptions -fPIC -DWRAPPING_CEF_SHARED -D_FILE_OFFSET_BITS=64 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wno-deprecated-declarations -Wno-missing-field-initializers"
 
+  if test -n "$CEFLOOM_COVERAGE"; then
+    dnl A build that counts which functions the tests run (tools/coverage.sh); slower, not for use.
+    CEFLOOM_CXXFLAGS="$CEFLOOM_CXXFLAGS -O0 -g --coverage -fprofile-update=atomic"
+  fi
   if test -n "$CEFLOOM_LAZY_LIBCEF"; then
     CEFLOOM_CXXFLAGS="$CEFLOOM_CXXFLAGS -DCEFLOOM_LAZY_LIBCEF"
     CEFLOOM_SOURCES="$CEFLOOM_SOURCES src/lazy_stubs.cc"
@@ -50,6 +54,9 @@ if test "$PHP_CEFLOOM" != "no"; then
     CEFLOOM_SHARED_LIBADD="$CEFLOOM_WRAPPER_LIB"
   else
     CEFLOOM_SHARED_LIBADD="$CEFLOOM_WRAPPER_LIB -L$CEFLOOM_LIBCEF_DIR -lcef -Wl,-rpath,$CEFLOOM_LIBCEF_DIR"
+  fi
+  if test -n "$CEFLOOM_COVERAGE"; then
+    CEFLOOM_SHARED_LIBADD="$CEFLOOM_SHARED_LIBADD --coverage"
   fi
   PHP_SUBST(CEFLOOM_SHARED_LIBADD)
   AC_DEFINE(HAVE_CEFLOOM, 1, [Whether the cefloom extension is enabled])

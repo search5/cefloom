@@ -18,6 +18,7 @@ tools/build.sh --regen           # regenerate the binding from the CEF headers f
 | `CEFLOOM_RUNTIME` | a directory with `libcef.so`, the `.pak` files, `icudtl.dat`, `locales/` |
 | `BUILD` | the build directory (default `build/`) |
 | `CEFLOOM_LAZY_LIBCEF=0` | link `libcef.so` instead of loading it when needed (the default is to load it when needed) |
+| `CEFLOOM_COVERAGE=1` | a build that counts executed functions (see Coverage); slow, not for use |
 | `JOBS` | parallel compile jobs |
 
 How to prepare a CEF distribution and its wrapper library is not automated here yet.
@@ -36,6 +37,14 @@ CEFLOOM_DIST=/path/to/dist tests/run.sh        # another build directory
 Each test is a PHP script that runs in its own process (CEF starts once per process) under `xvfb-run`, and prints `OK (n checks)`. The runner puts each test in its own session, stops what is left of it, and fails a test that takes too long (`TEST_TIMEOUT`, default 120 s). **Run tests one at a time** (the runner does). Several CEF test processes at once were avoided because they were suspected of making tests hang; that was not confirmed. `xvfb-run` and `xdotool` are needed (`t_views_input` skips itself without `xdotool`).
 
 `tests/t_examples.php` runs the programs in `examples/`.
+
+### Coverage
+
+```sh
+tools/coverage.sh              # builds build-coverage/ with gcov, runs the tests in both loop modes, prints the report
+```
+
+The report counts which methods of the PHP API the tests run (by area of CEF) and the line coverage of the hand-written C++. It measures execution, not the quality of the checks. `llm-wiki/pages/analyses/test-coverage.md` has the latest numbers and `llm-wiki/pages/reference/test-plan.md` the plan to raise them.
 
 ## Packaging and release
 

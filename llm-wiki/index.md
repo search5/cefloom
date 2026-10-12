@@ -29,8 +29,9 @@
 - [주의 사항](pages/reference/cautions.md): 구현할 때 어기면 안 되는 규칙 25개와 근거(확인, 기록, 해석 구분)
 - [설계 결정 기록](pages/reference/design-decisions.md): D1부터 D14, 상태(확정, 근거 확인, 제안, 기본값), 미결 질문
 - [로드맵](pages/reference/roadmap.md): 단계별 기간 추정, 줄이고 늘리는 요소, 다음에 할 일
+- [테스트 보강 계획](pages/reference/test-plan.md): 시험 공백을 메우는 작업 A에서 D와 마일스톤 M1에서 M3, 완료 기준과 시험 제외 목록의 출발점
 - [실험으로 확인한 사실](pages/reference/verified-findings.md): 사전 검증 F1부터 F12와 확장 모듈 검증 F13부터 F19, 방법과 결과와 영향
-- [알려진 제약과 미검증 항목](pages/reference/known-constraints.md): K1부터 K28, 확인하지 못한 이유와 확인 방법
+- [알려진 제약과 미검증 항목](pages/reference/known-constraints.md): K1부터 K29, 확인하지 못한 이유와 확인 방법
 - [용어집](pages/reference/glossary.md): CEF, 외부 메시지 펌프, 참조 카운트, 트램펄린, shim 등
 - [생성기 커버리지 보고서](pages/reference/coverage-report.md): 생성기가 만든 메서드와 만들지 못한 이유, 클래스별 표 (생성 페이지, 직접 고치지 않음)
 
@@ -43,3 +44,4 @@
 - [구현 방식 비교 (C 확장, FFI, 혼합)](pages/analyses/approach-comparison.md): 세 방식의 비교, 사전 검증 뒤 달라진 판단(순수 FFI는 불가, 혼합은 가능)
 - [PHP용 CEF 바인딩의 수요 조사](pages/analyses/demand-research.md): 웹 조사 결과(2026-10-12), 수요는 존재하나 규모가 작다는 판단
 - [NativePHP Desktop 조사](pages/analyses/nativephp-desktop.md): 무엇인지, 확인한 것과 못 한 것, cefloom과의 관계
+- [테스트 커버리지 분석](pages/analyses/test-coverage.md): 테스트가 실행하는 메서드를 측정한 결과(전체 20.7%), 영역별 수치, 손으로 쓴 코드와 도구와 문서의 시험 공백

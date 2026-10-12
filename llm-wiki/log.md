@@ -104,3 +104,7 @@
 ## [2026-10-12] ingest | 첫 릴리스 전 체크리스트
 
 - 라이선스 파일 추가, 태그와 릴리스 자산 업로드, Packagist 등록, 끝까지 시험을 [패키징과 릴리스 절차](pages/procedures/package-and-release.md)에 체크리스트로 모았습니다. 라이선스 미정을 [K28](pages/reference/known-constraints.md)로 기록하고, 로드맵의 낡은 서술(이미 정한 공급자 이름과 저장소 위치를 미정으로 적은 부분)을 고쳤습니다.
+
+## [2026-10-12] ingest | 테스트 공백 측정과 보강 계획
+
+- 커버리지 빌드(`CEFLOOM_COVERAGE=1`)와 `tools/coverage.sh`, `tools/coverage_report.py`를 만들어 전체 테스트가 실행하는 메서드를 측정하고, 결과를 [테스트 커버리지 분석](pages/analyses/test-coverage.md)에, 이를 바탕으로 한 계획을 [테스트 보강 계획](pages/reference/test-plan.md)에 기록했습니다. 미시험 구현은 [K29](pages/reference/known-constraints.md)로, 로드맵에는 항목을 추가했습니다.

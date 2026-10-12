@@ -35,12 +35,15 @@ fi
 # (llm-wiki, verified-findings F16). CEFLOOM_LAZY_LIBCEF=0 links it instead. The mode is a compiler flag that make
 # does not track: a build directory is rebuilt from scratch when the mode changes.
 if [[ "${CEFLOOM_LAZY_LIBCEF-1}" == "0" ]]; then export CEFLOOM_LAZY_LIBCEF=""; else export CEFLOOM_LAZY_LIBCEF=1; fi
+# CEFLOOM_COVERAGE=1 builds a module that counts which functions run (tools/coverage.sh).
+export CEFLOOM_COVERAGE="${CEFLOOM_COVERAGE:-}"
 mode_file="$BUILD/ext.mode"
+mode="lazy=$CEFLOOM_LAZY_LIBCEF coverage=$CEFLOOM_COVERAGE"
 mkdir -p "$BUILD"
-if [[ -d "$BUILD/ext" && "$(cat "$mode_file" 2>/dev/null || true)" != "$CEFLOOM_LAZY_LIBCEF" ]]; then
+if [[ -d "$BUILD/ext" && "$(cat "$mode_file" 2>/dev/null || true)" != "$mode" ]]; then
   rm -rf "$BUILD/ext"
 fi
-printf '%s' "$CEFLOOM_LAZY_LIBCEF" > "$mode_file"
+printf '%s' "$mode" > "$mode_file"
 
 # The extension is built in a copy: phpize writes into the directory it runs in.
 mkdir -p "$BUILD/ext" "$BUILD/dist"
