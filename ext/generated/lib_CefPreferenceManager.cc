@@ -116,6 +116,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_CefPreferenceManager_GetChromeVa
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefPreferenceManager, GetChromeVariationsAsSwitches) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   std::vector<CefString> o_0;
   CefPreferenceManager::GetChromeVariationsAsSwitches(o_0);
   array_init(return_value);
@@ -130,6 +139,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_CefPreferenceManager_GetChromeVa
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefPreferenceManager, GetChromeVariationsAsStrings) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   std::vector<CefString> o_0;
   CefPreferenceManager::GetChromeVariationsAsStrings(o_0);
   array_init(return_value);
@@ -144,6 +162,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_CefPreferenceManager_GetGlobalPre
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefPreferenceManager, GetGlobalPreferenceManager) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefPreferenceManager::GetGlobalPreferenceManager();
   cl_wrap_CefPreferenceManager(return_value, cl_ret.get());
 }

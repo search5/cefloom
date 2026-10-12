@@ -79,6 +79,15 @@ ZEND_METHOD(CefStreamReader, CreateForFile) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefStreamReader::CreateForFile(c_0);
   cl_wrap_CefStreamReader(return_value, cl_ret.get());
@@ -92,6 +101,15 @@ ZEND_METHOD(CefStreamReader, CreateForData) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefStreamReader::CreateForData(ZSTR_VAL(a_0), ZSTR_LEN(a_0));
   cl_wrap_CefStreamReader(return_value, cl_ret.get());
 }
@@ -104,6 +122,15 @@ ZEND_METHOD(CefStreamReader, CreateForHandler) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefReadHandler)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefReadHandler> c_0(a_0 ? cl_make_CefReadHandler(a_0) : nullptr);
   auto cl_ret = CefStreamReader::CreateForHandler(c_0);
   cl_wrap_CefStreamReader(return_value, cl_ret.get());

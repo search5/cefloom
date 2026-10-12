@@ -66,6 +66,15 @@ ZEND_METHOD(CefWaitableEvent, CreateWaitableEvent) {
   Z_PARAM_BOOL(a_0)
   Z_PARAM_BOOL(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefWaitableEvent::CreateWaitableEvent(a_0, a_1);
   cl_wrap_CefWaitableEvent(return_value, cl_ret.get());
 }

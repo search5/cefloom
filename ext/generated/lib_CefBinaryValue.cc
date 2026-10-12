@@ -103,6 +103,15 @@ ZEND_METHOD(CefBinaryValue, Create) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefBinaryValue::Create(ZSTR_VAL(a_0), ZSTR_LEN(a_0));
   cl_wrap_CefBinaryValue(return_value, cl_ret.get());
 }

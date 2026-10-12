@@ -70,6 +70,15 @@ ZEND_METHOD(CefBrowserView, CreateBrowserView) {
   Z_PARAM_OBJ_OF_CLASS_OR_NULL(a_4, ce_CefRequestContext)
   Z_PARAM_OBJ_OF_CLASS_OR_NULL(a_5, ce_CefBrowserViewDelegate)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefClient> c_0(a_0 ? cl_make_CefClient(a_0) : nullptr);
   CefString c_1 = cl::to_cef(a_1);
   CefBrowserSettings c_2;
@@ -89,6 +98,15 @@ ZEND_METHOD(CefBrowserView, GetForBrowser) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefBrowser)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefBrowser> c_0(cl::lib_ptr<CefBrowser>(a_0, 0));
   if (!c_0) { zend_argument_value_error(1, "holds no native object"); RETURN_THROWS(); }
   auto cl_ret = CefBrowserView::GetForBrowser(c_0);

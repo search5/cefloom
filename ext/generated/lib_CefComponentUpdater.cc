@@ -70,6 +70,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_CefComponentUpdater_GetComponentU
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefComponentUpdater, GetComponentUpdater) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefComponentUpdater::GetComponentUpdater();
   cl_wrap_CefComponentUpdater(return_value, cl_ret.get());
 }

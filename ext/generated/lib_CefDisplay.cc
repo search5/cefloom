@@ -90,6 +90,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_CefDisplay_GetPrimaryDisplay, 0, 
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefDisplay, GetPrimaryDisplay) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefDisplay::GetPrimaryDisplay();
   cl_wrap_CefDisplay(return_value, cl_ret.get());
 }
@@ -105,6 +114,15 @@ ZEND_METHOD(CefDisplay, GetDisplayNearestPoint) {
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefPoint)
   Z_PARAM_BOOL(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefPoint c_0;
   cl_from_zval_cef_point_t(a_0, &c_0);
   auto cl_ret = CefDisplay::GetDisplayNearestPoint(c_0, a_1);
@@ -122,6 +140,15 @@ ZEND_METHOD(CefDisplay, GetDisplayMatchingBounds) {
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefRect)
   Z_PARAM_BOOL(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRect c_0;
   cl_from_zval_cef_rect_t(a_0, &c_0);
   auto cl_ret = CefDisplay::GetDisplayMatchingBounds(c_0, a_1);
@@ -132,6 +159,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_CefDisplay_GetDisplayCount, 0, 0
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefDisplay, GetDisplayCount) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefDisplay::GetDisplayCount();
   ZVAL_LONG(return_value, static_cast<zend_long>(cl_ret));
 }
@@ -140,6 +176,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_CefDisplay_GetAllDisplays, 0, 0,
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefDisplay, GetAllDisplays) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   std::vector<CefRefPtr<CefDisplay>> o_0;
   CefDisplay::GetAllDisplays(o_0);
   array_init(return_value);
@@ -158,6 +203,15 @@ ZEND_METHOD(CefDisplay, ConvertScreenPointToPixels) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefPoint)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefPoint c_0;
   cl_from_zval_cef_point_t(a_0, &c_0);
   auto cl_ret = CefDisplay::ConvertScreenPointToPixels(c_0);
@@ -172,6 +226,15 @@ ZEND_METHOD(CefDisplay, ConvertScreenPointFromPixels) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefPoint)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefPoint c_0;
   cl_from_zval_cef_point_t(a_0, &c_0);
   auto cl_ret = CefDisplay::ConvertScreenPointFromPixels(c_0);
@@ -186,6 +249,15 @@ ZEND_METHOD(CefDisplay, ConvertScreenRectToPixels) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefRect)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRect c_0;
   cl_from_zval_cef_rect_t(a_0, &c_0);
   auto cl_ret = CefDisplay::ConvertScreenRectToPixels(c_0);
@@ -200,6 +272,15 @@ ZEND_METHOD(CefDisplay, ConvertScreenRectFromPixels) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefRect)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRect c_0;
   cl_from_zval_cef_rect_t(a_0, &c_0);
   auto cl_ret = CefDisplay::ConvertScreenRectFromPixels(c_0);

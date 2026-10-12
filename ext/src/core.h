@@ -3,6 +3,7 @@
 #ifndef CEFLOOM_CORE_H_
 #define CEFLOOM_CORE_H_
 
+#include <string>
 #include "cl_gen.h"
 #include "forwarders.h"
 #include "include/wrapper/cef_message_router.h"

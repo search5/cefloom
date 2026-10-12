@@ -151,6 +151,15 @@ ZEND_METHOD(CefZipReader, Create) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefStreamReader)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefStreamReader> c_0(cl::lib_ptr<CefStreamReader>(a_0, 0));
   if (!c_0) { zend_argument_value_error(1, "holds no native object"); RETURN_THROWS(); }
   auto cl_ret = CefZipReader::Create(c_0);

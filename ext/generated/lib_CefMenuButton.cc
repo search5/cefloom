@@ -47,6 +47,15 @@ ZEND_METHOD(CefMenuButton, CreateMenuButton) {
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefMenuButtonDelegate)
   Z_PARAM_STR(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefMenuButtonDelegate> c_0(a_0 ? cl_make_CefMenuButtonDelegate(a_0) : nullptr);
   CefString c_1 = cl::to_cef(a_1);
   auto cl_ret = CefMenuButton::CreateMenuButton(c_0, c_1);

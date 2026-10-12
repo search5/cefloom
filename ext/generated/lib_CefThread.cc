@@ -53,6 +53,15 @@ ZEND_METHOD(CefThread, CreateThread) {
   Z_PARAM_BOOL(a_3)
   Z_PARAM_LONG(a_4)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefThread::CreateThread(c_0, static_cast<cef_thread_priority_t>(a_1), static_cast<cef_message_loop_type_t>(a_2), a_3, static_cast<cef_com_init_mode_t>(a_4));
   cl_wrap_CefThread(return_value, cl_ret.get());

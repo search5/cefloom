@@ -286,6 +286,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_CefPrintSettings_Create, 0, 0, Ce
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefPrintSettings, Create) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefPrintSettings::Create();
   cl_wrap_CefPrintSettings(return_value, cl_ret.get());
 }

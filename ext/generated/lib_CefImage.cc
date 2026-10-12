@@ -287,6 +287,15 @@ ZEND_METHOD(CefImage, CreateImage) {
     zend_throw_error(nullptr, "an Image can only be made after Cef::initialize()");
     RETURN_THROWS();
   }
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefImage::CreateImage();
   cl_wrap_CefImage(return_value, cl_ret.get());
 }

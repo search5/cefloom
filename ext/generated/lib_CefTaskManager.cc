@@ -83,6 +83,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_CefTaskManager_GetTaskManager, 0,
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefTaskManager, GetTaskManager) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefTaskManager::GetTaskManager();
   cl_wrap_CefTaskManager(return_value, cl_ret.get());
 }

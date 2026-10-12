@@ -364,6 +364,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_CefRequestContext_GetGlobalContex
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefRequestContext, GetGlobalContext) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefRequestContext::GetGlobalContext();
   cl_wrap_CefRequestContext(return_value, cl_ret.get());
 }
@@ -379,6 +388,15 @@ ZEND_METHOD(CefRequestContext, CreateContext) {
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefRequestContextSettings)
   Z_PARAM_OBJ_OF_CLASS_OR_NULL(a_1, ce_CefRequestContextHandler)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRequestContextSettings c_0;
   cl_from_zval_cef_request_context_settings_t(a_0, &c_0);
   CefRefPtr<CefRequestContextHandler> c_1(a_1 ? cl_make_CefRequestContextHandler(a_1) : nullptr);

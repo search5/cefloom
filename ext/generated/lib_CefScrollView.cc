@@ -87,6 +87,15 @@ ZEND_METHOD(CefScrollView, CreateScrollView) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS_OR_NULL(a_0, ce_CefViewDelegate)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefViewDelegate> c_0(a_0 ? cl_make_CefViewDelegate(a_0) : nullptr);
   auto cl_ret = CefScrollView::CreateScrollView(c_0);
   cl_wrap_CefScrollView(return_value, cl_ret.get());

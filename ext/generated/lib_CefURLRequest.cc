@@ -90,6 +90,15 @@ ZEND_METHOD(CefURLRequest, Create) {
   Z_PARAM_OBJ_OF_CLASS(a_1, ce_CefURLRequestClient)
   Z_PARAM_OBJ_OF_CLASS_OR_NULL(a_2, ce_CefRequestContext)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefRequest> c_0(cl::lib_ptr<CefRequest>(a_0, 0));
   if (!c_0) { zend_argument_value_error(1, "holds no native object"); RETURN_THROWS(); }
   CefRefPtr<CefURLRequestClient> c_1(a_1 ? cl_make_CefURLRequestClient(a_1) : nullptr);

@@ -10,8 +10,13 @@
 #define CEFLOOM_VERSION "0.1.0"
 
 static PHP_MINIT_FUNCTION(cefloom) {
+#ifdef CEFLOOM_LAZY_LIBCEF
+  // libcef.so is loaded by the first function that needs it (cl_core_load_cef), so that a PHP process that never uses
+  // CEF pays nothing for it and a missing runtime does not stop the module from loading.
+#else
   // Libcef aborts the process when an object is made before the API version is configured.
   cef_api_hash(CEF_API_VERSION, 0);
+#endif
   cl::runtime_minit(module_number);
   cl_register_all();
   cl_core_register();

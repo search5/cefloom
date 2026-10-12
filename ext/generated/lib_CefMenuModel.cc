@@ -969,6 +969,15 @@ ZEND_METHOD(CefMenuModel, CreateMenuModel) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefMenuModelDelegate)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefMenuModelDelegate> c_0(a_0 ? cl_make_CefMenuModelDelegate(a_0) : nullptr);
   auto cl_ret = CefMenuModel::CreateMenuModel(c_0);
   cl_wrap_CefMenuModel(return_value, cl_ret.get());

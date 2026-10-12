@@ -142,6 +142,47 @@ std::string home_dir() {
   return absolute_dir(".");
 }
 
+#ifdef CEFLOOM_LAZY_LIBCEF
+void* g_libcef = nullptr;
+#endif
+
+}  // namespace
+
+#ifdef CEFLOOM_LAZY_LIBCEF
+void cl_lazy_set_libcef(void* handle);  // lazy_stubs.cc
+#endif
+
+bool cl_core_load_cef(std::string* error) {
+#ifdef CEFLOOM_LAZY_LIBCEF
+  if (g_libcef) {
+    return true;
+  }
+  const std::string path = home_dir() + "/libcef.so";
+  if (access(path.c_str(), R_OK) != 0) {
+    if (error) {
+      *error = "The CEF runtime was not found: " + path + " does not exist. Install the runtime next to cefloom.so or "
+               "set CEFLOOM_HOME to the directory that holds it.";
+    }
+    return false;
+  }
+  void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_GLOBAL);
+  if (!handle) {
+    if (error) {
+      const char* reason = dlerror();
+      *error = "The CEF runtime could not be loaded: " + std::string(reason ? reason : path);
+    }
+    return false;
+  }
+  g_libcef = handle;
+  cl_lazy_set_libcef(handle);
+  // Libcef aborts the process when an object is made before the API version is configured.
+  cef_api_hash(CEF_API_VERSION, 0);
+#endif
+  return true;
+}
+
+namespace {
+
 void set_if_empty(cef_string_t* field, const std::string& value) {
   if (field->length == 0) {
     CefString(field).FromString(value);
@@ -315,6 +356,11 @@ ZEND_METHOD(Cef, initialize) {
 
   if (cl::g_cef_running) {
     zend_throw_error(nullptr, "CEF is already initialized (it can be started once per process)");
+    RETURN_THROWS();
+  }
+  std::string load_error;
+  if (!cl_core_load_cef(&load_error)) {
+    zend_throw_error(nullptr, "%s", load_error.c_str());
     RETURN_THROWS();
   }
 

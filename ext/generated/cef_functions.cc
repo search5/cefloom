@@ -21,6 +21,15 @@ ZEND_METHOD(Cef, CefAddCrossOriginWhitelistEntry) {
   Z_PARAM_STR(a_2)
   Z_PARAM_BOOL(a_3)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
   CefString c_2 = cl::to_cef(a_2);
@@ -36,6 +45,15 @@ ZEND_METHOD(Cef, CefBase64Decode) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefBase64Decode(c_0);
   cl_wrap_CefBinaryValue(return_value, cl_ret.get());
@@ -49,6 +67,15 @@ ZEND_METHOD(Cef, CefBase64Encode) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefBase64Encode(ZSTR_VAL(a_0), ZSTR_LEN(a_0));
   cl::ret_str(return_value, cl_ret);
 }
@@ -64,6 +91,15 @@ ZEND_METHOD(Cef, CefBeginTracing) {
   Z_PARAM_STR(a_0)
   Z_PARAM_OBJ_OF_CLASS_OR_NULL(a_1, ce_CefCompletionCallback)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefRefPtr<CefCompletionCallback> c_1(a_1 ? cl_make_CefCompletionCallback(a_1) : nullptr);
   auto cl_ret = CefBeginTracing(c_0, c_1);
@@ -74,6 +110,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Cef_CefClearCrossOriginWhitelist
 ZEND_END_ARG_INFO()
 ZEND_METHOD(Cef, CefClearCrossOriginWhitelist) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefClearCrossOriginWhitelist();
   ZVAL_BOOL(return_value, cl_ret);
 }
@@ -82,6 +127,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Cef_CefClearSchemeHandlerFactori
 ZEND_END_ARG_INFO()
 ZEND_METHOD(Cef, CefClearSchemeHandlerFactories) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefClearSchemeHandlerFactories();
   ZVAL_BOOL(return_value, cl_ret);
 }
@@ -90,6 +144,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Cef_CefCrashReportingEnabled, 0,
 ZEND_END_ARG_INFO()
 ZEND_METHOD(Cef, CefCrashReportingEnabled) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefCrashReportingEnabled();
   ZVAL_BOOL(return_value, cl_ret);
 }
@@ -102,6 +165,15 @@ ZEND_METHOD(Cef, CefCreateDirectory) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefCreateDirectory(c_0);
   ZVAL_BOOL(return_value, cl_ret);
@@ -115,6 +187,15 @@ ZEND_METHOD(Cef, CefCreateNewTempDirectory) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString o_1;
   auto cl_ret = CefCreateNewTempDirectory(c_0, o_1);
@@ -133,6 +214,15 @@ ZEND_METHOD(Cef, CefCreateTempDirectoryInDirectory) {
   Z_PARAM_STR(a_0)
   Z_PARAM_STR(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
   CefString o_2;
@@ -149,6 +239,15 @@ ZEND_METHOD(Cef, CefCreateURL) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefURLParts)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefURLParts c_0;
   cl_from_zval_cef_urlparts_t(a_0, &c_0);
   CefString o_1;
@@ -165,6 +264,15 @@ ZEND_METHOD(Cef, CefCurrentlyOn) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_LONG(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefCurrentlyOn(static_cast<cef_thread_id_t>(a_0));
   ZVAL_BOOL(return_value, cl_ret);
 }
@@ -180,6 +288,15 @@ ZEND_METHOD(Cef, CefDeleteFile) {
   Z_PARAM_STR(a_0)
   Z_PARAM_BOOL(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefDeleteFile(c_0, a_1);
   ZVAL_BOOL(return_value, cl_ret);
@@ -193,6 +310,15 @@ ZEND_METHOD(Cef, CefDirectoryExists) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefDirectoryExists(c_0);
   ZVAL_BOOL(return_value, cl_ret);
@@ -209,6 +335,15 @@ ZEND_METHOD(Cef, CefEndTracing) {
   Z_PARAM_STR(a_0)
   Z_PARAM_OBJ_OF_CLASS_OR_NULL(a_1, ce_CefEndTracingCallback)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefRefPtr<CefEndTracingCallback> c_1(a_1 ? cl_make_CefEndTracingCallback(a_1) : nullptr);
   auto cl_ret = CefEndTracing(c_0, c_1);
@@ -223,6 +358,15 @@ ZEND_METHOD(Cef, CefFormatUrlForSecurityDisplay) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefFormatUrlForSecurityDisplay(c_0);
   cl::ret_str(return_value, cl_ret);
@@ -232,6 +376,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Cef_CefGetExitCode, 0, 0, IS_LON
 ZEND_END_ARG_INFO()
 ZEND_METHOD(Cef, CefGetExitCode) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefGetExitCode();
   ZVAL_LONG(return_value, static_cast<zend_long>(cl_ret));
 }
@@ -244,6 +397,15 @@ ZEND_METHOD(Cef, CefGetExtensionsForMimeType) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   std::vector<CefString> o_1;
   CefGetExtensionsForMimeType(c_0, o_1);
@@ -263,6 +425,15 @@ ZEND_METHOD(Cef, CefGetMimeType) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefGetMimeType(c_0);
   cl::ret_str(return_value, cl_ret);
@@ -276,6 +447,15 @@ ZEND_METHOD(Cef, CefGetPath) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_LONG(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString o_1;
   auto cl_ret = CefGetPath(static_cast<cef_path_key_t>(a_0), o_1);
   if (!cl_ret) { RETURN_NULL(); }
@@ -286,6 +466,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Cef_CefGetTempDirectory, 0, 0, I
 ZEND_END_ARG_INFO()
 ZEND_METHOD(Cef, CefGetTempDirectory) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString o_0;
   auto cl_ret = CefGetTempDirectory(o_0);
   if (!cl_ret) { RETURN_NULL(); }
@@ -300,6 +489,15 @@ ZEND_METHOD(Cef, CefIsCertStatusError) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_LONG(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefIsCertStatusError(static_cast<cef_cert_status_t>(a_0));
   ZVAL_BOOL(return_value, cl_ret);
 }
@@ -312,6 +510,15 @@ ZEND_METHOD(Cef, CefIsRTL) {
     zend_throw_error(nullptr, "isRtl() can only be called after Cef::initialize()");
     RETURN_THROWS();
   }
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefIsRTL();
   ZVAL_BOOL(return_value, cl_ret);
 }
@@ -324,6 +531,15 @@ ZEND_METHOD(Cef, CefLaunchProcess) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefCommandLine)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefCommandLine> c_0(cl::lib_ptr<CefCommandLine>(a_0, 0));
   if (!c_0) { zend_argument_value_error(1, "holds no native object"); RETURN_THROWS(); }
   auto cl_ret = CefLaunchProcess(c_0);
@@ -338,6 +554,15 @@ ZEND_METHOD(Cef, CefLoadCRLSetsFile) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefLoadCRLSetsFile(c_0);
 }
@@ -346,6 +571,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Cef_CefNowFromSystemTraceTime, 0
 ZEND_END_ARG_INFO()
 ZEND_METHOD(Cef, CefNowFromSystemTraceTime) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefNowFromSystemTraceTime();
   ZVAL_LONG(return_value, static_cast<zend_long>(cl_ret));
 }
@@ -361,6 +595,15 @@ ZEND_METHOD(Cef, CefParseJSON) {
   Z_PARAM_STR(a_0)
   Z_PARAM_LONG(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefParseJSON(ZSTR_VAL(a_0), ZSTR_LEN(a_0), static_cast<cef_json_parser_options_t>(a_1));
   cl_wrap_CefValue(return_value, cl_ret.get());
 }
@@ -376,6 +619,15 @@ ZEND_METHOD(Cef, CefParseJSONAndReturnError) {
   Z_PARAM_STR(a_0)
   Z_PARAM_LONG(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString o_2;
   auto cl_ret = CefParseJSONAndReturnError(c_0, static_cast<cef_json_parser_options_t>(a_1), o_2);
@@ -403,6 +655,15 @@ ZEND_METHOD(Cef, CefParseURL) {
   Z_PARAM_STR(a_0)
   Z_PARAM_OBJ_OF_CLASS(a_1, ce_CefURLParts)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefURLParts c_1;
   cl_from_zval_cef_urlparts_t(a_1, &c_1);
@@ -425,6 +686,15 @@ ZEND_METHOD(Cef, CefPostDelayedTask) {
   Z_PARAM_OBJ_OF_CLASS(a_1, ce_CefTask)
   Z_PARAM_LONG(a_2)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefTask> c_1(a_1 ? cl_make_CefTask(a_1) : nullptr);
   auto cl_ret = CefPostDelayedTask(static_cast<cef_thread_id_t>(a_0), c_1, static_cast<int64_t>(a_2));
   ZVAL_BOOL(return_value, cl_ret);
@@ -441,6 +711,15 @@ ZEND_METHOD(Cef, CefPostTask) {
   Z_PARAM_LONG(a_0)
   Z_PARAM_OBJ_OF_CLASS(a_1, ce_CefTask)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefTask> c_1(a_1 ? cl_make_CefTask(a_1) : nullptr);
   auto cl_ret = CefPostTask(static_cast<cef_thread_id_t>(a_0), c_1);
   ZVAL_BOOL(return_value, cl_ret);
@@ -460,6 +739,15 @@ ZEND_METHOD(Cef, CefRegisterSchemeHandlerFactory) {
   Z_PARAM_STR(a_1)
   Z_PARAM_OBJ_OF_CLASS_OR_NULL(a_2, ce_CefSchemeHandlerFactory)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
   CefRefPtr<CefSchemeHandlerFactory> c_2(a_2 ? cl_make_CefSchemeHandlerFactory(a_2) : nullptr);
@@ -484,6 +772,15 @@ ZEND_METHOD(Cef, CefRemoveCrossOriginWhitelistEntry) {
   Z_PARAM_STR(a_2)
   Z_PARAM_BOOL(a_3)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
   CefString c_2 = cl::to_cef(a_2);
@@ -502,6 +799,15 @@ ZEND_METHOD(Cef, CefResolveURL) {
   Z_PARAM_STR(a_0)
   Z_PARAM_STR(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
   CefString o_2;
@@ -521,6 +827,15 @@ ZEND_METHOD(Cef, CefSetCrashKeyValue) {
   Z_PARAM_STR(a_0)
   Z_PARAM_STR(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
   CefSetCrashKeyValue(c_0, c_1);
@@ -540,6 +855,15 @@ ZEND_METHOD(Cef, CefURIDecode) {
   Z_PARAM_BOOL(a_1)
   Z_PARAM_LONG(a_2)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefURIDecode(c_0, a_1, static_cast<cef_uri_unescape_rule_t>(a_2));
   cl::ret_str(return_value, cl_ret);
@@ -556,6 +880,15 @@ ZEND_METHOD(Cef, CefURIEncode) {
   Z_PARAM_STR(a_0)
   Z_PARAM_BOOL(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefURIEncode(c_0, a_1);
   cl::ret_str(return_value, cl_ret);
@@ -572,6 +905,15 @@ ZEND_METHOD(Cef, CefWriteJSON) {
   Z_PARAM_OBJ_OF_CLASS(a_0, ce_CefValue)
   Z_PARAM_LONG(a_1)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefRefPtr<CefValue> c_0(cl::lib_ptr<CefValue>(a_0, 0));
   if (!c_0) { zend_argument_value_error(1, "holds no native object"); RETURN_THROWS(); }
   auto cl_ret = CefWriteJSON(c_0, static_cast<cef_json_writer_options_t>(a_1));
@@ -592,6 +934,15 @@ ZEND_METHOD(Cef, CefZipDirectory) {
   Z_PARAM_STR(a_1)
   Z_PARAM_BOOL(a_2)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
   auto cl_ret = CefZipDirectory(c_0, c_1, a_2);

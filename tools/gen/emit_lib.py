@@ -244,6 +244,17 @@ def function_lines(names, scope, class_key, owner_cpp, plan, inputs, call_args, 
               "    RETURN_THROWS();",
               "  }"]
     if plan.static:
+        # Nothing of CEF exists yet when a static function is called: a build that loads libcef.so when it is needed
+        # does it now, and PHP gets an error instead of a dead process if the runtime is missing.
+        L += ["#ifdef CEFLOOM_LAZY_LIBCEF",
+              "  {",
+              "    std::string cl_load_error;",
+              "    if (!cl_core_load_cef(&cl_load_error)) {",
+              "      zend_throw_error(nullptr, \"%s\", cl_load_error.c_str());",
+              "      RETURN_THROWS();",
+              "    }",
+              "  }",
+              "#endif"]
         target = "%s::" % owner_cpp if owner_cpp else ""
     else:
         L += ["  %s* cl_self = cl::self<%s>(Z_OBJ_P(ZEND_THIS), %d);" % (owner_cpp, owner_cpp, depth),

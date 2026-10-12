@@ -81,6 +81,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_CefTaskRunner_GetForCurrentThread
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefTaskRunner, GetForCurrentThread) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefTaskRunner::GetForCurrentThread();
   cl_wrap_CefTaskRunner(return_value, cl_ret.get());
 }
@@ -93,6 +102,15 @@ ZEND_METHOD(CefTaskRunner, GetForThread) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_LONG(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefTaskRunner::GetForThread(static_cast<cef_thread_id_t>(a_0));
   cl_wrap_CefTaskRunner(return_value, cl_ret.get());
 }

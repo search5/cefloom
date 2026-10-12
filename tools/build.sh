@@ -3,6 +3,7 @@
 #
 #   tools/build.sh              # build into cefloom/build/
 #   tools/build.sh --regen      # regenerate the binding first (tools/gen/generate.py)
+#   CEFLOOM_LAZY_LIBCEF=1 tools/build.sh   # a module that loads libcef.so when needed (see below)
 #
 # Inputs (environment variables, defaults for the layout of this workspace):
 #   CEF_ROOT              CEF distribution with include/ (default: the cefweaver checkout's build/native/cef)
@@ -29,6 +30,16 @@ if [[ "${1:-}" == "--regen" ]]; then
   python3 -I "$here/tools/gen/generate.py" --cef-root "$CEF_ROOT"
 fi
 
+# CEFLOOM_LAZY_LIBCEF=1 builds a module that does not link libcef.so: it loads it from its own directory when it is
+# needed, so that it also loads where the CEF runtime is not installed (llm-wiki, verified-findings F16). The mode
+# is a compiler flag that make does not track: a build directory is rebuilt from scratch when the mode changes.
+mode_file="$BUILD/ext.mode"
+mkdir -p "$BUILD"
+if [[ -d "$BUILD/ext" && "$(cat "$mode_file" 2>/dev/null || true)" != "${CEFLOOM_LAZY_LIBCEF:-}" ]]; then
+  rm -rf "$BUILD/ext"
+fi
+printf '%s' "${CEFLOOM_LAZY_LIBCEF:-}" > "$mode_file"
+
 # The extension is built in a copy: phpize writes into the directory it runs in.
 mkdir -p "$BUILD/ext" "$BUILD/dist"
 rsync -a --exclude '/generated' "$here/ext/" "$BUILD/ext/"
@@ -49,7 +60,9 @@ for f in "$CEFLOOM_RUNTIME"/*; do
   case "$name" in
     *.py|*.pyi|*.pyx|*.pxd|*.pxi|__pycache__|_cefweaver*|cefsubprocess|py.typed|api|types|ui) continue ;;
   esac
-  cp -alf "$f" "$BUILD/dist/$name" 2>/dev/null || cp -rf "$f" "$BUILD/dist/$name"
+  # Hard links when BUILD is on the same file system as the runtime; else a copy. A failed hard link attempt leaves a
+  # half made directory behind: remove it, or the copy would go into it ("locales/locales").
+  cp -alf "$f" "$BUILD/dist/$name" 2>/dev/null || { rm -rf "$BUILD/dist/$name"; cp -rf "$f" "$BUILD/dist/$name"; }
 done
 # No stack protector: Chromium's zygote changes the stack guard value in every process it forks
 # (--change-stack-guard-on-fork), so main() would fail its canary check when the process exits.

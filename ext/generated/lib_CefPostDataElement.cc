@@ -100,6 +100,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_CefPostDataElement_Create, 0, 0, 
 ZEND_END_ARG_INFO()
 ZEND_METHOD(CefPostDataElement, Create) {
   ZEND_PARSE_PARAMETERS_NONE();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   auto cl_ret = CefPostDataElement::Create();
   cl_wrap_CefPostDataElement(return_value, cl_ret.get());
 }

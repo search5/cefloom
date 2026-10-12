@@ -14,6 +14,8 @@ sources:
   - cefloom/tests/t_sync_timeout.php
   - cefloom/subprocess/cefloomsubprocess.cc
   - cefloom/tools/build.sh
+  - cefloom/ext/src/lazy_stubs.cc
+  - cefloom/tests/t_no_runtime.php
 updated: 2026-10-12
 ---
 
@@ -117,6 +119,17 @@ updated: 2026-10-12
 - **결과**: `SIGABRT`를 낸 것은 `cefloomsubprocess --type=zygote`가 fork한 자식 프로세스 2개였고, 둘 다 `__stack_chk_fail`로 종료했습니다(PHP 본체와 확장 코드는 아니었습니다). 서브프로세스의 `main`에는 스택 보호값(canary) 검사가 들어 있었고(`objdump`로 확인), `CefExecuteProcess`에는 없었습니다. 서브프로세스를 `-fno-stack-protector`로 빌드하자 같은 테스트 3회에서 메시지가 사라졌고, 전체 테스트에서도 나오지 않았습니다.
 - **해석**: Chromium의 zygote는 `--change-stack-guard-on-fork=enable`로 fork한 프로세스의 스택 보호값을 바꿉니다. fork 이전부터 호출 스택에 있던 `main`은 이전 값을 저장하고 있으므로, 프로세스가 종료하며 `main`에서 반환할 때 검사에 실패하는 것으로 해석합니다. 이 인과 관계는 소스로 확인하지 않았습니다.
 - **영향**: 서브프로세스(`tools/build.sh`)는 스택 보호 없이 빌드합니다. 우분투의 기본 컴파일러 옵션은 `-fstack-protector-strong`이므로 다른 환경에서 서브프로세스를 빌드할 때도 같은 옵션이 필요합니다.
+
+## F16. `libcef.so`를 필요할 때 불러오는 확장이 동작한다
+
+- **방법**: 빌드 옵션 `CEFLOOM_LAZY_LIBCEF=1`로 `libcef.so`에 링크하지 않는 `cefloom.so`를 만들었습니다. 모듈이 있는 디렉터리(또는 `CEFLOOM_HOME`)의 `libcef.so`를 `dlopen(RTLD_NOW | RTLD_GLOBAL)`로 처음 필요할 때 불러온 뒤 `cef_api_hash`를 설정합니다. 런타임이 없는 디렉터리에 `cefloom.so`만 복사한 환경과 런타임이 옆에 있는 환경에서 시험했습니다.
+- **결과 1, 로드를 막는 심볼 3개**: 처음에는 `undefined symbol: cef_get_min_log_level`로 모듈이 로드되지 않았습니다. 래퍼 라이브러리의 `cef_logging.cc.o`가 로그 함수 3개(`cef_log`, `cef_get_min_log_level`, `cef_get_vlog_level`)의 주소를 구조체에 저장해서 로드 시점에 즉시 해석되었기 때문입니다(`readelf -r`로 확인: 즉시 해석 3개, 지연 해석 157개). 이 3개를 CEF 헤더를 포함하지 않는 파일(`ext/src/lazy_stubs.cc`)에서 숨김 가시성(hidden)의 전달 함수로 정의해 해결했습니다.
+- **결과 2, 런타임이 없을 때**: 모듈이 로드되고(`php -n -d extension=...`), `Cef::initialize()`는 런타임이 없다는 `Error`를 던집니다. 설정 구조체 같은 순수 PHP 객체는 그대로 동작합니다. 그러나 CEF 함수를 부르는 정적 함수(`Cef::parseJSON`, `Cef::postTask`, `Request::create` 등)는 `symbol lookup error`로 프로세스를 종료시켰습니다(종료 코드 127). 생성기가 정적 함수와 전역 함수의 맨 앞에 런타임 확인을 넣도록 고쳐 모두 `Error`가 되었습니다.
+- **결과 3, 비용**: PHP 프로세스 하나의 시작 시 최대 메모리 사용량은 확장이 없을 때 약 16MB, 일반 방식(링크)은 약 77MB와 0.02초, 지연 로딩은 약 20.5MB와 0.01초였습니다(런타임이 옆에 있어도 사용하지 않으면 같습니다). 측정은 각 한 번에서 세 번이며 통계적 처리는 하지 않았습니다.
+- **결과 4, 검증**: 지연 로딩 빌드에서도 전체 테스트가 통과했고(12개, 3회 반복), `t_no_runtime`(런타임 없이 로드하는 경로)이 10회 반복에서 실패하지 않았습니다.
+- **발견한 결함**: 지연 로딩 시험 중 `tools/build.sh`가 런타임 파일을 다른 파일 시스템으로 복사할 때 `locales/`가 `locales/locales/`로 중첩 복사되어 로케일 파일이 빠지는 결함을 찾았습니다. 그 결과 CEF가 `LoadLocalState`에서 `SIGTRAP`으로 중단되었습니다. 하드 링크에 실패하면 불완전한 디렉터리를 지우고 복사하도록 고쳤습니다.
+- **한계**: 리눅스 x86_64, glibc, PHP 8.5 CLI에서만 시험했습니다. PHP-FPM이나 ZTS에서는 시험하지 않았습니다. 런타임을 나중에 설치하는 경우나 `dlopen`이 실패하는 다른 사유(권한, 버전 불일치)에서의 동작은 확인하지 않았습니다.
+- **영향**: [배포 전략](../concepts/distribution-strategy.md)의 미해결 과제가 해결되었습니다. 이 옵션은 아직 기본값이 아닙니다.
 
 ## 관련 페이지
 

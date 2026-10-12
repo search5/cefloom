@@ -4,7 +4,8 @@
 # Each test gets its own session, so a timeout or a process that does not exit after printing OK is cleaned up completely.
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-dist="${CEFLOOM_DIST:-$here/../build/dist}"
+dist="$(cd "${CEFLOOM_DIST:-$here/../build/dist}" && pwd)"
+export CEFLOOM_DIST="$dist"   # tests that need the module file itself (t_no_runtime)
 limit="${TEST_TIMEOUT:-120}"      # seconds a test may run
 grace="${TEST_EXIT_GRACE:-10}"    # seconds a test may take to exit after it printed OK
 cd "$here"

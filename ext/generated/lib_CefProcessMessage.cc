@@ -72,6 +72,15 @@ ZEND_METHOD(CefProcessMessage, Create) {
   ZEND_PARSE_PARAMETERS_START(1, 1)
   Z_PARAM_STR(a_0)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   auto cl_ret = CefProcessMessage::Create(c_0);
   cl_wrap_CefProcessMessage(return_value, cl_ret.get());

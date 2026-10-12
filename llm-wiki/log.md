@@ -59,3 +59,8 @@
 ## [2026-10-12] ingest | PIE와 Composer 조사
 
 - PIE 1.6.x 문서를 읽고 [배포 전략](pages/concepts/distribution-strategy.md)에 정리했습니다. 확장은 PIE로, PHP 쪽 보조는 `composer require`로, CEF 런타임은 별도로 내려받는 구성을 제안했습니다. [K17](pages/reference/known-constraints.md)을 문서 조사까지 한 상태로 고쳤습니다.
+
+## [2026-10-12] ingest | libcef.so 지연 로딩 실험
+
+- `libcef.so`를 필요할 때 불러오는 빌드를 만들고 [F16](pages/reference/verified-findings.md)에 결과를 기록했습니다. [배포 전략](pages/concepts/distribution-strategy.md)의 미해결 과제를 갱신했습니다.
+- `tools/build.sh`의 런타임 복사 결함과 빌드 모드 전환 때 재빌드하지 않는 문제를 고쳤습니다.

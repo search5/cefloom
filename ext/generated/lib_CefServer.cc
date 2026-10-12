@@ -207,6 +207,15 @@ ZEND_METHOD(CefServer, CreateServer) {
   Z_PARAM_LONG(a_2)
   Z_PARAM_OBJ_OF_CLASS(a_3, ce_CefServerHandler)
   ZEND_PARSE_PARAMETERS_END();
+#ifdef CEFLOOM_LAZY_LIBCEF
+  {
+    std::string cl_load_error;
+    if (!cl_core_load_cef(&cl_load_error)) {
+      zend_throw_error(nullptr, "%s", cl_load_error.c_str());
+      RETURN_THROWS();
+    }
+  }
+#endif
   CefString c_0 = cl::to_cef(a_0);
   CefRefPtr<CefServerHandler> c_3(a_3 ? cl_make_CefServerHandler(a_3) : nullptr);
   CefServer::CreateServer(c_0, static_cast<uint16_t>(a_1), static_cast<int>(a_2), c_3);
