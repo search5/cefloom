@@ -62,7 +62,7 @@ Writing a test: `require __DIR__ . '/support.php';`, call `start_cef()` once, us
 tools/coverage.sh              # builds build-coverage/ with gcov, runs the tests in both loop modes, prints the report
 ```
 
-The report counts which methods of the PHP API the tests run (by area of CEF) and the line coverage of the hand-written C++. It measures execution, not the quality of the checks. `llm-wiki/pages/analyses/test-coverage.md` has the latest numbers and `llm-wiki/pages/reference/test-plan.md` the plan to raise them.
+The report counts which methods of the PHP API the tests run (by area of CEF) and the line coverage of the hand-written C++, and compares them with `tests/coverage-baseline.json`: it exits with 1 if a number fell. After adding tests, raise the baseline with `python3 tools/coverage_report.py build-coverage --write-baseline tests/coverage-baseline.json`. It measures execution, not the quality of the checks. `llm-wiki/pages/analyses/test-coverage.md` has the latest numbers and `llm-wiki/pages/reference/test-plan.md` the plan to raise them.
 
 ## Packaging and release
 

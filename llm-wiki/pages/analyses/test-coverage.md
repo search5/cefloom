@@ -11,12 +11,13 @@ sources:
   - cefloom/bin/cefloom-runtime
   - cefloom/tools/package.sh
   - cefloom/tests/run.sh
+  - cefloom/tests/coverage-baseline.json
 updated: 2026-10-12
 ---
 
 # 테스트 커버리지 분석
 
-구현만 되어 있고 테스트가 없는 부분이 어디인지 측정했습니다. 감으로 꼽지 않고 **전체 테스트가 실행하는 함수를 세었습니다**. 이 분석을 바탕으로 한 계획은 [테스트 보강 계획](../reference/test-plan.md)에 있습니다. 측정일은 2026-10-12이고, 그때 테스트는 17개(검사 434개)였습니다.
+구현만 되어 있고 테스트가 없는 부분이 어디인지 측정했습니다. 감으로 꼽지 않고 **전체 테스트가 실행하는 함수를 세었습니다**. 이 분석을 바탕으로 한 계획은 [테스트 보강 계획](../reference/test-plan.md)에 있습니다. 보강 전 측정(2026-10-12)은 테스트 17개(검사 434개)였고, 보강 뒤 측정(같은 날)은 테스트 53개입니다. 아래 "결과 1"에서 "결과 4"까지는 **보강 전**의 값이고, 보강 뒤의 값은 바로 아래 "보강 뒤 결과"에 있습니다.
 
 ## 측정 방법
 
@@ -24,7 +25,48 @@ updated: 2026-10-12
 - **PHP에서 보이는 메서드**를 단위로 셉니다. 라이브러리 클래스와 전역 함수는 테스트가 그 메서드(`zim_*`)를 부른 경우, 클라이언트 클래스(핸들러와 델리게이트)는 CEF가 프록시 메서드를 부른 경우를 "실행"으로 칩니다. 손으로 쓴 파일(`ext/src`, `ext/runtime`)은 줄 단위 커버리지를 봅니다.
 - 이 수치는 **실행 여부**입니다. 실행했다고 검사가 충분하다는 뜻은 아닙니다. 반대로 0이면 어떤 검사도 그 코드에 도달하지 못했다는 확실한 신호입니다.
 
-## 결과 1, 생성된 API (메서드 1,256개)
+## 보강 뒤 결과
+
+[테스트 보강 계획](../reference/test-plan.md)을 실행한 뒤 같은 방법으로 다시 쟀습니다(테스트 52개, 폴링 모드와 외부 펌프 모드에서 각각 모두 통과, 예상된 실패 2개 포함).
+
+전체 메서드 1,256개 중 **826개 실행(65.8%)**입니다(보강 전 260개, 20.7%). 라이브러리 클래스 66.8%, 클라이언트 클래스 60.1%, 전역 함수 87.2%입니다.
+
+| 영역 | 보강 전 | 보강 뒤 | 마일스톤 목표 |
+| --- | --- | --- | --- |
+| 값과 데이터 객체 | 60% | **92%** | 90% 이상, 달성 |
+| 브라우저와 프레임 | 27% | **60%** | 60% 이상, 달성 |
+| 기본 핸들러 | 48% | **80%** | 80% 이상, 달성 |
+| 입력과 상호작용 핸들러 | 0% | 66% | |
+| 다운로드와 렌더링 핸들러 | 0% | 63% | |
+| 네트워크와 리소스 | 19% | **70%** | 55% 이상, 달성 |
+| 쿠키, 요청 컨텍스트, 설정 | 0% | 72% | |
+| 인증서와 SSL | 0% | 84% | |
+| Views | 15% | 44% | |
+| Cast와 미디어 | 19% | 19% | 실제 기기 없이는 한계(K26, K27) |
+| 인쇄 | 3% | 70% | |
+| 스트림, 압축, XML | 0% | **100%** | 70% 이상, 달성 |
+| 스레드와 작업 | 4% | 88% | |
+| 앱, 명령줄, 업데이터, 리소스 | 14% | 78% | |
+| 전역 함수 | 15% | **87%** | 80% 이상, 달성 |
+
+손으로 쓴 코드의 줄 커버리지:
+
+| 파일 | 보강 전 | 보강 뒤 |
+| --- | --- | --- |
+| `ext/src/async.cc` | 57.8% | **87.8%** |
+| `ext/src/core.cc` | 85.8% | **94.2%** |
+| `ext/runtime/cl_runtime.cc` | 66.7% | **85.5%** |
+| `ext/src/bridge.cc` | 80.6% | 84.0% (목표 85%에 1포인트 모자람) |
+| `ext/src/cefloom.cc` | 66.7% | 66.7% (`phpinfo`와 비공개 생성자 오류) |
+| `ext/src/lazy_stubs.cc` | 5.0% | 5.0% (런타임을 불러온 뒤 CEF가 로그를 남길 때만) |
+
+**마일스톤 평가.** M1은 `bridge.cc`만 85%에 1포인트 못 미칩니다(렌더 프로세스 종료 처리는 시험했지만 `OnQuery`의 PHP 종료 중 경로가 남음). 나머지 기준은 달성했습니다. M2의 여섯 영역 기준은 모두 달성했습니다. M3의 전체 45% 기준은 65.8%로 달성했습니다.
+
+여전히 메서드가 하나도 실행되지 않는 클래스 30개 중 5개는 메서드가 없거나(`FillLayout`, `MenuButtonPressedLock`, `Registration`) 손으로 쓴 프록시(`ResourceHandler`, `SchemeHandlerFactory`)라서 영역 표에는 0으로 나오지만 실제로는 시험됩니다. 나머지는 환경 때문에 시험하지 못한 것들입니다: 실제 Cast 기기(`MediaObserver`, `MediaRoute`, `MediaSink` 등), 소리 장치(`AudioHandler`, [K37](../reference/known-constraints.md)), 인쇄(`PrintHandler`와 콜백, [K39](../reference/known-constraints.md)), `getUserMedia`(`MediaAccessCallback`), 창 관리자가 필요한 `CommandHandler`와 Views 델리게이트 일부(`ViewDelegate` 11개는 Views 위젯의 일반 델리게이트라서 `Panels`, `Windows` 등 파생 델리게이트로만 불림), 드래그 앤 드롭(`DragHandler`).
+
+보강 중에 시험이 찾아서 고친 결함은 [테스트 보강 계획](../reference/test-plan.md)의 진행 표와 [알려진 제약](../reference/known-constraints.md) K30에서 K40에 있습니다. 측정은 `tools/coverage.sh`이고, 결과를 `tests/coverage-baseline.json`과 비교해 숫자가 줄어들면 종료 상태 1로 끝납니다.
+
+## 결과 1, 생성된 API (보강 전, 메서드 1,256개)
 
 전체 실행 260개(**20.7%**). 라이브러리 클래스 78개의 901개 중 189개(21.0%), 클라이언트 클래스 60개의 316개 중 65개(20.6%), 전역 함수 39개 중 6개(15.4%)입니다. 라이브러리 클래스 57개와 클라이언트 클래스 49개는 **메서드가 하나도 실행되지 않았습니다**.
 
@@ -56,7 +98,7 @@ updated: 2026-10-12
 - `LifeSpanHandler`의 `OnBeforePopup`과 `DoClose`, `RequestHandler`의 `OnBeforeBrowse`, `OnCertificateError`, 렌더 프로세스 종료와 무응답 콜백, `ResourceRequestHandler`의 `OnResourceRedirect`와 `OnProtocolExecution`.
 - 전역 함수 39개 중 33개: Base64, URI 인코딩, URL 파싱과 조합, MIME 유형, 경로와 임시 디렉터리, ZIP, 교차 출처 허용 목록, 추적, 크래시 키.
 
-## 결과 2, 손으로 쓴 코드
+## 결과 2, 손으로 쓴 코드 (보강 전)
 
 | 파일 | 줄 커버리지 | 실행되지 않은 의미 있는 부분 |
 | --- | --- | --- |
@@ -67,7 +109,9 @@ updated: 2026-10-12
 | `ext/src/core.cc` | 85.8% (353줄) | `Cef::cefVersion()`, 외부 펌프의 `OnScheduleMessagePumpWork`(두 번째 실행에서 일부), 브라우저 수 함수 |
 | `ext/src/lazy_stubs.cc` | 5.0% (20줄) | 로그 함수 전달 3개(런타임을 불러온 뒤 CEF가 로그를 남길 때만 실행됨) |
 
-## 결과 3, 측정되지 않는 구성요소
+## 결과 3, 측정되지 않는 구성요소 (보강 전)
+
+보강 뒤에는 아래 항목 모두에 자동 시험이 있습니다: `bin/cefloom-runtime`은 `t_runtime_tool`, `tools/package.sh`는 `t_package`, `tools/build.sh`는 `t_build`, `tools/gen`은 `tests/gen/test_generator.py`와 `t_generated_fresh`, `llm-wiki/lint.py`는 `t_lint`, `docs/`는 `t_docs`, `tests/run.sh`는 `t_runner`입니다. `subprocess/cefloomsubprocess.cc`는 여전히 간접 확인뿐입니다.
 
 gcov는 C++ 확장만 잰다. 아래는 **자동 시험이 없습니다**(손으로 한 번 확인한 것은 위키의 F와 K 항목에 있음).
 
@@ -83,7 +127,9 @@ gcov는 C++ 확장만 잰다. 아래는 **자동 시험이 없습니다**(손으
 | `subprocess/cefloomsubprocess.cc` | 별도 실행 파일이라 gcov 대상이 아님. 사용자 정의 스킴과 JS 브리지를 통해서만 간접 확인 |
 | `tests/known_failures/` | 비어 있는 디렉터리가 남아 있고 쓰이지 않음 |
 
-## 결과 4, 문서가 약속하지만 시험이 없는 동작
+## 결과 4, 문서가 약속하지만 시험이 없던 동작 (보강 전)
+
+보강 뒤에는 모두 시험이 있습니다(`t_core`, `t_exceptions`, `t_requests`, `t_thread_tasks`, `t_runtime_tool`).
 
 `docs/`는 아래를 사실로 서술합니다. 어떤 테스트도 직접 확인하지 않습니다. 문서의 사실 주장은 시험이 있어야 안전합니다. 실제로 문서를 쓰는 동안 스텁의 `Cef::run` 선언이 구현과 달랐던 것을 발견했습니다.
 

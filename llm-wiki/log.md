@@ -152,3 +152,9 @@
 ## [2026-10-12] ingest | C8: 인쇄
 
 - `t_print`(7)를 추가했습니다. `PrintSettings`는 일반 객체로 모든 설정과 쪽 범위를 확인했습니다. `print()`는 Chrome 런타임에서 `PrintHandler`를 부르지 않는다는 것을 확인해 [K39](pages/reference/known-constraints.md)에 적고 `docs/printing.md`를 고쳤습니다. K27은 인쇄 부분의 결론이 났습니다.
+
+## [2026-10-12] ingest | 테스트 보강 완료와 커버리지 재측정
+
+- 계획 A, B, C를 모두 실행했습니다. 테스트는 17개에서 53개로 늘었고 폴링 모드와 외부 펌프 모드에서 모두 통과합니다(예상된 실패 2개: K26, K30). `tools/coverage.sh`로 다시 쟀더니 전체 메서드 실행 비율이 20.7%에서 65.8%가 되었고, `async.cc` 87.8%, `core.cc` 94.2%, `cl_runtime.cc` 85.5%, `bridge.cc` 84.0%입니다. [분석](pages/analyses/test-coverage.md)에 보강 전과 뒤를 비교했습니다.
+- `tests/coverage-baseline.json`과 `coverage_report.py --check`로 후퇴를 잡습니다. `docs/development.md`에 시험 구성과 쓰는 법을 적었습니다.
+- 시험이 찾은 결함: 로그인 창 때문에 `getAuthCredentials`가 불리지 않던 것, 선택적 버퍼 인자, 구조체 생성자의 시간 변환, `getClient()`가 `null`이던 것, 종료 때 힙 손상, 널 콜백에서 CEF가 죽던 것, UI 스레드에서 거부되는 파일 함수와 대기. 기록한 제약은 K30에서 K40입니다.

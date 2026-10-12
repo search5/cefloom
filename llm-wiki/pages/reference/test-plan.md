@@ -74,7 +74,7 @@ updated: 2026-10-12
 | ID | 상태 | 시험 | 찾아서 고친 결함 또는 기록한 제약 |
 | --- | --- | --- | --- |
 | A2, A3, A4, A5, A6, A7 | 완료 | `t_fixtures`, `t_stub_consistency`, `t_generated_fresh`, `t_docs`, `t_runner`, `t_lint` | 스텁과 확장의 불일치 여럿(생성기 수정), `check-docs.py` |
-| A1 | 측정 대기 | `tools/coverage.sh`, 기준선 파일 | 전체 시험을 모은 뒤 한 번 측정 |
+| A1 | 완료 | `tools/coverage.sh`, `tests/coverage-baseline.json`, `coverage_report.py --check` | 전체 20.7%에서 65.8%로. 마일스톤 평가는 [분석](../analyses/test-coverage.md)의 "보강 뒤 결과" |
 | B1 | 완료 | `t_resources` | |
 | B2 | 완료 | `t_requests`, `t_redirect_change`(기대 실패) | 로그인 창 때문에 `getAuthCredentials`가 불리지 않던 것, 선택적 버퍼가 무효한 `Buffer`로 오던 것, [K30](known-constraints.md) |
 | B3, B4 | 완료 | `t_core`, `t_exceptions` | 시작 전 `createBrowser`와 종료 뒤 `initialize` 충돌 |
@@ -95,6 +95,7 @@ updated: 2026-10-12
 | C9 | 완료 | `t_ssl` | |
 | C10 | 완료 | `t_app_misc` | [K38](known-constraints.md) |
 | C11 | 완료 | `t_cast_observer`(기대 실패) | K26 |
+| 추가 | 완료 | `t_streams_more`, `t_handlers_more`, `t_callbacks_more` | 마일스톤 영역의 빈 곳을 메우려고 더함. [K40](known-constraints.md) |
 
 시험 제외 목록(D)에 더해 환경 때문에 시험하지 못한 것: 창 관리자가 필요한 최대화와 최소화, 소리 장치가 필요한 `AudioHandler`, 진짜 프린터와 인쇄 미리보기, 실제 Cast 기기, 클라이언트 인증서 선택(목록이 비어 있는 경우만 시험).
 

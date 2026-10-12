@@ -5,7 +5,9 @@
 #   BUILD=/some/dir tools/coverage.sh
 #
 # The build counts function and line executions with gcov (CEFLOOM_COVERAGE=1: slow, not for use). The report is
-# printed and written to <build>/coverage.json. See llm-wiki/pages/analyses/test-coverage.md for what it found.
+# printed and written to <build>/coverage.json, and compared with tests/coverage-baseline.json: the exit status is 1 if a number fell.
+# After adding tests, raise the baseline: python3 tools/coverage_report.py <build> --write-baseline tests/coverage-baseline.json
+# See llm-wiki/pages/analyses/test-coverage.md for what it found.
 set -uo pipefail
 here="$(cd "$(dirname "$0")/.." && pwd)"
 build="${BUILD:-$here/build-coverage}"
@@ -15,4 +17,4 @@ find "$build/ext" -name '*.gcda' -delete
 # The tests run one after another, in both modes of the message loop: the counts of the runs add up.
 CEFLOOM_DIST="$build/dist" "$here/tests/run.sh" | tail -3
 CEFLOOM_TEST_EXTERNAL_PUMP=1 CEFLOOM_DIST="$build/dist" "$here/tests/run.sh" | tail -3
-python3 -I "$here/tools/coverage_report.py" "$build" --json "$build/coverage.json"
+python3 -I "$here/tools/coverage_report.py" "$build" --json "$build/coverage.json" --check "$here/tests/coverage-baseline.json"
