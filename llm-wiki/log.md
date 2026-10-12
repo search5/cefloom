@@ -138,3 +138,8 @@
 
 - `t_dialogs`(14), `t_input`(27), `t_osr`(17)를 추가했습니다. JS 대화상자, 권한 요청(수락한 권한은 출처별로 기억되므로 거부는 다른 출처로 시험), 파일 대화상자, 키보드와 포커스, 컨텍스트 메뉴와 `MenuModel`, `DragData`, 오프스크린 렌더링의 픽셀과 마우스, 휠, 키 입력, 크기 변경, 선택, 접근성 트리를 확인했습니다.
 - K14(픽셀 내용)가 해결되었습니다. `AudioHandler`는 소리 장치가 없는 환경에서 불리지 않아 [K37](pages/reference/known-constraints.md)에 적었습니다. 키 입력을 페이지에서 막으려면 `onKeyEvent`가 아니라 `onPreKeyEvent`에서 처리해야 합니다.
+
+## [2026-10-12] ingest | C10: 앱과 기타
+
+- `t_app_misc`(22)를 추가했습니다: `Cef::initialize($settings, $app)`의 `App`과 `BrowserProcessHandler`(명령줄 스위치 추가, 컨텍스트 초기화, 렌더러 실행 직전 콜백), `ResourceBundle`, `ComponentUpdater`, `TaskManager`, 추적(`beginTracing`, `endTracing`의 JSON 파일).
+- 팩에 없는 id를 `ResourceBundle`에 주면 프로세스가 끝나는 것을 [K38](pages/reference/known-constraints.md)에 적었습니다.

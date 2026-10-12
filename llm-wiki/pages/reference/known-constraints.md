@@ -63,6 +63,7 @@ updated: 2026-10-12
 | K35 | `Server::isRunning()`는 PHP 스레드에서 항상 `false` | CEF는 이 호출을 서버 스레드에서만 답하도록 정해 두었고, PHP는 UI 스레드에서 돌기 때문에 서버가 돌고 있어도 `false`입니다(`hasConnection()`도 같은 제약일 수 있음). 서버가 만들어졌는지는 `ServerHandler::onServerCreated()`와 `onServerDestroyed()`로 판단합니다. `sendHttp200Response()` 등 응답 메서드는 UI 스레드에서 정상 동작함을 시험으로 확인했습니다. 서버 스레드로 넘겨 답하는 방법은 아직 구현하지 않았습니다. |
 | K36 | `LifeSpanHandler::doClose()`가 불리지 않음 | `createBrowser()`로 만든 브라우저는 CEF가 만든 최상위 창에서 돌아서 `closeBrowser()`와 `tryCloseBrowser()`가 `doClose()` 없이 곧바로 `onBeforeClose()`로 이어집니다. `doClose()`가 `true`를 돌려주어도 닫기를 막지 못합니다. 닫기를 막으려면 페이지의 `beforeunload`를 쓰거나 `closeBrowser(false)`를 부르는 쪽에서 판단합니다(`t_browser_host`로 확인). |
 | K37 | `AudioHandler`가 이 환경에서 불리지 않음 | 소리 장치가 없는 가상 화면 환경에서는 `AudioContext`와 `<audio>`를 재생해도 `getAudioParameters()`조차 호출되지 않습니다(창 모드와 오프스크린 모드 모두). 실제 오디오 서버가 있는 환경에서 확인이 필요하며, 시험 제외 목록에 있습니다. |
+| K38 | 없는 id를 `ResourceBundle`에 물으면 프로세스가 죽음 | `getLocalizedString()`과 `getDataResource()`에 팩 파일에 없는 id를 주면 CEF 안의 검사에 걸려 `SIGTRAP`으로 끝납니다. 확인할 방법이 없어 id는 `cef_pack_strings.h`와 `cef_pack_resources.h`의 것만 써야 합니다. `getDataResource()`는 resources.pak에 없는 id에는 `null`을 돌려줍니다. |
 
 ## 문서와 소스의 불일치
 
