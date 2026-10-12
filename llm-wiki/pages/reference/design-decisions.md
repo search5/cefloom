@@ -7,6 +7,8 @@ sources:
   - cefloom/tools/gen/scope.py
   - cefloom/ext/runtime/cl_runtime.cc
   - cefloom/tests/t_sync_timeout.php
+  - cefloom/tools/build.sh
+  - cefloom/ext/src/lazy_stubs.cc
   - cefweaver_clone/cefweaver/llm-wiki/pages/concepts/process-model-and-threads.md
 updated: 2026-10-12
 ---
@@ -82,6 +84,13 @@ updated: 2026-10-12
 - **그대로 PHP를 기다리는 것(사용자 결정)**: 즉시 반환값이 필요한 콜백입니다. `getResourceRequestHandler`(`disableDefaultHandling`을 즉시 알려야 함), `getResourceHandler`(`null`이면 네트워크 로드), `getCookieAccessFilter`, `canSendCookie`, `canSaveCookie`, `onResourceResponse`, `onResourceRedirect`, `onProtocolExecution`, 응답 필터(`getResourceResponseFilter`, `initFilter`, `filter`), 그리고 구형 `readResponse`. 이 콜백을 PHP에서 구현하면 IO 스레드가 막히므로 [F14](verified-findings.md)의 교착이 일어날 수 있습니다.
 - **완화**: 이 콜백이 PHP를 기다리다 `CEFLOOM_SYNC_WAIT_MS`(기본 5000)밀리초를 넘기면(PHP 스레드가 메시지 루프 안에서 호출을 가져가지 않을 때만) 기다림을 포기하고 CEF의 기본 동작을 씁니다. 생성된 프록시는 `run_on_php_thread`가 `false`를 돌려주면 PHP를 부르지 않았을 때와 같은 기본 동작으로 되돌아갑니다. 교착을 풀어 줄 뿐 PHP의 판단은 그 요청에서 무시됩니다.
 - **영향**: 생성기는 `tools/gen/scope.py`의 `CUSTOM_PROXY`(프록시를 직접 작성하는 클래스)와 `ASYNC_METHODS`(비동기 본문으로 위임하는 메서드)를 따릅니다.
+
+## D13. `libcef.so`는 필요할 때 불러온다
+
+- **상태**: 확정(사용자가 두 가지 후속 작업 중 이 방식을 먼저 하도록 정했습니다). 구현과 시험을 마쳤습니다.
+- **내용**: 기본 빌드의 `cefloom.so`는 `libcef.so`에 링크하지 않고, CEF 런타임 디렉터리에서 처음 필요할 때 불러옵니다. 런타임이 없어도 모듈이 로드되고, 사용하지 않는 PHP 프로세스의 시작 비용이 거의 없습니다([F16](verified-findings.md)). 링크하는 빌드는 `CEFLOOM_LAZY_LIBCEF=0 tools/build.sh`로 만듭니다.
+- **이유**: PIE로 배포하려면 확장 모듈이 CEF 런타임 없이 설치되고 로드되어야 하기 때문입니다([배포 전략](../concepts/distribution-strategy.md)).
+- **영향**: CEF를 부르는 정적 함수는 런타임이 없으면 `Error`를 던집니다. 생성기가 이 확인을 넣습니다(`tools/gen/emit_lib.py`).
 
 ## 미결 질문
 

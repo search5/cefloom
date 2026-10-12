@@ -64,3 +64,7 @@
 
 - `libcef.so`를 필요할 때 불러오는 빌드를 만들고 [F16](pages/reference/verified-findings.md)에 결과를 기록했습니다. [배포 전략](pages/concepts/distribution-strategy.md)의 미해결 과제를 갱신했습니다.
 - `tools/build.sh`의 런타임 복사 결함과 빌드 모드 전환 때 재빌드하지 않는 문제를 고쳤습니다.
+
+## [2026-10-12] ingest | 지연 로딩을 기본 빌드로
+
+- `tools/build.sh`의 기본을 `libcef.so`를 필요할 때 불러오는 빌드로 바꾸었습니다([D13](pages/reference/design-decisions.md)). 링크하는 빌드는 `CEFLOOM_LAZY_LIBCEF=0`입니다.

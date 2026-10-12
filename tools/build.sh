@@ -3,7 +3,7 @@
 #
 #   tools/build.sh              # build into cefloom/build/
 #   tools/build.sh --regen      # regenerate the binding first (tools/gen/generate.py)
-#   CEFLOOM_LAZY_LIBCEF=1 tools/build.sh   # a module that loads libcef.so when needed (see below)
+#   CEFLOOM_LAZY_LIBCEF=0 tools/build.sh   # link libcef.so instead of loading it when needed (see below)
 #
 # Inputs (environment variables, defaults for the layout of this workspace):
 #   CEF_ROOT              CEF distribution with include/ (default: the cefweaver checkout's build/native/cef)
@@ -30,15 +30,17 @@ if [[ "${1:-}" == "--regen" ]]; then
   python3 -I "$here/tools/gen/generate.py" --cef-root "$CEF_ROOT"
 fi
 
-# CEFLOOM_LAZY_LIBCEF=1 builds a module that does not link libcef.so: it loads it from its own directory when it is
-# needed, so that it also loads where the CEF runtime is not installed (llm-wiki, verified-findings F16). The mode
-# is a compiler flag that make does not track: a build directory is rebuilt from scratch when the mode changes.
+# The module does not link libcef.so by default: it loads it from the CEF runtime directory when it is needed, so it
+# also loads where the runtime is not installed and costs a PHP process that does not use CEF almost nothing
+# (llm-wiki, verified-findings F16). CEFLOOM_LAZY_LIBCEF=0 links it instead. The mode is a compiler flag that make
+# does not track: a build directory is rebuilt from scratch when the mode changes.
+if [[ "${CEFLOOM_LAZY_LIBCEF-1}" == "0" ]]; then export CEFLOOM_LAZY_LIBCEF=""; else export CEFLOOM_LAZY_LIBCEF=1; fi
 mode_file="$BUILD/ext.mode"
 mkdir -p "$BUILD"
-if [[ -d "$BUILD/ext" && "$(cat "$mode_file" 2>/dev/null || true)" != "${CEFLOOM_LAZY_LIBCEF:-}" ]]; then
+if [[ -d "$BUILD/ext" && "$(cat "$mode_file" 2>/dev/null || true)" != "$CEFLOOM_LAZY_LIBCEF" ]]; then
   rm -rf "$BUILD/ext"
 fi
-printf '%s' "${CEFLOOM_LAZY_LIBCEF:-}" > "$mode_file"
+printf '%s' "$CEFLOOM_LAZY_LIBCEF" > "$mode_file"
 
 # The extension is built in a copy: phpize writes into the directory it runs in.
 mkdir -p "$BUILD/ext" "$BUILD/dist"
