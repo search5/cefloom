@@ -210,3 +210,6 @@
 
 ## [2026-10-13] ingest | GitHub Pages 배포 준비
 `.github/workflows/docs.yml`과 `make -C docs site`를 더했다. 로컬에서 `site` 빌드가 성공했고 워크플로는 GitHub에서 아직 실행하지 않았다. 푸시와 Pages 설정은 사용자의 결정을 기다린다. 내용은 [문서 사이트](pages/procedures/docs-site.md).
+
+## [2026-10-13] ingest | GitHub Pages 배포 완료
+사용자 요청으로 푸시하고 Pages(Source: GitHub Actions)를 켰다. 첫 실행이 성공했고 https://search5.github.io/cefloom/ 이 200으로 응답한다. 같은 방식으로 cefweaver도 배포했다.

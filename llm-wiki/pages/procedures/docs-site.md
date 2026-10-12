@@ -71,8 +71,9 @@ updated: 2026-10-13
 `.github/workflows/docs.yml`이 `main`에 푸시될 때(`docs/`, 스텁, `tools/docs`, `tools/gen`, 워크플로 자신이 바뀐 경우)와 수동 실행으로 `make -C docs site`를 돌려 `docs/_build/html`을 Pages에 올립니다. `site` 대상은 영어와 한국어를 빌드하고 시작 페이지(`index.html`, `en/`으로 이동)를 씁니다. 사이트에 CEF 런타임이 필요하지 않아서(API 쪽은 스텁에서 생성) 일반 러너에서 빌드됩니다.
 
 - 확인한 것: `make -C docs site`가 이 컴퓨터에서 성공하고 워크플로의 YAML이 구문상 맞습니다.
-- 확인하지 못한 것: 워크플로를 GitHub에서 실행해 보지 않았습니다. 러너의 Python 3.13과 `pip install -r docs/requirements.txt`로 빌드가 되는지는 첫 실행에서 확인됩니다.
-- 켜야 할 설정: 저장소 Settings의 Pages에서 Source를 "GitHub Actions"로 바꿔야 합니다(2026-10-13 기준 cefloom은 Pages가 꺼져 있습니다). 푸시하고 설정을 켜면 공개 저장소의 사이트가 공개됩니다.
+- 첫 실행(2026-10-13): 빌드 58초, 배포 10초로 성공했습니다. https://search5.github.io/cefloom/ 의 주요 주소(`en/`, `ko/`, `en/limitations.html`, `ko/wayland-gpu.html`, `en/api/gen-cef.html`)가 200으로 응답합니다.
+- 설정: 저장소 Pages의 Source를 `gh api`로 GitHub Actions(`build_type=workflow`)로 켰습니다.
+- 두 사이트가 같은 방식입니다. cefweaver는 wheel을 먼저 빌드해야 해서 약 7분이 걸립니다(`cefweaver/.github/workflows/docs.yml`).
 
 ## 아직 하지 않은 것
 
