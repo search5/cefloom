@@ -61,6 +61,7 @@ updated: 2026-10-12
 | K33 | 선택 인자인 콜백에 `null`을 주면 CEF가 프로세스를 죽임 | `RequestContext::clearHttpCache(null)`, `clearHttpAuthCredentials(null)`, `closeAllConnections(null)`는 헤더에 "NULL이면 호출하지 않는다"고 적혀 있으나, 구현은 `base::BindOnce(&CefCompletionCallback::OnComplete, callback)`로 검사 없이 호출해 `SIGSEGV`로 끝납니다. 생성된 코드는 `CompletionCallback`을 `null`로 받으면 아무것도 하지 않는 콜백을 대신 넘깁니다(`cl::noop_completion()`). `t_context`가 고정합니다. |
 | K34 | 관찰자 등록은 반환된 `Registration`이 살아 있는 동안만 유효 | `PreferenceManager::addPreferenceObserver()`와 `RequestContext::addSettingObserver()`가 돌려주는 등록 객체를 버리면 관찰이 끝납니다(CEF의 규칙). 변수에 보관해야 합니다. |
 | K35 | `Server::isRunning()`는 PHP 스레드에서 항상 `false` | CEF는 이 호출을 서버 스레드에서만 답하도록 정해 두었고, PHP는 UI 스레드에서 돌기 때문에 서버가 돌고 있어도 `false`입니다(`hasConnection()`도 같은 제약일 수 있음). 서버가 만들어졌는지는 `ServerHandler::onServerCreated()`와 `onServerDestroyed()`로 판단합니다. `sendHttp200Response()` 등 응답 메서드는 UI 스레드에서 정상 동작함을 시험으로 확인했습니다. 서버 스레드로 넘겨 답하는 방법은 아직 구현하지 않았습니다. |
+| K36 | `LifeSpanHandler::doClose()`가 불리지 않음 | `createBrowser()`로 만든 브라우저는 CEF가 만든 최상위 창에서 돌아서 `closeBrowser()`와 `tryCloseBrowser()`가 `doClose()` 없이 곧바로 `onBeforeClose()`로 이어집니다. `doClose()`가 `true`를 돌려주어도 닫기를 막지 못합니다. 닫기를 막으려면 페이지의 `beforeunload`를 쓰거나 `closeBrowser(false)`를 부르는 쪽에서 판단합니다(`t_browser_host`로 확인). |
 
 ## 문서와 소스의 불일치
 

@@ -128,3 +128,8 @@
 
 - `t_download`(18), `t_server`(22)를 추가했습니다. 다운로드는 저장, 거부(`canDownload`가 `false`), 진행 중 취소, 이어지는 다운로드를 확인했고, 서버는 별도 PHP 프로세스를 클라이언트로 써서 200/404/500/사용자 응답과 WebSocket 왕복을 확인했습니다.
 - `Server::isRunning()`이 PHP 스레드에서 항상 `false`인 것을 [K35](pages/reference/known-constraints.md)에 적었습니다.
+
+## [2026-10-12] ingest | C5: 브라우저 호스트 시험
+
+- `t_browser_host`(40)를 추가했습니다: 줌, 음소거, 페이지 안 찾기, DevTools 프로토콜(`Runtime.evaluate` 결과와 이벤트), 탐색 기록과 `NavigationEntry`, 프레임의 텍스트와 소스, `onBeforeBrowse`로 탐색 막기, 클릭한 `target=_blank` 링크의 `onBeforePopup`(`xdotool`), 닫기.
+- Chrome 런타임의 찾기 결과는 활성 일치 순번이 0이고, `doClose()`는 불리지 않습니다([K36](pages/reference/known-constraints.md)). 브라우저 창은 (10,10)에 있고 위쪽 약 100픽셀이 도구 모음이라 클릭은 그 안쪽에서 해야 합니다.
