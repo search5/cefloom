@@ -100,8 +100,15 @@ function run_php(string $script, array $args = [], array $env = [], int $timeout
 {
     $module ??= (getenv('CEFLOOM_DIST') ?: dirname(__DIR__) . '/build/dist') . '/cefloom.so';
     $envText = '';
+    foreach ($env as $name => $value) {      // env wants its options (-u) before the assignments
+        if ($value === null) {
+            $envText .= ' -u ' . escapeshellarg($name);
+        }
+    }
     foreach ($env as $name => $value) {
-        $envText .= ($value === null ? ' -u ' . escapeshellarg($name) : ' ' . $name . '=' . escapeshellarg((string) $value));
+        if ($value !== null) {
+            $envText .= ' ' . $name . '=' . escapeshellarg((string) $value);
+        }
     }
     $command = 'env' . $envText . ' timeout -k 5 ' . $timeout . ' ' . escapeshellarg(PHP_BINARY) . ' -d extension=' . escapeshellarg($module)
         . ' ' . escapeshellarg($script);
