@@ -52,7 +52,7 @@ updated: 2026-10-12
 | K24 | 게시한 릴리스로 `pie install`을 끝까지 실행한 결과 | 릴리스가 없어 시험하지 못함. 오프라인 흐름과 PIE의 메타데이터 인식만 확인([F17](verified-findings.md)) | 저장소를 게시하고 릴리스를 만든 뒤 격리된 환경에서 `pie install`을 실행 |
 | K25 | CEF 런타임을 재배포할 때 필요한 라이선스 고지 | 런타임 압축 파일에 CEF와 Chromium의 라이선스 파일을 넣지 않았고 요건을 조사하지 않음 | CEF 배포본의 `LICENSE.txt`와 `README.txt`, Chromium의 고지 요건을 읽고 압축 파일에 포함 |
 | K26 | 미디어 라우터를 쓴 뒤 `Cef::shutdown()`이 중단되는 원인과 해결 | 중단 위치만 확인([F18](verified-findings.md)). PHP 없이 CEF만으로 재현하지 않았고 우회 방법을 찾지 못함 | C++ 최소 예제로 재현해 CEF에 보고하거나, 종료 순서를 바꾸는 방법을 시험 |
-| K27 | 인쇄 대화상자(`PrintHandler`), 실제 Cast 기기, 데스크톱 환경의 창 관리자와 Wayland에서의 Views | 창과 PDF 출력과 라우터 호출과 입력(가상 화면)만 시험함([F18](verified-findings.md), [F19](verified-findings.md)) | 데스크톱 환경의 화면에서 입력을 보내 보고, 인쇄 핸들러를 구현해 `print()`를 호출 |
+| K27 | 실제 Cast 기기, 데스크톱 환경의 창 관리자와 Wayland에서의 Views | 창과 PDF 출력과 라우터 호출과 입력(가상 화면)만 시험함([F18](verified-findings.md), [F19](verified-findings.md)). 인쇄 핸들러는 [K39](known-constraints.md)로 결론이 났음 | 데스크톱 환경의 화면에서 입력을 보내 봄 |
 | K28 | 저장소의 라이선스 | 라이선스 파일이 없음(공개 저장소이므로 기본적으로 사용 권리가 없음). 소유자가 아직 정하지 않았고, K18과 K25에 따라 선택이 달라질 수 있음 | 소유자가 선택하고, 포함한 제3자 코드(`tools/gen/vendor/`), `cefweaver` 재사용분(K18), CEF 재배포 고지(K25)를 확인해 `LICENSE`를 추가 |
 | K29 | 테스트가 없는 구현 | 전체 메서드의 79.3%가 어떤 테스트에서도 실행되지 않고, 손으로 쓴 `async.cc`는 줄 커버리지 57.8%, 런타임 설치 도구와 패키징과 생성기에는 자동 시험이 없음([테스트 커버리지 분석](../analyses/test-coverage.md)) | [테스트 보강 계획](test-plan.md)의 A에서 D를 실행하고 `tools/coverage.sh`로 측정 |
 | K30 | `onResourceRedirect`가 돌려준 URL이 적용되지 않음 | 핸들러는 올바른 인자로 불리고 새 URL을 돌려주지만, 로드는 서버가 알려 준 원래 URL에서 끝납니다. CEF 래퍼의 cpptoc 함수(`resource_request_handler_cpptoc.cc`)가 `new_url`을 복사본으로 받고 되돌려 쓰지 않는 것이 유력한 원인입니다. `tests/t_redirect_change.php`가 기대 실패(xfail)로 기록하며, 고쳐지면 시험이 알려 줍니다. 우회: `onBeforeResourceLoad`에서 `Request::setURL()`로 바꿉니다(시험으로 확인). |
@@ -64,6 +64,7 @@ updated: 2026-10-12
 | K36 | `LifeSpanHandler::doClose()`가 불리지 않음 | `createBrowser()`로 만든 브라우저는 CEF가 만든 최상위 창에서 돌아서 `closeBrowser()`와 `tryCloseBrowser()`가 `doClose()` 없이 곧바로 `onBeforeClose()`로 이어집니다. `doClose()`가 `true`를 돌려주어도 닫기를 막지 못합니다. 닫기를 막으려면 페이지의 `beforeunload`를 쓰거나 `closeBrowser(false)`를 부르는 쪽에서 판단합니다(`t_browser_host`로 확인). |
 | K37 | `AudioHandler`가 이 환경에서 불리지 않음 | 소리 장치가 없는 가상 화면 환경에서는 `AudioContext`와 `<audio>`를 재생해도 `getAudioParameters()`조차 호출되지 않습니다(창 모드와 오프스크린 모드 모두). 실제 오디오 서버가 있는 환경에서 확인이 필요하며, 시험 제외 목록에 있습니다. |
 | K38 | 없는 id를 `ResourceBundle`에 물으면 프로세스가 죽음 | `getLocalizedString()`과 `getDataResource()`에 팩 파일에 없는 id를 주면 CEF 안의 검사에 걸려 `SIGTRAP`으로 끝납니다. 확인할 방법이 없어 id는 `cef_pack_strings.h`와 `cef_pack_resources.h`의 것만 써야 합니다. `getDataResource()`는 resources.pak에 없는 id에는 `null`을 돌려줍니다. |
+| K39 | `BrowserHost::print()`가 `PrintHandler`를 부르지 않음 | 이 빌드의 Chrome 런타임은 인쇄를 Chrome의 인쇄 미리보기로 처리하고 `PrintHandler`에는 묻지 않습니다. `onPrintStart` 등은 불리지 않고 가짜 프린터로 흐름을 시험할 수 없습니다. 프로그램에서 인쇄하려면 `printToPDF()`를 씁니다. `PrintSettings`는 일반 객체로 쓸 수 있습니다. `t_print`가 현상을 고정하고, CEF가 바뀌어 핸들러를 부르면 시험이 실패해서 알려 줍니다. |
 
 ## 문서와 소스의 불일치
 

@@ -31,7 +31,7 @@
 - [로드맵](pages/reference/roadmap.md): 단계별 기간 추정, 줄이고 늘리는 요소, 다음에 할 일
 - [테스트 보강 계획](pages/reference/test-plan.md): 시험 공백을 메우는 작업 A에서 D와 마일스톤 M1에서 M3, 완료 기준과 시험 제외 목록의 출발점
 - [실험으로 확인한 사실](pages/reference/verified-findings.md): 사전 검증 F1부터 F12와 확장 모듈 검증 F13부터 F19, 방법과 결과와 영향
-- [알려진 제약과 미검증 항목](pages/reference/known-constraints.md): K1부터 K38, 확인하지 못한 이유와 확인 방법
+- [알려진 제약과 미검증 항목](pages/reference/known-constraints.md): K1부터 K39, 확인하지 못한 이유와 확인 방법
 - [용어집](pages/reference/glossary.md): CEF, 외부 메시지 펌프, 참조 카운트, 트램펄린, shim 등
 - [생성기 커버리지 보고서](pages/reference/coverage-report.md): 생성기가 만든 메서드와 만들지 못한 이유, 클래스별 표 (생성 페이지, 직접 고치지 않음)
 
