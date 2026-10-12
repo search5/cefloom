@@ -92,3 +92,7 @@
 
 - `docs/`에 PIE와 런타임 설치 도구에 맞춘 사용자 문서 13개를 영어로 작성했습니다. 문서를 쓰다가 스텁의 `Cef::run` 선언이 구현과 달랐던 것(두 번째 인자 `quitWhenLastBrowserCloses`와 `$tick`의 `false` 반환)을 찾아 고쳤습니다. 설명은 [패키징과 릴리스 절차](pages/procedures/package-and-release.md)에 있습니다.
 - Views 입력을 창 관리자 `twm`에서도 확인해 [F19](pages/reference/verified-findings.md)와 K12, K27을 갱신했습니다.
+
+## [2026-10-12] ingest | 저장소 게시
+
+- 저장소를 `https://github.com/search5/cefloom`(공개, 기본 브랜치 `main`)으로 게시하고 지금까지의 커밋을 푸시했습니다. 게시 전에 비밀 정보, 개인 경로, 큰 파일을 점검했습니다(비밀 정보 없음, 추적 파일 248개 2.9MB). [패키징과 릴리스 절차](pages/procedures/package-and-release.md)를 갱신했습니다. 릴리스, Packagist 등록, 라이선스는 아직입니다.

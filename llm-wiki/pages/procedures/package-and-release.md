@@ -45,7 +45,9 @@ XDG_DATA_HOME=$PWD/data php -d extension=$PWD/module/cefloom.so bin/cefloom-runt
 XDG_DATA_HOME=$PWD/data CEFLOOM_DIST=$PWD/module tests/run.sh
 ```
 
-## 4. 릴리스 게시 (실행하지 않음)
+## 4. 릴리스 게시 (저장소만 게시, 릴리스는 아직)
+
+저장소는 2026-10-12에 `https://github.com/search5/cefloom`(공개)으로 게시했습니다. 아래의 태그와 릴리스 자산 첨부, Packagist 등록은 아직 하지 않았습니다. 저장소에는 라이선스 파일이 없고 `composer.json`의 패키지 이름은 임시 값(`cefloom/cefloom`)입니다.
 
 PIE는 GitHub 릴리스의 자산에서 바이너리를 찾습니다(PIE의 `PackageReleaseAssets`가 릴리스를 태그 이름으로 찾음). 따라서 저장소를 GitHub에 올리고, 태그를 만들고, 릴리스에 `build/release/`의 파일을 첨부해야 합니다. 이 작업은 외부에 공개되는 일이라 하지 않았고, 공급자 이름(`composer.json`의 `cefloom/cefloom`은 임시 값입니다), 저장소 위치, 라이선스를 정해야 합니다. Packagist에 저장소를 등록하면 `pie install 공급자/cefloom`이 동작합니다.
 
