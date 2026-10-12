@@ -93,7 +93,7 @@ ZEND_METHOD(CefMediaRouter, GetGlobalMediaRouter) {
     }
   }
 #endif
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   auto cl_ret = CefMediaRouter::GetGlobalMediaRouter(c_0);
   cl_wrap_CefMediaRouter(return_value, cl_ret.get());
 }

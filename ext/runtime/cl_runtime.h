@@ -24,6 +24,7 @@
 #include "include/cef_api_hash.h"
 #include "include/cef_app.h"
 #include "include/cef_base.h"
+#include "include/cef_callback.h"
 #include "include/cef_task.h"
 
 extern "C" {
@@ -172,6 +173,9 @@ size_t buffer_fill(zval* zv, void* data, size_t max);
 
 // Release a PHP object from any thread: directly on the PHP thread, else queued for it.
 void release_later(zend_object* o);
+// A completion callback that does nothing, for the places where CEF takes a NULL callback and then calls it anyway.
+CefRefPtr<CefCompletionCallback> noop_completion();
+
 // Run |fn| on a helper thread and wait for it: for the CEF functions that refuse the UI and IO threads (scope.py,
 // OFF_UI_THREAD). |fn| must not call PHP.
 template <class F>

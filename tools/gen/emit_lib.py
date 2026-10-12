@@ -158,7 +158,13 @@ def build(names, scope, plan):
             inp.decl = ["zend_object* %s = nullptr;" % a]
             inp.zpp = ("Z_PARAM_OBJ_OF_CLASS_OR_NULL(%s, %s)" if _optional(p) else "Z_PARAM_OBJ_OF_CLASS(%s, %s)") % (
                 a, ce_var(k.cls))
-            inp.conv = ["CefRefPtr<%s> %s(%s ? cl_make_%s(%s) : nullptr);" % (k.cls, c, a, k.cls, a)]
+            if k.cls == "CefCompletionCallback":
+                # CEF calls an optional completion callback without a check for NULL in several places
+                # (CefRequestContext::ClearHttpCache binds callback->OnComplete): a NULL ends the process. A callback that
+                # does nothing means the same as none.
+                inp.conv = ["CefRefPtr<%s> %s(%s ? cl_make_%s(%s) : cl::noop_completion());" % (k.cls, c, a, k.cls, a)]
+            else:
+                inp.conv = ["CefRefPtr<%s> %s(%s ? cl_make_%s(%s) : nullptr);" % (k.cls, c, a, k.cls, a)]
             call_args.append(c)
         elif isinstance(k, Struct):
             inp.decl = ["zend_object* %s = nullptr;" % a]

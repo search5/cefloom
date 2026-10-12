@@ -79,7 +79,7 @@ ZEND_METHOD(CefRequestContext, GetCookieManager) {
   ZEND_PARSE_PARAMETERS_END();
   CefRequestContext* cl_self = cl::self<CefRequestContext>(Z_OBJ_P(ZEND_THIS), 1);
   if (!cl_self) { RETURN_THROWS(); }
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   auto cl_ret = cl_self->GetCookieManager(c_0);
   cl_wrap_CefCookieManager(return_value, cl_ret.get());
 }
@@ -127,7 +127,7 @@ ZEND_METHOD(CefRequestContext, ClearCertificateExceptions) {
   ZEND_PARSE_PARAMETERS_END();
   CefRequestContext* cl_self = cl::self<CefRequestContext>(Z_OBJ_P(ZEND_THIS), 1);
   if (!cl_self) { RETURN_THROWS(); }
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   cl_self->ClearCertificateExceptions(c_0);
 }
 
@@ -141,7 +141,7 @@ ZEND_METHOD(CefRequestContext, ClearHttpCache) {
   ZEND_PARSE_PARAMETERS_END();
   CefRequestContext* cl_self = cl::self<CefRequestContext>(Z_OBJ_P(ZEND_THIS), 1);
   if (!cl_self) { RETURN_THROWS(); }
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   cl_self->ClearHttpCache(c_0);
 }
 
@@ -155,7 +155,7 @@ ZEND_METHOD(CefRequestContext, ClearHttpAuthCredentials) {
   ZEND_PARSE_PARAMETERS_END();
   CefRequestContext* cl_self = cl::self<CefRequestContext>(Z_OBJ_P(ZEND_THIS), 1);
   if (!cl_self) { RETURN_THROWS(); }
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   cl_self->ClearHttpAuthCredentials(c_0);
 }
 
@@ -169,7 +169,7 @@ ZEND_METHOD(CefRequestContext, CloseAllConnections) {
   ZEND_PARSE_PARAMETERS_END();
   CefRequestContext* cl_self = cl::self<CefRequestContext>(Z_OBJ_P(ZEND_THIS), 1);
   if (!cl_self) { RETURN_THROWS(); }
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   cl_self->CloseAllConnections(c_0);
 }
 
@@ -201,7 +201,7 @@ ZEND_METHOD(CefRequestContext, GetMediaRouter) {
   ZEND_PARSE_PARAMETERS_END();
   CefRequestContext* cl_self = cl::self<CefRequestContext>(Z_OBJ_P(ZEND_THIS), 1);
   if (!cl_self) { RETURN_THROWS(); }
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   auto cl_ret = cl_self->GetMediaRouter(c_0);
   cl_wrap_CefMediaRouter(return_value, cl_ret.get());
 }

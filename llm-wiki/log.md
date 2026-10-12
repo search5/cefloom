@@ -118,3 +118,8 @@
 
 - `t_runtime_tool`(30), `t_bridge_more`(7), `t_package`(25), `t_generator`(생성기 단위 시험 30개), `t_build`(23), `t_lib_pure`(107)를 추가했습니다. 생성기 시험은 가짜 헤더 묶음(`tests/gen/mini`)과 실제 헤더를 함께 씁니다.
 - C2에서 CEF의 파일 함수와 `WaitableEvent` 대기가 UI 스레드에서 `false`만 돌려주는 것을 찾아, 생성된 코드가 별도 스레드에서 실행하도록 했습니다([K31](pages/reference/known-constraints.md)). 안 멈추는 스레드의 해제 문제와 `XmlReader` 오버로드는 [K32](pages/reference/known-constraints.md)에 적었습니다.
+
+## [2026-10-12] ingest | C3 일부: URLRequest, 쿠키, 요청 컨텍스트와 환경설정
+
+- `t_urlrequest`(30), `t_cookies`(30), `t_context`(29)를 추가했습니다. `URLRequest`는 `ALLOW_STORED_CREDENTIALS` 없이는 인증도 쿠키도 다루지 않고, `REPORT_UPLOAD_PROGRESS` 없이는 업로드 진행을 알리지 않습니다(시험에서 확인).
+- `RequestContext::clearHttpCache(null)` 등이 CEF 안에서 프로세스를 죽이는 것을 찾아, `null`이면 아무것도 하지 않는 콜백을 넘기도록 고쳤습니다([K33](pages/reference/known-constraints.md)). 관찰자 등록의 수명은 [K34](pages/reference/known-constraints.md)에 적었습니다.

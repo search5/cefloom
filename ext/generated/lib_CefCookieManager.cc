@@ -98,7 +98,7 @@ ZEND_METHOD(CefCookieManager, FlushStore) {
   ZEND_PARSE_PARAMETERS_END();
   CefCookieManager* cl_self = cl::self<CefCookieManager>(Z_OBJ_P(ZEND_THIS), 0);
   if (!cl_self) { RETURN_THROWS(); }
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   auto cl_ret = cl_self->FlushStore(c_0);
   ZVAL_BOOL(return_value, cl_ret);
 }
@@ -120,7 +120,7 @@ ZEND_METHOD(CefCookieManager, GetGlobalManager) {
     }
   }
 #endif
-  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_0(a_0 ? cl_make_CefCompletionCallback(a_0) : cl::noop_completion());
   auto cl_ret = CefCookieManager::GetGlobalManager(c_0);
   cl_wrap_CefCookieManager(return_value, cl_ret.get());
 }

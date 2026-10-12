@@ -101,7 +101,7 @@ ZEND_METHOD(Cef, CefBeginTracing) {
   }
 #endif
   CefString c_0 = cl::to_cef(a_0);
-  CefRefPtr<CefCompletionCallback> c_1(a_1 ? cl_make_CefCompletionCallback(a_1) : nullptr);
+  CefRefPtr<CefCompletionCallback> c_1(a_1 ? cl_make_CefCompletionCallback(a_1) : cl::noop_completion());
   auto cl_ret = CefBeginTracing(c_0, c_1);
   ZVAL_BOOL(return_value, cl_ret);
 }

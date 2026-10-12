@@ -109,6 +109,16 @@ size_t release_all_lib_objects() {
   return count;
 }
 
+namespace {
+class NoopCompletion : public CefCompletionCallback {
+ public:
+  void OnComplete() override {}
+  IMPLEMENT_REFCOUNTING(NoopCompletion);
+};
+}  // namespace
+
+CefRefPtr<CefCompletionCallback> noop_completion() { return new NoopCompletion(); }
+
 // ---- times -----------------------------------------------------------------------------------------
 
 static const int64_t kEpochDelta = 11644473600000000LL;  // microseconds between 1601 and 1970
