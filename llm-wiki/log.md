@@ -143,3 +143,8 @@
 
 - `t_app_misc`(22)를 추가했습니다: `Cef::initialize($settings, $app)`의 `App`과 `BrowserProcessHandler`(명령줄 스위치 추가, 컨텍스트 초기화, 렌더러 실행 직전 콜백), `ResourceBundle`, `ComponentUpdater`, `TaskManager`, 추적(`beginTracing`, `endTracing`의 JSON 파일).
 - 팩에 없는 id를 `ResourceBundle`에 주면 프로세스가 끝나는 것을 [K38](pages/reference/known-constraints.md)에 적었습니다.
+
+## [2026-10-12] ingest | C9: 인증서와 SSL
+
+- `t_ssl`(24)과 `tests/fixtures/https_server.php`, 지원 함수 `start_https_server()`를 추가했습니다. `openssl`로 자체 서명 인증서를 만들고 PHP 자식 프로세스가 HTTPS로 응답합니다. `onCertificateError`(수락, 거부, 처리하지 않음), `SSLInfo`, `X509Certificate`(주체, 발급자, 조직, 국가, 유효 기간, DER와 PEM), 로드된 페이지의 `SSLStatus`, 클라이언트 인증서 요청의 `onSelectClientCertificate`, 그리고 `URLRequest`가 인증서 오류로 실패하는 것을 확인했습니다.
+- 한 출처에서 내린 결정은 기억되므로(수락한 뒤 같은 출처에서 거부 시험은 핸들러가 다시 불리지 않음) 사례마다 출처를 달리합니다(`127.0.0.1`, `localhost`, `localhost.`).

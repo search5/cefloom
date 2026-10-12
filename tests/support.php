@@ -254,3 +254,41 @@ function fetch_url(string $url, string $method = 'GET', array $headers = [], ?st
     wait_until(fn() => $fetcher->done, "the request for $url", 20000);
     return $fetcher;
 }
+
+/**
+ * Make a self-signed certificate for 127.0.0.1 and localhost in a new directory and start fixtures/https_server.php on a free port with it.
+ * Returns ['url' => 'https://127.0.0.1:PORT', 'dir' => the directory, 'cert' => path, 'key' => path]. The server stops when the test ends.
+ */
+function start_https_server(string $commonName = 'cefloom-test', bool $requireClientCertificate = false): array
+{
+    $dir = tmpdir('cefloom-tls');
+    $cert = "$dir/server.pem";
+    $key = "$dir/server.key";
+    exec('openssl req -x509 -newkey rsa:2048 -nodes -keyout ' . escapeshellarg($key) . ' -out ' . escapeshellarg($cert) . ' -days 2 -subj '
+        . escapeshellarg("/CN=$commonName/O=Cefloom Tests/C=KR") . ' -addext ' . escapeshellarg('subjectAltName=IP:127.0.0.1,DNS:localhost') . ' 2>&1', $out, $code);
+    if ($code !== 0) {
+        fwrite(STDERR, "FAIL: openssl could not make a certificate: " . implode(' ', $out) . "\n");
+        exit(1);
+    }
+    $socket = stream_socket_server('tcp://127.0.0.1:0');
+    $port = (int) substr(strrchr(stream_socket_get_name($socket, false), ':'), 1);
+    fclose($socket);
+    $command = [PHP_BINARY, __DIR__ . '/fixtures/https_server.php', (string) $port, $cert, $key];
+    if ($requireClientCertificate) {
+        $command[] = 'require-client-cert';
+    }
+    $process = proc_open($command, [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+    $ready = fgets($pipes[1]);
+    if (trim((string) $ready) !== 'ready') {
+        fwrite(STDERR, 'FAIL: the HTTPS server did not start: ' . stream_get_contents($pipes[2]) . "\n");
+        exit(1);
+    }
+    register_shutdown_function(static function () use ($process): void {
+        $status = proc_get_status($process);
+        if ($status['running']) {
+            posix_kill($status['pid'], SIGKILL);
+        }
+        proc_close($process);
+    });
+    return ['url' => "https://127.0.0.1:$port", 'dir' => $dir, 'cert' => $cert, 'key' => $key, 'port' => $port];
+}
