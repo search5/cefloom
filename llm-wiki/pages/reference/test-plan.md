@@ -96,6 +96,7 @@ updated: 2026-10-12
 | C10 | 완료 | `t_app_misc` | [K38](known-constraints.md) |
 | C11 | 완료 | `t_cast_observer`(기대 실패) | K26 |
 | 추가 | 완료 | `t_streams_more`, `t_handlers_more`, `t_callbacks_more` | 마일스톤 영역의 빈 곳을 메우려고 더함. [K40](known-constraints.md) |
+| 추가 2 | 완료 | `t_lib_more`, `t_views_widgets`, `t_host_more` | 전체 84.0%. [K41](known-constraints.md) |
 
 시험 제외 목록(D)에 더해 환경 때문에 시험하지 못한 것: 창 관리자가 필요한 최대화와 최소화, 소리 장치가 필요한 `AudioHandler`, 진짜 프린터와 인쇄 미리보기, 실제 Cast 기기, 클라이언트 인증서 선택(목록이 비어 있는 경우만 시험).
 

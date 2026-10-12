@@ -158,3 +158,7 @@
 - 계획 A, B, C를 모두 실행했습니다. 테스트는 17개에서 53개로 늘었고 폴링 모드와 외부 펌프 모드에서 모두 통과합니다(예상된 실패 2개: K26, K30). `tools/coverage.sh`로 다시 쟀더니 전체 메서드 실행 비율이 20.7%에서 65.8%가 되었고, `async.cc` 87.8%, `core.cc` 94.2%, `cl_runtime.cc` 85.5%, `bridge.cc` 84.0%입니다. [분석](pages/analyses/test-coverage.md)에 보강 전과 뒤를 비교했습니다.
 - `tests/coverage-baseline.json`과 `coverage_report.py --check`로 후퇴를 잡습니다. `docs/development.md`에 시험 구성과 쓰는 법을 적었습니다.
 - 시험이 찾은 결함: 로그인 창 때문에 `getAuthCredentials`가 불리지 않던 것, 선택적 버퍼 인자, 구조체 생성자의 시간 변환, `getClient()`가 `null`이던 것, 종료 때 힙 손상, 널 콜백에서 CEF가 죽던 것, UI 스레드에서 거부되는 파일 함수와 대기. 기록한 제약은 K30에서 K40입니다.
+
+## [2026-10-12] ingest | 두 번째 커버리지 보강
+
+- `t_lib_more`(37), `t_views_widgets`(53), `t_host_more`(18)를 추가해 전체 메서드 실행 비율이 65.8%에서 84.0%가 되었습니다(요청한 상한 70%를 넘겨 여기서 멈춤). 외부 펌프 모드에서 붙여넣기 계열 명령 뒤에 IME와 드래그 입력이 멈추는 것을 [K41](pages/reference/known-constraints.md)에 적었습니다. 새 시험의 검증은 사용자의 요청대로 수정 뒤 3회 통과로 했습니다.
