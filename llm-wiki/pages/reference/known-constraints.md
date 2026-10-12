@@ -60,6 +60,7 @@ updated: 2026-10-12
 | K32 | `stoppable=false`인 스레드는 해제하면 프로세스가 죽음 | `Thread::create(..., stoppable: false, ...)`로 만든 스레드는 CEF가 합류(join)할 수 없어서, 객체가 해제되거나 `Cef::shutdown()`이 해제할 때 CEF의 검사에 걸려 `SIGTRAP`으로 끝납니다. 시험은 `stoppable: true`만 씁니다. 같은 이유로 `XmlReader`의 이름으로 찾는 오버로드(`getAttribute(string)` 등)는 같은 이름의 오버로드는 첫 번째만 만든다는 규칙 때문에 없습니다(인덱스 버전만 있음). |
 | K33 | 선택 인자인 콜백에 `null`을 주면 CEF가 프로세스를 죽임 | `RequestContext::clearHttpCache(null)`, `clearHttpAuthCredentials(null)`, `closeAllConnections(null)`는 헤더에 "NULL이면 호출하지 않는다"고 적혀 있으나, 구현은 `base::BindOnce(&CefCompletionCallback::OnComplete, callback)`로 검사 없이 호출해 `SIGSEGV`로 끝납니다. 생성된 코드는 `CompletionCallback`을 `null`로 받으면 아무것도 하지 않는 콜백을 대신 넘깁니다(`cl::noop_completion()`). `t_context`가 고정합니다. |
 | K34 | 관찰자 등록은 반환된 `Registration`이 살아 있는 동안만 유효 | `PreferenceManager::addPreferenceObserver()`와 `RequestContext::addSettingObserver()`가 돌려주는 등록 객체를 버리면 관찰이 끝납니다(CEF의 규칙). 변수에 보관해야 합니다. |
+| K35 | `Server::isRunning()`는 PHP 스레드에서 항상 `false` | CEF는 이 호출을 서버 스레드에서만 답하도록 정해 두었고, PHP는 UI 스레드에서 돌기 때문에 서버가 돌고 있어도 `false`입니다(`hasConnection()`도 같은 제약일 수 있음). 서버가 만들어졌는지는 `ServerHandler::onServerCreated()`와 `onServerDestroyed()`로 판단합니다. `sendHttp200Response()` 등 응답 메서드는 UI 스레드에서 정상 동작함을 시험으로 확인했습니다. 서버 스레드로 넘겨 답하는 방법은 아직 구현하지 않았습니다. |
 
 ## 문서와 소스의 불일치
 

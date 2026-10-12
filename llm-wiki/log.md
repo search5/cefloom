@@ -123,3 +123,8 @@
 
 - `t_urlrequest`(30), `t_cookies`(30), `t_context`(29)를 추가했습니다. `URLRequest`는 `ALLOW_STORED_CREDENTIALS` 없이는 인증도 쿠키도 다루지 않고, `REPORT_UPLOAD_PROGRESS` 없이는 업로드 진행을 알리지 않습니다(시험에서 확인).
 - `RequestContext::clearHttpCache(null)` 등이 CEF 안에서 프로세스를 죽이는 것을 찾아, `null`이면 아무것도 하지 않는 콜백을 넘기도록 고쳤습니다([K33](pages/reference/known-constraints.md)). 관찰자 등록의 수명은 [K34](pages/reference/known-constraints.md)에 적었습니다.
+
+## [2026-10-12] ingest | C3 마무리: 다운로드와 서버
+
+- `t_download`(18), `t_server`(22)를 추가했습니다. 다운로드는 저장, 거부(`canDownload`가 `false`), 진행 중 취소, 이어지는 다운로드를 확인했고, 서버는 별도 PHP 프로세스를 클라이언트로 써서 200/404/500/사용자 응답과 WebSocket 왕복을 확인했습니다.
+- `Server::isRunning()`이 PHP 스레드에서 항상 `false`인 것을 [K35](pages/reference/known-constraints.md)에 적었습니다.
