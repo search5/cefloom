@@ -7,31 +7,9 @@ require __DIR__ . '/support.php';
 use Cefloom\{BoxLayoutSettings, BrowserSettings, BrowserView, Button, ButtonDelegate, Cef, Client, DisplayHandler, LabelButton,
     LifeSpanHandler, LoadHandler, Panel, Rect, Window, WindowDelegate};
 
-exec('command -v xdotool', $found, $status);
-if (getenv('CEFLOOM_TEST_EXTERNAL_PUMP')) {
-    echo "OK (0 checks) skipped: with the external message pump CEF does not read the X11 input of its own windows\n";
+if (!can_make_input()) {
+    echo "OK (0 checks) skipped: needs xdotool, a display and the polling message loop (with the external pump CEF does not read the X11 input of its own windows)\n";
     exit(0);
-}
-if ($status !== 0 || !getenv('DISPLAY')) {
-    echo "OK (0 checks) skipped: needs xdotool and a display\n";
-    exit(0);
-}
-
-function xdo(string ...$args): void
-{
-    exec('xdotool ' . implode(' ', array_map('escapeshellarg', $args)) . ' 2>&1', $out, $code);
-    if ($code !== 0) {
-        fwrite(STDERR, "xdotool failed: " . implode(' ', $out) . "\n");
-    }
-}
-
-function pump(float $seconds): void
-{
-    $end = microtime(true) + $seconds;
-    while (microtime(true) < $end) {
-        Cef::doMessageLoopWork();
-        Cef::wait(5);
-    }
 }
 
 $GLOBALS['console'] = [];

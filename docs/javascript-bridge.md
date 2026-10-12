@@ -4,6 +4,8 @@ JavaScript in a page can call PHP functions that you expose, and PHP can run Jav
 
 ## JavaScript calls PHP
 
+<!-- docs-test: run bridge -->
+
 ```php
 Cef::initialize();
 Cef::expose('add', fn(int $a, int $b): int => $a + $b);

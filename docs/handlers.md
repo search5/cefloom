@@ -27,6 +27,8 @@ Return values and arguments follow one rule ([Concepts](concepts.md#what-a-handl
 
 PHP can serve the content of a page: register a scheme before `initialize()`, give CEF a factory for it after, and answer each request with a `ResourceHandler`.
 
+<!-- docs-test: run scheme -->
+
 ```php
 use Cefloom\{Browser, Buffer, Callback, Cef, Frame, Request, ResourceHandler, ResourceReadCallback, Response, SchemeHandlerFactory};
 use Cefloom\Types\SchemeOptions;
