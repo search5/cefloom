@@ -9,7 +9,20 @@ BrowserHost::createBrowser($info, new App(), 'https://example.com', new BrowserS
 Cef::run();
 ```
 
-A complete program is in `examples/hello.php`. Linux x86_64 with glibc and PHP 8.5 (NTS) is the only platform that has been tested.
+Linux x86_64 with glibc and PHP 8.5 (NTS) is the only platform that has been tested.
+
+## Examples
+
+Run them with `php -d extension=build/dist/cefloom.so examples/<name>.php` (add `xvfb-run -a` on a machine without a display).
+
+| Example | What it shows |
+| --- | --- |
+| `hello.php` | The smallest program: a window, a page, JavaScript calling a PHP function (`Cef::expose`, `cefloom.call`). |
+| `views.php` | A window drawn by CEF's Views framework: a toolbar with Back, Forward and Reload buttons above the page, layout, delegates. `--close-after=SECONDS` closes it by itself. |
+| `print-pdf.php` | Saves a web page as a PDF: `print-pdf.php <url> <output.pdf> [--landscape] [--letter]`. |
+| `cast.php` | Cast and DIAL media sources, and with `--discover` the devices the media router finds. Ending a program after `--discover` hits a known CEF problem (see `llm-wiki`, K26). |
+
+`tests/t_examples.php` runs them, so they keep working.
 
 ## Install
 
