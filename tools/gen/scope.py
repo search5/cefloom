@@ -10,7 +10,11 @@ functions. What is left out is left out for a reason, listed here:
  * the test headers of CEF (include/test);
  * the functions that exist for tests, and the ones the runtime writes by hand (below).
 
-Origin: cefweaver (tools/gen/scope.py), rewritten for PHP on 2026-10-12.
+Pipeline role: second stage. ``generate.py`` builds a :class:`Scope` from the model; ``typesys`` asks it which
+classes are generated (``is_library``, ``is_client``), the emitters take the work lists (``library_classes``,
+``client_classes``, ``functions``) from it, and ``emit_lib``, ``emit_client`` and ``emit_stub`` import the tables below.
+
+Origin: adapted from tools/gen/scope.py of the cefweaver checkout (../cefweaver_clone/cefweaver).
 """
 
 # Classes that only exist in the renderer process (V8 contexts and the DOM). PHP does not run there.
@@ -76,8 +80,6 @@ OFF_UI_THREAD = {
     ("CefWaitableEvent", "Wait"), ("CefWaitableEvent", "TimedWait"),
 }
 
-# Static functions (and global functions) that end the process when CEF is not running: PHP gets a
-# RuntimeError instead. (Measured in cefweaver: CefImage::CreateImage and CefIsRTL.)
 # Statements run before a library method, after its arguments are converted: {(class, method): statement}. They refuse a call that
 # CEF itself answers with a crash.
 BEFORE_CALL = {
@@ -85,6 +87,8 @@ BEFORE_CALL = {
     ("CefPanel", "RemoveAllChildViews"): "if (cl::refuse_live_browser_views_of(cl_self)) { RETURN_THROWS(); }",
 }
 
+# Static functions (and global functions) that end the process when CEF is not running: the generated code throws an
+# Error with the given message instead. {(class, method): message}
 NEEDS_CEF_RUNNING = {
     ("CefImage", "CreateImage"): "an Image can only be made after Cef::initialize()",
     ("", "CefIsRTL"): "isRtl() can only be called after Cef::initialize()",
@@ -92,7 +96,7 @@ NEEDS_CEF_RUNNING = {
 
 
 def _scoped(model, cls):
-    """True for a class CEF owns through a unique pointer: it derives from CefBaseScoped."""
+    """True for a class CEF owns through a unique pointer: CefBaseScoped is among its first 8 ancestors."""
     name = cls.get_parent_name()
     seen = 0
     while name and seen < 8:
@@ -105,12 +109,23 @@ def _scoped(model, cls):
 
 
 def _from_test_header(model, cls):
+    """Return True if ``cls`` is declared in a CEF test header (``include/test``)."""
     return "/test/" in model.header_path(cls).replace("include/", "/", 1) or model.header_path(cls).startswith(
         "include/test/")
 
 
 class Scope:
+    """The set of classes and functions the generator binds, and the class hierarchy among them.
+
+    A class is a *library* class (implemented by CEF, wrapped for PHP) or a *client* class (implemented by the
+    application, proxied to C++). The ``*_classes`` properties and ``functions`` are the work list of the emitters.
+    """
     def __init__(self, model):
+        """Classify the classes of ``model`` (those that are not renderer-only, scoped or from a test header and are
+        library side or client side) and select the global functions to bind (not ``*ForTests*``, not hand-written).
+
+        :param model: the parsed headers, see :class:`model.Model`.
+        """
         self.model = model
         self._library = set()
         self._client = set()
@@ -139,18 +154,23 @@ class Scope:
         return (self.chain(parent) if parent else []) + [name]
 
     def depth(self, name):
+        """Return the number of generated ancestors of ``name`` (0 for a root class)."""
         return len(self.chain(name)) - 1
 
     def python_children(self, name):
+        """Return the generated subclasses of ``name``, sorted by name."""
         return [n for n in sorted(self._library) if self.python_parent(n) == name]
 
     def in_hierarchy(self, name):
+        """Return True if ``name`` has a generated parent or generated subclasses."""
         return self.python_parent(name) is not None or bool(self.python_children(name))
 
     def is_library(self, name):
+        """Return True if ``name`` is a library class in scope."""
         return name in self._library
 
     def is_client(self, name):
+        """Return True if ``name`` is a client class in scope."""
         return name in self._client
 
     @property
@@ -163,4 +183,5 @@ class Scope:
 
     @property
     def client_classes(self):
+        """Client classes in scope, sorted by name."""
         return [self.model.classes[n] for n in sorted(self._client)]

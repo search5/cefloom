@@ -5,13 +5,16 @@
 
 namespace Cefloom {
 
+    /** @see CefAudioParameters */
     final class AudioParameters {
         public int $channelLayout;
         public int $sampleRate;
         public int $framesPerBuffer;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $channelLayout = 0, int $sampleRate = 0, int $framesPerBuffer = 0) {}
     }
 
+    /** @see CefBoxLayoutSettings */
     final class BoxLayoutSettings {
         public int $horizontal;
         public int $insideBorderHorizontalSpacing;
@@ -22,9 +25,11 @@ namespace Cefloom {
         public int $crossAxisAlignment;
         public int $minimumCrossAxisSize;
         public int $defaultFlex;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $horizontal = 0, int $insideBorderHorizontalSpacing = 0, int $insideBorderVerticalSpacing = 0, ?\Cefloom\Insets $insideBorderInsets = null, int $betweenChildSpacing = 0, int $mainAxisAlignment = 0, int $crossAxisAlignment = 0, int $minimumCrossAxisSize = 0, int $defaultFlex = 0) {}
     }
 
+    /** @see CefBrowserSettings */
     final class BrowserSettings {
         public int $windowlessFrameRate;
         public string $standardFontFamily;
@@ -52,18 +57,22 @@ namespace Cefloom {
         public int $backgroundColor;
         public int $chromeStatusBubble;
         public int $chromeZoomBubble;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $windowlessFrameRate = 0, string $standardFontFamily = "", string $fixedFontFamily = "", string $serifFontFamily = "", string $sansSerifFontFamily = "", string $cursiveFontFamily = "", string $fantasyFontFamily = "", int $defaultFontSize = 0, int $defaultFixedFontSize = 0, int $minimumFontSize = 0, int $minimumLogicalFontSize = 0, string $defaultEncoding = "", int $remoteFonts = 0, int $javascript = 0, int $javascriptCloseWindows = 0, int $javascriptAccessClipboard = 0, int $javascriptDomPaste = 0, int $imageLoading = 0, int $imageShrinkStandaloneToFit = 0, int $textAreaResize = 0, int $tabToLinks = 0, int $localStorage = 0, int $webgl = 0, int $backgroundColor = 0, int $chromeStatusBubble = 0, int $chromeZoomBubble = 0) {}
     }
 
+    /** @see CefCompositionUnderline */
     final class CompositionUnderline {
         public \Cefloom\Range $range;
         public int $color;
         public int $backgroundColor;
         public int $thick;
         public int $style;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(?\Cefloom\Range $range = null, int $color = 0, int $backgroundColor = 0, int $thick = 0, int $style = 0) {}
     }
 
+    /** @see CefCookie */
     final class Cookie {
         public string $name;
         public string $value;
@@ -77,23 +86,29 @@ namespace Cefloom {
         public ?\DateTimeImmutable $expires;
         public int $sameSite;
         public int $priority;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(string $name = "", string $value = "", string $domain = "", string $path = "", int $secure = 0, int $httponly = 0, \DateTimeInterface|int|float|null $creation = null, \DateTimeInterface|int|float|null $lastAccess = null, int $hasExpires = 0, \DateTimeInterface|int|float|null $expires = null, int $sameSite = 0, int $priority = 0) {}
     }
 
+    /** @see CefDraggableRegion */
     final class DraggableRegion {
         public \Cefloom\Rect $bounds;
         public int $draggable;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(?\Cefloom\Rect $bounds = null, int $draggable = 0) {}
     }
 
+    /** @see CefInsets */
     final class Insets {
         public int $top;
         public int $left;
         public int $bottom;
         public int $right;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $top = 0, int $left = 0, int $bottom = 0, int $right = 0) {}
     }
 
+    /** @see CefKeyEvent */
     final class KeyEvent {
         public int $type;
         public int $modifiers;
@@ -103,31 +118,39 @@ namespace Cefloom {
         public int $character;
         public int $unmodifiedCharacter;
         public int $focusOnEditableField;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $type = 0, int $modifiers = 0, int $windowsKeyCode = 0, int $nativeKeyCode = 0, int $isSystemKey = 0, int $character = 0, int $unmodifiedCharacter = 0, int $focusOnEditableField = 0) {}
     }
 
+    /** @see CefLinuxWindowProperties */
     final class LinuxWindowProperties {
         public string $waylandAppId;
         public string $wmClassClass;
         public string $wmClassName;
         public string $wmRoleName;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(string $waylandAppId = "", string $wmClassClass = "", string $wmClassName = "", string $wmRoleName = "") {}
     }
 
+    /** @see CefMediaSinkDeviceInfo */
     final class MediaSinkDeviceInfo {
         public string $ipAddress;
         public int $port;
         public string $modelName;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(string $ipAddress = "", int $port = 0, string $modelName = "") {}
     }
 
+    /** @see CefMouseEvent */
     final class MouseEvent {
         public int $x;
         public int $y;
         public int $modifiers;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $x = 0, int $y = 0, int $modifiers = 0) {}
     }
 
+    /** @see CefPdfPrintSettings */
     final class PdfPrintSettings {
         public int $landscape;
         public int $printBackground;
@@ -146,15 +169,19 @@ namespace Cefloom {
         public string $footerTemplate;
         public int $generateTaggedPdf;
         public int $generateDocumentOutline;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $landscape = 0, int $printBackground = 0, float $scale = 0.0, float $paperWidth = 0.0, float $paperHeight = 0.0, int $preferCssPageSize = 0, int $marginType = 0, float $marginTop = 0.0, float $marginRight = 0.0, float $marginBottom = 0.0, float $marginLeft = 0.0, string $pageRanges = "", int $displayHeaderFooter = 0, string $headerTemplate = "", string $footerTemplate = "", int $generateTaggedPdf = 0, int $generateDocumentOutline = 0) {}
     }
 
+    /** @see CefPoint */
     final class Point {
         public int $x;
         public int $y;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $x = 0, int $y = 0) {}
     }
 
+    /** @see CefPopupFeatures */
     final class PopupFeatures {
         public int $x;
         public int $xSet;
@@ -165,32 +192,40 @@ namespace Cefloom {
         public int $height;
         public int $heightSet;
         public int $isPopup;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $x = 0, int $xSet = 0, int $y = 0, int $ySet = 0, int $width = 0, int $widthSet = 0, int $height = 0, int $heightSet = 0, int $isPopup = 0) {}
     }
 
+    /** @see CefRange */
     final class Range {
         public int $from;
         public int $to;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $from = 0, int $to = 0) {}
     }
 
+    /** @see CefRect */
     final class Rect {
         public int $x;
         public int $y;
         public int $width;
         public int $height;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $x = 0, int $y = 0, int $width = 0, int $height = 0) {}
     }
 
+    /** @see CefRequestContextSettings */
     final class RequestContextSettings {
         public string $cachePath;
         public int $persistSessionCookies;
         public string $acceptLanguageList;
         public string $cookieableSchemesList;
         public int $cookieableSchemesExcludeDefaults;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(string $cachePath = "", int $persistSessionCookies = 0, string $acceptLanguageList = "", string $cookieableSchemesList = "", int $cookieableSchemesExcludeDefaults = 0) {}
     }
 
+    /** @see CefScreenInfo */
     final class ScreenInfo {
         public float $deviceScaleFactor;
         public int $depth;
@@ -198,9 +233,11 @@ namespace Cefloom {
         public int $isMonochrome;
         public \Cefloom\Rect $rect;
         public \Cefloom\Rect $availableRect;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(float $deviceScaleFactor = 0.0, int $depth = 0, int $depthPerComponent = 0, int $isMonochrome = 0, ?\Cefloom\Rect $rect = null, ?\Cefloom\Rect $availableRect = null) {}
     }
 
+    /** @see CefSettings */
     final class Settings {
         public int $noSandbox;
         public string $browserSubprocessPath;
@@ -231,15 +268,19 @@ namespace Cefloom {
         public string $chromePolicyId;
         public int $chromeAppIconId;
         public int $disableSignalHandlers;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $noSandbox = 0, string $browserSubprocessPath = "", string $frameworkDirPath = "", string $mainBundlePath = "", int $multiThreadedMessageLoop = 0, int $externalMessagePump = 0, int $windowlessRenderingEnabled = 0, int $commandLineArgsDisabled = 0, string $cachePath = "", string $rootCachePath = "", int $persistSessionCookies = 0, string $userAgent = "", string $userAgentProduct = "", string $locale = "", string $logFile = "", int $logSeverity = 0, int $logItems = 0, string $javascriptFlags = "", string $resourcesDirPath = "", string $localesDirPath = "", int $remoteDebuggingPort = 0, int $uncaughtExceptionStackSize = 0, int $backgroundColor = 0, string $acceptLanguageList = "", string $cookieableSchemesList = "", int $cookieableSchemesExcludeDefaults = 0, string $chromePolicyId = "", int $chromeAppIconId = 0, int $disableSignalHandlers = 0) {}
     }
 
+    /** @see CefSize */
     final class Size {
         public int $width;
         public int $height;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $width = 0, int $height = 0) {}
     }
 
+    /** @see CefTaskInfo */
     final class TaskInfo {
         public int $id;
         public int $type;
@@ -250,9 +291,11 @@ namespace Cefloom {
         public int $memory;
         public int $gpuMemory;
         public int $isGpuMemoryInflated;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $id = 0, int $type = 0, int $isKillable = 0, string $title = "", float $cpuUsage = 0.0, int $numberOfProcessors = 0, int $memory = 0, int $gpuMemory = 0, int $isGpuMemoryInflated = 0) {}
     }
 
+    /** @see CefTouchEvent */
     final class TouchEvent {
         public int $id;
         public float $x;
@@ -264,9 +307,11 @@ namespace Cefloom {
         public int $type;
         public int $modifiers;
         public int $pointerType;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $id = 0, float $x = 0.0, float $y = 0.0, float $radiusX = 0.0, float $radiusY = 0.0, float $rotationAngle = 0.0, float $pressure = 0.0, int $type = 0, int $modifiers = 0, int $pointerType = 0) {}
     }
 
+    /** @see CefTouchHandleState */
     final class TouchHandleState {
         public int $touchHandleId;
         public int $flags;
@@ -276,9 +321,11 @@ namespace Cefloom {
         public int $mirrorHorizontal;
         public \Cefloom\Point $origin;
         public float $alpha;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(int $touchHandleId = 0, int $flags = 0, int $enabled = 0, int $orientation = 0, int $mirrorVertical = 0, int $mirrorHorizontal = 0, ?\Cefloom\Point $origin = null, float $alpha = 0.0) {}
     }
 
+    /** @see CefURLParts */
     final class URLParts {
         public string $spec;
         public string $scheme;
@@ -290,9 +337,11 @@ namespace Cefloom {
         public string $path;
         public string $query;
         public string $fragment;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(string $spec = "", string $scheme = "", string $username = "", string $password = "", string $host = "", string $port = "", string $origin = "", string $path = "", string $query = "", string $fragment = "") {}
     }
 
+    /** @see CefWindowInfo */
     final class WindowInfo {
         public string $windowName;
         public \Cefloom\Rect $bounds;
@@ -302,1764 +351,11010 @@ namespace Cefloom {
         public int $externalBeginFrameEnabled;
         public int $window;
         public int $runtimeStyle;
+        /** Create the structure; each argument sets the property of the same name. */
         public function __construct(string $windowName = "", ?\Cefloom\Rect $bounds = null, int $parentWindow = 0, int $windowlessRenderingEnabled = 0, int $sharedTextureEnabled = 0, int $externalBeginFrameEnabled = 0, int $window = 0, int $runtimeStyle = 0) {}
     }
 
+    /**
+     * Implement this interface to receive accessibility notification when accessibility events have been
+     * registered. The methods of this class will be called on the UI thread.
+     *
+     * @see CefAccessibilityHandler
+     */
     abstract class AccessibilityHandler {
+        /**
+         * Called after renderer process sends accessibility tree changes to the browser process.
+         *
+         * @see CefAccessibilityHandler::OnAccessibilityTreeChange
+         */
         public abstract function onAccessibilityTreeChange(\Cefloom\Value $value): void ;
+        /**
+         * Called after renderer process sends accessibility location changes to the browser process.
+         *
+         * @see CefAccessibilityHandler::OnAccessibilityLocationChange
+         */
         public abstract function onAccessibilityLocationChange(\Cefloom\Value $value): void ;
     }
 
+    /**
+     * Implement this interface to provide handler implementations. Methods will be called by the process
+     * and/or thread indicated.
+     *
+     * @see CefApp
+     */
     class App {
+        /**
+         * Provides an opportunity to view and/or modify command-line arguments before processing by CEF and
+         * Chromium. The |process_type| value will be empty for the browser process. Do not keep a reference
+         * to the CefCommandLine object passed to this method. The cef_settings_t.command_line_args_disabled
+         * value can be used to start with an empty command-line object. Any values specified in CefSettings
+         * that equate to command-line arguments will be set before this method is called. Be cautious when
+         * using this method to modify command-line arguments for non-browser processes as this may result in
+         * undefined behavior including crashes.
+         *
+         * @see CefApp::OnBeforeCommandLineProcessing
+         */
         public function onBeforeCommandLineProcessing(string $processType, \Cefloom\CommandLine $commandLine): void {}
+        /**
+         * Return the handler for resource bundle events. If no handler is returned resources will be loaded
+         * from pack files. This method is called by the browser and render processes on multiple threads.
+         *
+         * @see CefApp::GetResourceBundleHandler
+         */
         public function getResourceBundleHandler(): ?\Cefloom\ResourceBundleHandler {}
+        /**
+         * Return the handler for functionality specific to the browser process. This method is called on
+         * multiple threads in the browser process.
+         *
+         * @see CefApp::GetBrowserProcessHandler
+         */
         public function getBrowserProcessHandler(): ?\Cefloom\BrowserProcessHandler {}
     }
 
+    /**
+     * Implement this interface to handle audio events.
+     *
+     * @see CefAudioHandler
+     */
     abstract class AudioHandler {
+        /**
+         * Called on the UI thread to allow configuration of audio stream parameters. Return true to proceed
+         * with audio stream capture, or false to cancel it. All members of |params| can optionally be
+         * configured here, but they are also pre-filled with some sensible defaults.
+         *
+         * @see CefAudioHandler::GetAudioParameters
+         */
         public function getAudioParameters(\Cefloom\Browser $browser): array {}
+        /**
+         * Called on a browser audio capture thread when the browser starts streaming audio.
+         * OnAudioStreamStopped will always be called after OnAudioStreamStarted; both methods may be called
+         * multiple times for the same browser. |params| contains the audio parameters like sample rate and
+         * channel layout. |channels| is the number of channels.
+         *
+         * @see CefAudioHandler::OnAudioStreamStarted
+         */
         public abstract function onAudioStreamStarted(\Cefloom\Browser $browser, \Cefloom\AudioParameters $params, int $channels): void ;
+        /**
+         * Called on the audio stream thread when a PCM packet is received for the stream. |data| is an array
+         * representing the raw PCM data as a floating point type, i.e. 4-byte value(s). |frames| is the
+         * number of frames in the PCM packet. |pts| is the presentation timestamp (in milliseconds since the
+         * Unix Epoch) and represents the time at which the decompressed packet should be presented to the
+         * user. Based on |frames| and the |channel_layout| value passed to OnAudioStreamStarted you can
+         * calculate the size of the |data| array in bytes.
+         *
+         * @see CefAudioHandler::OnAudioStreamPacket
+         */
         public abstract function onAudioStreamPacket(\Cefloom\Browser $browser, array $data, int $pts): void ;
+        /**
+         * Called on the UI thread when the stream has stopped. OnAudioSteamStopped will always be called
+         * after OnAudioStreamStarted; both methods may be called multiple times for the same stream.
+         *
+         * @see CefAudioHandler::OnAudioStreamStopped
+         */
         public abstract function onAudioStreamStopped(\Cefloom\Browser $browser): void ;
+        /**
+         * Called on the UI or audio stream thread when an error occurred. During the stream creation phase
+         * this callback will be called on the UI thread while in the capturing phase it will be called on the
+         * audio stream thread. The stream will be stopped immediately.
+         *
+         * @see CefAudioHandler::OnAudioStreamError
+         */
         public abstract function onAudioStreamError(\Cefloom\Browser $browser, string $message): void ;
     }
 
+    /**
+     * Callback interface used for asynchronous continuation of authentication requests.
+     *
+     * @see CefAuthCallback
+     */
     final class AuthCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Continue the authentication request.
+         *
+         * @see CefAuthCallback::Continue
+         */
         public function continue(string $username, string $password): void {}
+        /**
+         * Cancel the authentication request.
+         *
+         * @see CefAuthCallback::Cancel
+         */
         public function cancel(): void {}
     }
 
+    /**
+     * Callback interface used to asynchronously continue a download.
+     *
+     * @see CefBeforeDownloadCallback
+     */
     final class BeforeDownloadCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Call to continue the download. Set |download_path| to the full file path for the download including
+         * the file name or leave blank to use the suggested name and the default temp directory. Set
+         * |show_dialog| to true if you do wish to show the default "Save As" dialog.
+         *
+         * @see CefBeforeDownloadCallback::Continue
+         */
         public function continue(string $downloadPath, bool $showDialog): void {}
     }
 
+    /**
+     * Class representing a binary value. Can be used on any process and thread.
+     *
+     * @see CefBinaryValue
+     */
     final class BinaryValue {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid. This object may become invalid if the underlying data is
+         * owned by another object (e.g. list or dictionary) and that other object is then modified or
+         * destroyed. Do not call any other methods if this method returns false.
+         *
+         * @see CefBinaryValue::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if this object is currently owned by another object.
+         *
+         * @see CefBinaryValue::IsOwned
+         */
         public function isOwned(): bool {}
+        /**
+         * Returns true if this object and |that| object have the same underlying data.
+         *
+         * @see CefBinaryValue::IsSame
+         */
         public function isSame(\Cefloom\BinaryValue $that): bool {}
+        /**
+         * Returns true if this object and |that| object have an equivalent underlying value but are not
+         * necessarily the same object.
+         *
+         * @see CefBinaryValue::IsEqual
+         */
         public function isEqual(\Cefloom\BinaryValue $that): bool {}
+        /**
+         * Returns a copy of this object. The data in this object will also be copied.
+         *
+         * @see CefBinaryValue::Copy
+         */
         public function copy(): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns the data size.
+         *
+         * @see CefBinaryValue::GetSize
+         */
         public function getSize(): int {}
+        /**
+         * Read up to |buffer_size| number of bytes into |buffer|. Reading begins at the specified byte
+         * |data_offset|. Returns the number of bytes read.
+         *
+         * @see CefBinaryValue::GetData
+         */
         public function getData(int $size, int $dataOffset): string {}
+        /**
+         * Creates a new object that is not owned by any other object. The specified |data| will be copied.
+         *
+         * @see CefBinaryValue::Create
+         */
         public static function create(string $data): ?\Cefloom\BinaryValue {}
     }
 
+    /**
+     * A Layout manager that arranges child views vertically or horizontally in a side-by-side fashion with
+     * spacing around and between the child views. The child views are always sized according to their
+     * preferred size. If the host's bounds provide insufficient space, child views will be clamped. Excess
+     * space will not be distributed. Methods must be called on the browser process UI thread unless otherwise
+     * indicated.
+     *
+     * @see CefBoxLayout
+     */
     final class BoxLayout extends Layout {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Set the flex weight for the given |view|. Using the preferred size as the basis, free space along
+         * the main axis is distributed to views in the ratio of their flex weights. Similarly, if the views
+         * will overflow the parent, space is subtracted in these ratios. A flex of 0 means this view is not
+         * resized. Flex values must not be negative.
+         *
+         * @see CefBoxLayout::SetFlexForView
+         */
         public function setFlexForView(\Cefloom\View $view, int $flex): void {}
+        /**
+         * Clears the flex for the given |view|, causing it to use the default flex specified via
+         * CefBoxLayoutSettings.default_flex.
+         *
+         * @see CefBoxLayout::ClearFlexForView
+         */
         public function clearFlexForView(\Cefloom\View $view): void {}
     }
 
+    /**
+     * Class used to represent a browser. When used in the browser process the methods of this class may be
+     * called on any thread unless otherwise indicated in the comments. When used in the render process the
+     * methods of this class may only be called on the main thread.
+     *
+     * @see CefBrowser
+     */
     final class Browser {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * True if this object is currently valid. This will return false after
+         * CefLifeSpanHandler::OnBeforeClose is called.
+         *
+         * @see CefBrowser::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns the browser host object. This method can only be called in the browser process.
+         *
+         * @see CefBrowser::GetHost
+         */
         public function getHost(): ?\Cefloom\BrowserHost {}
+        /**
+         * Returns true if the browser can navigate backwards.
+         *
+         * @see CefBrowser::CanGoBack
+         */
         public function canGoBack(): bool {}
+        /**
+         * Navigate backwards.
+         *
+         * @see CefBrowser::GoBack
+         */
         public function goBack(): void {}
+        /**
+         * Returns true if the browser can navigate forwards.
+         *
+         * @see CefBrowser::CanGoForward
+         */
         public function canGoForward(): bool {}
+        /**
+         * Navigate forwards.
+         *
+         * @see CefBrowser::GoForward
+         */
         public function goForward(): void {}
+        /**
+         * Returns true if the browser is currently loading.
+         *
+         * @see CefBrowser::IsLoading
+         */
         public function isLoading(): bool {}
+        /**
+         * Reload the current page.
+         *
+         * @see CefBrowser::Reload
+         */
         public function reload(): void {}
+        /**
+         * Reload the current page ignoring any cached data.
+         *
+         * @see CefBrowser::ReloadIgnoreCache
+         */
         public function reloadIgnoreCache(): void {}
+        /**
+         * Stop loading the page.
+         *
+         * @see CefBrowser::StopLoad
+         */
         public function stopLoad(): void {}
+        /**
+         * Returns the globally unique identifier for this browser. This value is also used as the tabId for
+         * extension APIs.
+         *
+         * @see CefBrowser::GetIdentifier
+         */
         public function getIdentifier(): int {}
+        /**
+         * Returns true if this object is pointing to the same handle as |that| object.
+         *
+         * @see CefBrowser::IsSame
+         */
         public function isSame(\Cefloom\Browser $that): bool {}
+        /**
+         * Returns true if the browser is a popup.
+         *
+         * @see CefBrowser::IsPopup
+         */
         public function isPopup(): bool {}
+        /**
+         * Returns true if a document has been loaded in the browser.
+         *
+         * @see CefBrowser::HasDocument
+         */
         public function hasDocument(): bool {}
+        /**
+         * Returns the main (top-level) frame for the browser. In the browser process this will return a valid
+         * object until after CefLifeSpanHandler::OnBeforeClose is called. In the renderer process this will
+         * return NULL if the main frame is hosted in a different renderer process (e.g. for cross-origin sub-
+         * frames). The main frame object will change during cross-origin navigation or re-navigation after
+         * renderer process termination (due to crashes, etc).
+         *
+         * @see CefBrowser::GetMainFrame
+         */
         public function getMainFrame(): ?\Cefloom\Frame {}
+        /**
+         * Returns the focused frame for the browser.
+         *
+         * @see CefBrowser::GetFocusedFrame
+         */
         public function getFocusedFrame(): ?\Cefloom\Frame {}
+        /**
+         * Returns the frame with the specified identifier, or NULL if not found.
+         *
+         * @see CefBrowser::GetFrameByIdentifier
+         */
         public function getFrameByIdentifier(string $identifier): ?\Cefloom\Frame {}
+        /**
+         * Returns the frame with the specified name, or NULL if not found.
+         *
+         * @see CefBrowser::GetFrameByName
+         */
         public function getFrameByName(string $name): ?\Cefloom\Frame {}
+        /**
+         * Returns the number of frames that currently exist.
+         *
+         * @see CefBrowser::GetFrameCount
+         */
         public function getFrameCount(): int {}
+        /**
+         * Returns the identifiers of all existing frames.
+         *
+         * @see CefBrowser::GetFrameIdentifiers
+         */
         public function getFrameIdentifiers(): array {}
+        /**
+         * Returns the names of all existing frames.
+         *
+         * @see CefBrowser::GetFrameNames
+         */
         public function getFrameNames(): array {}
     }
 
+    /**
+     * Class used to represent the browser process aspects of a browser. The methods of this class can only be
+     * called in the browser process. They may be called on any thread in that process unless otherwise
+     * indicated in the comments.
+     *
+     * @see CefBrowserHost
+     */
     final class BrowserHost {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the hosted browser object.
+         *
+         * @see CefBrowserHost::GetBrowser
+         */
         public function getBrowser(): ?\Cefloom\Browser {}
+        /**
+         * Request that the browser close. Closing a browser is a multi-stage process that may complete either
+         * synchronously or asynchronously, and involves callbacks such as CefLifeSpanHandler::DoClose (Alloy
+         * style only), CefLifeSpanHandler::OnBeforeClose, and a top-level window close handler such as
+         * CefWindowDelegate::CanClose (or platform-specific equivalent). In some cases a close request may be
+         * delayed or canceled by the user. Using TryCloseBrowser() instead of CloseBrowser() is recommended
+         * for most use cases. See CefLifeSpanHandler::DoClose() documentation for detailed usage and
+         * examples.
+         *
+         * If |force_close| is false then JavaScript unload handlers, if any, may be fired and the close may
+         * be delayed or canceled by the user. If |force_close| is true then the user will not be prompted and
+         * the close will proceed immediately (possibly asynchronously). If browser close is delayed and not
+         * canceled the default behavior is to call the top-level window close handler once the browser is
+         * ready to be closed. This default behavior can be changed for Alloy style browsers by implementing
+         * CefLifeSpanHandler::DoClose(). IsReadyToBeClosed() can be used to detect mandatory browser close
+         * events when customizing close behavior on the browser process UI thread.
+         *
+         * @see CefBrowserHost::CloseBrowser
+         */
         public function closeBrowser(bool $forceClose): void {}
+        /**
+         * Helper for closing a browser. This is similar in behavior to CLoseBrowser(false) but returns a
+         * boolean to reflect the immediate close status. Call this method from a top-level window close
+         * handler such as CefWindowDelegate::CanClose (or platform-specific equivalent) to request that the
+         * browser close, and return the result to indicate if the window close should proceed. Returns false
+         * if the close will be delayed (JavaScript unload handlers triggered but still pending) or true if
+         * the close will proceed immediately (possibly asynchronously). See CloseBrowser() documentation for
+         * additional usage information. This method must be called on the browser process UI thread.
+         *
+         * @see CefBrowserHost::TryCloseBrowser
+         */
         public function tryCloseBrowser(): bool {}
+        /**
+         * Returns true if the browser is ready to be closed, meaning that the close has already been
+         * initiated and that JavaScript unload handlers have already executed or should be ignored. This can
+         * be used from a top-level window close handler such as CefWindowDelegate::CanClose (or platform-
+         * specific equivalent) to distringuish between potentially cancelable browser close events (like the
+         * user clicking the top-level window close button before browser close has started) and mandatory
+         * browser close events (like JavaScript `window.close()` or after browser close has started in
+         * response to [Try]CloseBrowser()). Not completing the browser close for mandatory close events (when
+         * this method returns true) will leave the browser in a partially closed state that interferes with
+         * proper functioning. See CloseBrowser() documentation for additional usage information. This method
+         * must be called on the browser process UI thread.
+         *
+         * @see CefBrowserHost::IsReadyToBeClosed
+         */
         public function isReadyToBeClosed(): bool {}
+        /**
+         * Set whether the browser is focused.
+         *
+         * @see CefBrowserHost::SetFocus
+         */
         public function setFocus(bool $focus): void {}
+        /**
+         * Retrieve the window handle (if any) for this browser. If this browser is wrapped in a
+         * CefBrowserView this method should be called on the browser process UI thread and it will return the
+         * handle for the top-level native window.
+         *
+         * @see CefBrowserHost::GetWindowHandle
+         */
         public function getWindowHandle(): int {}
+        /**
+         * Retrieve the window handle (if any) of the browser that opened this browser. Will return NULL for
+         * non-popup browsers or if this browser is wrapped in a CefBrowserView. This method can be used in
+         * combination with custom handling of modal windows.
+         *
+         * @see CefBrowserHost::GetOpenerWindowHandle
+         */
         public function getOpenerWindowHandle(): int {}
+        /**
+         * Retrieve the unique identifier of the browser that opened this browser. Will return 0 for non-popup
+         * browsers.
+         *
+         * @see CefBrowserHost::GetOpenerIdentifier
+         */
         public function getOpenerIdentifier(): int {}
+        /**
+         * Returns true if this browser is wrapped in a CefBrowserView.
+         *
+         * @see CefBrowserHost::HasView
+         */
         public function hasView(): bool {}
+        /**
+         * Returns the client for this browser.
+         *
+         * @see CefBrowserHost::GetClient
+         */
         public function getClient(): ?\Cefloom\Client {}
+        /**
+         * Returns the request context for this browser.
+         *
+         * @see CefBrowserHost::GetRequestContext
+         */
         public function getRequestContext(): ?\Cefloom\RequestContext {}
+        /**
+         * Returns true if this browser can execute the specified zoom command. This method can only be called
+         * on the UI thread.
+         *
+         * @see CefBrowserHost::CanZoom
+         */
         public function canZoom(int $command): bool {}
+        /**
+         * Execute a zoom command in this browser. If called on the UI thread the change will be applied
+         * immediately. Otherwise, the change will be applied asynchronously on the UI thread.
+         *
+         * @see CefBrowserHost::Zoom
+         */
         public function zoom(int $command): void {}
+        /**
+         * Get the default zoom level. This value will be 0.0 by default but can be configured. This method
+         * can only be called on the UI thread.
+         *
+         * @see CefBrowserHost::GetDefaultZoomLevel
+         */
         public function getDefaultZoomLevel(): float {}
+        /**
+         * Get the current zoom level. This method can only be called on the UI thread.
+         *
+         * @see CefBrowserHost::GetZoomLevel
+         */
         public function getZoomLevel(): float {}
+        /**
+         * Change the zoom level to the specified value. Specify 0.0 to reset the zoom level to the default.
+         * If called on the UI thread the change will be applied immediately. Otherwise, the change will be
+         * applied asynchronously on the UI thread.
+         *
+         * @see CefBrowserHost::SetZoomLevel
+         */
         public function setZoomLevel(float $zoomLevel): void {}
+        /**
+         * Call to run a file chooser dialog. Only a single file chooser dialog may be pending at any given
+         * time. |mode| represents the type of dialog to display. |title| to the title to be used for the
+         * dialog and may be empty to show the default title ("Open" or "Save" depending on the mode).
+         * |default_file_path| is the path with optional directory and/or file name component that will be
+         * initially selected in the dialog. |accept_filters| are used to restrict the selectable file types
+         * and may any combination of (a) valid lower-cased MIME types (e.g. "text/*" or "image/*"), (b)
+         * individual file extensions (e.g. ".txt" or ".png"), or (c) combined description and file extension
+         * delimited using "|" and ";" (e.g. "Image Types|.png;.gif;.jpg"). |callback| will be executed after
+         * the dialog is dismissed or immediately if another dialog is already pending. The dialog will be
+         * initiated asynchronously on the UI thread.
+         *
+         * @see CefBrowserHost::RunFileDialog
+         */
         public function runFileDialog(int $mode, string $title, string $defaultFilePath, array $acceptFilters, \Cefloom\RunFileDialogCallback $callback): void {}
+        /**
+         * Download the file at |url| using CefDownloadHandler.
+         *
+         * @see CefBrowserHost::StartDownload
+         */
         public function startDownload(string $url): void {}
+        /**
+         * Download |image_url| and execute |callback| on completion with the images received from the
+         * renderer. If |is_favicon| is true then cookies are not sent and not accepted during download.
+         * Images with density independent pixel (DIP) sizes larger than |max_image_size| are filtered out
+         * from the image results. Versions of the image at different scale factors may be downloaded up to
+         * the maximum scale factor supported by the system. If there are no image results <= |max_image_size|
+         * then the smallest image is resized to |max_image_size| and is the only result. A |max_image_size|
+         * of 0 means unlimited. If |bypass_cache| is true then |image_url| is requested from the server even
+         * if it is present in the browser cache.
+         *
+         * @see CefBrowserHost::DownloadImage
+         */
         public function downloadImage(string $imageUrl, bool $isFavicon, int $maxImageSize, bool $bypassCache, \Cefloom\DownloadImageCallback $callback): void {}
+        /**
+         * Print the current browser contents.
+         *
+         * @see CefBrowserHost::Print
+         */
         public function print(): void {}
+        /**
+         * Print the current browser contents to the PDF file specified by |path| and execute |callback| on
+         * completion. The caller is responsible for deleting |path| when done. For PDF printing to work on
+         * Linux you must implement the CefPrintHandler::GetPdfPaperSize method.
+         *
+         * @see CefBrowserHost::PrintToPDF
+         */
         public function printToPDF(string $path, \Cefloom\PdfPrintSettings $settings, ?\Cefloom\PdfPrintCallback $callback): void {}
+        /**
+         * Search for |searchText|. |forward| indicates whether to search forward or backward within the page.
+         * |matchCase| indicates whether the search should be case-sensitive. |findNext| indicates whether
+         * this is the first request or a follow-up. The search will be restarted if |searchText| or
+         * |matchCase| change. The search will be stopped if |searchText| is empty. The CefFindHandler
+         * instance, if any, returned via CefClient::GetFindHandler will be called to report find results.
+         *
+         * @see CefBrowserHost::Find
+         */
         public function find(string $searchText, bool $forward, bool $matchCase, bool $findNext): void {}
+        /**
+         * Cancel all searches that are currently going on.
+         *
+         * @see CefBrowserHost::StopFinding
+         */
         public function stopFinding(bool $clearSelection): void {}
+        /**
+         * Open developer tools (DevTools) in its own browser. The DevTools browser will remain associated
+         * with this browser. If the DevTools browser is already open then it will be focused, in which case
+         * the |windowInfo|, |client| and |settings| parameters will be ignored. If |inspect_element_at| is
+         * non-empty then the element at the specified (x,y) location will be inspected. The |windowInfo|
+         * parameter will be ignored if this browser is wrapped in a CefBrowserView.
+         *
+         * @see CefBrowserHost::ShowDevTools
+         */
         public function showDevTools(?\Cefloom\WindowInfo $windowInfo, ?\Cefloom\Client $client, ?\Cefloom\BrowserSettings $settings, ?\Cefloom\Point $inspectElementAt): void {}
+        /**
+         * Explicitly close the associated DevTools browser, if any.
+         *
+         * @see CefBrowserHost::CloseDevTools
+         */
         public function closeDevTools(): void {}
+        /**
+         * Returns true if this browser currently has an associated DevTools browser. Must be called on the
+         * browser process UI thread.
+         *
+         * @see CefBrowserHost::HasDevTools
+         */
         public function hasDevTools(): bool {}
+        /**
+         * Send a method call message over the DevTools protocol. |message| must be a UTF8-encoded JSON
+         * dictionary that contains "id" (int), "method" (string) and "params" (dictionary, optional) values.
+         * See the DevTools protocol documentation at https://chromedevtools.github.io/devtools-protocol/ for
+         * details of supported methods and the expected "params" dictionary contents. |message| will be
+         * copied if necessary. This method will return true if called on the UI thread and the message was
+         * successfully submitted for validation, otherwise false. Validation will be applied asynchronously
+         * and any messages that fail due to formatting errors or missing parameters may be discarded without
+         * notification. Prefer ExecuteDevToolsMethod if a more structured approach to message formatting is
+         * desired.
+         *
+         * Every valid method call will result in an asynchronous method result or error message that
+         * references the sent message "id". Event messages are received while notifications are enabled (for
+         * example, between method calls for "Page.enable" and "Page.disable"). All received messages will be
+         * delivered to the observer(s) registered with AddDevToolsMessageObserver. See
+         * CefDevToolsMessageObserver::OnDevToolsMessage documentation for details of received message
+         * contents.
+         *
+         * Usage of the SendDevToolsMessage, ExecuteDevToolsMethod and AddDevToolsMessageObserver methods does
+         * not require an active DevTools front-end or remote-debugging session. Other active DevTools
+         * sessions will continue to function independently. However, any modification of global browser state
+         * by one session may not be reflected in the UI of other sessions.
+         *
+         * Communication with the DevTools front-end (when displayed) can be logged for development purposes
+         * by passing the `--devtools-protocol-log-file=<path>` command-line flag.
+         *
+         * @see CefBrowserHost::SendDevToolsMessage
+         */
         public function sendDevToolsMessage(string $message): bool {}
+        /**
+         * Execute a method call over the DevTools protocol. This is a more structured version of
+         * SendDevToolsMessage. |message_id| is an incremental number that uniquely identifies the message
+         * (pass 0 to have the next number assigned automatically based on previous values). |method| is the
+         * method name. |params| are the method parameters, which may be empty. See the DevTools protocol
+         * documentation (linked above) for details of supported methods and the expected |params| dictionary
+         * contents. This method will return the assigned message ID if called on the UI thread and the
+         * message was successfully submitted for validation, otherwise 0. See the SendDevToolsMessage
+         * documentation for additional usage information.
+         *
+         * @see CefBrowserHost::ExecuteDevToolsMethod
+         */
         public function executeDevToolsMethod(int $messageId, string $method, ?\Cefloom\DictionaryValue $params): int {}
+        /**
+         * Add an observer for DevTools protocol messages (method results and events). The observer will
+         * remain registered until the returned Registration object is destroyed. See the SendDevToolsMessage
+         * documentation for additional usage information.
+         *
+         * @see CefBrowserHost::AddDevToolsMessageObserver
+         */
         public function addDevToolsMessageObserver(\Cefloom\DevToolsMessageObserver $observer): ?\Cefloom\Registration {}
+        /**
+         * Retrieve a snapshot of current navigation entries as values sent to the specified visitor. If
+         * |current_only| is true only the current navigation entry will be sent, otherwise all navigation
+         * entries will be sent.
+         *
+         * @see CefBrowserHost::GetNavigationEntries
+         */
         public function getNavigationEntries(\Cefloom\NavigationEntryVisitor $visitor, bool $currentOnly): void {}
+        /**
+         * If a misspelled word is currently selected in an editable node calling this method will replace it
+         * with the specified |word|.
+         *
+         * @see CefBrowserHost::ReplaceMisspelling
+         */
         public function replaceMisspelling(string $word): void {}
+        /**
+         * Add the specified |word| to the spelling dictionary.
+         *
+         * @see CefBrowserHost::AddWordToDictionary
+         */
         public function addWordToDictionary(string $word): void {}
+        /**
+         * Returns true if window rendering is disabled.
+         *
+         * @see CefBrowserHost::IsWindowRenderingDisabled
+         */
         public function isWindowRenderingDisabled(): bool {}
+        /**
+         * Notify the browser that the widget has been resized. The browser will first call
+         * CefRenderHandler::GetViewRect to get the new size and then call CefRenderHandler::OnPaint
+         * asynchronously with the updated regions. This method is only used when window rendering is
+         * disabled.
+         *
+         * @see CefBrowserHost::WasResized
+         */
         public function wasResized(): void {}
+        /**
+         * Notify the browser that it has been hidden or shown. Layouting and CefRenderHandler::OnPaint
+         * notification will stop when the browser is hidden. This method is only used when window rendering
+         * is disabled.
+         *
+         * @see CefBrowserHost::WasHidden
+         */
         public function wasHidden(bool $hidden): void {}
+        /**
+         * Notify the browser that screen information has changed. Updated information will be sent to the
+         * renderer process to configure screen size and position values used by CSS and JavaScript
+         * (window.deviceScaleFactor, window.screenX/Y, window.outerWidth/Height, etc.). For background see
+         * https://chromiumembedded.github.io/cef/general_usage#coordinate-systems
+         *
+         * This method is used with (a) windowless rendering and (b) windowed rendering with external (client-
+         * provided) root window.
+         *
+         * With windowless rendering the browser will call CefRenderHandler::GetScreenInfo,
+         * CefRenderHandler::GetRootScreenRect and CefRenderHandler::GetViewRect. This simulates moving or
+         * resizing the root window in the current display, moving the root window from one display to
+         * another, or changing the properties of the current display.
+         *
+         * With windowed rendering the browser will call CefDisplayHandler::GetRootWindowScreenRect and use
+         * the associated display properties.
+         *
+         * @see CefBrowserHost::NotifyScreenInfoChanged
+         */
         public function notifyScreenInfoChanged(): void {}
+        /**
+         * Invalidate the view. The browser will call CefRenderHandler::OnPaint asynchronously. This method is
+         * only used when window rendering is disabled.
+         *
+         * @see CefBrowserHost::Invalidate
+         */
         public function invalidate(int $type): void {}
+        /**
+         * Issue a BeginFrame request to Chromium.  Only valid when
+         * CefWindowInfo::external_begin_frame_enabled is set to true.
+         *
+         * @see CefBrowserHost::SendExternalBeginFrame
+         */
         public function sendExternalBeginFrame(): void {}
+        /**
+         * Send a key event to the browser.
+         *
+         * @see CefBrowserHost::SendKeyEvent
+         */
         public function sendKeyEvent(\Cefloom\KeyEvent $event): void {}
+        /**
+         * Send a mouse click event to the browser. The |x| and |y| coordinates are relative to the upper-left
+         * corner of the view.
+         *
+         * @see CefBrowserHost::SendMouseClickEvent
+         */
         public function sendMouseClickEvent(\Cefloom\MouseEvent $event, int $type, bool $mouseUp, int $clickCount): void {}
+        /**
+         * Send a mouse move event to the browser. The |x| and |y| coordinates are relative to the upper-left
+         * corner of the view.
+         *
+         * @see CefBrowserHost::SendMouseMoveEvent
+         */
         public function sendMouseMoveEvent(\Cefloom\MouseEvent $event, bool $mouseLeave): void {}
+        /**
+         * Send a mouse wheel event to the browser. The |x| and |y| coordinates are relative to the upper-left
+         * corner of the view. The |deltaX| and |deltaY| values represent the movement delta in the X and Y
+         * directions respectively. In order to scroll inside select popups with window rendering disabled
+         * CefRenderHandler::GetScreenPoint should be implemented properly.
+         *
+         * @see CefBrowserHost::SendMouseWheelEvent
+         */
         public function sendMouseWheelEvent(\Cefloom\MouseEvent $event, int $deltaX, int $deltaY): void {}
+        /**
+         * Send a touch event to the browser for a windowless browser.
+         *
+         * @see CefBrowserHost::SendTouchEvent
+         */
         public function sendTouchEvent(\Cefloom\TouchEvent $event): void {}
+        /**
+         * Send a capture lost event to the browser.
+         *
+         * @see CefBrowserHost::SendCaptureLostEvent
+         */
         public function sendCaptureLostEvent(): void {}
+        /**
+         * Notify the browser that the window hosting it is about to be moved or resized. This method is only
+         * used on Windows and Linux.
+         *
+         * @see CefBrowserHost::NotifyMoveOrResizeStarted
+         */
         public function notifyMoveOrResizeStarted(): void {}
+        /**
+         * Returns the maximum rate in frames per second (fps) that CefRenderHandler::OnPaint will be called
+         * for a windowless browser. The actual fps may be lower if the browser cannot generate frames at the
+         * requested rate. The minimum value is 1 and the default value is 30. This method can only be called
+         * on the UI thread.
+         *
+         * @see CefBrowserHost::GetWindowlessFrameRate
+         */
         public function getWindowlessFrameRate(): int {}
+        /**
+         * Set the maximum rate in frames per second (fps) that CefRenderHandler:: OnPaint will be called for
+         * a windowless browser. The actual fps may be lower if the browser cannot generate frames at the
+         * requested rate. The minimum value is 1 and the default value is 30. Can also be set at browser
+         * creation via CefBrowserSettings.windowless_frame_rate.
+         *
+         * @see CefBrowserHost::SetWindowlessFrameRate
+         */
         public function setWindowlessFrameRate(int $frameRate): void {}
+        /**
+         * Begins a new composition or updates the existing composition. Blink has a special node (a
+         * composition node) that allows the input method to change text without affecting other DOM nodes.
+         * |text| is the optional text that will be inserted into the composition node. |underlines| is an
+         * optional set of ranges that will be underlined in the resulting text. |replacement_range| is an
+         * optional range of the existing text that will be replaced. |selection_range| is an optional range
+         * of the resulting text that will be selected after insertion or replacement. The |replacement_range|
+         * value is only used on OS X.
+         *
+         * This method may be called multiple times as the composition changes. When the client is done making
+         * changes the composition should either be canceled or completed. To cancel the composition call
+         * ImeCancelComposition. To complete the composition call either ImeCommitText or
+         * ImeFinishComposingText. Completion is usually signaled when:
+         *
+         * 1. The client receives a WM_IME_COMPOSITION message with a GCS_RESULTSTR flag (on Windows), or; 2.
+         * The client receives a "commit" signal of GtkIMContext (on Linux), or; 3. insertText of NSTextInput
+         * is called (on Mac).
+         *
+         * This method is only used when window rendering is disabled.
+         *
+         * @see CefBrowserHost::ImeSetComposition
+         */
         public function imeSetComposition(string $text, array $underlines, \Cefloom\Range $replacementRange, \Cefloom\Range $selectionRange): void {}
+        /**
+         * Completes the existing composition by optionally inserting the specified |text| into the
+         * composition node. |replacement_range| is an optional range of the existing text that will be
+         * replaced. |relative_cursor_pos| is where the cursor will be positioned relative to the current
+         * cursor position. See comments on ImeSetComposition for usage. The |replacement_range| and
+         * |relative_cursor_pos| values are only used on OS X. This method is only used when window rendering
+         * is disabled.
+         *
+         * @see CefBrowserHost::ImeCommitText
+         */
         public function imeCommitText(string $text, \Cefloom\Range $replacementRange, int $relativeCursorPos): void {}
+        /**
+         * Completes the existing composition by applying the current composition node contents. If
+         * |keep_selection| is false the current selection, if any, will be discarded. See comments on
+         * ImeSetComposition for usage. This method is only used when window rendering is disabled.
+         *
+         * @see CefBrowserHost::ImeFinishComposingText
+         */
         public function imeFinishComposingText(bool $keepSelection): void {}
+        /**
+         * Cancels the existing composition and discards the composition node contents without applying them.
+         * See comments on ImeSetComposition for usage. This method is only used when window rendering is
+         * disabled.
+         *
+         * @see CefBrowserHost::ImeCancelComposition
+         */
         public function imeCancelComposition(): void {}
+        /**
+         * Call this method when the user drags the mouse into the web view (before calling
+         * DragTargetDragOver/DragTargetLeave/DragTargetDrop). |drag_data| should not contain file contents as
+         * this type of data is not allowed to be dragged into the web view. File contents can be removed
+         * using CefDragData::ResetFileContents (for example, if |drag_data| comes from
+         * CefRenderHandler::StartDragging). This method is only used when window rendering is disabled.
+         *
+         * @see CefBrowserHost::DragTargetDragEnter
+         */
         public function dragTargetDragEnter(\Cefloom\DragData $dragData, \Cefloom\MouseEvent $event, int $allowedOps): void {}
+        /**
+         * Call this method each time the mouse is moved across the web view during a drag operation (after
+         * calling DragTargetDragEnter and before calling DragTargetDragLeave/DragTargetDrop). This method is
+         * only used when window rendering is disabled.
+         *
+         * @see CefBrowserHost::DragTargetDragOver
+         */
         public function dragTargetDragOver(\Cefloom\MouseEvent $event, int $allowedOps): void {}
+        /**
+         * Call this method when the user drags the mouse out of the web view (after calling
+         * DragTargetDragEnter). This method is only used when window rendering is disabled.
+         *
+         * @see CefBrowserHost::DragTargetDragLeave
+         */
         public function dragTargetDragLeave(): void {}
+        /**
+         * Call this method when the user completes the drag operation by dropping the object onto the web
+         * view (after calling DragTargetDragEnter). The object being dropped is |drag_data|, given as an
+         * argument to the previous DragTargetDragEnter call. This method is only used when window rendering
+         * is disabled.
+         *
+         * @see CefBrowserHost::DragTargetDrop
+         */
         public function dragTargetDrop(\Cefloom\MouseEvent $event): void {}
+        /**
+         * Call this method when the drag operation started by a CefRenderHandler::StartDragging call has
+         * ended either in a drop or by being cancelled. |x| and |y| are mouse coordinates relative to the
+         * upper-left corner of the view. If the web view is both the drag source and the drag target then all
+         * DragTarget* methods should be called before DragSource* mthods. This method is only used when
+         * window rendering is disabled.
+         *
+         * @see CefBrowserHost::DragSourceEndedAt
+         */
         public function dragSourceEndedAt(int $x, int $y, int $op): void {}
+        /**
+         * Call this method when the drag operation started by a CefRenderHandler::StartDragging call has
+         * completed. This method may be called immediately without first calling DragSourceEndedAt to cancel
+         * a drag operation. If the web view is both the drag source and the drag target then all DragTarget*
+         * methods should be called before DragSource* mthods. This method is only used when window rendering
+         * is disabled.
+         *
+         * @see CefBrowserHost::DragSourceSystemDragEnded
+         */
         public function dragSourceSystemDragEnded(): void {}
+        /**
+         * Returns the current visible navigation entry for this browser. This method can only be called on
+         * the UI thread.
+         *
+         * @see CefBrowserHost::GetVisibleNavigationEntry
+         */
         public function getVisibleNavigationEntry(): ?\Cefloom\NavigationEntry {}
+        /**
+         * Set accessibility state for all frames. |accessibility_state| may be default, enabled or disabled.
+         * If |accessibility_state| is STATE_DEFAULT then accessibility will be disabled by default and the
+         * state may be further controlled with the "force-renderer-accessibility" and "disable-renderer-
+         * accessibility" command-line switches. If |accessibility_state| is STATE_ENABLED then accessibility
+         * will be enabled. If |accessibility_state| is STATE_DISABLED then accessibility will be completely
+         * disabled.
+         *
+         * For windowed browsers accessibility will be enabled in Complete mode (which corresponds to
+         * kAccessibilityModeComplete in Chromium). In this mode all platform accessibility objects will be
+         * created and managed by Chromium's internal implementation. The client needs only to detect the
+         * screen reader and call this method appropriately. For example, on macOS the client can handle the
+         * @"AXEnhancedUserInterface" accessibility attribute to detect VoiceOver state changes and on Windows
+         * the client can handle WM_GETOBJECT with OBJID_CLIENT to detect accessibility readers.
+         *
+         * For windowless browsers accessibility will be enabled in TreeOnly mode (which corresponds to
+         * kAccessibilityModeWebContentsOnly in Chromium). In this mode renderer accessibility is enabled, the
+         * full tree is computed, and events are passed to CefAccessibiltyHandler, but platform accessibility
+         * objects are not created. The client may implement platform accessibility objects using
+         * CefAccessibiltyHandler callbacks if desired.
+         *
+         * @see CefBrowserHost::SetAccessibilityState
+         */
         public function setAccessibilityState(int $accessibilityState): void {}
+        /**
+         * Enable notifications of auto resize via CefDisplayHandler::OnAutoResize. Notifications are disabled
+         * by default. |min_size| and |max_size| define the range of allowed sizes.
+         *
+         * @see CefBrowserHost::SetAutoResizeEnabled
+         */
         public function setAutoResizeEnabled(bool $enabled, \Cefloom\Size $minSize, \Cefloom\Size $maxSize): void {}
+        /**
+         * Set whether the browser's audio is muted.
+         *
+         * @see CefBrowserHost::SetAudioMuted
+         */
         public function setAudioMuted(bool $mute): void {}
+        /**
+         * Returns true if the browser's audio is muted.  This method can only be called on the UI thread.
+         *
+         * @see CefBrowserHost::IsAudioMuted
+         */
         public function isAudioMuted(): bool {}
+        /**
+         * Returns true if the renderer is currently in browser fullscreen. This differs from window
+         * fullscreen in that browser fullscreen is entered using the JavaScript Fullscreen API and modifies
+         * CSS attributes such as the ::backdrop pseudo-element and :fullscreen pseudo-class. This method can
+         * only be called on the UI thread.
+         *
+         * @see CefBrowserHost::IsFullscreen
+         */
         public function isFullscreen(): bool {}
+        /**
+         * Requests the renderer to exit browser fullscreen. In most cases exiting window fullscreen should
+         * also exit browser fullscreen. With Alloy style this method should be called in response to a user
+         * action such as clicking the green traffic light button on MacOS
+         * (CefWindowDelegate::OnWindowFullscreenTransition callback) or pressing the "ESC" key
+         * (CefKeyboardHandler::OnPreKeyEvent callback). With Chrome style these standard exit actions are
+         * handled internally but new/additional user actions can use this method. Set |will_cause_resize| to
+         * true if exiting browser fullscreen will cause a view resize.
+         *
+         * @see CefBrowserHost::ExitFullscreen
+         */
         public function exitFullscreen(bool $willCauseResize): void {}
+        /**
+         * Returns true if a Chrome command is supported and enabled. Use the cef_id_for_command_id_name()
+         * function for version-safe mapping of command IDC names from cef_command_ids.h to version-specific
+         * numerical |command_id| values. This method can only be called on the UI thread. Only used with
+         * Chrome style.
+         *
+         * @see CefBrowserHost::CanExecuteChromeCommand
+         */
         public function canExecuteChromeCommand(int $commandId): bool {}
+        /**
+         * Execute a Chrome command. Use the cef_id_for_command_id_name() function for version-safe mapping of
+         * command IDC names from cef_command_ids.h to version-specific numerical |command_id| values.
+         * |disposition| provides information about the intended command target. Only used with Chrome style.
+         *
+         * @see CefBrowserHost::ExecuteChromeCommand
+         */
         public function executeChromeCommand(int $commandId, int $disposition): void {}
+        /**
+         * Returns true if the render process associated with this browser is currently unresponsive as
+         * indicated by a lack of input event processing for at least 15 seconds. To receive associated state
+         * change notifications and optionally handle an unresponsive render process implement
+         * CefRequestHandler::OnRenderProcessUnresponsive. This method can only be called on the UI thread.
+         *
+         * @see CefBrowserHost::IsRenderProcessUnresponsive
+         */
         public function isRenderProcessUnresponsive(): bool {}
+        /**
+         * Returns the runtime style for this browser (ALLOY or CHROME). See cef_runtime_style_t documentation
+         * for details.
+         *
+         * @see CefBrowserHost::GetRuntimeStyle
+         */
         public function getRuntimeStyle(): int {}
+        /**
+         * Enable or disable CDP accessibility tree viewport collapse for this browser. When enabled, off-
+         * screen landmarks and headings are serialized as summaries and other off-screen nodes are pruned.
+         * Overrides the CefBrowserSettings.ax_viewport_collapse value. If called on the UI thread the change
+         * will be applied immediately. Otherwise, the change will be applied asynchronously on the UI thread.
+         * WARNING: This collapses the CDP accessibility tree and disables CDP dynamic tree updates
+         * (nodesUpdated events). The DevTools Accessibility panel will show an incomplete tree. Platform
+         * screen readers (NVDA, JAWS, VoiceOver) are unaffected - they use a separate code path.
+         *
+         * @see CefBrowserHost::SetAxViewportCollapse
+         */
         public function setAxViewportCollapse(bool $enabled): void {}
+        /**
+         * Create a new browser using the window parameters specified by |windowInfo|. All values will be
+         * copied internally and the actual window (if any) will be created on the UI thread. If
+         * |request_context| is empty the global request context will be used. This method can be called on
+         * any browser process thread and will not block. The optional |extra_info| parameter provides an
+         * opportunity to specify extra information specific to the created browser that will be passed to
+         * CefRenderProcessHandler::OnBrowserCreated() in the render process.
+         *
+         * @see CefBrowserHost::CreateBrowser
+         */
         public static function createBrowser(\Cefloom\WindowInfo $windowInfo, ?\Cefloom\Client $client, string $url, \Cefloom\BrowserSettings $settings, ?\Cefloom\DictionaryValue $extraInfo, ?\Cefloom\RequestContext $requestContext): bool {}
+        /**
+         * Create a new browser using the window parameters specified by |windowInfo|. If |request_context| is
+         * empty the global request context will be used. This method can only be called on the browser
+         * process UI thread. The optional |extra_info| parameter provides an opportunity to specify extra
+         * information specific to the created browser that will be passed to
+         * CefRenderProcessHandler::OnBrowserCreated() in the render process.
+         *
+         * @see CefBrowserHost::CreateBrowserSync
+         */
         public static function createBrowserSync(\Cefloom\WindowInfo $windowInfo, ?\Cefloom\Client $client, string $url, \Cefloom\BrowserSettings $settings, ?\Cefloom\DictionaryValue $extraInfo, ?\Cefloom\RequestContext $requestContext): ?\Cefloom\Browser {}
+        /**
+         * Returns the browser (if any) with the specified identifier.
+         *
+         * @see CefBrowserHost::GetBrowserByIdentifier
+         */
         public static function getBrowserByIdentifier(int $browserId): ?\Cefloom\Browser {}
     }
 
+    /**
+     * Class used to implement browser process callbacks. The methods of this class will be called on the
+     * browser process main thread unless otherwise indicated.
+     *
+     * @see CefBrowserProcessHandler
+     */
     class BrowserProcessHandler {
+        /**
+         * Called on the browser process UI thread immediately after the CEF context has been initialized.
+         *
+         * @see CefBrowserProcessHandler::OnContextInitialized
+         */
         public function onContextInitialized(): void {}
+        /**
+         * Called before a child process is launched. Will be called on the browser process UI thread when
+         * launching a render process and on the browser process IO thread when launching a GPU process.
+         * Provides an opportunity to modify the child process command line. Do not keep a reference to
+         * |command_line| outside of this method.
+         *
+         * @see CefBrowserProcessHandler::OnBeforeChildProcessLaunch
+         */
         public function onBeforeChildProcessLaunch(\Cefloom\CommandLine $commandLine): void {}
+        /**
+         * Implement this method to provide app-specific behavior when an already running app is relaunched
+         * with the same CefSettings.root_cache_path value. For example, activate an existing app window or
+         * create a new app window. |command_line| will be read-only. Do not keep a reference to
+         * |command_line| outside of this method. Return true if the relaunch is handled or false for default
+         * relaunch behavior. Default behavior will create a new default styled Chrome window.
+         *
+         * To avoid cache corruption only a single app instance is allowed to run for a given
+         * CefSettings.root_cache_path value. On relaunch the app checks a process singleton lock and then
+         * forwards the new launch arguments to the already running app process before exiting early. Client
+         * apps should therefore check the CefInitialize() return value for early exit before proceeding.
+         *
+         * This method will be called on the browser process UI thread.
+         *
+         * @see CefBrowserProcessHandler::OnAlreadyRunningAppRelaunch
+         */
         public function onAlreadyRunningAppRelaunch(\Cefloom\CommandLine $commandLine, string $currentDirectory): bool {}
+        /**
+         * Return the default client for use with a newly created browser window (CefBrowser object). If null
+         * is returned the CefBrowser will be unmanaged (no callbacks will be executed for that CefBrowser)
+         * and application shutdown will be blocked until the browser window is closed manually. This method
+         * is currently only used with Chrome style when creating new browser windows via Chrome UI.
+         *
+         * @see CefBrowserProcessHandler::GetDefaultClient
+         */
         public function getDefaultClient(): ?\Cefloom\Client {}
+        /**
+         * Return the default handler for use with a new user or incognito profile (CefRequestContext object).
+         * If null is returned the CefRequestContext will be unmanaged (no callbacks will be executed for that
+         * CefRequestContext). This method is currently only used with Chrome style when creating new browser
+         * windows via Chrome UI.
+         *
+         * @see CefBrowserProcessHandler::GetDefaultRequestContextHandler
+         */
         public function getDefaultRequestContextHandler(): ?\Cefloom\RequestContextHandler {}
     }
 
+    /**
+     * A View hosting a CefBrowser instance. Methods must be called on the browser process UI thread unless
+     * otherwise indicated.
+     *
+     * @see CefBrowserView
+     */
     final class BrowserView extends View {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the CefBrowser hosted by this BrowserView. Will return NULL if the browser has not yet been
+         * created or has already been destroyed.
+         *
+         * @see CefBrowserView::GetBrowser
+         */
         public function getBrowser(): ?\Cefloom\Browser {}
+        /**
+         * Returns the Chrome toolbar associated with this BrowserView. Only supported when using Chrome
+         * style. The CefBrowserViewDelegate:: GetChromeToolbarType() method must return a value other than
+         * CEF_CTT_NONE and the toolbar will not be available until after this BrowserView is added to a
+         * CefWindow and CefViewDelegate::OnWindowChanged() has been called.
+         *
+         * @see CefBrowserView::GetChromeToolbar
+         */
         public function getChromeToolbar(): ?\Cefloom\View {}
+        /**
+         * Sets whether normal priority accelerators are first forwarded to the web content (`keydown` event
+         * handler) or CefKeyboardHandler. Normal priority accelerators can be registered via
+         * CefWindow::SetAccelerator (with |high_priority|=false) or internally for standard accelerators
+         * supported by Chrome style. If |prefer_accelerators| is true then the matching accelerator will be
+         * triggered immediately (calling CefWindowDelegate::OnAccelerator or
+         * CefCommandHandler::OnChromeCommand respectively) and the event will not be forwarded to the web
+         * content or CefKeyboardHandler first. If |prefer_accelerators| is false then the matching
+         * accelerator will only be triggered if the event is not handled by web content (`keydown` event
+         * handler that calls `event.preventDefault()`) or by CefKeyboardHandler. The default value is false.
+         *
+         * @see CefBrowserView::SetPreferAccelerators
+         */
         public function setPreferAccelerators(bool $preferAccelerators): void {}
+        /**
+         * Returns the runtime style for this BrowserView (ALLOY or CHROME). See cef_runtime_style_t
+         * documentation for details.
+         *
+         * @see CefBrowserView::GetRuntimeStyle
+         */
         public function getRuntimeStyle(): int {}
+        /**
+         * Create a new BrowserView. The underlying CefBrowser will not be created until this view is added to
+         * the views hierarchy. The optional |extra_info| parameter provides an opportunity to specify extra
+         * information specific to the created browser that will be passed to
+         * CefRenderProcessHandler::OnBrowserCreated() in the render process.
+         *
+         * @see CefBrowserView::CreateBrowserView
+         */
         public static function createBrowserView(?\Cefloom\Client $client, string $url, \Cefloom\BrowserSettings $settings, ?\Cefloom\DictionaryValue $extraInfo, ?\Cefloom\RequestContext $requestContext, ?\Cefloom\BrowserViewDelegate $delegate): ?\Cefloom\BrowserView {}
+        /**
+         * Returns the BrowserView associated with |browser|.
+         *
+         * @see CefBrowserView::GetForBrowser
+         */
         public static function getForBrowser(\Cefloom\Browser $browser): ?\Cefloom\BrowserView {}
     }
 
+    /**
+     * Implement this interface to handle BrowserView events. The methods of this class will be called on the
+     * browser process UI thread unless otherwise indicated.
+     *
+     * @see CefBrowserViewDelegate
+     */
     class BrowserViewDelegate {
+        /**
+         * Return the preferred size for |view|. The Layout will use this information to determine the display
+         * size.
+         *
+         * @see CefBrowserViewDelegate::GetPreferredSize
+         */
         public function getPreferredSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the minimum size for |view|.
+         *
+         * @see CefBrowserViewDelegate::GetMinimumSize
+         */
         public function getMinimumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the maximum size for |view|.
+         *
+         * @see CefBrowserViewDelegate::GetMaximumSize
+         */
         public function getMaximumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the height necessary to display |view| with the provided |width|. If not specified the
+         * result of GetPreferredSize().height will be used by default. Override if |view|'s preferred height
+         * depends upon the width (for example, with Labels).
+         *
+         * @see CefBrowserViewDelegate::GetHeightForWidth
+         */
         public function getHeightForWidth(\Cefloom\View $view, int $width): int {}
+        /**
+         * Called when the parent of |view| has changed. If |view| is being added to |parent| then |added|
+         * will be true. If |view| is being removed from |parent| then |added| will be false. If |view| is
+         * being reparented the remove notification will be sent before the add notification. Do not modify
+         * the view hierarchy in this callback.
+         *
+         * @see CefBrowserViewDelegate::OnParentViewChanged
+         */
         public function onParentViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $parent): void {}
+        /**
+         * Called when a child of |view| has changed. If |child| is being added to |view| then |added| will be
+         * true. If |child| is being removed from |view| then |added| will be false. If |child| is being
+         * reparented the remove notification will be sent to the old parent before the add notification is
+         * sent to the new parent. Do not modify the view hierarchy in this callback.
+         *
+         * @see CefBrowserViewDelegate::OnChildViewChanged
+         */
         public function onChildViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $child): void {}
+        /**
+         * Called when |view| is added or removed from the CefWindow.
+         *
+         * @see CefBrowserViewDelegate::OnWindowChanged
+         */
         public function onWindowChanged(\Cefloom\View $view, bool $added): void {}
+        /**
+         * Called when the layout of |view| has changed.
+         *
+         * @see CefBrowserViewDelegate::OnLayoutChanged
+         */
         public function onLayoutChanged(\Cefloom\View $view, \Cefloom\Rect $newBounds): void {}
+        /**
+         * Called when |view| gains focus.
+         *
+         * @see CefBrowserViewDelegate::OnFocus
+         */
         public function onFocus(\Cefloom\View $view): void {}
+        /**
+         * Called when |view| loses focus.
+         *
+         * @see CefBrowserViewDelegate::OnBlur
+         */
         public function onBlur(\Cefloom\View $view): void {}
+        /**
+         * Called when the theme for |view| has changed, after the new theme colors have already been applied.
+         * Views are notified via the component hierarchy in depth-first reverse order (children before
+         * parents).
+         *
+         * This will be called in the following cases:
+         *
+         * 1. When |view|, or a parent of |view|, is added to a Window. 2. When the native/OS or Chrome theme
+         * changes for the Window that contains |view|. See CefWindowDelegate::OnThemeColorsChanged
+         * documentation. 3. When the client explicitly calls CefWindow::ThemeChanged on the Window that
+         * contains |view|.
+         *
+         * Optionally use this callback to override the new per-View theme colors by calling
+         * CefView::SetBackgroundColor or the appropriate component-specific method. See
+         * CefWindow::SetThemeColor documentation for how to customize additional Window theme colors.
+         *
+         * @see CefBrowserViewDelegate::OnThemeChanged
+         */
         public function onThemeChanged(\Cefloom\View $view): void {}
+        /**
+         * Called when |browser| associated with |browser_view| is created. This method will be called after
+         * CefLifeSpanHandler::OnAfterCreated() is called for |browser| and before OnPopupBrowserViewCreated()
+         * is called for |browser|'s parent delegate if |browser| is a popup.
+         *
+         * @see CefBrowserViewDelegate::OnBrowserCreated
+         */
         public function onBrowserCreated(\Cefloom\BrowserView $browserView, \Cefloom\Browser $browser): void {}
+        /**
+         * Called when |browser| associated with |browser_view| is destroyed. Release all references to
+         * |browser| and do not attempt to execute any methods on |browser| after this callback returns. This
+         * method will be called before CefLifeSpanHandler::OnBeforeClose() is called for |browser|.
+         *
+         * @see CefBrowserViewDelegate::OnBrowserDestroyed
+         */
         public function onBrowserDestroyed(\Cefloom\BrowserView $browserView, \Cefloom\Browser $browser): void {}
+        /**
+         * Called before a new popup BrowserView is created. The popup originated from |browser_view|.
+         * |settings| and |client| are the values returned from CefLifeSpanHandler::OnBeforePopup().
+         * |is_devtools| will be true if the popup will be a DevTools browser. Return the delegate that will
+         * be used for the new popup BrowserView.
+         *
+         * @see CefBrowserViewDelegate::GetDelegateForPopupBrowserView
+         */
         public function getDelegateForPopupBrowserView(\Cefloom\BrowserView $browserView, \Cefloom\BrowserSettings $settings, ?\Cefloom\Client $client, bool $isDevtools): ?\Cefloom\BrowserViewDelegate {}
+        /**
+         * Called after |popup_browser_view| is created. This method will be called after
+         * CefLifeSpanHandler::OnAfterCreated() and OnBrowserCreated() are called for the new popup browser.
+         * The popup originated from |browser_view|. |is_devtools| will be true if the popup is a DevTools
+         * browser. Optionally add |popup_browser_view| to the views hierarchy yourself and return true.
+         * Otherwise return false and a default CefWindow will be created for the popup.
+         *
+         * @see CefBrowserViewDelegate::OnPopupBrowserViewCreated
+         */
         public function onPopupBrowserViewCreated(\Cefloom\BrowserView $browserView, \Cefloom\BrowserView $popupBrowserView, bool $isDevtools): bool {}
+        /**
+         * Returns the Chrome toolbar type that will be available via CefBrowserView::GetChromeToolbar(). See
+         * that method for related documentation.
+         *
+         * @see CefBrowserViewDelegate::GetChromeToolbarType
+         */
         public function getChromeToolbarType(\Cefloom\BrowserView $browserView): int {}
+        /**
+         * Return true to create frameless windows for Document picture-in-picture popups. Content in
+         * frameless windows should specify draggable regions using "-webkit-app-region: drag" CSS.
+         *
+         * @see CefBrowserViewDelegate::UseFramelessWindowForPictureInPicture
+         */
         public function useFramelessWindowForPictureInPicture(\Cefloom\BrowserView $browserView): bool {}
+        /**
+         * Return true to allow the use of JavaScript moveTo/By() and resizeTo/By() (without user activation)
+         * with Document picture-in-picture popups.
+         *
+         * @see CefBrowserViewDelegate::AllowMoveForPictureInPicture
+         */
         public function allowMoveForPictureInPicture(\Cefloom\BrowserView $browserView): bool {}
+        /**
+         * Return true to allow opening Document picture-in-picture without user activation. Default is false
+         * (user activation required).
+         *
+         * @see CefBrowserViewDelegate::AllowPictureInPictureWithoutUserActivation
+         */
         public function allowPictureInPictureWithoutUserActivation(\Cefloom\BrowserView $browserView): bool {}
+        /**
+         * Called when |browser_view| receives a gesture command. Return true to handle (or disable) a
+         * |gesture_command| or false to propagate the gesture to the browser for default handling. With
+         * Chrome style these commands can also be handled via CefCommandHandler::OnChromeCommand.
+         *
+         * @see CefBrowserViewDelegate::OnGestureCommand
+         */
         public function onGestureCommand(\Cefloom\BrowserView $browserView, int $gestureCommand): bool {}
+        /**
+         * Optionally change the runtime style for this BrowserView. See cef_runtime_style_t documentation for
+         * details.
+         *
+         * @see CefBrowserViewDelegate::GetBrowserRuntimeStyle
+         */
         public function getBrowserRuntimeStyle(): int {}
     }
 
+    /**
+     * A View representing a button. Depending on the specific type, the button could be implemented by a
+     * native control or custom rendered. Methods must be called on the browser process UI thread unless
+     * otherwise indicated.
+     *
+     * @see CefButton
+     */
     class Button extends View {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns this Button as a LabelButton or NULL if this is not a LabelButton.
+         *
+         * @see CefButton::AsLabelButton
+         */
         public function asLabelButton(): ?\Cefloom\LabelButton {}
+        /**
+         * Sets the current display state of the Button.
+         *
+         * @see CefButton::SetState
+         */
         public function setState(int $state): void {}
+        /**
+         * Returns the current display state of the Button.
+         *
+         * @see CefButton::GetState
+         */
         public function getState(): int {}
+        /**
+         * Sets the Button will use an ink drop effect for displaying state changes.
+         *
+         * @see CefButton::SetInkDropEnabled
+         */
         public function setInkDropEnabled(bool $enabled): void {}
+        /**
+         * Sets the tooltip text that will be displayed when the user hovers the mouse cursor over the Button.
+         *
+         * @see CefButton::SetTooltipText
+         */
         public function setTooltipText(string $tooltipText): void {}
+        /**
+         * Sets the accessible name that will be exposed to assistive technology (AT).
+         *
+         * @see CefButton::SetAccessibleName
+         */
         public function setAccessibleName(string $name): void {}
     }
 
+    /**
+     * Implement this interface to handle Button events. The methods of this class will be called on the
+     * browser process UI thread unless otherwise indicated.
+     *
+     * @see CefButtonDelegate
+     */
     abstract class ButtonDelegate {
+        /**
+         * Return the preferred size for |view|. The Layout will use this information to determine the display
+         * size.
+         *
+         * @see CefButtonDelegate::GetPreferredSize
+         */
         public function getPreferredSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the minimum size for |view|.
+         *
+         * @see CefButtonDelegate::GetMinimumSize
+         */
         public function getMinimumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the maximum size for |view|.
+         *
+         * @see CefButtonDelegate::GetMaximumSize
+         */
         public function getMaximumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the height necessary to display |view| with the provided |width|. If not specified the
+         * result of GetPreferredSize().height will be used by default. Override if |view|'s preferred height
+         * depends upon the width (for example, with Labels).
+         *
+         * @see CefButtonDelegate::GetHeightForWidth
+         */
         public function getHeightForWidth(\Cefloom\View $view, int $width): int {}
+        /**
+         * Called when the parent of |view| has changed. If |view| is being added to |parent| then |added|
+         * will be true. If |view| is being removed from |parent| then |added| will be false. If |view| is
+         * being reparented the remove notification will be sent before the add notification. Do not modify
+         * the view hierarchy in this callback.
+         *
+         * @see CefButtonDelegate::OnParentViewChanged
+         */
         public function onParentViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $parent): void {}
+        /**
+         * Called when a child of |view| has changed. If |child| is being added to |view| then |added| will be
+         * true. If |child| is being removed from |view| then |added| will be false. If |child| is being
+         * reparented the remove notification will be sent to the old parent before the add notification is
+         * sent to the new parent. Do not modify the view hierarchy in this callback.
+         *
+         * @see CefButtonDelegate::OnChildViewChanged
+         */
         public function onChildViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $child): void {}
+        /**
+         * Called when |view| is added or removed from the CefWindow.
+         *
+         * @see CefButtonDelegate::OnWindowChanged
+         */
         public function onWindowChanged(\Cefloom\View $view, bool $added): void {}
+        /**
+         * Called when the layout of |view| has changed.
+         *
+         * @see CefButtonDelegate::OnLayoutChanged
+         */
         public function onLayoutChanged(\Cefloom\View $view, \Cefloom\Rect $newBounds): void {}
+        /**
+         * Called when |view| gains focus.
+         *
+         * @see CefButtonDelegate::OnFocus
+         */
         public function onFocus(\Cefloom\View $view): void {}
+        /**
+         * Called when |view| loses focus.
+         *
+         * @see CefButtonDelegate::OnBlur
+         */
         public function onBlur(\Cefloom\View $view): void {}
+        /**
+         * Called when the theme for |view| has changed, after the new theme colors have already been applied.
+         * Views are notified via the component hierarchy in depth-first reverse order (children before
+         * parents).
+         *
+         * This will be called in the following cases:
+         *
+         * 1. When |view|, or a parent of |view|, is added to a Window. 2. When the native/OS or Chrome theme
+         * changes for the Window that contains |view|. See CefWindowDelegate::OnThemeColorsChanged
+         * documentation. 3. When the client explicitly calls CefWindow::ThemeChanged on the Window that
+         * contains |view|.
+         *
+         * Optionally use this callback to override the new per-View theme colors by calling
+         * CefView::SetBackgroundColor or the appropriate component-specific method. See
+         * CefWindow::SetThemeColor documentation for how to customize additional Window theme colors.
+         *
+         * @see CefButtonDelegate::OnThemeChanged
+         */
         public function onThemeChanged(\Cefloom\View $view): void {}
+        /**
+         * Called when |button| is pressed.
+         *
+         * @see CefButtonDelegate::OnButtonPressed
+         */
         public abstract function onButtonPressed(\Cefloom\Button $button): void ;
+        /**
+         * Called when the state of |button| changes.
+         *
+         * @see CefButtonDelegate::OnButtonStateChanged
+         */
         public function onButtonStateChanged(\Cefloom\Button $button): void {}
     }
 
+    /**
+     * Generic callback interface used for asynchronous continuation.
+     *
+     * @see CefCallback
+     */
     final class Callback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Continue processing.
+         *
+         * @see CefCallback::Continue
+         */
         public function continue(): void {}
+        /**
+         * Cancel processing.
+         *
+         * @see CefCallback::Cancel
+         */
         public function cancel(): void {}
     }
 
+    /**
+     * Implement this interface to provide handler implementations.
+     *
+     * @see CefClient
+     */
     class Client {
+        /**
+         * Return the handler for audio rendering events.
+         *
+         * @see CefClient::GetAudioHandler
+         */
         public function getAudioHandler(): ?\Cefloom\AudioHandler {}
+        /**
+         * Return the handler for commands. If no handler is provided the default implementation will be used.
+         *
+         * @see CefClient::GetCommandHandler
+         */
         public function getCommandHandler(): ?\Cefloom\CommandHandler {}
+        /**
+         * Return the handler for context menus. If no handler is provided the default implementation will be
+         * used.
+         *
+         * @see CefClient::GetContextMenuHandler
+         */
         public function getContextMenuHandler(): ?\Cefloom\ContextMenuHandler {}
+        /**
+         * Return the handler for dialogs. If no handler is provided the default implementation will be used.
+         *
+         * @see CefClient::GetDialogHandler
+         */
         public function getDialogHandler(): ?\Cefloom\DialogHandler {}
+        /**
+         * Return the handler for browser display state events.
+         *
+         * @see CefClient::GetDisplayHandler
+         */
         public function getDisplayHandler(): ?\Cefloom\DisplayHandler {}
+        /**
+         * Return the handler for download events. If no handler is returned downloads will be canceled with
+         * Alloy style and will proceed with default handling with Chrome style.
+         *
+         * @see CefClient::GetDownloadHandler
+         */
         public function getDownloadHandler(): ?\Cefloom\DownloadHandler {}
+        /**
+         * Return the handler for drag events.
+         *
+         * @see CefClient::GetDragHandler
+         */
         public function getDragHandler(): ?\Cefloom\DragHandler {}
+        /**
+         * Return the handler for find result events.
+         *
+         * @see CefClient::GetFindHandler
+         */
         public function getFindHandler(): ?\Cefloom\FindHandler {}
+        /**
+         * Return the handler for focus events.
+         *
+         * @see CefClient::GetFocusHandler
+         */
         public function getFocusHandler(): ?\Cefloom\FocusHandler {}
+        /**
+         * Return the handler for events related to CefFrame lifespan. This method will be called once during
+         * CefBrowser creation and the result will be cached for performance reasons.
+         *
+         * @see CefClient::GetFrameHandler
+         */
         public function getFrameHandler(): ?\Cefloom\FrameHandler {}
+        /**
+         * Return the handler for permission requests.
+         *
+         * @see CefClient::GetPermissionHandler
+         */
         public function getPermissionHandler(): ?\Cefloom\PermissionHandler {}
+        /**
+         * Return the handler for JavaScript dialogs. If no handler is provided the default implementation
+         * will be used.
+         *
+         * @see CefClient::GetJSDialogHandler
+         */
         public function getJSDialogHandler(): ?\Cefloom\JSDialogHandler {}
+        /**
+         * Return the handler for keyboard events.
+         *
+         * @see CefClient::GetKeyboardHandler
+         */
         public function getKeyboardHandler(): ?\Cefloom\KeyboardHandler {}
+        /**
+         * Return the handler for browser life span events.
+         *
+         * @see CefClient::GetLifeSpanHandler
+         */
         public function getLifeSpanHandler(): ?\Cefloom\LifeSpanHandler {}
+        /**
+         * Return the handler for browser load status events.
+         *
+         * @see CefClient::GetLoadHandler
+         */
         public function getLoadHandler(): ?\Cefloom\LoadHandler {}
+        /**
+         * Return the handler for printing on Linux. If a print handler is not provided then printing will not
+         * be supported on the Linux platform.
+         *
+         * @see CefClient::GetPrintHandler
+         */
         public function getPrintHandler(): ?\Cefloom\PrintHandler {}
+        /**
+         * Return the handler for off-screen rendering events.
+         *
+         * @see CefClient::GetRenderHandler
+         */
         public function getRenderHandler(): ?\Cefloom\RenderHandler {}
+        /**
+         * Return the handler for browser request events.
+         *
+         * @see CefClient::GetRequestHandler
+         */
         public function getRequestHandler(): ?\Cefloom\RequestHandler {}
+        /**
+         * Called when a new message is received from a different process. Return true if the message was
+         * handled or false otherwise.  It is safe to keep a reference to |message| outside of this callback.
+         *
+         * @see CefClient::OnProcessMessageReceived
+         */
         public function onProcessMessageReceived(\Cefloom\Browser $browser, \Cefloom\Frame $frame, int $sourceProcess, \Cefloom\ProcessMessage $message): bool {}
     }
 
+    /**
+     * Implement this interface to handle events related to commands. The methods of this class will be called
+     * on the UI thread.
+     *
+     * @see CefCommandHandler
+     */
     class CommandHandler {
+        /**
+         * Called to execute a Chrome command triggered via menu selection or keyboard shortcut. Use the
+         * cef_id_for_command_id_name() function for version-safe mapping of command IDC names from
+         * cef_command_ids.h to version-specific numerical |command_id| values. |disposition| provides
+         * information about the intended command target. Return true if the command was handled or false for
+         * the default implementation. For context menu commands this will be called after
+         * CefContextMenuHandler::OnContextMenuCommand. Only used with Chrome style.
+         *
+         * @see CefCommandHandler::OnChromeCommand
+         */
         public function onChromeCommand(\Cefloom\Browser $browser, int $commandId, int $disposition): bool {}
+        /**
+         * Called to check if a Chrome app menu item should be visible. Use the cef_id_for_command_id_name()
+         * function for version-safe mapping of command IDC names from cef_command_ids.h to version-specific
+         * numerical |command_id| values. Only called for menu items that would be visible by default. Only
+         * used with Chrome style.
+         *
+         * @see CefCommandHandler::IsChromeAppMenuItemVisible
+         */
         public function isChromeAppMenuItemVisible(\Cefloom\Browser $browser, int $commandId): bool {}
+        /**
+         * Called to check if a Chrome app menu item should be enabled. Use the cef_id_for_command_id_name()
+         * function for version-safe mapping of command IDC names from cef_command_ids.h to version-specific
+         * numerical |command_id| values. Only called for menu items that would be enabled by default. Only
+         * used with Chrome style.
+         *
+         * @see CefCommandHandler::IsChromeAppMenuItemEnabled
+         */
         public function isChromeAppMenuItemEnabled(\Cefloom\Browser $browser, int $commandId): bool {}
+        /**
+         * Called during browser creation to check if a Chrome page action icon should be visible. Only called
+         * for icons that would be visible by default. Only used with Chrome style.
+         *
+         * @see CefCommandHandler::IsChromePageActionIconVisible
+         */
         public function isChromePageActionIconVisible(int $iconType): bool {}
+        /**
+         * Called during browser creation to check if a Chrome toolbar button should be visible. Only called
+         * for buttons that would be visible by default. Only used with Chrome style.
+         *
+         * @see CefCommandHandler::IsChromeToolbarButtonVisible
+         */
         public function isChromeToolbarButtonVisible(int $buttonType): bool {}
     }
 
+    /**
+     * Class used to create and/or parse command line arguments. Arguments with "--", "-" and, on Windows, "/"
+     * prefixes are considered switches. Switches will always precede any arguments without switch prefixes.
+     * Switches can optionally have a value specified using the "=" delimiter (e.g. "-switch=value"). An
+     * argument of "--" will terminate switch parsing with all subsequent tokens, regardless of prefix, being
+     * interpreted as non-switch arguments. Switch names should be lowercase ASCII and will be converted to
+     * such if necessary. Switch values will retain the original case and UTF8 encoding. This class can be
+     * used before CefInitialize() is called.
+     *
+     * @see CefCommandLine
+     */
     final class CommandLine {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid. Do not call any other methods if this function returns false.
+         *
+         * @see CefCommandLine::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if the values of this object are read-only. Some APIs may expose read-only objects.
+         *
+         * @see CefCommandLine::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Returns a writable copy of this object.
+         *
+         * @see CefCommandLine::Copy
+         */
         public function copy(): ?\Cefloom\CommandLine {}
+        /**
+         * Initialize the command line with the string returned by calling GetCommandLineW(). This method is
+         * only supported on Windows.
+         *
+         * @see CefCommandLine::InitFromString
+         */
         public function initFromString(string $commandLine): void {}
+        /**
+         * Reset the command-line switches and arguments but leave the program component unchanged.
+         *
+         * @see CefCommandLine::Reset
+         */
         public function reset(): void {}
+        /**
+         * Retrieve the original command line string as a vector of strings. The argv array: `{ program,
+         * [(--|-|/)switch[=value]]*, [--], [argument]* }`
+         *
+         * @see CefCommandLine::GetArgv
+         */
         public function getArgv(): array {}
+        /**
+         * Constructs and returns the represented command line string. Use this method cautiously because
+         * quoting behavior is unclear.
+         *
+         * @see CefCommandLine::GetCommandLineString
+         */
         public function getCommandLineString(): string {}
+        /**
+         * Get the program part of the command line string (the first item).
+         *
+         * @see CefCommandLine::GetProgram
+         */
         public function getProgram(): string {}
+        /**
+         * Set the program part of the command line string (the first item).
+         *
+         * @see CefCommandLine::SetProgram
+         */
         public function setProgram(string $program): void {}
+        /**
+         * Returns true if the command line has switches.
+         *
+         * @see CefCommandLine::HasSwitches
+         */
         public function hasSwitches(): bool {}
+        /**
+         * Returns true if the command line contains the given switch.
+         *
+         * @see CefCommandLine::HasSwitch
+         */
         public function hasSwitch(string $name): bool {}
+        /**
+         * Returns the value associated with the given switch. If the switch has no value or isn't present
+         * this method returns the empty string.
+         *
+         * @see CefCommandLine::GetSwitchValue
+         */
         public function getSwitchValue(string $name): string {}
+        /**
+         * Returns the map of switch names and values. If a switch has no value an empty string is returned.
+         *
+         * @see CefCommandLine::GetSwitches
+         */
         public function getSwitches(): array {}
+        /**
+         * Add a switch to the end of the command line.
+         *
+         * @see CefCommandLine::AppendSwitch
+         */
         public function appendSwitch(string $name): void {}
+        /**
+         * Add a switch with the specified value to the end of the command line. If the switch has no value
+         * pass an empty value string.
+         *
+         * @see CefCommandLine::AppendSwitchWithValue
+         */
         public function appendSwitchWithValue(string $name, string $value): void {}
+        /**
+         * Remove a switch from the command line. If no such switch is present, this has no effect.
+         *
+         * @see CefCommandLine::RemoveSwitch
+         */
         public function removeSwitch(string $name): void {}
+        /**
+         * True if there are remaining command line arguments.
+         *
+         * @see CefCommandLine::HasArguments
+         */
         public function hasArguments(): bool {}
+        /**
+         * Get the remaining command line arguments.
+         *
+         * @see CefCommandLine::GetArguments
+         */
         public function getArguments(): array {}
+        /**
+         * Add an argument to the end of the command line.
+         *
+         * @see CefCommandLine::AppendArgument
+         */
         public function appendArgument(string $argument): void {}
+        /**
+         * Insert a command before the current command. Common for debuggers, like "valgrind" or "gdb --args".
+         *
+         * @see CefCommandLine::PrependWrapper
+         */
         public function prependWrapper(string $wrapper): void {}
+        /**
+         * Create a new CefCommandLine instance.
+         *
+         * @see CefCommandLine::CreateCommandLine
+         */
         public static function create(): ?\Cefloom\CommandLine {}
+        /**
+         * Returns the singleton global CefCommandLine object. The returned object will be read-only.
+         *
+         * @see CefCommandLine::GetGlobalCommandLine
+         */
         public static function getGlobalCommandLine(): ?\Cefloom\CommandLine {}
     }
 
+    /**
+     * Generic callback interface used for asynchronous completion.
+     *
+     * @see CefCompletionCallback
+     */
     abstract class CompletionCallback {
+        /**
+         * Method that will be called once the task is complete.
+         *
+         * @see CefCompletionCallback::OnComplete
+         */
         public abstract function onComplete(): void ;
     }
 
+    /**
+     * Class representing a snapshot of a component's state at the time of retrieval. To get updated
+     * information, retrieve a new CefComponent object via CefComponentUpdater::GetComponentByID or
+     * GetComponents. The methods of this class may be called on any thread.
+     *
+     * @see CefComponent
+     */
     final class Component {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the unique identifier for this component.
+         *
+         * @see CefComponent::GetID
+         */
         public function getID(): string {}
+        /**
+         * Returns the human-readable name of this component. Returns an empty string if the component is not
+         * installed.
+         *
+         * @see CefComponent::GetName
+         */
         public function getName(): string {}
+        /**
+         * Returns the version of this component as a string (e.g., "1.2.3.4"). Returns an empty string if the
+         * component is not installed.
+         *
+         * @see CefComponent::GetVersion
+         */
         public function getVersion(): string {}
+        /**
+         * Returns the state of this component at the time this object was created. A component is considered
+         * installed when its state is one of: CEF_COMPONENT_STATE_UPDATED, CEF_COMPONENT_STATE_UP_TO_DATE, or
+         * CEF_COMPONENT_STATE_RUN.
+         *
+         * @see CefComponent::GetState
+         */
         public function getState(): int {}
     }
 
+    /**
+     * Callback interface for component update results.
+     *
+     * @see CefComponentUpdateCallback
+     */
     abstract class ComponentUpdateCallback {
+        /**
+         * Called when the component update operation completes. |component_id| is the ID of the component
+         * that was updated. |error| contains the result of the operation.
+         *
+         * @see CefComponentUpdateCallback::OnComplete
+         */
         public abstract function onComplete(string $componentId, int $error): void ;
     }
 
+    /**
+     * This class provides access to Chromium's component updater service, allowing clients to discover
+     * registered components and trigger on-demand updates. The methods of this class may only be called on
+     * the browser process UI thread. If the CEF context is not initialized or the component updater service
+     * is not available, methods will return safe defaults (0, nullptr, or empty).
+     *
+     * @see CefComponentUpdater
+     */
     final class ComponentUpdater {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the number of registered components, or 0 if the service is not available.
+         *
+         * @see CefComponentUpdater::GetComponentCount
+         */
         public function getComponentCount(): int {}
+        /**
+         * Populates |components| with all registered components. Any existing contents will be cleared first.
+         *
+         * @see CefComponentUpdater::GetComponents
+         */
         public function getComponents(): array {}
+        /**
+         * Returns the component with the specified |component_id|, or nullptr if not found or the service is
+         * not available.
+         *
+         * @see CefComponentUpdater::GetComponentByID
+         */
         public function getComponentByID(string $componentId): ?\Cefloom\Component {}
+        /**
+         * Triggers an on-demand update for the component with the specified |component_id|. |priority|
+         * specifies whether the update should be processed in the background or foreground. Use
+         * CEF_COMPONENT_UPDATE_PRIORITY_FOREGROUND for user-initiated updates.
+         *
+         * |callback| will be called asynchronously on the UI thread when the update operation completes. The
+         * callback is always executed, including when the component is already up-to-date (returns
+         * CEF_COMPONENT_UPDATE_ERROR_NONE), when the requested component doesn't exist, or when the service
+         * is unavailable (returns CEF_COMPONENT_UPDATE_ERROR_SERVICE_ERROR). The callback may be nullptr if
+         * no notification is needed.
+         *
+         * @see CefComponentUpdater::Update
+         */
         public function update(string $componentId, int $priority, ?\Cefloom\ComponentUpdateCallback $callback): void {}
+        /**
+         * Returns the global CefComponentUpdater singleton. Returns nullptr if called from the incorrect
+         * thread.
+         *
+         * @see CefComponentUpdater::GetComponentUpdater
+         */
         public static function getComponentUpdater(): ?\Cefloom\ComponentUpdater {}
     }
 
+    /**
+     * Implement this interface to handle context menu events. The methods of this class will be called on the
+     * UI thread.
+     *
+     * @see CefContextMenuHandler
+     */
     class ContextMenuHandler {
+        /**
+         * Called before a context menu is displayed. |params| provides information about the context menu
+         * state. |model| initially contains the default context menu. The |model| can be cleared to show no
+         * context menu or modified to show a custom menu. Do not keep references to |params| or |model|
+         * outside of this callback.
+         *
+         * @see CefContextMenuHandler::OnBeforeContextMenu
+         */
         public function onBeforeContextMenu(\Cefloom\Browser $browser, \Cefloom\Frame $frame, \Cefloom\ContextMenuParams $params, \Cefloom\MenuModel $model): void {}
+        /**
+         * Called to allow custom display of the context menu. |params| provides information about the context
+         * menu state. |model| contains the context menu model resulting from OnBeforeContextMenu. For custom
+         * display return true and execute |callback| either synchronously or asynchronously with the selected
+         * command ID. For default display return false. Do not keep references to |params| or |model| outside
+         * of this callback.
+         *
+         * @see CefContextMenuHandler::RunContextMenu
+         */
         public function runContextMenu(\Cefloom\Browser $browser, \Cefloom\Frame $frame, \Cefloom\ContextMenuParams $params, \Cefloom\MenuModel $model, \Cefloom\RunContextMenuCallback $callback): bool {}
+        /**
+         * Called to execute a command selected from the context menu. Return true if the command was handled
+         * or false for the default implementation. See cef_menu_id_t for the command ids that have default
+         * implementations. All user-defined command ids should be between MENU_ID_USER_FIRST and
+         * MENU_ID_USER_LAST. |params| will have the same values as what was passed to OnBeforeContextMenu().
+         * Do not keep a reference to |params| outside of this callback.
+         *
+         * @see CefContextMenuHandler::OnContextMenuCommand
+         */
         public function onContextMenuCommand(\Cefloom\Browser $browser, \Cefloom\Frame $frame, \Cefloom\ContextMenuParams $params, int $commandId, int $eventFlags): bool {}
+        /**
+         * Called when the context menu is dismissed irregardless of whether the menu was canceled or a
+         * command was selected.
+         *
+         * @see CefContextMenuHandler::OnContextMenuDismissed
+         */
         public function onContextMenuDismissed(\Cefloom\Browser $browser, \Cefloom\Frame $frame): void {}
+        /**
+         * Called to allow custom display of the quick menu for a windowless browser. |location| is the top
+         * left corner of the selected region. |size| is the size of the selected region. |edit_state_flags|
+         * is a combination of flags that represent the state of the quick menu. Return true if the menu will
+         * be handled and execute |callback| either synchronously or asynchronously with the selected command
+         * ID. Return false to cancel the menu.
+         *
+         * @see CefContextMenuHandler::RunQuickMenu
+         */
         public function runQuickMenu(\Cefloom\Browser $browser, \Cefloom\Frame $frame, \Cefloom\Point $location, \Cefloom\Size $size, int $editStateFlags, \Cefloom\RunQuickMenuCallback $callback): bool {}
+        /**
+         * Called to execute a command selected from the quick menu for a windowless browser. Return true if
+         * the command was handled or false for the default implementation. See cef_menu_id_t for command IDs
+         * that have default implementations.
+         *
+         * @see CefContextMenuHandler::OnQuickMenuCommand
+         */
         public function onQuickMenuCommand(\Cefloom\Browser $browser, \Cefloom\Frame $frame, int $commandId, int $eventFlags): bool {}
+        /**
+         * Called when the quick menu for a windowless browser is dismissed irregardless of whether the menu
+         * was canceled or a command was selected.
+         *
+         * @see CefContextMenuHandler::OnQuickMenuDismissed
+         */
         public function onQuickMenuDismissed(\Cefloom\Browser $browser, \Cefloom\Frame $frame): void {}
     }
 
+    /**
+     * Provides information about the context menu state. The methods of this class can only be accessed on
+     * browser process the UI thread.
+     *
+     * @see CefContextMenuParams
+     */
     final class ContextMenuParams {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the X coordinate of the mouse where the context menu was invoked. Coords are relative to
+         * the associated RenderView's origin.
+         *
+         * @see CefContextMenuParams::GetXCoord
+         */
         public function getXCoord(): int {}
+        /**
+         * Returns the Y coordinate of the mouse where the context menu was invoked. Coords are relative to
+         * the associated RenderView's origin.
+         *
+         * @see CefContextMenuParams::GetYCoord
+         */
         public function getYCoord(): int {}
+        /**
+         * Returns flags representing the type of node that the context menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetTypeFlags
+         */
         public function getTypeFlags(): int {}
+        /**
+         * Returns the URL of the link, if any, that encloses the node that the context menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetLinkUrl
+         */
         public function getLinkUrl(): string {}
+        /**
+         * Returns the link URL, if any, to be used ONLY for "copy link address". We don't validate this field
+         * in the frontend process.
+         *
+         * @see CefContextMenuParams::GetUnfilteredLinkUrl
+         */
         public function getUnfilteredLinkUrl(): string {}
+        /**
+         * Returns the source URL, if any, for the element that the context menu was invoked on. Example of
+         * elements with source URLs are img, audio, and video.
+         *
+         * @see CefContextMenuParams::GetSourceUrl
+         */
         public function getSourceUrl(): string {}
+        /**
+         * Returns true if the context menu was invoked on an image which has non-empty contents.
+         *
+         * @see CefContextMenuParams::HasImageContents
+         */
         public function hasImageContents(): bool {}
+        /**
+         * Returns the title text or the alt text if the context menu was invoked on an image.
+         *
+         * @see CefContextMenuParams::GetTitleText
+         */
         public function getTitleText(): string {}
+        /**
+         * Returns the URL of the top level page that the context menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetPageUrl
+         */
         public function getPageUrl(): string {}
+        /**
+         * Returns the URL of the subframe that the context menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetFrameUrl
+         */
         public function getFrameUrl(): string {}
+        /**
+         * Returns the character encoding of the subframe that the context menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetFrameCharset
+         */
         public function getFrameCharset(): string {}
+        /**
+         * Returns the type of context node that the context menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetMediaType
+         */
         public function getMediaType(): int {}
+        /**
+         * Returns flags representing the actions supported by the media element, if any, that the context
+         * menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetMediaStateFlags
+         */
         public function getMediaStateFlags(): int {}
+        /**
+         * Returns the text of the selection, if any, that the context menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetSelectionText
+         */
         public function getSelectionText(): string {}
+        /**
+         * Returns the text of the misspelled word, if any, that the context menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetMisspelledWord
+         */
         public function getMisspelledWord(): string {}
+        /**
+         * Returns true if suggestions exist, false otherwise. Fills in |suggestions| from the spell check
+         * service for the misspelled word if there is one.
+         *
+         * @see CefContextMenuParams::GetDictionarySuggestions
+         */
         public function getDictionarySuggestions(): ?array {}
+        /**
+         * Returns true if the context menu was invoked on an editable node.
+         *
+         * @see CefContextMenuParams::IsEditable
+         */
         public function isEditable(): bool {}
+        /**
+         * Returns true if the context menu was invoked on an editable node where spell-check is enabled.
+         *
+         * @see CefContextMenuParams::IsSpellCheckEnabled
+         */
         public function isSpellCheckEnabled(): bool {}
+        /**
+         * Returns flags representing the actions supported by the editable node, if any, that the context
+         * menu was invoked on.
+         *
+         * @see CefContextMenuParams::GetEditStateFlags
+         */
         public function getEditStateFlags(): int {}
+        /**
+         * Returns true if the context menu contains items specified by the renderer process.
+         *
+         * @see CefContextMenuParams::IsCustomMenu
+         */
         public function isCustomMenu(): bool {}
     }
 
+    /**
+     * Implement this interface to filter cookies that may be sent or received from resource requests. The
+     * methods of this class will be called on the IO thread unless otherwise indicated.
+     *
+     * @see CefCookieAccessFilter
+     */
     class CookieAccessFilter {
+        /**
+         * Called on the IO thread before a resource request is sent. The |browser| and |frame| values
+         * represent the source of the request, and may be NULL for requests originating from service workers
+         * or CefURLRequest. |request| cannot be modified in this callback. Return true if the specified
+         * cookie can be sent with the request or false otherwise.
+         *
+         * @see CefCookieAccessFilter::CanSendCookie
+         */
         public function canSendCookie(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request, \Cefloom\Cookie $cookie): bool {}
+        /**
+         * Called on the IO thread after a resource response is received. The |browser| and |frame| values
+         * represent the source of the request, and may be NULL for requests originating from service workers
+         * or CefURLRequest. |request| cannot be modified in this callback. Return true if the specified
+         * cookie returned with the response can be saved or false otherwise.
+         *
+         * @see CefCookieAccessFilter::CanSaveCookie
+         */
         public function canSaveCookie(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request, \Cefloom\Response $response, \Cefloom\Cookie $cookie): bool {}
     }
 
+    /**
+     * Class used for managing cookies. The methods of this class may be called on any thread unless otherwise
+     * indicated.
+     *
+     * @see CefCookieManager
+     */
     final class CookieManager {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Visit all cookies on the UI thread. The returned cookies are ordered by longest path, then by
+         * earliest creation date. Returns false if cookies cannot be accessed.
+         *
+         * @see CefCookieManager::VisitAllCookies
+         */
         public function visitAllCookies(\Cefloom\CookieVisitor $visitor): bool {}
+        /**
+         * Visit a subset of cookies on the UI thread. The results are filtered by the given url scheme, host,
+         * domain and path. If |includeHttpOnly| is true HTTP-only cookies will also be included in the
+         * results. The returned cookies are ordered by longest path, then by earliest creation date. Returns
+         * false if cookies cannot be accessed.
+         *
+         * @see CefCookieManager::VisitUrlCookies
+         */
         public function visitUrlCookies(string $url, bool $includeHttpOnly, \Cefloom\CookieVisitor $visitor): bool {}
+        /**
+         * Sets a cookie given a valid URL and explicit user-provided cookie attributes. This function expects
+         * each attribute to be well-formed. It will check for disallowed characters (e.g. the ';' character
+         * is disallowed within the cookie value attribute) and fail without setting the cookie if such
+         * characters are found. If |callback| is non-NULL it will be executed asnychronously on the UI thread
+         * after the cookie has been set. Returns false if an invalid URL is specified or if cookies cannot be
+         * accessed.
+         *
+         * @see CefCookieManager::SetCookie
+         */
         public function setCookie(string $url, \Cefloom\Cookie $cookie, ?\Cefloom\SetCookieCallback $callback): bool {}
+        /**
+         * Delete all cookies that match the specified parameters. If both |url| and |cookie_name| values are
+         * specified all host and domain cookies matching both will be deleted. If only |url| is specified all
+         * host cookies (but not domain cookies) irrespective of path will be deleted. If |url| is empty all
+         * cookies for all hosts and domains will be deleted. If |callback| is non-NULL it will be executed
+         * asnychronously on the UI thread after the cookies have been deleted. Returns false if a non-empty
+         * invalid URL is specified or if cookies cannot be accessed. Cookies can alternately be deleted using
+         * the Visit*Cookies() methods.
+         *
+         * @see CefCookieManager::DeleteCookies
+         */
         public function deleteCookies(string $url, string $cookieName, ?\Cefloom\DeleteCookiesCallback $callback): bool {}
+        /**
+         * Flush the backing store (if any) to disk. If |callback| is non-NULL it will be executed
+         * asnychronously on the UI thread after the flush is complete. Returns false if cookies cannot be
+         * accessed.
+         *
+         * @see CefCookieManager::FlushStore
+         */
         public function flushStore(?\Cefloom\CompletionCallback $callback): bool {}
+        /**
+         * Returns the global cookie manager. By default data will be stored at cef_settings_t.cache_path if
+         * specified or in memory otherwise. If |callback| is non-NULL it will be executed asnychronously on
+         * the UI thread after the manager's storage has been initialized. Using this method is equivalent to
+         * calling CefRequestContext::GetGlobalContext()->GetDefaultCookieManager().
+         *
+         * @see CefCookieManager::GetGlobalManager
+         */
         public static function getGlobalManager(?\Cefloom\CompletionCallback $callback): ?\Cefloom\CookieManager {}
     }
 
+    /**
+     * Interface to implement for visiting cookie values. The methods of this class will always be called on
+     * the UI thread.
+     *
+     * @see CefCookieVisitor
+     */
     abstract class CookieVisitor {
+        /**
+         * Method that will be called once for each cookie. |count| is the 0-based index for the current
+         * cookie. |total| is the total number of cookies. Set |deleteCookie| to true to delete the cookie
+         * currently being visited. Return false to stop visiting cookies. This method may never be called if
+         * no cookies are found.
+         *
+         * @see CefCookieVisitor::Visit
+         */
         public abstract function visit(\Cefloom\Cookie $cookie, int $count, int $total): array ;
     }
 
+    /**
+     * Interface to implement to be notified of asynchronous completion via CefCookieManager::DeleteCookies().
+     *
+     * @see CefDeleteCookiesCallback
+     */
     abstract class DeleteCookiesCallback {
+        /**
+         * Method that will be called upon completion. |num_deleted| will be the number of cookies that were
+         * deleted.
+         *
+         * @see CefDeleteCookiesCallback::OnComplete
+         */
         public abstract function onComplete(int $numDeleted): void ;
     }
 
+    /**
+     * Callback interface for CefBrowserHost::AddDevToolsMessageObserver. The methods of this class will be
+     * called on the browser process UI thread.
+     *
+     * @see CefDevToolsMessageObserver
+     */
     class DevToolsMessageObserver {
+        /**
+         * Method that will be called on receipt of a DevTools protocol message. |browser| is the originating
+         * browser instance. |message| is a UTF8-encoded JSON dictionary representing either a method result
+         * or an event. |message| is only valid for the scope of this callback and should be copied if
+         * necessary. Return true if the message was handled or false if the message should be further
+         * processed and passed to the OnDevToolsMethodResult or OnDevToolsEvent methods as appropriate.
+         *
+         * Method result dictionaries include an "id" (int) value that identifies the orginating method call
+         * sent from CefBrowserHost::SendDevToolsMessage, and optionally either a "result" (dictionary) or
+         * "error" (dictionary) value. The "error" dictionary will contain "code" (int) and "message" (string)
+         * values. Event dictionaries include a "method" (string) value and optionally a "params" (dictionary)
+         * value. See the DevTools protocol documentation at https://chromedevtools.github.io/devtools-
+         * protocol/ for details of supported method calls and the expected "result" or "params" dictionary
+         * contents. JSON dictionaries can be parsed using the CefParseJSON function if desired, however be
+         * aware of performance considerations when parsing large messages (some of which may exceed 1MB in
+         * size).
+         *
+         * @see CefDevToolsMessageObserver::OnDevToolsMessage
+         */
         public function onDevToolsMessage(\Cefloom\Browser $browser, \Cefloom\Buffer $message): bool {}
+        /**
+         * Method that will be called after attempted execution of a DevTools protocol method. |browser| is
+         * the originating browser instance. |message_id| is the "id" value that identifies the originating
+         * method call message. If the method succeeded |success| will be true and |result| will be the
+         * UTF8-encoded JSON "result" dictionary value (which may be empty). If the method failed |success|
+         * will be false and |result| will be the UTF8-encoded JSON "error" dictionary value. |result| is only
+         * valid for the scope of this callback and should be copied if necessary. See the OnDevToolsMessage
+         * documentation for additional details on |result| contents.
+         *
+         * @see CefDevToolsMessageObserver::OnDevToolsMethodResult
+         */
         public function onDevToolsMethodResult(\Cefloom\Browser $browser, int $messageId, bool $success, ?\Cefloom\Buffer $result): void {}
+        /**
+         * Method that will be called on receipt of a DevTools protocol event. |browser| is the originating
+         * browser instance. |method| is the "method" value. |params| is the UTF8-encoded JSON "params"
+         * dictionary value (which may be empty). |params| is only valid for the scope of this callback and
+         * should be copied if necessary. See the OnDevToolsMessage documentation for additional details on
+         * |params| contents.
+         *
+         * @see CefDevToolsMessageObserver::OnDevToolsEvent
+         */
         public function onDevToolsEvent(\Cefloom\Browser $browser, string $method, ?\Cefloom\Buffer $params): void {}
+        /**
+         * Method that will be called when the DevTools agent has attached. |browser| is the originating
+         * browser instance. This will generally occur in response to the first message sent while the agent
+         * is detached.
+         *
+         * @see CefDevToolsMessageObserver::OnDevToolsAgentAttached
+         */
         public function onDevToolsAgentAttached(\Cefloom\Browser $browser): void {}
+        /**
+         * Method that will be called when the DevTools agent has detached. |browser| is the originating
+         * browser instance. Any method results that were pending before the agent became detached will not be
+         * delivered, and any active event subscriptions will be canceled.
+         *
+         * @see CefDevToolsMessageObserver::OnDevToolsAgentDetached
+         */
         public function onDevToolsAgentDetached(\Cefloom\Browser $browser): void {}
     }
 
+    /**
+     * Implement this interface to handle dialog events. The methods of this class will be called on the
+     * browser process UI thread.
+     *
+     * @see CefDialogHandler
+     */
     class DialogHandler {
+        /**
+         * Called to run a file chooser dialog. |mode| represents the type of dialog to display. |title| to
+         * the title to be used for the dialog and may be empty to show the default title ("Open" or "Save"
+         * depending on the mode). |default_file_path| is the path with optional directory and/or file name
+         * component that should be initially selected in the dialog. |accept_filters| are used to restrict
+         * the selectable file types and may be any combination of valid lower-cased MIME types (e.g. "text/*"
+         * or "image/*") and individual file extensions (e.g. ".txt" or ".png"). |accept_extensions| provides
+         * the semicolon-delimited expansion of MIME types to file extensions (if known, or empty string
+         * otherwise). |accept_descriptions| provides the descriptions for MIME types (if known, or empty
+         * string otherwise). For example, the "image/*" mime type might have extensions ".png;.jpg;.bmp;..."
+         * and description "Image Files". |accept_filters|, |accept_extensions| and |accept_descriptions| will
+         * all be the same size. To display a custom dialog return true and execute |callback| either inline
+         * or at a later time. To display the default dialog return false. If this method returns false it may
+         * be called an additional time for the same dialog (both before and after MIME type expansion).
+         *
+         * @see CefDialogHandler::OnFileDialog
+         */
         public function onFileDialog(\Cefloom\Browser $browser, int $mode, string $title, string $defaultFilePath, array $acceptFilters, array $acceptExtensions, array $acceptDescriptions, \Cefloom\FileDialogCallback $callback): bool {}
     }
 
+    /**
+     * Class representing a dictionary value. Can be used on any process and thread.
+     *
+     * @see CefDictionaryValue
+     */
     final class DictionaryValue {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid. This object may become invalid if the underlying data is
+         * owned by another object (e.g. list or dictionary) and that other object is then modified or
+         * destroyed. Do not call any other methods if this method returns false.
+         *
+         * @see CefDictionaryValue::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if this object is currently owned by another object.
+         *
+         * @see CefDictionaryValue::IsOwned
+         */
         public function isOwned(): bool {}
+        /**
+         * Returns true if the values of this object are read-only. Some APIs may expose read-only objects.
+         *
+         * @see CefDictionaryValue::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Returns true if this object and |that| object have the same underlying data. If true modifications
+         * to this object will also affect |that| object and vice-versa.
+         *
+         * @see CefDictionaryValue::IsSame
+         */
         public function isSame(\Cefloom\DictionaryValue $that): bool {}
+        /**
+         * Returns true if this object and |that| object have an equivalent underlying value but are not
+         * necessarily the same object.
+         *
+         * @see CefDictionaryValue::IsEqual
+         */
         public function isEqual(\Cefloom\DictionaryValue $that): bool {}
+        /**
+         * Returns a writable copy of this object. If |exclude_empty_children| is true any empty dictionaries
+         * or lists will be excluded from the copy.
+         *
+         * @see CefDictionaryValue::Copy
+         */
         public function copy(bool $excludeEmptyChildren): ?\Cefloom\DictionaryValue {}
+        /**
+         * Returns the number of values.
+         *
+         * @see CefDictionaryValue::GetSize
+         */
         public function getSize(): int {}
+        /**
+         * Removes all values. Returns true on success.
+         *
+         * @see CefDictionaryValue::Clear
+         */
         public function clear(): bool {}
+        /**
+         * Returns true if the current dictionary has a value for the given key.
+         *
+         * @see CefDictionaryValue::HasKey
+         */
         public function hasKey(string $key): bool {}
+        /**
+         * Reads all keys for this dictionary into the specified vector.
+         *
+         * @see CefDictionaryValue::GetKeys
+         */
         public function getKeys(): ?array {}
+        /**
+         * Removes the value at the specified key. Returns true is the value was removed successfully.
+         *
+         * @see CefDictionaryValue::Remove
+         */
         public function remove(string $key): bool {}
+        /**
+         * Returns the value type for the specified key.
+         *
+         * @see CefDictionaryValue::GetType
+         */
         public function getType(string $key): int {}
+        /**
+         * Returns the value at the specified key. For simple types the returned value will copy existing data
+         * and modifications to the value will not modify this object. For complex types (binary, dictionary
+         * and list) the returned value will reference existing data and modifications to the value will
+         * modify this object.
+         *
+         * @see CefDictionaryValue::GetValue
+         */
         public function getValue(string $key): ?\Cefloom\Value {}
+        /**
+         * Returns the value at the specified key as type bool.
+         *
+         * @see CefDictionaryValue::GetBool
+         */
         public function getBool(string $key): bool {}
+        /**
+         * Returns the value at the specified key as type int.
+         *
+         * @see CefDictionaryValue::GetInt
+         */
         public function getInt(string $key): int {}
+        /**
+         * Returns the value at the specified key as type double.
+         *
+         * @see CefDictionaryValue::GetDouble
+         */
         public function getDouble(string $key): float {}
+        /**
+         * Returns the value at the specified key as type string.
+         *
+         * @see CefDictionaryValue::GetString
+         */
         public function getString(string $key): string {}
+        /**
+         * Returns the value at the specified key as type binary. The returned value will reference existing
+         * data.
+         *
+         * @see CefDictionaryValue::GetBinary
+         */
         public function getBinary(string $key): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns the value at the specified key as type dictionary. The returned value will reference
+         * existing data and modifications to the value will modify this object.
+         *
+         * @see CefDictionaryValue::GetDictionary
+         */
         public function getDictionary(string $key): ?\Cefloom\DictionaryValue {}
+        /**
+         * Returns the value at the specified key as type list. The returned value will reference existing
+         * data and modifications to the value will modify this object.
+         *
+         * @see CefDictionaryValue::GetList
+         */
         public function getList(string $key): ?\Cefloom\ListValue {}
+        /**
+         * Sets the value at the specified key. Returns true if the value was set successfully. If |value|
+         * represents simple data then the underlying data will be copied and modifications to |value| will
+         * not modify this object. If |value| represents complex data (binary, dictionary or list) then the
+         * underlying data will be referenced and modifications to |value| will modify this object.
+         *
+         * @see CefDictionaryValue::SetValue
+         */
         public function setValue(string $key, \Cefloom\Value $value): bool {}
+        /**
+         * Sets the value at the specified key as type null. Returns true if the value was set successfully.
+         *
+         * @see CefDictionaryValue::SetNull
+         */
         public function setNull(string $key): bool {}
+        /**
+         * Sets the value at the specified key as type bool. Returns true if the value was set successfully.
+         *
+         * @see CefDictionaryValue::SetBool
+         */
         public function setBool(string $key, bool $value): bool {}
+        /**
+         * Sets the value at the specified key as type int. Returns true if the value was set successfully.
+         *
+         * @see CefDictionaryValue::SetInt
+         */
         public function setInt(string $key, int $value): bool {}
+        /**
+         * Sets the value at the specified key as type double. Returns true if the value was set successfully.
+         *
+         * @see CefDictionaryValue::SetDouble
+         */
         public function setDouble(string $key, float $value): bool {}
+        /**
+         * Sets the value at the specified key as type string. Returns true if the value was set successfully.
+         *
+         * @see CefDictionaryValue::SetString
+         */
         public function setString(string $key, string $value): bool {}
+        /**
+         * Sets the value at the specified key as type binary. Returns true if the value was set successfully.
+         * If |value| is currently owned by another object then the value will be copied and the |value|
+         * reference will not change. Otherwise, ownership will be transferred to this object and the |value|
+         * reference will be invalidated.
+         *
+         * @see CefDictionaryValue::SetBinary
+         */
         public function setBinary(string $key, \Cefloom\BinaryValue $value): bool {}
+        /**
+         * Sets the value at the specified key as type dict. Returns true if the value was set successfully.
+         * If |value| is currently owned by another object then the value will be copied and the |value|
+         * reference will not change. Otherwise, ownership will be transferred to this object and the |value|
+         * reference will be invalidated.
+         *
+         * @see CefDictionaryValue::SetDictionary
+         */
         public function setDictionary(string $key, \Cefloom\DictionaryValue $value): bool {}
+        /**
+         * Sets the value at the specified key as type list. Returns true if the value was set successfully.
+         * If |value| is currently owned by another object then the value will be copied and the |value|
+         * reference will not change. Otherwise, ownership will be transferred to this object and the |value|
+         * reference will be invalidated.
+         *
+         * @see CefDictionaryValue::SetList
+         */
         public function setList(string $key, \Cefloom\ListValue $value): bool {}
+        /**
+         * Creates a new object that is not owned by any other object.
+         *
+         * @see CefDictionaryValue::Create
+         */
         public static function create(): ?\Cefloom\DictionaryValue {}
     }
 
+    /**
+     * This class typically, but not always, corresponds to a physical display connected to the system. A fake
+     * Display may exist on a headless system, or a Display may correspond to a remote, virtual display. All
+     * size and position values are in density independent pixel (DIP) coordinates unless otherwise indicated.
+     * Methods must be called on the browser process UI thread unless otherwise indicated.
+     *
+     * For details on coordinate systems and usage see
+     * https://chromiumembedded.github.io/cef/general_usage#coordinate-systems
+     *
+     * @see CefDisplay
+     */
     final class Display {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the unique identifier for this Display.
+         *
+         * @see CefDisplay::GetID
+         */
         public function getID(): int {}
+        /**
+         * Returns this Display's device pixel scale factor. This specifies how much the UI should be scaled
+         * when the actual output has more pixels than standard displays (which is around 100~120dpi). The
+         * potential return values differ by platform. Windowed browsers with 1.0 zoom will have a JavaScript
+         * `window.devicePixelRatio` value matching the associated Display's GetDeviceScaleFactor() value.
+         *
+         * @see CefDisplay::GetDeviceScaleFactor
+         */
         public function getDeviceScaleFactor(): float {}
+        /**
+         * Convert |point| from DIP coordinates to pixel coordinates using this Display's device scale factor.
+         *
+         * @see CefDisplay::ConvertPointToPixels
+         */
         public function convertPointToPixels(\Cefloom\Point $point): \Cefloom\Point {}
+        /**
+         * Convert |point| from pixel coordinates to DIP coordinates using this Display's device scale factor.
+         *
+         * @see CefDisplay::ConvertPointFromPixels
+         */
         public function convertPointFromPixels(\Cefloom\Point $point): \Cefloom\Point {}
+        /**
+         * Returns this Display's bounds in DIP screen coordinates. This is the full size of the display.
+         *
+         * @see CefDisplay::GetBounds
+         */
         public function getBounds(): \Cefloom\Rect {}
+        /**
+         * Returns this Display's work area in DIP screen coordinates. This excludes areas of the display that
+         * are occupied with window manager toolbars, etc.
+         *
+         * @see CefDisplay::GetWorkArea
+         */
         public function getWorkArea(): \Cefloom\Rect {}
+        /**
+         * Returns this Display's rotation in degrees.
+         *
+         * @see CefDisplay::GetRotation
+         */
         public function getRotation(): int {}
+        /**
+         * Returns the primary Display.
+         *
+         * @see CefDisplay::GetPrimaryDisplay
+         */
         public static function getPrimaryDisplay(): ?\Cefloom\Display {}
+        /**
+         * Returns the Display nearest |point|. Set |input_pixel_coords| to true if |point| is in pixel screen
+         * coordinates instead of DIP screen coordinates.
+         *
+         * @see CefDisplay::GetDisplayNearestPoint
+         */
         public static function getDisplayNearestPoint(\Cefloom\Point $point, bool $inputPixelCoords): ?\Cefloom\Display {}
+        /**
+         * Returns the Display that most closely intersects |bounds|.  Set |input_pixel_coords| to true if
+         * |bounds| is in pixel screen coordinates instead of DIP screen coordinates.
+         *
+         * @see CefDisplay::GetDisplayMatchingBounds
+         */
         public static function getDisplayMatchingBounds(\Cefloom\Rect $bounds, bool $inputPixelCoords): ?\Cefloom\Display {}
+        /**
+         * Returns the total number of Displays. Mirrored displays are excluded; this method is intended to
+         * return the number of distinct, usable displays.
+         *
+         * @see CefDisplay::GetDisplayCount
+         */
         public static function getDisplayCount(): int {}
+        /**
+         * Returns all Displays. Mirrored displays are excluded; this method is intended to return distinct,
+         * usable displays.
+         *
+         * @see CefDisplay::GetAllDisplays
+         */
         public static function getAllDisplays(): array {}
+        /**
+         * Convert |point| from DIP screen coordinates to pixel screen coordinates. This method is only used
+         * on Windows.
+         *
+         * @see CefDisplay::ConvertScreenPointToPixels
+         */
         public static function convertScreenPointToPixels(\Cefloom\Point $point): \Cefloom\Point {}
+        /**
+         * Convert |point| from pixel screen coordinates to DIP screen coordinates. This method is only used
+         * on Windows.
+         *
+         * @see CefDisplay::ConvertScreenPointFromPixels
+         */
         public static function convertScreenPointFromPixels(\Cefloom\Point $point): \Cefloom\Point {}
+        /**
+         * Convert |rect| from DIP screen coordinates to pixel screen coordinates. This method is only used on
+         * Windows.
+         *
+         * @see CefDisplay::ConvertScreenRectToPixels
+         */
         public static function convertScreenRectToPixels(\Cefloom\Rect $rect): \Cefloom\Rect {}
+        /**
+         * Convert |rect| from pixel screen coordinates to DIP screen coordinates. This method is only used on
+         * Windows.
+         *
+         * @see CefDisplay::ConvertScreenRectFromPixels
+         */
         public static function convertScreenRectFromPixels(\Cefloom\Rect $rect): \Cefloom\Rect {}
     }
 
+    /**
+     * Implement this interface to handle events related to browser display state. The methods of this class
+     * will be called on the UI thread.
+     *
+     * @see CefDisplayHandler
+     */
     class DisplayHandler {
+        /**
+         * Called when a frame's address has changed.
+         *
+         * @see CefDisplayHandler::OnAddressChange
+         */
         public function onAddressChange(\Cefloom\Browser $browser, \Cefloom\Frame $frame, string $url): void {}
+        /**
+         * Called when the page title changes.
+         *
+         * @see CefDisplayHandler::OnTitleChange
+         */
         public function onTitleChange(\Cefloom\Browser $browser, string $title): void {}
+        /**
+         * Called when the page icon changes.
+         *
+         * @see CefDisplayHandler::OnFaviconURLChange
+         */
         public function onFaviconURLChange(\Cefloom\Browser $browser, array $iconUrls): void {}
+        /**
+         * Called when web content in the page has toggled fullscreen mode. If |fullscreen| is true the
+         * content will automatically be sized to fill the browser content area. If |fullscreen| is false the
+         * content will automatically return to its original size and position. With Alloy style the client is
+         * responsible for triggering the fullscreen transition (for example, by calling
+         * CefWindow::SetFullscreen when using Views). With Chrome style the fullscreen transition will be
+         * triggered automatically. The CefWindowDelegate::OnWindowFullscreenTransition method will be called
+         * during the fullscreen transition for notification purposes.
+         *
+         * @see CefDisplayHandler::OnFullscreenModeChange
+         */
         public function onFullscreenModeChange(\Cefloom\Browser $browser, bool $fullscreen): void {}
+        /**
+         * Called when the browser is about to display a tooltip. |text| contains the text that will be
+         * displayed in the tooltip. To handle the display of the tooltip yourself return true. Otherwise, you
+         * can optionally modify |text| and then return false to allow the browser to display the tooltip.
+         * When window rendering is disabled the application is responsible for drawing tooltips and the
+         * return value is ignored.
+         *
+         * @see CefDisplayHandler::OnTooltip
+         */
         public function onTooltip(\Cefloom\Browser $browser): array {}
+        /**
+         * Called when the browser receives a status message. |value| contains the text that will be displayed
+         * in the status message.
+         *
+         * @see CefDisplayHandler::OnStatusMessage
+         */
         public function onStatusMessage(\Cefloom\Browser $browser, string $value): void {}
+        /**
+         * Called to display a console message. Return true to stop the message from being output to the
+         * console.
+         *
+         * @see CefDisplayHandler::OnConsoleMessage
+         */
         public function onConsoleMessage(\Cefloom\Browser $browser, int $level, string $message, string $source, int $line): bool {}
+        /**
+         * Called when auto-resize is enabled via CefBrowserHost::SetAutoResizeEnabled and the contents have
+         * auto-resized. |new_size| will be the desired size in DIP coordinates. Return true if the resize was
+         * handled or false for default handling.
+         *
+         * @see CefDisplayHandler::OnAutoResize
+         */
         public function onAutoResize(\Cefloom\Browser $browser, \Cefloom\Size $newSize): bool {}
+        /**
+         * Called when the overall page loading progress has changed. |progress| ranges from 0.0 to 1.0.
+         *
+         * @see CefDisplayHandler::OnLoadingProgressChange
+         */
         public function onLoadingProgressChange(\Cefloom\Browser $browser, float $progress): void {}
+        /**
+         * Called when the browser's cursor has changed. If |type| is CT_CUSTOM then |custom_cursor_info| will
+         * be populated with the custom cursor information. Return true if the cursor change was handled or
+         * false for default handling.
+         *
+         * @see CefDisplayHandler::OnCursorChange
+         */
         public function onCursorChange(\Cefloom\Browser $browser, int $type): bool {}
+        /**
+         * Called when the browser's access to an audio and/or video source has changed.
+         *
+         * @see CefDisplayHandler::OnMediaAccessChange
+         */
         public function onMediaAccessChange(\Cefloom\Browser $browser, bool $hasVideoAccess, bool $hasAudioAccess): void {}
+        /**
+         * Called when JavaScript is requesting new bounds via window.moveTo/By() or window.resizeTo/By().
+         * |new_bounds| are in DIP screen coordinates.
+         *
+         * With Views-hosted browsers |new_bounds| are the desired bounds for the containing CefWindow and may
+         * be passed directly to CefWindow::SetBounds. With external (client-provided) parent on macOS and
+         * Windows |new_bounds| are the desired frame bounds for the containing root window. With other non-
+         * Views browsers |new_bounds| are the desired bounds for the browser content only unless the client
+         * implements either CefDisplayHandler::GetRootWindowScreenRect for windowed browsers or
+         * CefRenderHandler::GetWindowScreenRect for windowless browsers. Clients may expand browser content
+         * bounds to window bounds using OS-specific or CefDisplay methods.
+         *
+         * Return true if this method was handled or false for default handling. Default move/resize behavior
+         * is only provided with Views-hosted Chrome style browsers.
+         *
+         * @see CefDisplayHandler::OnContentsBoundsChange
+         */
         public function onContentsBoundsChange(\Cefloom\Browser $browser, \Cefloom\Rect $newBounds): bool {}
+        /**
+         * Called to retrieve the external (client-provided) root window rectangle in screen DIP coordinates.
+         * Only called for windowed browsers on Windows and Linux. Return true if the rectangle was provided.
+         * Return false to use the root window bounds on Windows or the browser content bounds on Linux. For
+         * additional usage details see CefBrowserHost::NotifyScreenInfoChanged.
+         *
+         * @see CefDisplayHandler::GetRootWindowScreenRect
+         */
         public function getRootWindowScreenRect(\Cefloom\Browser $browser): array {}
     }
 
+    /**
+     * Class used to handle file downloads. The methods of this class will called on the browser process UI
+     * thread.
+     *
+     * @see CefDownloadHandler
+     */
     class DownloadHandler {
+        /**
+         * Called before a download begins in response to a user-initiated action (e.g. alt + link click or
+         * link click that returns a `Content-Disposition: attachment` response from the server). |url| is the
+         * target download URL and |request_method| is the target method (GET, POST, etc). Return true to
+         * proceed with the download or false to cancel the download. This method is not called for downloads
+         * initiated by CefBrowserHost::StartDownload().
+         *
+         * @see CefDownloadHandler::CanDownload
+         */
         public function canDownload(\Cefloom\Browser $browser, string $url, string $requestMethod): bool {}
+        /**
+         * Called before a download begins. |suggested_name| is the suggested name for the download file.
+         * Return true and execute |callback| either asynchronously or in this method to continue the
+         * download. Return false to proceed with default handling (cancel with Alloy style, default download
+         * handling with Chrome style). To cancel the download with either style execute the callback passed
+         * to OnDownloadUpdated(). If this method returns true and |callback| is destroyed without being
+         * executed, the download will be canceled. Do not keep a reference to |download_item| outside of this
+         * method.
+         *
+         * @see CefDownloadHandler::OnBeforeDownload
+         */
         public function onBeforeDownload(\Cefloom\Browser $browser, \Cefloom\DownloadItem $downloadItem, string $suggestedName, \Cefloom\BeforeDownloadCallback $callback): bool {}
+        /**
+         * Called when a download's status or progress information has been updated. This may be called
+         * multiple times before and after OnBeforeDownload(). Execute |callback| either asynchronously or in
+         * this method to cancel the download if desired. Do not keep a reference to |download_item| outside
+         * of this method.
+         *
+         * @see CefDownloadHandler::OnDownloadUpdated
+         */
         public function onDownloadUpdated(\Cefloom\Browser $browser, \Cefloom\DownloadItem $downloadItem, \Cefloom\DownloadItemCallback $callback): void {}
     }
 
+    /**
+     * Callback interface for CefBrowserHost::DownloadImage. The methods of this class will be called on the
+     * browser process UI thread.
+     *
+     * @see CefDownloadImageCallback
+     */
     abstract class DownloadImageCallback {
+        /**
+         * Method that will be executed when the image download has completed. |image_url| is the URL that was
+         * downloaded and |http_status_code| is the resulting HTTP status code. |image| is the resulting
+         * image, possibly at multiple scale factors, or empty if the download failed.
+         *
+         * @see CefDownloadImageCallback::OnDownloadImageFinished
+         */
         public abstract function onDownloadImageFinished(string $imageUrl, int $httpStatusCode, ?\Cefloom\Image $image): void ;
     }
 
+    /**
+     * Class used to represent a download item.
+     *
+     * @see CefDownloadItem
+     */
     final class DownloadItem {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid. Do not call any other methods if this function returns false.
+         *
+         * @see CefDownloadItem::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if the download is in progress.
+         *
+         * @see CefDownloadItem::IsInProgress
+         */
         public function isInProgress(): bool {}
+        /**
+         * Returns true if the download is complete.
+         *
+         * @see CefDownloadItem::IsComplete
+         */
         public function isComplete(): bool {}
+        /**
+         * Returns true if the download has been canceled.
+         *
+         * @see CefDownloadItem::IsCanceled
+         */
         public function isCanceled(): bool {}
+        /**
+         * Returns true if the download has been interrupted.
+         *
+         * @see CefDownloadItem::IsInterrupted
+         */
         public function isInterrupted(): bool {}
+        /**
+         * Returns true if the download has been paused.
+         *
+         * @see CefDownloadItem::IsPaused
+         */
         public function isPaused(): bool {}
+        /**
+         * Returns the most recent interrupt reason.
+         *
+         * @see CefDownloadItem::GetInterruptReason
+         */
         public function getInterruptReason(): int {}
+        /**
+         * Returns a simple speed estimate in bytes/s.
+         *
+         * @see CefDownloadItem::GetCurrentSpeed
+         */
         public function getCurrentSpeed(): int {}
+        /**
+         * Returns the rough percent complete or -1 if the receive total size is unknown.
+         *
+         * @see CefDownloadItem::GetPercentComplete
+         */
         public function getPercentComplete(): int {}
+        /**
+         * Returns the total number of bytes.
+         *
+         * @see CefDownloadItem::GetTotalBytes
+         */
         public function getTotalBytes(): int {}
+        /**
+         * Returns the number of received bytes.
+         *
+         * @see CefDownloadItem::GetReceivedBytes
+         */
         public function getReceivedBytes(): int {}
+        /**
+         * Returns the time that the download started.
+         *
+         * @see CefDownloadItem::GetStartTime
+         */
         public function getStartTime(): ?\DateTimeImmutable {}
+        /**
+         * Returns the time that the download ended.
+         *
+         * @see CefDownloadItem::GetEndTime
+         */
         public function getEndTime(): ?\DateTimeImmutable {}
+        /**
+         * Returns the full path to the downloaded or downloading file.
+         *
+         * @see CefDownloadItem::GetFullPath
+         */
         public function getFullPath(): string {}
+        /**
+         * Returns the unique identifier for this download.
+         *
+         * @see CefDownloadItem::GetId
+         */
         public function getId(): int {}
+        /**
+         * Returns the URL.
+         *
+         * @see CefDownloadItem::GetURL
+         */
         public function getURL(): string {}
+        /**
+         * Returns the original URL before any redirections.
+         *
+         * @see CefDownloadItem::GetOriginalUrl
+         */
         public function getOriginalUrl(): string {}
+        /**
+         * Returns the suggested file name.
+         *
+         * @see CefDownloadItem::GetSuggestedFileName
+         */
         public function getSuggestedFileName(): string {}
+        /**
+         * Returns the content disposition.
+         *
+         * @see CefDownloadItem::GetContentDisposition
+         */
         public function getContentDisposition(): string {}
+        /**
+         * Returns the mime type.
+         *
+         * @see CefDownloadItem::GetMimeType
+         */
         public function getMimeType(): string {}
     }
 
+    /**
+     * Callback interface used to asynchronously cancel a download.
+     *
+     * @see CefDownloadItemCallback
+     */
     final class DownloadItemCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Call to cancel the download.
+         *
+         * @see CefDownloadItemCallback::Cancel
+         */
         public function cancel(): void {}
+        /**
+         * Call to pause the download.
+         *
+         * @see CefDownloadItemCallback::Pause
+         */
         public function pause(): void {}
+        /**
+         * Call to resume the download.
+         *
+         * @see CefDownloadItemCallback::Resume
+         */
         public function resume(): void {}
     }
 
+    /**
+     * Class used to represent drag data. The methods of this class may be called on any thread.
+     *
+     * @see CefDragData
+     */
     final class DragData {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns a copy of the current object.
+         *
+         * @see CefDragData::Clone
+         */
         public function clone(): ?\Cefloom\DragData {}
+        /**
+         * Returns true if this object is read-only.
+         *
+         * @see CefDragData::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Returns true if the drag data is a link.
+         *
+         * @see CefDragData::IsLink
+         */
         public function isLink(): bool {}
+        /**
+         * Returns true if the drag data is a text or html fragment.
+         *
+         * @see CefDragData::IsFragment
+         */
         public function isFragment(): bool {}
+        /**
+         * Returns true if the drag data is a file.
+         *
+         * @see CefDragData::IsFile
+         */
         public function isFile(): bool {}
+        /**
+         * Return the link URL that is being dragged.
+         *
+         * @see CefDragData::GetLinkURL
+         */
         public function getLinkURL(): string {}
+        /**
+         * Return the title associated with the link being dragged.
+         *
+         * @see CefDragData::GetLinkTitle
+         */
         public function getLinkTitle(): string {}
+        /**
+         * Return the metadata, if any, associated with the link being dragged.
+         *
+         * @see CefDragData::GetLinkMetadata
+         */
         public function getLinkMetadata(): string {}
+        /**
+         * Return the plain text fragment that is being dragged.
+         *
+         * @see CefDragData::GetFragmentText
+         */
         public function getFragmentText(): string {}
+        /**
+         * Return the text/html fragment that is being dragged.
+         *
+         * @see CefDragData::GetFragmentHtml
+         */
         public function getFragmentHtml(): string {}
+        /**
+         * Return the base URL that the fragment came from. This value is used for resolving relative URLs and
+         * may be empty.
+         *
+         * @see CefDragData::GetFragmentBaseURL
+         */
         public function getFragmentBaseURL(): string {}
+        /**
+         * Return the name of the file being dragged out of the browser window.
+         *
+         * @see CefDragData::GetFileName
+         */
         public function getFileName(): string {}
+        /**
+         * Write the contents of the file being dragged out of the web view into |writer|. Returns the number
+         * of bytes sent to |writer|. If |writer| is NULL this method will return the size of the file
+         * contents in bytes. Call GetFileName() to get a suggested name for the file.
+         *
+         * @see CefDragData::GetFileContents
+         */
         public function getFileContents(?\Cefloom\StreamWriter $writer): int {}
+        /**
+         * Retrieve the list of file names that are being dragged into the browser window.
+         *
+         * @see CefDragData::GetFileNames
+         */
         public function getFileNames(): ?array {}
+        /**
+         * Retrieve the list of file paths that are being dragged into the browser window.
+         *
+         * @see CefDragData::GetFilePaths
+         */
         public function getFilePaths(): ?array {}
+        /**
+         * Set the link URL that is being dragged.
+         *
+         * @see CefDragData::SetLinkURL
+         */
         public function setLinkURL(string $url): void {}
+        /**
+         * Set the title associated with the link being dragged.
+         *
+         * @see CefDragData::SetLinkTitle
+         */
         public function setLinkTitle(string $title): void {}
+        /**
+         * Set the metadata associated with the link being dragged.
+         *
+         * @see CefDragData::SetLinkMetadata
+         */
         public function setLinkMetadata(string $data): void {}
+        /**
+         * Set the plain text fragment that is being dragged.
+         *
+         * @see CefDragData::SetFragmentText
+         */
         public function setFragmentText(string $text): void {}
+        /**
+         * Set the text/html fragment that is being dragged.
+         *
+         * @see CefDragData::SetFragmentHtml
+         */
         public function setFragmentHtml(string $html): void {}
+        /**
+         * Set the base URL that the fragment came from.
+         *
+         * @see CefDragData::SetFragmentBaseURL
+         */
         public function setFragmentBaseURL(string $baseUrl): void {}
+        /**
+         * Reset the file contents. You should do this before calling CefBrowserHost::DragTargetDragEnter as
+         * the web view does not allow us to drag in this kind of data.
+         *
+         * @see CefDragData::ResetFileContents
+         */
         public function resetFileContents(): void {}
+        /**
+         * Add a file that is being dragged into the webview.
+         *
+         * @see CefDragData::AddFile
+         */
         public function addFile(string $path, string $displayName): void {}
+        /**
+         * Clear list of filenames.
+         *
+         * @see CefDragData::ClearFilenames
+         */
         public function clearFilenames(): void {}
+        /**
+         * Get the image representation of drag data. May return NULL if no image representation is available.
+         *
+         * @see CefDragData::GetImage
+         */
         public function getImage(): ?\Cefloom\Image {}
+        /**
+         * Get the image hotspot (drag start location relative to image dimensions).
+         *
+         * @see CefDragData::GetImageHotspot
+         */
         public function getImageHotspot(): \Cefloom\Point {}
+        /**
+         * Returns true if an image representation of drag data is available.
+         *
+         * @see CefDragData::HasImage
+         */
         public function hasImage(): bool {}
+        /**
+         * Create a new CefDragData object.
+         *
+         * @see CefDragData::Create
+         */
         public static function create(): ?\Cefloom\DragData {}
     }
 
+    /**
+     * Implement this interface to handle events related to dragging. The methods of this class will be called
+     * on the UI thread.
+     *
+     * @see CefDragHandler
+     */
     class DragHandler {
+        /**
+         * Called when an external drag event enters the browser window. |dragData| contains the drag event
+         * data and |mask| represents the type of drag operation. Return false for default drag handling
+         * behavior or true to cancel the drag event.
+         *
+         * @see CefDragHandler::OnDragEnter
+         */
         public function onDragEnter(\Cefloom\Browser $browser, \Cefloom\DragData $dragData, int $mask): bool {}
+        /**
+         * Called whenever draggable regions for the browser window change. These can be specified using the
+         * '-webkit-app-region: drag/no-drag' CSS-property. If draggable regions are never defined in a
+         * document this method will also never be called. If the last draggable region is removed from a
+         * document this method will be called with an empty vector.
+         *
+         * @see CefDragHandler::OnDraggableRegionsChanged
+         */
         public function onDraggableRegionsChanged(\Cefloom\Browser $browser, \Cefloom\Frame $frame, array $regions): void {}
     }
 
+    /**
+     * Implement this interface to receive notification when tracing has completed. The methods of this class
+     * will be called on the browser process UI thread.
+     *
+     * @see CefEndTracingCallback
+     */
     abstract class EndTracingCallback {
+        /**
+         * Called after all processes have sent their trace data. |tracing_file| is the path at which tracing
+         * data was written. The client is responsible for deleting |tracing_file|.
+         *
+         * @see CefEndTracingCallback::OnEndTracingComplete
+         */
         public abstract function onEndTracingComplete(string $tracingFile): void ;
     }
 
+    /**
+     * Callback interface for asynchronous continuation of file dialog requests.
+     *
+     * @see CefFileDialogCallback
+     */
     final class FileDialogCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Continue the file selection. |file_paths| should be a single value or a list of values depending on
+         * the dialog mode. An empty |file_paths| value is treated the same as calling Cancel().
+         *
+         * @see CefFileDialogCallback::Continue
+         */
         public function continue(array $filePaths): void {}
+        /**
+         * Cancel the file selection.
+         *
+         * @see CefFileDialogCallback::Cancel
+         */
         public function cancel(): void {}
     }
 
+    /**
+     * A simple Layout that causes the associated Panel's one child to be sized to match the bounds of its
+     * parent. Methods must be called on the browser process UI thread unless otherwise indicated.
+     *
+     * @see CefFillLayout
+     */
     final class FillLayout extends Layout {
+        /** Instances are created by CEF only. */
         private function __construct() {}
     }
 
+    /**
+     * Implement this interface to handle events related to find results. The methods of this class will be
+     * called on the UI thread.
+     *
+     * @see CefFindHandler
+     */
     class FindHandler {
+        /**
+         * Called to report find results returned by CefBrowserHost::Find(). |identifer| is a unique
+         * incremental identifier for the currently active search, |count| is the number of matches currently
+         * identified, |selectionRect| is the location of where the match was found (in window coordinates),
+         * |activeMatchOrdinal| is the current position in the search results, and |finalUpdate| is true if
+         * this is the last find notification.
+         *
+         * @see CefFindHandler::OnFindResult
+         */
         public function onFindResult(\Cefloom\Browser $browser, int $identifier, int $count, \Cefloom\Rect $selectionRect, int $activeMatchOrdinal, bool $finalUpdate): void {}
     }
 
+    /**
+     * Implement this interface to handle events related to focus. The methods of this class will be called on
+     * the UI thread.
+     *
+     * @see CefFocusHandler
+     */
     class FocusHandler {
+        /**
+         * Called when the browser component is about to loose focus. For instance, if focus was on the last
+         * HTML element and the user pressed the TAB key. |next| will be true if the browser is giving focus
+         * to the next component and false if the browser is giving focus to the previous component.
+         *
+         * @see CefFocusHandler::OnTakeFocus
+         */
         public function onTakeFocus(\Cefloom\Browser $browser, bool $next): void {}
+        /**
+         * Called when the browser component is requesting focus. |source| indicates where the focus request
+         * is originating from. Return false to allow the focus to be set or true to cancel setting the focus.
+         *
+         * @see CefFocusHandler::OnSetFocus
+         */
         public function onSetFocus(\Cefloom\Browser $browser, int $source): bool {}
+        /**
+         * Called when the browser component has received focus.
+         *
+         * @see CefFocusHandler::OnGotFocus
+         */
         public function onGotFocus(\Cefloom\Browser $browser): void {}
     }
 
+    /**
+     * Class used to represent a frame in the browser window. When used in the browser process the methods of
+     * this class may be called on any thread unless otherwise indicated in the comments. When used in the
+     * render process the methods of this class may only be called on the main thread.
+     *
+     * @see CefFrame
+     */
     final class Frame {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * True if this object is currently attached to a valid frame.
+         *
+         * @see CefFrame::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Execute undo in this frame.
+         *
+         * @see CefFrame::Undo
+         */
         public function undo(): void {}
+        /**
+         * Execute redo in this frame.
+         *
+         * @see CefFrame::Redo
+         */
         public function redo(): void {}
+        /**
+         * Execute cut in this frame.
+         *
+         * @see CefFrame::Cut
+         */
         public function cut(): void {}
+        /**
+         * Execute copy in this frame.
+         *
+         * @see CefFrame::Copy
+         */
         public function copy(): void {}
+        /**
+         * Execute paste in this frame.
+         *
+         * @see CefFrame::Paste
+         */
         public function paste(): void {}
+        /**
+         * Execute paste and match style in this frame.
+         *
+         * @see CefFrame::PasteAndMatchStyle
+         */
         public function pasteAndMatchStyle(): void {}
+        /**
+         * Execute delete in this frame.
+         *
+         * @see CefFrame::Delete
+         */
         public function delete(): void {}
+        /**
+         * Execute select all in this frame.
+         *
+         * @see CefFrame::SelectAll
+         */
         public function selectAll(): void {}
+        /**
+         * Save this frame's HTML source to a temporary file and open it in the default text viewing
+         * application. This method can only be called from the browser process.
+         *
+         * @see CefFrame::ViewSource
+         */
         public function viewSource(): void {}
+        /**
+         * Retrieve this frame's HTML source as a string sent to the specified visitor.
+         *
+         * @see CefFrame::GetSource
+         */
         public function getSource(\Cefloom\StringVisitor $visitor): void {}
+        /**
+         * Retrieve this frame's display text as a string sent to the specified visitor.
+         *
+         * @see CefFrame::GetText
+         */
         public function getText(\Cefloom\StringVisitor $visitor): void {}
+        /**
+         * Load the request represented by the |request| object.
+         *
+         * WARNING: This method will fail with "bad IPC message" reason INVALID_INITIATOR_ORIGIN (213) unless
+         * you first navigate to the request origin using some other mechanism (LoadURL, link click, etc).
+         *
+         * @see CefFrame::LoadRequest
+         */
         public function loadRequest(\Cefloom\Request $request): void {}
+        /**
+         * Load the specified |url|.
+         *
+         * @see CefFrame::LoadURL
+         */
         public function loadURL(string $url): void {}
+        /**
+         * Execute a string of JavaScript code in this frame. The |script_url| parameter is the URL where the
+         * script in question can be found, if any. The renderer may request this URL to show the developer
+         * the source of the error.  The |start_line| parameter is the base line number to use for error
+         * reporting.
+         *
+         * @see CefFrame::ExecuteJavaScript
+         */
         public function executeJavaScript(string $code, string $scriptUrl, int $startLine): void {}
+        /**
+         * Returns true if this is the main (top-level) frame.
+         *
+         * @see CefFrame::IsMain
+         */
         public function isMain(): bool {}
+        /**
+         * Returns true if this is the focused frame.
+         *
+         * @see CefFrame::IsFocused
+         */
         public function isFocused(): bool {}
+        /**
+         * Returns the name for this frame. If the frame has an assigned name (for example, set via the iframe
+         * "name" attribute) then that value will be returned. Otherwise a unique name will be constructed
+         * based on the frame parent hierarchy. The main (top-level) frame will always have an empty name
+         * value.
+         *
+         * @see CefFrame::GetName
+         */
         public function getName(): string {}
+        /**
+         * Returns the globally unique identifier for this frame or empty if the underlying frame does not yet
+         * exist.
+         *
+         * @see CefFrame::GetIdentifier
+         */
         public function getIdentifier(): string {}
+        /**
+         * Returns the parent of this frame or NULL if this is the main (top-level) frame.
+         *
+         * @see CefFrame::GetParent
+         */
         public function getParent(): ?\Cefloom\Frame {}
+        /**
+         * Returns the URL currently loaded in this frame.
+         *
+         * @see CefFrame::GetURL
+         */
         public function getURL(): string {}
+        /**
+         * Returns the browser that this frame belongs to.
+         *
+         * @see CefFrame::GetBrowser
+         */
         public function getBrowser(): ?\Cefloom\Browser {}
+        /**
+         * Create a new URL request that will be treated as originating from this frame and the associated
+         * browser. Use CefURLRequest::Create instead if you do not want the request to have this association,
+         * in which case it may be handled differently (see documentation on that method). A request created
+         * with this method may only originate from the browser process, and will behave as follows: - It may
+         * be intercepted by the client via CefResourceRequestHandler or CefSchemeHandlerFactory. - POST data
+         * may only contain a single element of type PDE_TYPE_FILE or PDE_TYPE_BYTES.
+         *
+         * The |request| object will be marked as read-only after calling this method.
+         *
+         * @see CefFrame::CreateURLRequest
+         */
         public function createURLRequest(\Cefloom\Request $request, \Cefloom\URLRequestClient $client): ?\Cefloom\URLRequest {}
+        /**
+         * Send a message to the specified |target_process|. Ownership of the message contents will be
+         * transferred and the |message| reference will be invalidated. Message delivery is not guaranteed in
+         * all cases (for example, if the browser is closing, navigating, or if the target process crashes).
+         * Send an ACK message back from the target process if confirmation is required.
+         *
+         * @see CefFrame::SendProcessMessage
+         */
         public function sendProcessMessage(int $targetProcess, \Cefloom\ProcessMessage $message): void {}
     }
 
+    /**
+     * Implement this interface to handle events related to CefFrame life span. The order of callbacks is:
+     *
+     * (1) During initial CefBrowserHost creation and navigation of the main frame: -
+     * CefFrameHandler::OnFrameCreated => The initial main frame object has been created. Any commands will be
+     * queued until the frame is attached. - CefFrameHandler::OnMainFrameChanged => The initial main frame
+     * object has been assigned to the browser. - CefLifeSpanHandler::OnAfterCreated => The browser is now
+     * valid and can be used. - CefFrameHandler::OnFrameAttached => The initial main frame object is now
+     * connected to its peer in the renderer process. Commands can be routed.
+     *
+     * (2) During further CefBrowserHost navigation/loading of the main frame and/or sub-frames: -
+     * CefFrameHandler::OnFrameCreated => A new main frame or sub-frame object has been created. Any commands
+     * will be queued until the frame is attached. - CefFrameHandler::OnFrameAttached => A new main frame or
+     * sub-frame object is now connected to its peer in the renderer process. Commands can be routed. -
+     * CefFrameHandler::OnFrameDetached => An existing main frame or sub-frame object has lost its connection
+     * to the renderer process. If multiple objects are detached at the same time then notifications will be
+     * sent for any sub-frame objects before the main frame object. Commands can no longer be routed and will
+     * be discarded. - CefFremeHadler::OnFrameDestroyed => An existing main frame or sub-frame object has been
+     * destroyed. - CefFrameHandler::OnMainFrameChanged => A new main frame object has been assigned to the
+     * browser. This will only occur with cross-origin navigation or re-navigation after renderer process
+     * termination (due to crashes, etc).
+     *
+     * (3) During final CefBrowserHost destruction of the main frame: - CefFrameHandler::OnFrameDetached =>
+     * Any sub-frame objects have lost their connection to the renderer process. Commands can no longer be
+     * routed and will be discarded. - CefFreameHandler::OnFrameDestroyed => Any sub-frame objects have been
+     * destroyed. - CefLifeSpanHandler::OnBeforeClose => The browser has been destroyed. -
+     * CefFrameHandler::OnFrameDetached => The main frame object have lost its connection to the renderer
+     * process. Notifications will be sent for any sub-frame objects before the main frame object. Commands
+     * can no longer be routed and will be discarded. - CefFreameHandler::OnFrameDestroyed => The main frame
+     * object has been destroyed. - CefFrameHandler::OnMainFrameChanged => The final main frame object has
+     * been removed from the browser.
+     *
+     * Special handling applies for cross-origin loading on creation/navigation of sub-frames, and cross-
+     * origin loading on creation of new popup browsers. A temporary frame will first be created in the parent
+     * frame's renderer process. This temporary frame will never attach and will be discarded after the real
+     * cross-origin frame is created in the new/target renderer process. The client will receive creation
+     * callbacks for the temporary frame, followed by cross-origin navigation callbacks (2) for the transition
+     * from the temporary frame to the real frame. The temporary frame will not receive or execute commands
+     * during this transitional period (any sent commands will be discarded).
+     *
+     * When the main frame navigates to a different origin the OnMainFrameChanged callback (2) will be
+     * executed with the old and new main frame objects.
+     *
+     * Callbacks will not be executed for placeholders that may be created during pre-commit navigation for
+     * sub-frames that do not yet exist in the renderer process. Placeholders will have
+     * CefFrame::GetIdentifier() == -4.
+     *
+     * The methods of this class will be called on the UI thread unless otherwise indicated.
+     *
+     * @see CefFrameHandler
+     */
     class FrameHandler {
+        /**
+         * Called when a new frame is created. This will be the first notification that references |frame|.
+         * Any commands that require transport to the associated renderer process (LoadRequest,
+         * SendProcessMessage, GetSource, etc.) will be queued. The queued commands will be sent before
+         * OnFrameAttached or discarded before OnFrameDestroyed if the frame never attaches.
+         *
+         * @see CefFrameHandler::OnFrameCreated
+         */
         public function onFrameCreated(\Cefloom\Browser $browser, \Cefloom\Frame $frame): void {}
+        /**
+         * Called when an existing frame is destroyed. This will be the last notification that references
+         * |frame| and CefFrame::IsValid() will return false for |frame|. If called during browser destruction
+         * and after CefLifeSpanHandler::OnBeforeClose() then CefBrowser::IsValid() will return false for
+         * |browser|. Any queued commands that have not been sent will be discarded before this callback.
+         *
+         * @see CefFrameHandler::OnFrameDestroyed
+         */
         public function onFrameDestroyed(\Cefloom\Browser $browser, \Cefloom\Frame $frame): void {}
+        /**
+         * Called when a frame can begin routing commands to/from the associated renderer process.
+         * |reattached| will be true if the frame was re-attached after exiting the BackForwardCache or after
+         * encountering a recoverable connection error. Any queued commands will now have been dispatched.
+         * This method will not be called for temporary frames created during cross-origin navigation.
+         *
+         * @see CefFrameHandler::OnFrameAttached
+         */
         public function onFrameAttached(\Cefloom\Browser $browser, \Cefloom\Frame $frame, bool $reattached): void {}
+        /**
+         * Called when a frame loses its connection to the renderer process. This may occur when a frame is
+         * destroyed, enters the BackForwardCache, or encounters a rare connection error. In the case of frame
+         * destruction this call will be followed by a (potentially async) call to OnFrameDestroyed. If frame
+         * destruction is occuring synchronously then CefFrame::IsValid() will return false for |frame|. If
+         * called during browser destruction and after CefLifeSpanHandler::OnBeforeClose() then
+         * CefBrowser::IsValid() will return false for |browser|. If, in the non-destruction case, the same
+         * frame later exits the BackForwardCache or recovers from a connection error then there will be a
+         * follow-up call to OnFrameAttached. This method will not be called for temporary frames created
+         * during cross-origin navigation.
+         *
+         * @see CefFrameHandler::OnFrameDetached
+         */
         public function onFrameDetached(\Cefloom\Browser $browser, \Cefloom\Frame $frame): void {}
+        /**
+         * Called when the main frame changes due to (a) initial browser creation, (b) final browser
+         * destruction, (c) cross-origin navigation or (d) re-navigation after renderer process termination
+         * (due to crashes, etc). |old_frame| will be NULL and |new_frame| will be non-NULL when a main frame
+         * is assigned to |browser| for the first time. |old_frame| will be non-NULL and |new_frame| will be
+         * NULL when a main frame is removed from |browser| for the last time. Both |old_frame| and
+         * |new_frame| will be non-NULL for cross-origin navigations or re-navigation after renderer process
+         * termination. This method will be called after OnFrameCreated() for |new_frame| and/or after
+         * OnFrameDestroyed() for |old_frame|. If called during browser destruction and after
+         * CefLifeSpanHandler::OnBeforeClose() then CefBrowser::IsValid() will return false for |browser|.
+         *
+         * @see CefFrameHandler::OnMainFrameChanged
+         */
         public function onMainFrameChanged(\Cefloom\Browser $browser, ?\Cefloom\Frame $oldFrame, ?\Cefloom\Frame $newFrame): void {}
     }
 
+    /**
+     * Container for a single image represented at different scale factors. All image representations should
+     * be the same size in density independent pixel (DIP) units. For example, if the image at scale factor
+     * 1.0 is 100x100 pixels then the image at scale factor 2.0 should be 200x200 pixels -- both images will
+     * display with a DIP size of 100x100 units. The methods of this class can be called on any browser
+     * process thread.
+     *
+     * @see CefImage
+     */
     final class Image {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this Image is empty.
+         *
+         * @see CefImage::IsEmpty
+         */
         public function isEmpty(): bool {}
+        /**
+         * Returns true if this Image and |that| Image share the same underlying storage. Will also return
+         * true if both images are empty.
+         *
+         * @see CefImage::IsSame
+         */
         public function isSame(\Cefloom\Image $that): bool {}
+        /**
+         * Add a bitmap image representation for |scale_factor|. Only 32-bit RGBA/BGRA formats are supported.
+         * |pixel_width| and |pixel_height| are the bitmap representation size in pixel coordinates.
+         * |pixel_data| is the array of pixel data and should be |pixel_width| x |pixel_height| x 4 bytes in
+         * size. |color_type| and |alpha_type| values specify the pixel format.
+         *
+         * @see CefImage::AddBitmap
+         */
         public function addBitmap(float $scaleFactor, int $pixelWidth, int $pixelHeight, int $colorType, int $alphaType, string $pixelData): bool {}
+        /**
+         * Add a PNG image representation for |scale_factor|. |png_data| is the image data of size
+         * |png_data_size|. Any alpha transparency in the PNG data will be maintained.
+         *
+         * @see CefImage::AddPNG
+         */
         public function addPNG(float $scaleFactor, string $pngData): bool {}
+        /**
+         * Create a JPEG image representation for |scale_factor|. |jpeg_data| is the image data of size
+         * |jpeg_data_size|. The JPEG format does not support transparency so the alpha byte will be set to
+         * 0xFF for all pixels.
+         *
+         * @see CefImage::AddJPEG
+         */
         public function addJPEG(float $scaleFactor, string $jpegData): bool {}
+        /**
+         * Returns the image width in density independent pixel (DIP) units.
+         *
+         * @see CefImage::GetWidth
+         */
         public function getWidth(): int {}
+        /**
+         * Returns the image height in density independent pixel (DIP) units.
+         *
+         * @see CefImage::GetHeight
+         */
         public function getHeight(): int {}
+        /**
+         * Returns true if this image contains a representation for |scale_factor|.
+         *
+         * @see CefImage::HasRepresentation
+         */
         public function hasRepresentation(float $scaleFactor): bool {}
+        /**
+         * Removes the representation for |scale_factor|. Returns true on success.
+         *
+         * @see CefImage::RemoveRepresentation
+         */
         public function removeRepresentation(float $scaleFactor): bool {}
+        /**
+         * Returns information for the representation that most closely matches |scale_factor|.
+         * |actual_scale_factor| is the actual scale factor for the representation. |pixel_width| and
+         * |pixel_height| are the representation size in pixel coordinates. Returns true on success.
+         *
+         * @see CefImage::GetRepresentationInfo
+         */
         public function getRepresentationInfo(float $scaleFactor): ?array {}
+        /**
+         * Returns the bitmap representation that most closely matches |scale_factor|. Only 32-bit RGBA/BGRA
+         * formats are supported. |color_type| and |alpha_type| values specify the desired output pixel
+         * format. |pixel_width| and |pixel_height| are the output representation size in pixel coordinates.
+         * Returns a CefBinaryValue containing the pixel data on success or NULL on failure.
+         *
+         * @see CefImage::GetAsBitmap
+         */
         public function getAsBitmap(float $scaleFactor, int $colorType, int $alphaType): array {}
+        /**
+         * Returns the PNG representation that most closely matches |scale_factor|. If |with_transparency| is
+         * true any alpha transparency in the image will be represented in the resulting PNG data.
+         * |pixel_width| and |pixel_height| are the output representation size in pixel coordinates. Returns a
+         * CefBinaryValue containing the PNG image data on success or NULL on failure.
+         *
+         * @see CefImage::GetAsPNG
+         */
         public function getAsPNG(float $scaleFactor, bool $withTransparency): array {}
+        /**
+         * Returns the JPEG representation that most closely matches |scale_factor|. |quality| determines the
+         * compression level with 0 == lowest and 100 == highest. The JPEG format does not support alpha
+         * transparency and the alpha channel, if any, will be discarded. |pixel_width| and |pixel_height| are
+         * the output representation size in pixel coordinates. Returns a CefBinaryValue containing the JPEG
+         * image data on success or NULL on failure.
+         *
+         * @see CefImage::GetAsJPEG
+         */
         public function getAsJPEG(float $scaleFactor, int $quality): array {}
+        /**
+         * Create a new CefImage. It will initially be empty. Use the Add*() methods to add representations at
+         * different scale factors.
+         *
+         * @see CefImage::CreateImage
+         */
         public static function create(): ?\Cefloom\Image {}
     }
 
+    /**
+     * Callback interface used for asynchronous continuation of JavaScript dialog requests.
+     *
+     * @see CefJSDialogCallback
+     */
     final class JSDialogCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Continue the JS dialog request. Set |success| to true if the OK button was pressed. The
+         * |user_input| value should be specified for prompt dialogs.
+         *
+         * @see CefJSDialogCallback::Continue
+         */
         public function continue(bool $success, string $userInput): void {}
     }
 
+    /**
+     * Implement this interface to handle events related to JavaScript dialogs. The methods of this class will
+     * be called on the UI thread.
+     *
+     * @see CefJSDialogHandler
+     */
     class JSDialogHandler {
+        /**
+         * Called to run a JavaScript dialog. If |origin_url| is non-empty it can be passed to the
+         * CefFormatUrlForSecurityDisplay function to retrieve a secure and user-friendly display string. The
+         * |default_prompt_text| value will be specified for prompt dialogs only. Set |suppress_message| to
+         * true and return false to suppress the message (suppressing messages is preferable to immediately
+         * executing the callback as this is used to detect presumably malicious behavior like spamming alert
+         * messages in onbeforeunload). Set |suppress_message| to false and return false to use the default
+         * implementation (the default implementation will show one modal dialog at a time and suppress any
+         * additional dialog requests until the displayed dialog is dismissed). Return true if the application
+         * will use a custom dialog or if the callback has been executed immediately. Custom dialogs may be
+         * either modal or modeless. If a custom dialog is used the application must execute |callback| once
+         * the custom dialog is dismissed.
+         *
+         * @see CefJSDialogHandler::OnJSDialog
+         */
         public function onJSDialog(\Cefloom\Browser $browser, string $originUrl, int $dialogType, string $messageText, string $defaultPromptText, \Cefloom\JSDialogCallback $callback): array {}
+        /**
+         * Called to run a dialog asking the user if they want to leave a page. Return false to use the
+         * default dialog implementation. Return true if the application will use a custom dialog or if the
+         * callback has been executed immediately. Custom dialogs may be either modal or modeless. If a custom
+         * dialog is used the application must execute |callback| once the custom dialog is dismissed.
+         *
+         * @see CefJSDialogHandler::OnBeforeUnloadDialog
+         */
         public function onBeforeUnloadDialog(\Cefloom\Browser $browser, string $messageText, bool $isReload, \Cefloom\JSDialogCallback $callback): bool {}
+        /**
+         * Called to cancel any pending dialogs and reset any saved dialog state. Will be called due to events
+         * like page navigation irregardless of whether any dialogs are currently pending.
+         *
+         * @see CefJSDialogHandler::OnResetDialogState
+         */
         public function onResetDialogState(\Cefloom\Browser $browser): void {}
+        /**
+         * Called when the dialog is closed.
+         *
+         * @see CefJSDialogHandler::OnDialogClosed
+         */
         public function onDialogClosed(\Cefloom\Browser $browser): void {}
     }
 
+    /**
+     * Implement this interface to handle events related to keyboard input. The methods of this class will be
+     * called on the UI thread.
+     *
+     * @see CefKeyboardHandler
+     */
     class KeyboardHandler {
+        /**
+         * Called before a keyboard event is sent to the renderer. |event| contains information about the
+         * keyboard event. |os_event| is the operating system event message, if any. Return true if the event
+         * was handled or false otherwise. If the event will be handled in OnKeyEvent() as a keyboard shortcut
+         * set |is_keyboard_shortcut| to true and return false.
+         *
+         * @see CefKeyboardHandler::OnPreKeyEvent
+         */
         public function onPreKeyEvent(\Cefloom\Browser $browser, \Cefloom\KeyEvent $event): array {}
+        /**
+         * Called after the renderer and JavaScript in the page has had a chance to handle the event. |event|
+         * contains information about the keyboard event. |os_event| is the operating system event message, if
+         * any. Return true if the keyboard event was handled or false otherwise.
+         *
+         * @see CefKeyboardHandler::OnKeyEvent
+         */
         public function onKeyEvent(\Cefloom\Browser $browser, \Cefloom\KeyEvent $event): bool {}
     }
 
+    /**
+     * LabelButton is a button with optional text and/or icon. Methods must be called on the browser process
+     * UI thread unless otherwise indicated.
+     *
+     * @see CefLabelButton
+     */
     class LabelButton extends Button {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns this LabelButton as a MenuButton or NULL if this is not a MenuButton.
+         *
+         * @see CefLabelButton::AsMenuButton
+         */
         public function asMenuButton(): ?\Cefloom\MenuButton {}
+        /**
+         * Sets the text shown on the LabelButton. By default |text| will also be used as the accessible name.
+         *
+         * @see CefLabelButton::SetText
+         */
         public function setText(string $text): void {}
+        /**
+         * Returns the text shown on the LabelButton.
+         *
+         * @see CefLabelButton::GetText
+         */
         public function getText(): string {}
+        /**
+         * Sets the image shown for |button_state|. When this Button is drawn if no image exists for the
+         * current state then the image for CEF_BUTTON_STATE_NORMAL, if any, will be shown.
+         *
+         * @see CefLabelButton::SetImage
+         */
         public function setImage(int $buttonState, ?\Cefloom\Image $image): void {}
+        /**
+         * Returns the image shown for |button_state|. If no image exists for that state then the image for
+         * CEF_BUTTON_STATE_NORMAL will be returned.
+         *
+         * @see CefLabelButton::GetImage
+         */
         public function getImage(int $buttonState): ?\Cefloom\Image {}
+        /**
+         * Sets the text color shown for the specified button |for_state| to |color|.
+         *
+         * @see CefLabelButton::SetTextColor
+         */
         public function setTextColor(int $forState, int $color): void {}
+        /**
+         * Sets the text colors shown for the non-disabled states to |color|.
+         *
+         * @see CefLabelButton::SetEnabledTextColors
+         */
         public function setEnabledTextColors(int $color): void {}
+        /**
+         * Sets the font list. The format is "<FONT_FAMILY_LIST>,[STYLES] <SIZE>", where: - FONT_FAMILY_LIST
+         * is a comma-separated list of font family names, - STYLES is an optional space-separated list of
+         * style names (case-sensitive "Bold" and "Italic" are supported), and - SIZE is an integer font size
+         * in pixels with the suffix "px".
+         *
+         * Here are examples of valid font description strings: - "Arial, Helvetica, Bold Italic 14px" -
+         * "Arial, 14px"
+         *
+         * @see CefLabelButton::SetFontList
+         */
         public function setFontList(string $fontList): void {}
+        /**
+         * Sets the horizontal alignment; reversed in RTL. Default is CEF_HORIZONTAL_ALIGNMENT_CENTER.
+         *
+         * @see CefLabelButton::SetHorizontalAlignment
+         */
         public function setHorizontalAlignment(int $alignment): void {}
+        /**
+         * Reset the minimum size of this LabelButton to |size|.
+         *
+         * @see CefLabelButton::SetMinimumSize
+         */
         public function setMinimumSize(\Cefloom\Size $size): void {}
+        /**
+         * Reset the maximum size of this LabelButton to |size|.
+         *
+         * @see CefLabelButton::SetMaximumSize
+         */
         public function setMaximumSize(\Cefloom\Size $size): void {}
+        /**
+         * Create a new LabelButton. A |delegate| must be provided to handle the button click. |text| will be
+         * shown on the LabelButton and used as the default accessible name.
+         *
+         * @see CefLabelButton::CreateLabelButton
+         */
         public static function createLabelButton(\Cefloom\ButtonDelegate $delegate, string $text): ?\Cefloom\LabelButton {}
     }
 
+    /**
+     * A Layout handles the sizing of the children of a Panel according to implementation-specific heuristics.
+     * Methods must be called on the browser process UI thread unless otherwise indicated.
+     *
+     * @see CefLayout
+     */
     class Layout {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns this Layout as a BoxLayout or NULL if this is not a BoxLayout.
+         *
+         * @see CefLayout::AsBoxLayout
+         */
         public function asBoxLayout(): ?\Cefloom\BoxLayout {}
+        /**
+         * Returns this Layout as a FillLayout or NULL if this is not a FillLayout.
+         *
+         * @see CefLayout::AsFillLayout
+         */
         public function asFillLayout(): ?\Cefloom\FillLayout {}
+        /**
+         * Returns true if this Layout is valid.
+         *
+         * @see CefLayout::IsValid
+         */
         public function isValid(): bool {}
     }
 
+    /**
+     * Implement this interface to handle events related to browser life span. The methods of this class will
+     * be called on the UI thread unless otherwise indicated.
+     *
+     * @see CefLifeSpanHandler
+     */
     class LifeSpanHandler {
+        /**
+         * Called on the UI thread before a new popup browser is created. The |browser| and |frame| values
+         * represent the source of the popup request (opener browser and frame). The |popup_id| value uniquely
+         * identifies the popup in the context of the opener browser. The |target_url| and |target_frame_name|
+         * values indicate where the popup browser should navigate and may be empty if not specified with the
+         * request. The |target_disposition| value indicates where the user intended to open the popup (e.g.
+         * current tab, new tab, etc). The |user_gesture| value will be true if the popup was opened via
+         * explicit user gesture (e.g. clicking a link) or false if the popup opened automatically (e.g. via
+         * the DomContentLoaded event). The |popupFeatures| structure contains additional information about
+         * the requested popup window. To allow creation of the popup browser optionally modify |windowInfo|,
+         * |client|, |settings| and |no_javascript_access| and return false. To cancel creation of the popup
+         * browser return true. The |client| and |settings| values will default to the source browser's
+         * values. If the |no_javascript_access| value is set to false the new browser will not be scriptable
+         * and may not be hosted in the same renderer process as the source browser. Any modifications to
+         * |windowInfo| will be ignored if the parent browser is wrapped in a CefBrowserView. The |extra_info|
+         * parameter provides an opportunity to specify extra information specific to the created popup
+         * browser that will be passed to CefRenderProcessHandler::OnBrowserCreated() in the render process.
+         *
+         * If popup browser creation succeeds then OnAfterCreated will be called for the new popup browser. If
+         * popup browser creation fails, and if the opener browser has not yet been destroyed, then
+         * OnBeforePopupAborted will be called for the opener browser. See OnBeforePopupAborted documentation
+         * for additional details.
+         *
+         * A default popup window is created if this method returns false without setting a parent window
+         * handle via CefWindowInfo (for native-hosted popups), or without implementing
+         * CefBrowserViewDelegate::OnPopupBrowserViewCreated (for Views-hosted popups). The default popup
+         * window type depends on the parent browser configuration: - Views-hosted parent: Creates a Views-
+         * hosted popup window. - Native-hosted Alloy style parent: Creates a native popup window. - Native-
+         * hosted Chrome style parent: Creates a Chrome UI popup window by default; set
+         * CefSettings.use_views_default_popup to true to instead create a Views-hosted popup window.
+         *
+         * @see CefLifeSpanHandler::OnBeforePopup
+         */
         public function onBeforePopup(\Cefloom\Browser $browser, \Cefloom\Frame $frame, int $popupId, string $targetUrl, string $targetFrameName, int $targetDisposition, bool $userGesture, \Cefloom\PopupFeatures $popupFeatures): bool {}
+        /**
+         * Called on the UI thread if a new popup browser is aborted. This only occurs if the popup is allowed
+         * in OnBeforePopup and creation fails before OnAfterCreated is called for the new popup browser. The
+         * |browser| value is the source of the popup request (opener browser). The |popup_id| value uniquely
+         * identifies the popup in the context of the opener browser, and is the same value that was passed to
+         * OnBeforePopup.
+         *
+         * Any client state associated with pending popups should be cleared in OnBeforePopupAborted,
+         * OnAfterCreated of the popup browser, or OnBeforeClose of the opener browser. OnBeforeClose of the
+         * opener browser may be called before this method in cases where the opener is closing during popup
+         * creation, in which case CefBrowserHost::IsValid will return false in this method.
+         *
+         * @see CefLifeSpanHandler::OnBeforePopupAborted
+         */
         public function onBeforePopupAborted(\Cefloom\Browser $browser, int $popupId): void {}
+        /**
+         * Called after a new browser is created. It is now safe to begin performing actions with |browser|.
+         * CefFrameHandler callbacks related to initial main frame creation will arrive before this callback.
+         * See CefFrameHandler documentation for additional usage information.
+         *
+         * @see CefLifeSpanHandler::OnAfterCreated
+         */
         public function onAfterCreated(\Cefloom\Browser $browser): void {}
+        /**
+         * Called when an Alloy style browser is ready to be closed, meaning that the close has already been
+         * initiated and that JavaScript unload handlers have already executed or should be ignored. This may
+         * result directly from a call to CefBrowserHost::[Try]CloseBrowser() or indirectly if the browser's
+         * top-level parent window was created by CEF and the user attempts to close that window (by clicking
+         * the 'X', for example). DoClose() will not be called if the browser's host window/view has already
+         * been destroyed (via parent window/view hierarchy tear-down, for example), as it is no longer
+         * possible to customize the close behavior at that point.
+         *
+         * An application should handle top-level parent window close notifications by calling
+         * CefBrowserHost::TryCloseBrowser() or CefBrowserHost::CloseBrowser(false) instead of allowing the
+         * window to close immediately (see the examples below). This gives CEF an opportunity to process
+         * JavaScript unload handlers and optionally cancel the close before DoClose() is called.
+         *
+         * When windowed rendering is enabled CEF will create an internal child window/view to host the
+         * browser. In that case returning false from DoClose() will send the standard close notification to
+         * the browser's top-level parent window (e.g. WM_CLOSE on Windows, performClose: on OS X,
+         * "delete_event" on Linux or CefWindowDelegate::CanClose() callback from Views).
+         *
+         * When windowed rendering is disabled there is no internal window/view and returning false from
+         * DoClose() will cause the browser object to be destroyed immediately.
+         *
+         * If the browser's top-level parent window requires a non-standard close notification then send that
+         * notification from DoClose() and return true. You are still required to complete the browser close
+         * as soon as possible (either by calling [Try]CloseBrowser() or by proceeding with window/view
+         * hierarchy tear-down), otherwise the browser will be left in a partially closed state that
+         * interferes with proper functioning. Top-level windows created on the browser process UI thread can
+         * alternately call CefBrowserHost::IsReadyToBeClosed() in the close handler to check close status
+         * instead of relying on custom DoClose() handling. See documentation on that method for additional
+         * details.
+         *
+         * The CefLifeSpanHandler::OnBeforeClose() method will be called after DoClose() (if DoClose() is
+         * called) and immediately before the browser object is destroyed. The application should only exit
+         * after OnBeforeClose() has been called for all existing browsers.
+         *
+         * The below examples describe what should happen during window close when the browser is parented to
+         * an application-provided top-level window.
+         *
+         * Example 1: Using CefBrowserHost::TryCloseBrowser(). This is recommended for clients using standard
+         * close handling and windows created on the browser process UI thread. 1.  User clicks the window
+         * close button which sends a close notification to the application's top-level window. 2.
+         * Application's top-level window receives the close notification and calls TryCloseBrowser() (similar
+         * to calling CloseBrowser(false)). TryCloseBrowser() returns false so the client cancels the window
+         * close. 3.  JavaScript 'onbeforeunload' handler executes and shows the close confirmation dialog
+         * (which can be overridden via CefJSDialogHandler::OnBeforeUnloadDialog()). 4.  User approves the
+         * close. 5.  JavaScript 'onunload' handler executes. 6.  Application's DoClose() handler is called
+         * and returns false by default. 7.  CEF sends a close notification to the application's top-level
+         * window (because DoClose() returned false). 8.  Application's top-level window receives the close
+         * notification and calls TryCloseBrowser(). TryCloseBrowser() returns true so the client allows the
+         * window close. 9.  Application's top-level window is destroyed, triggering destruction of the child
+         * browser window. 10. Application's OnBeforeClose() handler is called and the browser object is
+         * destroyed. 11. Application exits by calling CefQuitMessageLoop() if no other browsers exist.
+         *
+         * Example 2: Using CefBrowserHost::CloseBrowser(false) and implementing the DoClose() callback. This
+         * is recommended for clients using non-standard close handling or windows that were not created on
+         * the browser process UI thread. 1.  User clicks the window close button which sends a close
+         * notification to the application's top-level window. 2.  Application's top-level window receives the
+         * close notification and: A. Calls CefBrowserHost::CloseBrowser(false). B. Cancels the window close.
+         * 3.  JavaScript 'onbeforeunload' handler executes and shows the close confirmation dialog (which can
+         * be overridden via CefJSDialogHandler::OnBeforeUnloadDialog()). 4.  User approves the close. 5.
+         * JavaScript 'onunload' handler executes. 6.  Application's DoClose() handler is called. Application
+         * will: A. Set a flag to indicate that the next top-level window close attempt will be allowed. B.
+         * Return false. 7.  CEF sends a close notification to the application's top-level window (because
+         * DoClose() returned false). 8.  Application's top-level window receives the close notification and
+         * allows the window to close based on the flag from #6A. 9.  Application's top-level window is
+         * destroyed, triggering destruction of the child browser window. 10. Application's OnBeforeClose()
+         * handler is called and the browser object is destroyed. 11. Application exits by calling
+         * CefQuitMessageLoop() if no other browsers exist.
+         *
+         * @see CefLifeSpanHandler::DoClose
+         */
         public function doClose(\Cefloom\Browser $browser): bool {}
+        /**
+         * Called just before a browser is destroyed. Release all references to the browser object and do not
+         * attempt to execute any methods on the browser object (other than IsValid, GetIdentifier or IsSame)
+         * after this callback returns. CefFrameHandler callbacks related to final main frame destruction, and
+         * OnBeforePopupAborted callbacks for any pending popups, will arrive after this callback and
+         * CefBrowser::IsValid will return false at that time. Any in-progress network requests associated
+         * with |browser| will be aborted when the browser is destroyed, and CefResourceRequestHandler
+         * callbacks related to those requests may still arrive on the IO thread after this callback. See
+         * CefFrameHandler and DoClose() documentation for additional usage information.
+         *
+         * @see CefLifeSpanHandler::OnBeforeClose
+         */
         public function onBeforeClose(\Cefloom\Browser $browser): void {}
     }
 
+    /**
+     * Class representing a list value. Can be used on any process and thread.
+     *
+     * @see CefListValue
+     */
     final class ListValue {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid. This object may become invalid if the underlying data is
+         * owned by another object (e.g. list or dictionary) and that other object is then modified or
+         * destroyed. Do not call any other methods if this method returns false.
+         *
+         * @see CefListValue::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if this object is currently owned by another object.
+         *
+         * @see CefListValue::IsOwned
+         */
         public function isOwned(): bool {}
+        /**
+         * Returns true if the values of this object are read-only. Some APIs may expose read-only objects.
+         *
+         * @see CefListValue::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Returns true if this object and |that| object have the same underlying data. If true modifications
+         * to this object will also affect |that| object and vice-versa.
+         *
+         * @see CefListValue::IsSame
+         */
         public function isSame(\Cefloom\ListValue $that): bool {}
+        /**
+         * Returns true if this object and |that| object have an equivalent underlying value but are not
+         * necessarily the same object.
+         *
+         * @see CefListValue::IsEqual
+         */
         public function isEqual(\Cefloom\ListValue $that): bool {}
+        /**
+         * Returns a writable copy of this object.
+         *
+         * @see CefListValue::Copy
+         */
         public function copy(): ?\Cefloom\ListValue {}
+        /**
+         * Sets the number of values. If the number of values is expanded all new value slots will default to
+         * type null. Returns true on success.
+         *
+         * @see CefListValue::SetSize
+         */
         public function setSize(int $size): bool {}
+        /**
+         * Returns the number of values.
+         *
+         * @see CefListValue::GetSize
+         */
         public function getSize(): int {}
+        /**
+         * Removes all values. Returns true on success.
+         *
+         * @see CefListValue::Clear
+         */
         public function clear(): bool {}
+        /**
+         * Removes the value at the specified index.
+         *
+         * @see CefListValue::Remove
+         */
         public function remove(int $index): bool {}
+        /**
+         * Returns the value type at the specified index.
+         *
+         * @see CefListValue::GetType
+         */
         public function getType(int $index): int {}
+        /**
+         * Returns the value at the specified index. For simple types the returned value will copy existing
+         * data and modifications to the value will not modify this object. For complex types (binary,
+         * dictionary and list) the returned value will reference existing data and modifications to the value
+         * will modify this object.
+         *
+         * @see CefListValue::GetValue
+         */
         public function getValue(int $index): ?\Cefloom\Value {}
+        /**
+         * Returns the value at the specified index as type bool.
+         *
+         * @see CefListValue::GetBool
+         */
         public function getBool(int $index): bool {}
+        /**
+         * Returns the value at the specified index as type int.
+         *
+         * @see CefListValue::GetInt
+         */
         public function getInt(int $index): int {}
+        /**
+         * Returns the value at the specified index as type double.
+         *
+         * @see CefListValue::GetDouble
+         */
         public function getDouble(int $index): float {}
+        /**
+         * Returns the value at the specified index as type string.
+         *
+         * @see CefListValue::GetString
+         */
         public function getString(int $index): string {}
+        /**
+         * Returns the value at the specified index as type binary. The returned value will reference existing
+         * data.
+         *
+         * @see CefListValue::GetBinary
+         */
         public function getBinary(int $index): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns the value at the specified index as type dictionary. The returned value will reference
+         * existing data and modifications to the value will modify this object.
+         *
+         * @see CefListValue::GetDictionary
+         */
         public function getDictionary(int $index): ?\Cefloom\DictionaryValue {}
+        /**
+         * Returns the value at the specified index as type list. The returned value will reference existing
+         * data and modifications to the value will modify this object.
+         *
+         * @see CefListValue::GetList
+         */
         public function getList(int $index): ?\Cefloom\ListValue {}
+        /**
+         * Sets the value at the specified index. Returns true if the value was set successfully. If |value|
+         * represents simple data then the underlying data will be copied and modifications to |value| will
+         * not modify this object. If |value| represents complex data (binary, dictionary or list) then the
+         * underlying data will be referenced and modifications to |value| will modify this object.
+         *
+         * @see CefListValue::SetValue
+         */
         public function setValue(int $index, \Cefloom\Value $value): bool {}
+        /**
+         * Sets the value at the specified index as type null. Returns true if the value was set successfully.
+         *
+         * @see CefListValue::SetNull
+         */
         public function setNull(int $index): bool {}
+        /**
+         * Sets the value at the specified index as type bool. Returns true if the value was set successfully.
+         *
+         * @see CefListValue::SetBool
+         */
         public function setBool(int $index, bool $value): bool {}
+        /**
+         * Sets the value at the specified index as type int. Returns true if the value was set successfully.
+         *
+         * @see CefListValue::SetInt
+         */
         public function setInt(int $index, int $value): bool {}
+        /**
+         * Sets the value at the specified index as type double. Returns true if the value was set
+         * successfully.
+         *
+         * @see CefListValue::SetDouble
+         */
         public function setDouble(int $index, float $value): bool {}
+        /**
+         * Sets the value at the specified index as type string. Returns true if the value was set
+         * successfully.
+         *
+         * @see CefListValue::SetString
+         */
         public function setString(int $index, string $value): bool {}
+        /**
+         * Sets the value at the specified index as type binary. Returns true if the value was set
+         * successfully. If |value| is currently owned by another object then the value will be copied and the
+         * |value| reference will not change. Otherwise, ownership will be transferred to this object and the
+         * |value| reference will be invalidated.
+         *
+         * @see CefListValue::SetBinary
+         */
         public function setBinary(int $index, \Cefloom\BinaryValue $value): bool {}
+        /**
+         * Sets the value at the specified index as type dict. Returns true if the value was set successfully.
+         * If |value| is currently owned by another object then the value will be copied and the |value|
+         * reference will not change. Otherwise, ownership will be transferred to this object and the |value|
+         * reference will be invalidated.
+         *
+         * @see CefListValue::SetDictionary
+         */
         public function setDictionary(int $index, \Cefloom\DictionaryValue $value): bool {}
+        /**
+         * Sets the value at the specified index as type list. Returns true if the value was set successfully.
+         * If |value| is currently owned by another object then the value will be copied and the |value|
+         * reference will not change. Otherwise, ownership will be transferred to this object and the |value|
+         * reference will be invalidated.
+         *
+         * @see CefListValue::SetList
+         */
         public function setList(int $index, \Cefloom\ListValue $value): bool {}
+        /**
+         * Creates a new object that is not owned by any other object.
+         *
+         * @see CefListValue::Create
+         */
         public static function create(): ?\Cefloom\ListValue {}
     }
 
+    /**
+     * Implement this interface to handle events related to browser load status. The methods of this class
+     * will be called on the browser process UI thread or render process main thread (TID_RENDERER).
+     *
+     * @see CefLoadHandler
+     */
     class LoadHandler {
+        /**
+         * Called when the loading state has changed. This callback will be executed twice -- once when
+         * loading is initiated either programmatically or by user action, and once when loading is terminated
+         * due to completion, cancellation of failure. It will be called before any calls to OnLoadStart and
+         * after all calls to OnLoadError and/or OnLoadEnd.
+         *
+         * @see CefLoadHandler::OnLoadingStateChange
+         */
         public function onLoadingStateChange(\Cefloom\Browser $browser, bool $isLoading, bool $canGoBack, bool $canGoForward): void {}
+        /**
+         * Called after a navigation has been committed and before the browser begins loading contents in the
+         * frame. The |frame| value will never be empty -- call the IsMain() method to check if this frame is
+         * the main frame. |transition_type| provides information about the source of the navigation and an
+         * accurate value is only available in the browser process. Multiple frames may be loading at the same
+         * time. Sub-frames may start or continue loading after the main frame load has ended. This method
+         * will not be called for same page navigations (fragments, history state, etc.) or for navigations
+         * that fail or are canceled before commit. For notification of overall browser load status use
+         * OnLoadingStateChange instead.
+         *
+         * @see CefLoadHandler::OnLoadStart
+         */
         public function onLoadStart(\Cefloom\Browser $browser, \Cefloom\Frame $frame, int $transitionType): void {}
+        /**
+         * Called when the browser is done loading a frame. The |frame| value will never be empty -- call the
+         * IsMain() method to check if this frame is the main frame. Multiple frames may be loading at the
+         * same time. Sub-frames may start or continue loading after the main frame load has ended. This
+         * method will not be called for same page navigations (fragments, history state, etc.) or for
+         * navigations that fail or are canceled before commit. For notification of overall browser load
+         * status use OnLoadingStateChange instead.
+         *
+         * @see CefLoadHandler::OnLoadEnd
+         */
         public function onLoadEnd(\Cefloom\Browser $browser, \Cefloom\Frame $frame, int $httpStatusCode): void {}
+        /**
+         * Called when a navigation fails or is canceled. This method may be called by itself if before commit
+         * or in combination with OnLoadStart/OnLoadEnd if after commit. |errorCode| is the error code number,
+         * |errorText| is the error text and |failedUrl| is the URL that failed to load. See
+         * net\base\net_error_list.h for complete descriptions of the error codes.
+         *
+         * @see CefLoadHandler::OnLoadError
+         */
         public function onLoadError(\Cefloom\Browser $browser, \Cefloom\Frame $frame, int $errorCode, string $errorText, string $failedUrl): void {}
     }
 
+    /**
+     * Callback interface used for asynchronous continuation of media access permission requests.
+     *
+     * @see CefMediaAccessCallback
+     */
     final class MediaAccessCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Call to allow or deny media access. If this callback was initiated in response to a getUserMedia
+         * (indicated by CEF_MEDIA_PERMISSION_DEVICE_AUDIO_CAPTURE and/or
+         * CEF_MEDIA_PERMISSION_DEVICE_VIDEO_CAPTURE being set) then |allowed_permissions| must match
+         * |required_permissions| passed to OnRequestMediaAccessPermission.
+         *
+         * @see CefMediaAccessCallback::Continue
+         */
         public function continue(int $allowedPermissions): void {}
+        /**
+         * Cancel the media access request.
+         *
+         * @see CefMediaAccessCallback::Cancel
+         */
         public function cancel(): void {}
     }
 
+    /**
+     * Implemented by the client to observe MediaRouter events and registered via CefMediaRouter::AddObserver.
+     * The methods of this class will be called on the browser process UI thread.
+     *
+     * @see CefMediaObserver
+     */
     abstract class MediaObserver {
+        /**
+         * The list of available media sinks has changed or CefMediaRouter::NotifyCurrentSinks was called.
+         *
+         * @see CefMediaObserver::OnSinks
+         */
         public abstract function onSinks(array $sinks): void ;
+        /**
+         * The list of available media routes has changed or CefMediaRouter::NotifyCurrentRoutes was called.
+         *
+         * @see CefMediaObserver::OnRoutes
+         */
         public abstract function onRoutes(array $routes): void ;
+        /**
+         * The connection state of |route| has changed.
+         *
+         * @see CefMediaObserver::OnRouteStateChanged
+         */
         public abstract function onRouteStateChanged(\Cefloom\MediaRoute $route, int $state): void ;
+        /**
+         * A message was received over |route|. |message| is only valid for the scope of this callback and
+         * should be copied if necessary.
+         *
+         * @see CefMediaObserver::OnRouteMessageReceived
+         */
         public abstract function onRouteMessageReceived(\Cefloom\MediaRoute $route, \Cefloom\Buffer $message): void ;
     }
 
+    /**
+     * Represents the route between a media source and sink. Instances of this object are created via
+     * CefMediaRouter::CreateRoute and retrieved via CefMediaObserver::OnRoutes. Contains the status and
+     * metadata of a routing operation. The methods of this class may be called on any browser process thread
+     * unless otherwise indicated.
+     *
+     * @see CefMediaRoute
+     */
     final class MediaRoute {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the ID for this route.
+         *
+         * @see CefMediaRoute::GetId
+         */
         public function getId(): string {}
+        /**
+         * Returns the source associated with this route.
+         *
+         * @see CefMediaRoute::GetSource
+         */
         public function getSource(): ?\Cefloom\MediaSource {}
+        /**
+         * Returns the sink associated with this route.
+         *
+         * @see CefMediaRoute::GetSink
+         */
         public function getSink(): ?\Cefloom\MediaSink {}
+        /**
+         * Send a message over this route. |message| will be copied if necessary.
+         *
+         * @see CefMediaRoute::SendRouteMessage
+         */
         public function sendRouteMessage(string $message): void {}
+        /**
+         * Terminate this route. Will result in an asynchronous call to CefMediaObserver::OnRoutes on all
+         * registered observers.
+         *
+         * @see CefMediaRoute::Terminate
+         */
         public function terminate(): void {}
     }
 
+    /**
+     * Callback interface for CefMediaRouter::CreateRoute. The methods of this class will be called on the
+     * browser process UI thread.
+     *
+     * @see CefMediaRouteCreateCallback
+     */
     abstract class MediaRouteCreateCallback {
+        /**
+         * Method that will be executed when the route creation has finished. |result| will be CEF_MRCR_OK if
+         * the route creation succeeded. |error| will be a description of the error if the route creation
+         * failed. |route| is the resulting route, or empty if the route creation failed.
+         *
+         * @see CefMediaRouteCreateCallback::OnMediaRouteCreateFinished
+         */
         public abstract function onMediaRouteCreateFinished(int $result, string $error, ?\Cefloom\MediaRoute $route): void ;
     }
 
+    /**
+     * Supports discovery of and communication with media devices on the local network via the Cast and DIAL
+     * protocols. The methods of this class may be called on any browser process thread unless otherwise
+     * indicated.
+     *
+     * @see CefMediaRouter
+     */
     final class MediaRouter {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Add an observer for MediaRouter events. The observer will remain registered until the returned
+         * Registration object is destroyed.
+         *
+         * @see CefMediaRouter::AddObserver
+         */
         public function addObserver(\Cefloom\MediaObserver $observer): ?\Cefloom\Registration {}
+        /**
+         * Returns a MediaSource object for the specified media source URN. Supported URN schemes include
+         * "cast:" and "dial:", and will be already known by the client application (e.g.
+         * "cast:<appId>?clientId=<clientId>").
+         *
+         * @see CefMediaRouter::GetSource
+         */
         public function getSource(string $urn): ?\Cefloom\MediaSource {}
+        /**
+         * Trigger an asynchronous call to CefMediaObserver::OnSinks on all registered observers.
+         *
+         * @see CefMediaRouter::NotifyCurrentSinks
+         */
         public function notifyCurrentSinks(): void {}
+        /**
+         * Create a new route between |source| and |sink|. Source and sink must be valid, compatible (as
+         * reported by CefMediaSink::IsCompatibleWith), and a route between them must not already exist.
+         * |callback| will be executed on success or failure. If route creation succeeds it will also trigger
+         * an asynchronous call to CefMediaObserver::OnRoutes on all registered observers.
+         *
+         * @see CefMediaRouter::CreateRoute
+         */
         public function createRoute(\Cefloom\MediaSource $source, \Cefloom\MediaSink $sink, \Cefloom\MediaRouteCreateCallback $callback): void {}
+        /**
+         * Trigger an asynchronous call to CefMediaObserver::OnRoutes on all registered observers.
+         *
+         * @see CefMediaRouter::NotifyCurrentRoutes
+         */
         public function notifyCurrentRoutes(): void {}
+        /**
+         * Returns the MediaRouter object associated with the global request context. If |callback| is non-
+         * NULL it will be executed asnychronously on the UI thread after the manager's storage has been
+         * initialized. Equivalent to calling CefRequestContext::GetGlobalContext()->GetMediaRouter().
+         *
+         * @see CefMediaRouter::GetGlobalMediaRouter
+         */
         public static function getGlobalMediaRouter(?\Cefloom\CompletionCallback $callback): ?\Cefloom\MediaRouter {}
     }
 
+    /**
+     * Represents a sink to which media can be routed. Instances of this object are retrieved via
+     * CefMediaObserver::OnSinks. The methods of this class may be called on any browser process thread unless
+     * otherwise indicated.
+     *
+     * @see CefMediaSink
+     */
     final class MediaSink {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the ID for this sink.
+         *
+         * @see CefMediaSink::GetId
+         */
         public function getId(): string {}
+        /**
+         * Returns the name of this sink.
+         *
+         * @see CefMediaSink::GetName
+         */
         public function getName(): string {}
+        /**
+         * Returns the icon type for this sink.
+         *
+         * @see CefMediaSink::GetIconType
+         */
         public function getIconType(): int {}
+        /**
+         * Asynchronously retrieves device info.
+         *
+         * @see CefMediaSink::GetDeviceInfo
+         */
         public function getDeviceInfo(\Cefloom\MediaSinkDeviceInfoCallback $callback): void {}
+        /**
+         * Returns true if this sink accepts content via Cast.
+         *
+         * @see CefMediaSink::IsCastSink
+         */
         public function isCastSink(): bool {}
+        /**
+         * Returns true if this sink accepts content via DIAL.
+         *
+         * @see CefMediaSink::IsDialSink
+         */
         public function isDialSink(): bool {}
+        /**
+         * Returns true if this sink is compatible with |source|.
+         *
+         * @see CefMediaSink::IsCompatibleWith
+         */
         public function isCompatibleWith(\Cefloom\MediaSource $source): bool {}
     }
 
+    /**
+     * Callback interface for CefMediaSink::GetDeviceInfo. The methods of this class will be called on the
+     * browser process UI thread.
+     *
+     * @see CefMediaSinkDeviceInfoCallback
+     */
     abstract class MediaSinkDeviceInfoCallback {
+        /**
+         * Method that will be executed asyncronously once device information has been retrieved.
+         *
+         * @see CefMediaSinkDeviceInfoCallback::OnMediaSinkDeviceInfo
+         */
         public abstract function onMediaSinkDeviceInfo(\Cefloom\MediaSinkDeviceInfo $deviceInfo): void ;
     }
 
+    /**
+     * Represents a source from which media can be routed. Instances of this object are retrieved via
+     * CefMediaRouter::GetSource. The methods of this class may be called on any browser process thread unless
+     * otherwise indicated.
+     *
+     * @see CefMediaSource
+     */
     final class MediaSource {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the ID (media source URN or URL) for this source.
+         *
+         * @see CefMediaSource::GetId
+         */
         public function getId(): string {}
+        /**
+         * Returns true if this source outputs its content via Cast.
+         *
+         * @see CefMediaSource::IsCastSource
+         */
         public function isCastSource(): bool {}
+        /**
+         * Returns true if this source outputs its content via DIAL.
+         *
+         * @see CefMediaSource::IsDialSource
+         */
         public function isDialSource(): bool {}
     }
 
+    /**
+     * MenuButton is a button with optional text, icon and/or menu marker that shows a menu when clicked with
+     * the left mouse button. All size and position values are in density independent pixels (DIP) unless
+     * otherwise indicated. Methods must be called on the browser process UI thread unless otherwise
+     * indicated.
+     *
+     * @see CefMenuButton
+     */
     final class MenuButton extends LabelButton {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Show a menu with contents |menu_model|. |screen_point| specifies the menu position in screen
+         * coordinates. |anchor_position| specifies how the menu will be anchored relative to |screen_point|.
+         * This method should be called from CefMenuButtonDelegate::OnMenuButtonPressed().
+         *
+         * @see CefMenuButton::ShowMenu
+         */
         public function showMenu(\Cefloom\MenuModel $menuModel, \Cefloom\Point $screenPoint, int $anchorPosition): void {}
+        /**
+         * Show the menu for this button. Results in a call to CefMenuButtonDelegate::OnMenuButtonPressed().
+         *
+         * @see CefMenuButton::TriggerMenu
+         */
         public function triggerMenu(): void {}
+        /**
+         * Create a new MenuButton. A |delegate| must be provided to call ShowMenu() when the button is
+         * clicked. |text| will be shown on the MenuButton and used as the default accessible name. If
+         * |with_frame| is true the button will have a visible frame at all times, center alignment,
+         * additional padding and a default minimum size of 70x33 DIP. If |with_frame| is false the button
+         * will only have a visible frame on hover/press, left alignment, less padding and no default minimum
+         * size.
+         *
+         * @see CefMenuButton::CreateMenuButton
+         */
         public static function createMenuButton(\Cefloom\MenuButtonDelegate $delegate, string $text): ?\Cefloom\MenuButton {}
     }
 
+    /**
+     * Implement this interface to handle MenuButton events. The methods of this class will be called on the
+     * browser process UI thread unless otherwise indicated.
+     *
+     * @see CefMenuButtonDelegate
+     */
     abstract class MenuButtonDelegate {
+        /**
+         * Return the preferred size for |view|. The Layout will use this information to determine the display
+         * size.
+         *
+         * @see CefMenuButtonDelegate::GetPreferredSize
+         */
         public function getPreferredSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the minimum size for |view|.
+         *
+         * @see CefMenuButtonDelegate::GetMinimumSize
+         */
         public function getMinimumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the maximum size for |view|.
+         *
+         * @see CefMenuButtonDelegate::GetMaximumSize
+         */
         public function getMaximumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the height necessary to display |view| with the provided |width|. If not specified the
+         * result of GetPreferredSize().height will be used by default. Override if |view|'s preferred height
+         * depends upon the width (for example, with Labels).
+         *
+         * @see CefMenuButtonDelegate::GetHeightForWidth
+         */
         public function getHeightForWidth(\Cefloom\View $view, int $width): int {}
+        /**
+         * Called when the parent of |view| has changed. If |view| is being added to |parent| then |added|
+         * will be true. If |view| is being removed from |parent| then |added| will be false. If |view| is
+         * being reparented the remove notification will be sent before the add notification. Do not modify
+         * the view hierarchy in this callback.
+         *
+         * @see CefMenuButtonDelegate::OnParentViewChanged
+         */
         public function onParentViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $parent): void {}
+        /**
+         * Called when a child of |view| has changed. If |child| is being added to |view| then |added| will be
+         * true. If |child| is being removed from |view| then |added| will be false. If |child| is being
+         * reparented the remove notification will be sent to the old parent before the add notification is
+         * sent to the new parent. Do not modify the view hierarchy in this callback.
+         *
+         * @see CefMenuButtonDelegate::OnChildViewChanged
+         */
         public function onChildViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $child): void {}
+        /**
+         * Called when |view| is added or removed from the CefWindow.
+         *
+         * @see CefMenuButtonDelegate::OnWindowChanged
+         */
         public function onWindowChanged(\Cefloom\View $view, bool $added): void {}
+        /**
+         * Called when the layout of |view| has changed.
+         *
+         * @see CefMenuButtonDelegate::OnLayoutChanged
+         */
         public function onLayoutChanged(\Cefloom\View $view, \Cefloom\Rect $newBounds): void {}
+        /**
+         * Called when |view| gains focus.
+         *
+         * @see CefMenuButtonDelegate::OnFocus
+         */
         public function onFocus(\Cefloom\View $view): void {}
+        /**
+         * Called when |view| loses focus.
+         *
+         * @see CefMenuButtonDelegate::OnBlur
+         */
         public function onBlur(\Cefloom\View $view): void {}
+        /**
+         * Called when the theme for |view| has changed, after the new theme colors have already been applied.
+         * Views are notified via the component hierarchy in depth-first reverse order (children before
+         * parents).
+         *
+         * This will be called in the following cases:
+         *
+         * 1. When |view|, or a parent of |view|, is added to a Window. 2. When the native/OS or Chrome theme
+         * changes for the Window that contains |view|. See CefWindowDelegate::OnThemeColorsChanged
+         * documentation. 3. When the client explicitly calls CefWindow::ThemeChanged on the Window that
+         * contains |view|.
+         *
+         * Optionally use this callback to override the new per-View theme colors by calling
+         * CefView::SetBackgroundColor or the appropriate component-specific method. See
+         * CefWindow::SetThemeColor documentation for how to customize additional Window theme colors.
+         *
+         * @see CefMenuButtonDelegate::OnThemeChanged
+         */
         public function onThemeChanged(\Cefloom\View $view): void {}
+        /**
+         * Called when |button| is pressed.
+         *
+         * @see CefMenuButtonDelegate::OnButtonPressed
+         */
         public abstract function onButtonPressed(\Cefloom\Button $button): void ;
+        /**
+         * Called when the state of |button| changes.
+         *
+         * @see CefMenuButtonDelegate::OnButtonStateChanged
+         */
         public function onButtonStateChanged(\Cefloom\Button $button): void {}
+        /**
+         * Called when |button| is pressed. Call CefMenuButton::ShowMenu() to show a popup menu at
+         * |screen_point|. When showing a custom popup such as a window keep a reference to
+         * |button_pressed_lock| until the popup is hidden to maintain the pressed button state.
+         *
+         * @see CefMenuButtonDelegate::OnMenuButtonPressed
+         */
         public abstract function onMenuButtonPressed(\Cefloom\MenuButton $menuButton, \Cefloom\Point $screenPoint, \Cefloom\MenuButtonPressedLock $buttonPressedLock): void ;
     }
 
+    /**
+     * MenuButton pressed lock is released when this object is destroyed.
+     *
+     * @see CefMenuButtonPressedLock
+     */
     final class MenuButtonPressedLock {
+        /** Instances are created by CEF only. */
         private function __construct() {}
     }
 
+    /**
+     * Supports creation and modification of menus. See cef_menu_id_t for the command ids that have default
+     * implementations. All user-defined command ids should be between MENU_ID_USER_FIRST and
+     * MENU_ID_USER_LAST. The methods of this class can only be accessed on the browser process the UI thread.
+     *
+     * @see CefMenuModel
+     */
     final class MenuModel {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this menu is a submenu.
+         *
+         * @see CefMenuModel::IsSubMenu
+         */
         public function isSubMenu(): bool {}
+        /**
+         * Clears the menu. Returns true on success.
+         *
+         * @see CefMenuModel::Clear
+         */
         public function clear(): bool {}
+        /**
+         * Returns the number of items in this menu.
+         *
+         * @see CefMenuModel::GetCount
+         */
         public function getCount(): int {}
+        /**
+         * Add a separator to the menu. Returns true on success.
+         *
+         * @see CefMenuModel::AddSeparator
+         */
         public function addSeparator(): bool {}
+        /**
+         * Add an item to the menu. Returns true on success.
+         *
+         * @see CefMenuModel::AddItem
+         */
         public function addItem(int $commandId, string $label): bool {}
+        /**
+         * Add a check item to the menu. Returns true on success.
+         *
+         * @see CefMenuModel::AddCheckItem
+         */
         public function addCheckItem(int $commandId, string $label): bool {}
+        /**
+         * Add a radio item to the menu. Only a single item with the specified |group_id| can be checked at a
+         * time. Returns true on success.
+         *
+         * @see CefMenuModel::AddRadioItem
+         */
         public function addRadioItem(int $commandId, string $label, int $groupId): bool {}
+        /**
+         * Add a sub-menu to the menu. The new sub-menu is returned.
+         *
+         * @see CefMenuModel::AddSubMenu
+         */
         public function addSubMenu(int $commandId, string $label): ?\Cefloom\MenuModel {}
+        /**
+         * Insert a separator in the menu at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::InsertSeparatorAt
+         */
         public function insertSeparatorAt(int $index): bool {}
+        /**
+         * Insert an item in the menu at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::InsertItemAt
+         */
         public function insertItemAt(int $index, int $commandId, string $label): bool {}
+        /**
+         * Insert a check item in the menu at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::InsertCheckItemAt
+         */
         public function insertCheckItemAt(int $index, int $commandId, string $label): bool {}
+        /**
+         * Insert a radio item in the menu at the specified |index|. Only a single item with the specified
+         * |group_id| can be checked at a time. Returns true on success.
+         *
+         * @see CefMenuModel::InsertRadioItemAt
+         */
         public function insertRadioItemAt(int $index, int $commandId, string $label, int $groupId): bool {}
+        /**
+         * Insert a sub-menu in the menu at the specified |index|. The new sub-menu is returned.
+         *
+         * @see CefMenuModel::InsertSubMenuAt
+         */
         public function insertSubMenuAt(int $index, int $commandId, string $label): ?\Cefloom\MenuModel {}
+        /**
+         * Removes the item with the specified |command_id|. Returns true on success.
+         *
+         * @see CefMenuModel::Remove
+         */
         public function remove(int $commandId): bool {}
+        /**
+         * Removes the item at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::RemoveAt
+         */
         public function removeAt(int $index): bool {}
+        /**
+         * Returns the index associated with the specified |command_id| or -1 if not found due to the command
+         * id not existing in the menu.
+         *
+         * @see CefMenuModel::GetIndexOf
+         */
         public function getIndexOf(int $commandId): int {}
+        /**
+         * Returns the command id at the specified |index| or -1 if not found due to invalid range or the
+         * index being a separator.
+         *
+         * @see CefMenuModel::GetCommandIdAt
+         */
         public function getCommandIdAt(int $index): int {}
+        /**
+         * Sets the command id at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::SetCommandIdAt
+         */
         public function setCommandIdAt(int $index, int $commandId): bool {}
+        /**
+         * Returns the label for the specified |command_id| or empty if not found.
+         *
+         * @see CefMenuModel::GetLabel
+         */
         public function getLabel(int $commandId): string {}
+        /**
+         * Returns the label at the specified |index| or empty if not found due to invalid range or the index
+         * being a separator.
+         *
+         * @see CefMenuModel::GetLabelAt
+         */
         public function getLabelAt(int $index): string {}
+        /**
+         * Sets the label for the specified |command_id|. Returns true on success.
+         *
+         * @see CefMenuModel::SetLabel
+         */
         public function setLabel(int $commandId, string $label): bool {}
+        /**
+         * Set the label at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::SetLabelAt
+         */
         public function setLabelAt(int $index, string $label): bool {}
+        /**
+         * Returns the item type for the specified |command_id|.
+         *
+         * @see CefMenuModel::GetType
+         */
         public function getType(int $commandId): int {}
+        /**
+         * Returns the item type at the specified |index|.
+         *
+         * @see CefMenuModel::GetTypeAt
+         */
         public function getTypeAt(int $index): int {}
+        /**
+         * Returns the group id for the specified |command_id| or -1 if invalid.
+         *
+         * @see CefMenuModel::GetGroupId
+         */
         public function getGroupId(int $commandId): int {}
+        /**
+         * Returns the group id at the specified |index| or -1 if invalid.
+         *
+         * @see CefMenuModel::GetGroupIdAt
+         */
         public function getGroupIdAt(int $index): int {}
+        /**
+         * Sets the group id for the specified |command_id|. Returns true on success.
+         *
+         * @see CefMenuModel::SetGroupId
+         */
         public function setGroupId(int $commandId, int $groupId): bool {}
+        /**
+         * Sets the group id at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::SetGroupIdAt
+         */
         public function setGroupIdAt(int $index, int $groupId): bool {}
+        /**
+         * Returns the submenu for the specified |command_id| or empty if invalid.
+         *
+         * @see CefMenuModel::GetSubMenu
+         */
         public function getSubMenu(int $commandId): ?\Cefloom\MenuModel {}
+        /**
+         * Returns the submenu at the specified |index| or empty if invalid.
+         *
+         * @see CefMenuModel::GetSubMenuAt
+         */
         public function getSubMenuAt(int $index): ?\Cefloom\MenuModel {}
+        /**
+         * Returns true if the specified |command_id| is visible.
+         *
+         * @see CefMenuModel::IsVisible
+         */
         public function isVisible(int $commandId): bool {}
+        /**
+         * Returns true if the specified |index| is visible.
+         *
+         * @see CefMenuModel::IsVisibleAt
+         */
         public function isVisibleAt(int $index): bool {}
+        /**
+         * Change the visibility of the specified |command_id|. Returns true on success.
+         *
+         * @see CefMenuModel::SetVisible
+         */
         public function setVisible(int $commandId, bool $visible): bool {}
+        /**
+         * Change the visibility at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::SetVisibleAt
+         */
         public function setVisibleAt(int $index, bool $visible): bool {}
+        /**
+         * Returns true if the specified |command_id| is enabled.
+         *
+         * @see CefMenuModel::IsEnabled
+         */
         public function isEnabled(int $commandId): bool {}
+        /**
+         * Returns true if the specified |index| is enabled.
+         *
+         * @see CefMenuModel::IsEnabledAt
+         */
         public function isEnabledAt(int $index): bool {}
+        /**
+         * Change the enabled status of the specified |command_id|. Returns true on success.
+         *
+         * @see CefMenuModel::SetEnabled
+         */
         public function setEnabled(int $commandId, bool $enabled): bool {}
+        /**
+         * Change the enabled status at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::SetEnabledAt
+         */
         public function setEnabledAt(int $index, bool $enabled): bool {}
+        /**
+         * Returns true if the specified |command_id| is checked. Only applies to check and radio items.
+         *
+         * @see CefMenuModel::IsChecked
+         */
         public function isChecked(int $commandId): bool {}
+        /**
+         * Returns true if the specified |index| is checked. Only applies to check and radio items.
+         *
+         * @see CefMenuModel::IsCheckedAt
+         */
         public function isCheckedAt(int $index): bool {}
+        /**
+         * Check the specified |command_id|. Only applies to check and radio items. Returns true on success.
+         *
+         * @see CefMenuModel::SetChecked
+         */
         public function setChecked(int $commandId, bool $checked): bool {}
+        /**
+         * Check the specified |index|. Only applies to check and radio items. Returns true on success.
+         *
+         * @see CefMenuModel::SetCheckedAt
+         */
         public function setCheckedAt(int $index, bool $checked): bool {}
+        /**
+         * Returns true if the specified |command_id| has a keyboard accelerator assigned.
+         *
+         * @see CefMenuModel::HasAccelerator
+         */
         public function hasAccelerator(int $commandId): bool {}
+        /**
+         * Returns true if the specified |index| has a keyboard accelerator assigned.
+         *
+         * @see CefMenuModel::HasAcceleratorAt
+         */
         public function hasAcceleratorAt(int $index): bool {}
+        /**
+         * Set the keyboard accelerator for the specified |command_id|. |key_code| can be any virtual key or
+         * character value. Returns true on success.
+         *
+         * @see CefMenuModel::SetAccelerator
+         */
         public function setAccelerator(int $commandId, int $keyCode, bool $shiftPressed, bool $ctrlPressed, bool $altPressed): bool {}
+        /**
+         * Set the keyboard accelerator at the specified |index|. |key_code| can be any virtual key or
+         * character value. Returns true on success.
+         *
+         * @see CefMenuModel::SetAcceleratorAt
+         */
         public function setAcceleratorAt(int $index, int $keyCode, bool $shiftPressed, bool $ctrlPressed, bool $altPressed): bool {}
+        /**
+         * Remove the keyboard accelerator for the specified |command_id|. Returns true on success.
+         *
+         * @see CefMenuModel::RemoveAccelerator
+         */
         public function removeAccelerator(int $commandId): bool {}
+        /**
+         * Remove the keyboard accelerator at the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::RemoveAcceleratorAt
+         */
         public function removeAcceleratorAt(int $index): bool {}
+        /**
+         * Retrieves the keyboard accelerator for the specified |command_id|. Returns true on success.
+         *
+         * @see CefMenuModel::GetAccelerator
+         */
         public function getAccelerator(int $commandId): ?array {}
+        /**
+         * Retrieves the keyboard accelerator for the specified |index|. Returns true on success.
+         *
+         * @see CefMenuModel::GetAcceleratorAt
+         */
         public function getAcceleratorAt(int $index): ?array {}
+        /**
+         * Set the explicit color for |command_id| and |color_type| to |color|. Specify a |color| value of 0
+         * to remove the explicit color. If no explicit color or default color is set for |color_type| then
+         * the system color will be used. Returns true on success.
+         *
+         * @see CefMenuModel::SetColor
+         */
         public function setColor(int $commandId, int $colorType, int $color): bool {}
+        /**
+         * Set the explicit color for |command_id| and |index| to |color|. Specify a |color| value of 0 to
+         * remove the explicit color. Specify an |index| value of -1 to set the default color for items that
+         * do not have an explicit color set. If no explicit color or default color is set for |color_type|
+         * then the system color will be used. Returns true on success.
+         *
+         * @see CefMenuModel::SetColorAt
+         */
         public function setColorAt(int $index, int $colorType, int $color): bool {}
+        /**
+         * Returns in |color| the color that was explicitly set for |command_id| and |color_type|. If a color
+         * was not set then 0 will be returned in |color|. Returns true on success.
+         *
+         * @see CefMenuModel::GetColor
+         */
         public function getColor(int $commandId, int $colorType): ?int {}
+        /**
+         * Returns in |color| the color that was explicitly set for |command_id| and |color_type|. Specify an
+         * |index| value of -1 to return the default color in |color|. If a color was not set then 0 will be
+         * returned in |color|. Returns true on success.
+         *
+         * @see CefMenuModel::GetColorAt
+         */
         public function getColorAt(int $index, int $colorType): ?int {}
+        /**
+         * Sets the font list for the specified |command_id|. If |font_list| is empty the system font will be
+         * used. Returns true on success. The format is "<FONT_FAMILY_LIST>,[STYLES] <SIZE>", where: -
+         * FONT_FAMILY_LIST is a comma-separated list of font family names, - STYLES is an optional space-
+         * separated list of style names (case-sensitive "Bold" and "Italic" are supported), and - SIZE is an
+         * integer font size in pixels with the suffix "px".
+         *
+         * Here are examples of valid font description strings: - "Arial, Helvetica, Bold Italic 14px" -
+         * "Arial, 14px"
+         *
+         * @see CefMenuModel::SetFontList
+         */
         public function setFontList(int $commandId, string $fontList): bool {}
+        /**
+         * Sets the font list for the specified |index|. Specify an |index| value of -1 to set the default
+         * font. If |font_list| is empty the system font will be used. Returns true on success. The format is
+         * "<FONT_FAMILY_LIST>,[STYLES] <SIZE>", where: - FONT_FAMILY_LIST is a comma-separated list of font
+         * family names, - STYLES is an optional space-separated list of style names (case-sensitive "Bold"
+         * and "Italic" are supported), and - SIZE is an integer font size in pixels with the suffix "px".
+         *
+         * Here are examples of valid font description strings: - "Arial, Helvetica, Bold Italic 14px" -
+         * "Arial, 14px"
+         *
+         * @see CefMenuModel::SetFontListAt
+         */
         public function setFontListAt(int $index, string $fontList): bool {}
+        /**
+         * Create a new MenuModel with the specified |delegate|.
+         *
+         * @see CefMenuModel::CreateMenuModel
+         */
         public static function create(\Cefloom\MenuModelDelegate $delegate): ?\Cefloom\MenuModel {}
     }
 
+    /**
+     * Implement this interface to handle menu model events. The methods of this class will be called on the
+     * browser process UI thread unless otherwise indicated.
+     *
+     * @see CefMenuModelDelegate
+     */
     abstract class MenuModelDelegate {
+        /**
+         * Perform the action associated with the specified |command_id| and optional |event_flags|.
+         *
+         * @see CefMenuModelDelegate::ExecuteCommand
+         */
         public abstract function executeCommand(\Cefloom\MenuModel $menuModel, int $commandId, int $eventFlags): void ;
+        /**
+         * Called when the user moves the mouse outside the menu and over the owning window.
+         *
+         * @see CefMenuModelDelegate::MouseOutsideMenu
+         */
         public function mouseOutsideMenu(\Cefloom\MenuModel $menuModel, \Cefloom\Point $screenPoint): void {}
+        /**
+         * Called on unhandled open submenu keyboard commands. |is_rtl| will be true if the menu is displaying
+         * a right-to-left language.
+         *
+         * @see CefMenuModelDelegate::UnhandledOpenSubmenu
+         */
         public function unhandledOpenSubmenu(\Cefloom\MenuModel $menuModel, bool $isRtl): void {}
+        /**
+         * Called on unhandled close submenu keyboard commands. |is_rtl| will be true if the menu is
+         * displaying a right-to-left language.
+         *
+         * @see CefMenuModelDelegate::UnhandledCloseSubmenu
+         */
         public function unhandledCloseSubmenu(\Cefloom\MenuModel $menuModel, bool $isRtl): void {}
+        /**
+         * The menu is about to show.
+         *
+         * @see CefMenuModelDelegate::MenuWillShow
+         */
         public function menuWillShow(\Cefloom\MenuModel $menuModel): void {}
+        /**
+         * The menu has closed.
+         *
+         * @see CefMenuModelDelegate::MenuClosed
+         */
         public function menuClosed(\Cefloom\MenuModel $menuModel): void {}
+        /**
+         * Optionally modify a menu item label. Return true if |label| was modified.
+         *
+         * @see CefMenuModelDelegate::FormatLabel
+         */
         public function formatLabel(\Cefloom\MenuModel $menuModel): array {}
     }
 
+    /**
+     * Class used to represent an entry in navigation history.
+     *
+     * @see CefNavigationEntry
+     */
     final class NavigationEntry {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid. Do not call any other methods if this function returns false.
+         *
+         * @see CefNavigationEntry::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns the actual URL of the page. For some pages this may be data: URL or similar. Use
+         * GetDisplayURL() to return a display-friendly version.
+         *
+         * @see CefNavigationEntry::GetURL
+         */
         public function getURL(): string {}
+        /**
+         * Returns a display-friendly version of the URL.
+         *
+         * @see CefNavigationEntry::GetDisplayURL
+         */
         public function getDisplayURL(): string {}
+        /**
+         * Returns the original URL that was entered by the user before any redirects.
+         *
+         * @see CefNavigationEntry::GetOriginalURL
+         */
         public function getOriginalURL(): string {}
+        /**
+         * Returns the title set by the page. This value may be empty.
+         *
+         * @see CefNavigationEntry::GetTitle
+         */
         public function getTitle(): string {}
+        /**
+         * Returns the transition type which indicates what the user did to move to this page from the
+         * previous page.
+         *
+         * @see CefNavigationEntry::GetTransitionType
+         */
         public function getTransitionType(): int {}
+        /**
+         * Returns true if this navigation includes post data.
+         *
+         * @see CefNavigationEntry::HasPostData
+         */
         public function hasPostData(): bool {}
+        /**
+         * Returns the time for the last known successful navigation completion. A navigation may be completed
+         * more than once if the page is reloaded. May be 0 if the navigation has not yet completed.
+         *
+         * @see CefNavigationEntry::GetCompletionTime
+         */
         public function getCompletionTime(): ?\DateTimeImmutable {}
+        /**
+         * Returns the HTTP status code for the last known successful navigation response. May be 0 if the
+         * response has not yet been received or if the navigation has not yet completed.
+         *
+         * @see CefNavigationEntry::GetHttpStatusCode
+         */
         public function getHttpStatusCode(): int {}
+        /**
+         * Returns the SSL information for this navigation entry.
+         *
+         * @see CefNavigationEntry::GetSSLStatus
+         */
         public function getSSLStatus(): ?\Cefloom\SSLStatus {}
     }
 
+    /**
+     * Callback interface for CefBrowserHost::GetNavigationEntries. The methods of this class will be called
+     * on the browser process UI thread.
+     *
+     * @see CefNavigationEntryVisitor
+     */
     abstract class NavigationEntryVisitor {
+        /**
+         * Method that will be executed. Do not keep a reference to |entry| outside of this callback. Return
+         * true to continue visiting entries or false to stop. |current| is true if this entry is the
+         * currently loaded navigation entry. |index| is the 0-based index of this entry and |total| is the
+         * total number of entries.
+         *
+         * @see CefNavigationEntryVisitor::Visit
+         */
         public abstract function visit(\Cefloom\NavigationEntry $entry, bool $current, int $index, int $total): bool ;
     }
 
+    /**
+     * Controller for an overlay that contains a contents View added via CefWindow::AddOverlayView. Methods
+     * exposed by this controller should be called in preference to methods of the same name exposed by the
+     * contents View unless otherwise indicated. Methods must be called on the browser process UI thread
+     * unless otherwise indicated.
+     *
+     * @see CefOverlayController
+     */
     final class OverlayController {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid.
+         *
+         * @see CefOverlayController::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if this object is the same as |that| object.
+         *
+         * @see CefOverlayController::IsSame
+         */
         public function isSame(\Cefloom\OverlayController $that): bool {}
+        /**
+         * Returns the contents View for this overlay.
+         *
+         * @see CefOverlayController::GetContentsView
+         */
         public function getContentsView(): ?\Cefloom\View {}
+        /**
+         * Returns the top-level Window hosting this overlay. Use this method instead of calling GetWindow()
+         * on the contents View.
+         *
+         * @see CefOverlayController::GetWindow
+         */
         public function getWindow(): ?\Cefloom\Window {}
+        /**
+         * Returns the docking mode for this overlay.
+         *
+         * @see CefOverlayController::GetDockingMode
+         */
         public function getDockingMode(): int {}
+        /**
+         * Destroy this overlay.
+         *
+         * @see CefOverlayController::Destroy
+         */
         public function destroy(): void {}
+        /**
+         * Sets the bounds (size and position) of this overlay. This will set the bounds of the contents View
+         * to match and trigger a re-layout if necessary. |bounds| is in parent coordinates and any insets
+         * configured on this overlay will be ignored. Use this method only for overlays created with a
+         * docking mode value of CEF_DOCKING_MODE_CUSTOM. With other docking modes modify the insets of this
+         * overlay and/or layout of the contents View and call SizeToPreferredSize() instead to calculate the
+         * new size and re-position the overlay if necessary.
+         *
+         * @see CefOverlayController::SetBounds
+         */
         public function setBounds(\Cefloom\Rect $bounds): void {}
+        /**
+         * Returns the bounds (size and position) of this overlay in parent coordinates.
+         *
+         * @see CefOverlayController::GetBounds
+         */
         public function getBounds(): \Cefloom\Rect {}
+        /**
+         * Returns the bounds (size and position) of this overlay in DIP screen coordinates.
+         *
+         * @see CefOverlayController::GetBoundsInScreen
+         */
         public function getBoundsInScreen(): \Cefloom\Rect {}
+        /**
+         * Sets the size of this overlay without changing the position. This will set the size of the contents
+         * View to match and trigger a re-layout if necessary. |size| is in parent coordinates and any insets
+         * configured on this overlay will be ignored. Use this method only for overlays created with a
+         * docking mode value of CEF_DOCKING_MODE_CUSTOM. With other docking modes modify the insets of this
+         * overlay and/or layout of the contents View and call SizeToPreferredSize() instead to calculate the
+         * new size and re-position the overlay if necessary.
+         *
+         * @see CefOverlayController::SetSize
+         */
         public function setSize(\Cefloom\Size $size): void {}
+        /**
+         * Returns the size of this overlay in parent coordinates.
+         *
+         * @see CefOverlayController::GetSize
+         */
         public function getSize(): \Cefloom\Size {}
+        /**
+         * Sets the position of this overlay without changing the size. |position| is in parent coordinates
+         * and any insets configured on this overlay will be ignored. Use this method only for overlays
+         * created with a docking mode value of CEF_DOCKING_MODE_CUSTOM. With other docking modes modify the
+         * insets of this overlay and/or layout of the contents View and call SizeToPreferredSize() instead to
+         * calculate the new size and re-position the overlay if necessary.
+         *
+         * @see CefOverlayController::SetPosition
+         */
         public function setPosition(\Cefloom\Point $position): void {}
+        /**
+         * Returns the position of this overlay in parent coordinates.
+         *
+         * @see CefOverlayController::GetPosition
+         */
         public function getPosition(): \Cefloom\Point {}
+        /**
+         * Sets the insets for this overlay. |insets| is in parent coordinates. Use this method only for
+         * overlays created with a docking mode value other than CEF_DOCKING_MODE_CUSTOM.
+         *
+         * @see CefOverlayController::SetInsets
+         */
         public function setInsets(\Cefloom\Insets $insets): void {}
+        /**
+         * Returns the insets for this overlay in parent coordinates.
+         *
+         * @see CefOverlayController::GetInsets
+         */
         public function getInsets(): \Cefloom\Insets {}
+        /**
+         * Size this overlay to its preferred size and trigger a re-layout if necessary. The position of
+         * overlays created with a docking mode value of CEF_DOCKING_MODE_CUSTOM will not be modified by
+         * calling this method. With other docking modes this method may re-position the overlay if necessary
+         * to accommodate the new size and any insets configured on the contents View.
+         *
+         * @see CefOverlayController::SizeToPreferredSize
+         */
         public function sizeToPreferredSize(): void {}
+        /**
+         * Sets whether this overlay is visible. Overlays are hidden by default. If this overlay is hidden
+         * then it and any child Views will not be drawn and, if any of those Views currently have focus, then
+         * focus will also be cleared. Painting is scheduled as needed.
+         *
+         * @see CefOverlayController::SetVisible
+         */
         public function setVisible(bool $visible): void {}
+        /**
+         * Returns whether this overlay is visible. A View may be visible but still not drawn in a Window if
+         * any parent Views are hidden. Call IsDrawn() to determine whether this overlay and all parent Views
+         * are visible and will be drawn.
+         *
+         * @see CefOverlayController::IsVisible
+         */
         public function isVisible(): bool {}
+        /**
+         * Returns whether this overlay is visible and drawn in a Window. A View is drawn if it and all parent
+         * Views are visible. To determine if the containing Window is visible to the user on-screen call
+         * IsVisible() on the Window.
+         *
+         * @see CefOverlayController::IsDrawn
+         */
         public function isDrawn(): bool {}
     }
 
+    /**
+     * A Panel is a container in the views hierarchy that can contain other Views as children. Methods must be
+     * called on the browser process UI thread unless otherwise indicated.
+     *
+     * @see CefPanel
+     */
     class Panel extends View {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns this Panel as a Window or NULL if this is not a Window.
+         *
+         * @see CefPanel::AsWindow
+         */
         public function asWindow(): ?\Cefloom\Window {}
+        /**
+         * Set this Panel's Layout to FillLayout and return the FillLayout object.
+         *
+         * @see CefPanel::SetToFillLayout
+         */
         public function setToFillLayout(): ?\Cefloom\FillLayout {}
+        /**
+         * Set this Panel's Layout to BoxLayout and return the BoxLayout object.
+         *
+         * @see CefPanel::SetToBoxLayout
+         */
         public function setToBoxLayout(\Cefloom\BoxLayoutSettings $settings): ?\Cefloom\BoxLayout {}
+        /**
+         * Get the Layout.
+         *
+         * @see CefPanel::GetLayout
+         */
         public function getLayout(): ?\Cefloom\Layout {}
+        /**
+         * Lay out the child Views (set their bounds based on sizing heuristics specific to the current
+         * Layout).
+         *
+         * @see CefPanel::Layout
+         */
         public function layout(): void {}
+        /**
+         * Add a child View.
+         *
+         * @see CefPanel::AddChildView
+         */
         public function addChildView(\Cefloom\View $view): void {}
+        /**
+         * Add a child View at the specified |index|. If |index| matches the result of GetChildCount() then
+         * the View will be added at the end.
+         *
+         * @see CefPanel::AddChildViewAt
+         */
         public function addChildViewAt(\Cefloom\View $view, int $index): void {}
+        /**
+         * Move the child View to the specified |index|. A negative value for |index| will move the View to
+         * the end.
+         *
+         * @see CefPanel::ReorderChildView
+         */
         public function reorderChildView(\Cefloom\View $view, int $index): void {}
+        /**
+         * Remove a child View. The View can then be added to another Panel.
+         *
+         * @see CefPanel::RemoveChildView
+         */
         public function removeChildView(\Cefloom\View $view): void {}
+        /**
+         * Remove all child Views. The removed Views will be deleted if the client holds no references to
+         * them.
+         *
+         * @see CefPanel::RemoveAllChildViews
+         */
         public function removeAllChildViews(): void {}
+        /**
+         * Returns the number of child Views.
+         *
+         * @see CefPanel::GetChildViewCount
+         */
         public function getChildViewCount(): int {}
+        /**
+         * Returns the child View at the specified |index|.
+         *
+         * @see CefPanel::GetChildViewAt
+         */
         public function getChildViewAt(int $index): ?\Cefloom\View {}
+        /**
+         * Create a new Panel.
+         *
+         * @see CefPanel::CreatePanel
+         */
         public static function createPanel(?\Cefloom\PanelDelegate $delegate): ?\Cefloom\Panel {}
     }
 
+    /**
+     * Implement this interface to handle Panel events. The methods of this class will be called on the
+     * browser process UI thread unless otherwise indicated.
+     *
+     * @see CefPanelDelegate
+     */
     class PanelDelegate {
+        /**
+         * Return the preferred size for |view|. The Layout will use this information to determine the display
+         * size.
+         *
+         * @see CefPanelDelegate::GetPreferredSize
+         */
         public function getPreferredSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the minimum size for |view|.
+         *
+         * @see CefPanelDelegate::GetMinimumSize
+         */
         public function getMinimumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the maximum size for |view|.
+         *
+         * @see CefPanelDelegate::GetMaximumSize
+         */
         public function getMaximumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the height necessary to display |view| with the provided |width|. If not specified the
+         * result of GetPreferredSize().height will be used by default. Override if |view|'s preferred height
+         * depends upon the width (for example, with Labels).
+         *
+         * @see CefPanelDelegate::GetHeightForWidth
+         */
         public function getHeightForWidth(\Cefloom\View $view, int $width): int {}
+        /**
+         * Called when the parent of |view| has changed. If |view| is being added to |parent| then |added|
+         * will be true. If |view| is being removed from |parent| then |added| will be false. If |view| is
+         * being reparented the remove notification will be sent before the add notification. Do not modify
+         * the view hierarchy in this callback.
+         *
+         * @see CefPanelDelegate::OnParentViewChanged
+         */
         public function onParentViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $parent): void {}
+        /**
+         * Called when a child of |view| has changed. If |child| is being added to |view| then |added| will be
+         * true. If |child| is being removed from |view| then |added| will be false. If |child| is being
+         * reparented the remove notification will be sent to the old parent before the add notification is
+         * sent to the new parent. Do not modify the view hierarchy in this callback.
+         *
+         * @see CefPanelDelegate::OnChildViewChanged
+         */
         public function onChildViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $child): void {}
+        /**
+         * Called when |view| is added or removed from the CefWindow.
+         *
+         * @see CefPanelDelegate::OnWindowChanged
+         */
         public function onWindowChanged(\Cefloom\View $view, bool $added): void {}
+        /**
+         * Called when the layout of |view| has changed.
+         *
+         * @see CefPanelDelegate::OnLayoutChanged
+         */
         public function onLayoutChanged(\Cefloom\View $view, \Cefloom\Rect $newBounds): void {}
+        /**
+         * Called when |view| gains focus.
+         *
+         * @see CefPanelDelegate::OnFocus
+         */
         public function onFocus(\Cefloom\View $view): void {}
+        /**
+         * Called when |view| loses focus.
+         *
+         * @see CefPanelDelegate::OnBlur
+         */
         public function onBlur(\Cefloom\View $view): void {}
+        /**
+         * Called when the theme for |view| has changed, after the new theme colors have already been applied.
+         * Views are notified via the component hierarchy in depth-first reverse order (children before
+         * parents).
+         *
+         * This will be called in the following cases:
+         *
+         * 1. When |view|, or a parent of |view|, is added to a Window. 2. When the native/OS or Chrome theme
+         * changes for the Window that contains |view|. See CefWindowDelegate::OnThemeColorsChanged
+         * documentation. 3. When the client explicitly calls CefWindow::ThemeChanged on the Window that
+         * contains |view|.
+         *
+         * Optionally use this callback to override the new per-View theme colors by calling
+         * CefView::SetBackgroundColor or the appropriate component-specific method. See
+         * CefWindow::SetThemeColor documentation for how to customize additional Window theme colors.
+         *
+         * @see CefPanelDelegate::OnThemeChanged
+         */
         public function onThemeChanged(\Cefloom\View $view): void {}
     }
 
+    /**
+     * Callback interface for CefBrowserHost::PrintToPDF. The methods of this class will be called on the
+     * browser process UI thread.
+     *
+     * @see CefPdfPrintCallback
+     */
     abstract class PdfPrintCallback {
+        /**
+         * Method that will be executed when the PDF printing has completed. |path| is the output path. |ok|
+         * will be true if the printing completed successfully or false otherwise.
+         *
+         * @see CefPdfPrintCallback::OnPdfPrintFinished
+         */
         public abstract function onPdfPrintFinished(string $path, bool $ok): void ;
     }
 
+    /**
+     * Implement this interface to handle events related to permission requests. The methods of this class
+     * will be called on the browser process UI thread.
+     *
+     * @see CefPermissionHandler
+     */
     class PermissionHandler {
+        /**
+         * Called when a page requests permission to access media. |requesting_origin| is the URL origin
+         * requesting permission. |requested_permissions| is a combination of values from
+         * cef_media_access_permission_types_t that represent the requested permissions. Return true and call
+         * CefMediaAccessCallback methods either in this method or at a later time to continue or cancel the
+         * request. Return false to proceed with default handling. With Chrome style, default handling will
+         * display the permission request UI. With Alloy style, default handling will deny the request. This
+         * method will not be called if the "--enable-media-stream" command-line switch is used to grant all
+         * permissions.
+         *
+         * @see CefPermissionHandler::OnRequestMediaAccessPermission
+         */
         public function onRequestMediaAccessPermission(\Cefloom\Browser $browser, \Cefloom\Frame $frame, string $requestingOrigin, int $requestedPermissions, \Cefloom\MediaAccessCallback $callback): bool {}
+        /**
+         * Called when a page should show a permission prompt. |prompt_id| uniquely identifies the prompt.
+         * |requesting_origin| is the URL origin requesting permission. |requested_permissions| is a
+         * combination of values from cef_permission_request_types_t that represent the requested permissions.
+         * Return true and call CefPermissionPromptCallback::Continue either in this method or at a later time
+         * to continue or cancel the request. Return false to proceed with default handling. With Chrome
+         * style, default handling will display the permission prompt UI. With Alloy style, default handling
+         * is CEF_PERMISSION_RESULT_IGNORE.
+         *
+         * @see CefPermissionHandler::OnShowPermissionPrompt
+         */
         public function onShowPermissionPrompt(\Cefloom\Browser $browser, int $promptId, string $requestingOrigin, int $requestedPermissions, \Cefloom\PermissionPromptCallback $callback): bool {}
+        /**
+         * Called when a permission prompt handled via OnShowPermissionPrompt is dismissed. |prompt_id| will
+         * match the value that was passed to OnShowPermissionPrompt. |result| will be the value passed to
+         * CefPermissionPromptCallback::Continue or CEF_PERMISSION_RESULT_IGNORE if the dialog was dismissed
+         * for other reasons such as navigation, browser closure, etc. This method will not be called if
+         * OnShowPermissionPrompt returned false for |prompt_id|.
+         *
+         * @see CefPermissionHandler::OnDismissPermissionPrompt
+         */
         public function onDismissPermissionPrompt(\Cefloom\Browser $browser, int $promptId, int $result): void {}
     }
 
+    /**
+     * Callback interface used for asynchronous continuation of permission prompts.
+     *
+     * @see CefPermissionPromptCallback
+     */
     final class PermissionPromptCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Complete the permissions request with the specified |result|.
+         *
+         * @see CefPermissionPromptCallback::Continue
+         */
         public function continue(int $result): void {}
     }
 
+    /**
+     * Class used to represent post data for a web request. The methods of this class may be called on any
+     * thread.
+     *
+     * @see CefPostData
+     */
     final class PostData {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is read-only.
+         *
+         * @see CefPostData::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Returns true if the underlying POST data includes elements that are not represented by this
+         * CefPostData object (for example, multi-part file upload data). Modifying CefPostData objects with
+         * excluded elements may result in the request failing.
+         *
+         * @see CefPostData::HasExcludedElements
+         */
         public function hasExcludedElements(): bool {}
+        /**
+         * Returns the number of existing post data elements.
+         *
+         * @see CefPostData::GetElementCount
+         */
         public function getElementCount(): int {}
+        /**
+         * Retrieve the post data elements.
+         *
+         * @see CefPostData::GetElements
+         */
         public function getElements(): array {}
+        /**
+         * Remove the specified post data element.  Returns true if the removal succeeds.
+         *
+         * @see CefPostData::RemoveElement
+         */
         public function removeElement(\Cefloom\PostDataElement $element): bool {}
+        /**
+         * Add the specified post data element.  Returns true if the add succeeds.
+         *
+         * @see CefPostData::AddElement
+         */
         public function addElement(\Cefloom\PostDataElement $element): bool {}
+        /**
+         * Remove all existing post data elements.
+         *
+         * @see CefPostData::RemoveElements
+         */
         public function removeElements(): void {}
+        /**
+         * Create a new CefPostData object.
+         *
+         * @see CefPostData::Create
+         */
         public static function create(): ?\Cefloom\PostData {}
     }
 
+    /**
+     * Class used to represent a single element in the request post data. The methods of this class may be
+     * called on any thread.
+     *
+     * @see CefPostDataElement
+     */
     final class PostDataElement {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is read-only.
+         *
+         * @see CefPostDataElement::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Remove all contents from the post data element.
+         *
+         * @see CefPostDataElement::SetToEmpty
+         */
         public function setToEmpty(): void {}
+        /**
+         * The post data element will represent a file.
+         *
+         * @see CefPostDataElement::SetToFile
+         */
         public function setToFile(string $fileName): void {}
+        /**
+         * The post data element will represent bytes.  The bytes passed in will be copied.
+         *
+         * @see CefPostDataElement::SetToBytes
+         */
         public function setToBytes(string $bytes): void {}
+        /**
+         * Return the type of this post data element.
+         *
+         * @see CefPostDataElement::GetType
+         */
         public function getType(): int {}
+        /**
+         * Return the file name.
+         *
+         * @see CefPostDataElement::GetFile
+         */
         public function getFile(): string {}
+        /**
+         * Return the number of bytes.
+         *
+         * @see CefPostDataElement::GetBytesCount
+         */
         public function getBytesCount(): int {}
+        /**
+         * Read up to |size| bytes into |bytes| and return the number of bytes actually read.
+         *
+         * @see CefPostDataElement::GetBytes
+         */
         public function getBytes(int $size): string {}
+        /**
+         * Create a new CefPostDataElement object.
+         *
+         * @see CefPostDataElement::Create
+         */
         public static function create(): ?\Cefloom\PostDataElement {}
     }
 
+    /**
+     * Manage access to preferences. Many built-in preferences are registered by Chromium. Custom preferences
+     * can be registered in CefBrowserProcessHandler::OnRegisterCustomPreferences.
+     *
+     * @see CefPreferenceManager
+     */
     class PreferenceManager {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if a preference with the specified |name| exists. This method must be called on the
+         * browser process UI thread.
+         *
+         * @see CefPreferenceManager::HasPreference
+         */
         public function hasPreference(string $name): bool {}
+        /**
+         * Returns the value for the preference with the specified |name|. Returns NULL if the preference does
+         * not exist. The returned object contains a copy of the underlying preference value and modifications
+         * to the returned object will not modify the underlying preference value. This method must be called
+         * on the browser process UI thread.
+         *
+         * @see CefPreferenceManager::GetPreference
+         */
         public function getPreference(string $name): ?\Cefloom\Value {}
+        /**
+         * Returns all preferences as a dictionary. If |include_defaults| is true then preferences currently
+         * at their default value will be included. The returned object contains a copy of the underlying
+         * preference values and modifications to the returned object will not modify the underlying
+         * preference values. This method must be called on the browser process UI thread.
+         *
+         * @see CefPreferenceManager::GetAllPreferences
+         */
         public function getAllPreferences(bool $includeDefaults): ?\Cefloom\DictionaryValue {}
+        /**
+         * Returns true if the preference with the specified |name| can be modified using SetPreference. As
+         * one example preferences set via the command-line usually cannot be modified. This method must be
+         * called on the browser process UI thread.
+         *
+         * @see CefPreferenceManager::CanSetPreference
+         */
         public function canSetPreference(string $name): bool {}
+        /**
+         * Set the |value| associated with preference |name|. Returns true if the value is set successfully
+         * and false otherwise. If |value| is NULL the preference will be restored to its default value. If
+         * setting the preference fails then |error| will be populated with a detailed description of the
+         * problem. This method must be called on the browser process UI thread.
+         *
+         * @see CefPreferenceManager::SetPreference
+         */
         public function setPreference(string $name, ?\Cefloom\Value $value): array {}
+        /**
+         * Add an observer for preference changes. |name| is the name of the preference to observe. If |name|
+         * is empty then all preferences will be observed. Observing all preferences has performance
+         * consequences and is not recommended outside of testing scenarios. The observer will remain
+         * registered until the returned Registration object is destroyed. This method must be called on the
+         * browser process UI thread.
+         *
+         * @see CefPreferenceManager::AddPreferenceObserver
+         */
         public function addPreferenceObserver(string $name, \Cefloom\PreferenceObserver $observer): ?\Cefloom\Registration {}
+        /**
+         * Returns the current Chrome Variations configuration (combination of field trials and
+         * chrome://flags) as equivalent command-line switches (`--[enable|disable]-features=XXXX`, etc).
+         * These switches can be used to apply the same configuration when launching a CEF-based application.
+         * See https://developer.chrome.com/docs/web-platform/chrome-variations for background and details.
+         * Note that field trial tests are disabled by default in Official CEF builds (via the
+         * `disable_fieldtrial_testing_config=true` GN flag). This method must be called on the browser
+         * process UI thread.
+         *
+         * @see CefPreferenceManager::GetChromeVariationsAsSwitches
+         */
         public static function getChromeVariationsAsSwitches(): array {}
+        /**
+         * Returns the current Chrome Variations configuration (combination of field trials and
+         * chrome://flags) as human-readable strings. This is the human-readable equivalent of the "Active
+         * Variations" section of chrome://version. See https://developer.chrome.com/docs/web-platform/chrome-
+         * variations for background and details. Note that field trial tests are disabled by default in
+         * Official CEF builds (via the `disable_fieldtrial_testing_config=true` GN flag). This method must be
+         * called on the browser process UI thread.
+         *
+         * @see CefPreferenceManager::GetChromeVariationsAsStrings
+         */
         public static function getChromeVariationsAsStrings(): array {}
+        /**
+         * Returns the global preference manager object.
+         *
+         * @see CefPreferenceManager::GetGlobalPreferenceManager
+         */
         public static function getGlobalPreferenceManager(): ?\Cefloom\PreferenceManager {}
     }
 
+    /**
+     * Implemented by the client to observe preference changes and registered via
+     * CefPreferenceManager::AddPreferenceObserver. The methods of this class will be called on the browser
+     * process UI thread.
+     *
+     * @see CefPreferenceObserver
+     */
     abstract class PreferenceObserver {
+        /**
+         * Called when a preference has changed. The new value can be retrieved using
+         * CefPreferenceManager::GetPreference.
+         *
+         * @see CefPreferenceObserver::OnPreferenceChanged
+         */
         public abstract function onPreferenceChanged(string $name): void ;
     }
 
+    /**
+     * Callback interface for asynchronous continuation of print dialog requests.
+     *
+     * @see CefPrintDialogCallback
+     */
     final class PrintDialogCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Continue printing with the specified |settings|.
+         *
+         * @see CefPrintDialogCallback::Continue
+         */
         public function continue(\Cefloom\PrintSettings $settings): void {}
+        /**
+         * Cancel the printing.
+         *
+         * @see CefPrintDialogCallback::Cancel
+         */
         public function cancel(): void {}
     }
 
+    /**
+     * Implement this interface to handle printing on Linux. Each browser will have only one print job in
+     * progress at a time. The methods of this class will be called on the browser process UI thread.
+     *
+     * @see CefPrintHandler
+     */
     abstract class PrintHandler {
+        /**
+         * Called when printing has started for the specified |browser|. This method will be called before the
+         * other OnPrint*() methods and irrespective of how printing was initiated (e.g.
+         * CefBrowserHost::Print(), JavaScript window.print() or PDF extension print button).
+         *
+         * @see CefPrintHandler::OnPrintStart
+         */
         public abstract function onPrintStart(\Cefloom\Browser $browser): void ;
+        /**
+         * Synchronize |settings| with client state. If |get_defaults| is true then populate |settings| with
+         * the default print settings. Do not keep a reference to |settings| outside of this callback.
+         *
+         * @see CefPrintHandler::OnPrintSettings
+         */
         public abstract function onPrintSettings(\Cefloom\Browser $browser, \Cefloom\PrintSettings $settings, bool $getDefaults): void ;
+        /**
+         * Show the print dialog. Execute |callback| once the dialog is dismissed. Return true if the dialog
+         * will be displayed or false to cancel the printing immediately.
+         *
+         * @see CefPrintHandler::OnPrintDialog
+         */
         public abstract function onPrintDialog(\Cefloom\Browser $browser, bool $hasSelection, \Cefloom\PrintDialogCallback $callback): bool ;
+        /**
+         * Send the print job to the printer. Execute |callback| once the job is completed. Return true if the
+         * job will proceed or false to cancel the job immediately.
+         *
+         * @see CefPrintHandler::OnPrintJob
+         */
         public abstract function onPrintJob(\Cefloom\Browser $browser, string $documentName, string $pdfFilePath, \Cefloom\PrintJobCallback $callback): bool ;
+        /**
+         * Reset client state related to printing.
+         *
+         * @see CefPrintHandler::OnPrintReset
+         */
         public abstract function onPrintReset(\Cefloom\Browser $browser): void ;
+        /**
+         * Return the PDF paper size in device units. Used in combination with CefBrowserHost::PrintToPDF().
+         *
+         * @see CefPrintHandler::GetPdfPaperSize
+         */
         public function getPdfPaperSize(\Cefloom\Browser $browser, int $deviceUnitsPerInch): \Cefloom\Size {}
     }
 
+    /**
+     * Callback interface for asynchronous continuation of print job requests.
+     *
+     * @see CefPrintJobCallback
+     */
     final class PrintJobCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Indicate completion of the print job.
+         *
+         * @see CefPrintJobCallback::Continue
+         */
         public function continue(): void {}
     }
 
+    /**
+     * Class representing print settings.
+     *
+     * @see CefPrintSettings
+     */
     final class PrintSettings {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid. Do not call any other methods if this function returns false.
+         *
+         * @see CefPrintSettings::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if the values of this object are read-only. Some APIs may expose read-only objects.
+         *
+         * @see CefPrintSettings::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Set the page orientation.
+         *
+         * @see CefPrintSettings::SetOrientation
+         */
         public function setOrientation(bool $landscape): void {}
+        /**
+         * Returns true if the orientation is landscape.
+         *
+         * @see CefPrintSettings::IsLandscape
+         */
         public function isLandscape(): bool {}
+        /**
+         * Set the printer printable area in device units. Some platforms already provide flipped area. Set
+         * |landscape_needs_flip| to false on those platforms to avoid double flipping.
+         *
+         * @see CefPrintSettings::SetPrinterPrintableArea
+         */
         public function setPrinterPrintableArea(\Cefloom\Size $physicalSizeDeviceUnits, \Cefloom\Rect $printableAreaDeviceUnits, bool $landscapeNeedsFlip): void {}
+        /**
+         * Set the device name.
+         *
+         * @see CefPrintSettings::SetDeviceName
+         */
         public function setDeviceName(string $name): void {}
+        /**
+         * Get the device name.
+         *
+         * @see CefPrintSettings::GetDeviceName
+         */
         public function getDeviceName(): string {}
+        /**
+         * Set the DPI (dots per inch).
+         *
+         * @see CefPrintSettings::SetDPI
+         */
         public function setDPI(int $dpi): void {}
+        /**
+         * Get the DPI (dots per inch).
+         *
+         * @see CefPrintSettings::GetDPI
+         */
         public function getDPI(): int {}
+        /**
+         * Set the page ranges.
+         *
+         * @see CefPrintSettings::SetPageRanges
+         */
         public function setPageRanges(array $ranges): void {}
+        /**
+         * Returns the number of page ranges that currently exist.
+         *
+         * @see CefPrintSettings::GetPageRangesCount
+         */
         public function getPageRangesCount(): int {}
+        /**
+         * Retrieve the page ranges.
+         *
+         * @see CefPrintSettings::GetPageRanges
+         */
         public function getPageRanges(): array {}
+        /**
+         * Set whether only the selection will be printed.
+         *
+         * @see CefPrintSettings::SetSelectionOnly
+         */
         public function setSelectionOnly(bool $selectionOnly): void {}
+        /**
+         * Returns true if only the selection will be printed.
+         *
+         * @see CefPrintSettings::IsSelectionOnly
+         */
         public function isSelectionOnly(): bool {}
+        /**
+         * Set whether pages will be collated.
+         *
+         * @see CefPrintSettings::SetCollate
+         */
         public function setCollate(bool $collate): void {}
+        /**
+         * Returns true if pages will be collated.
+         *
+         * @see CefPrintSettings::WillCollate
+         */
         public function willCollate(): bool {}
+        /**
+         * Set the color model.
+         *
+         * @see CefPrintSettings::SetColorModel
+         */
         public function setColorModel(int $model): void {}
+        /**
+         * Get the color model.
+         *
+         * @see CefPrintSettings::GetColorModel
+         */
         public function getColorModel(): int {}
+        /**
+         * Set the number of copies.
+         *
+         * @see CefPrintSettings::SetCopies
+         */
         public function setCopies(int $copies): void {}
+        /**
+         * Get the number of copies.
+         *
+         * @see CefPrintSettings::GetCopies
+         */
         public function getCopies(): int {}
+        /**
+         * Set the duplex mode.
+         *
+         * @see CefPrintSettings::SetDuplexMode
+         */
         public function setDuplexMode(int $mode): void {}
+        /**
+         * Get the duplex mode.
+         *
+         * @see CefPrintSettings::GetDuplexMode
+         */
         public function getDuplexMode(): int {}
+        /**
+         * Create a new CefPrintSettings object.
+         *
+         * @see CefPrintSettings::Create
+         */
         public static function create(): ?\Cefloom\PrintSettings {}
     }
 
+    /**
+     * Class representing a message. Can be used on any process and thread.
+     *
+     * @see CefProcessMessage
+     */
     final class ProcessMessage {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is valid. Do not call any other methods if this function returns false.
+         *
+         * @see CefProcessMessage::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if the values of this object are read-only. Some APIs may expose read-only objects.
+         *
+         * @see CefProcessMessage::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Returns a writable copy of this object. Returns nullptr when message contains a shared memory
+         * region.
+         *
+         * @see CefProcessMessage::Copy
+         */
         public function copy(): ?\Cefloom\ProcessMessage {}
+        /**
+         * Returns the message name.
+         *
+         * @see CefProcessMessage::GetName
+         */
         public function getName(): string {}
+        /**
+         * Returns the list of arguments. Returns nullptr when message contains a shared memory region.
+         *
+         * @see CefProcessMessage::GetArgumentList
+         */
         public function getArgumentList(): ?\Cefloom\ListValue {}
+        /**
+         * Returns the shared memory region. Returns nullptr when message contains an argument list.
+         *
+         * @see CefProcessMessage::GetSharedMemoryRegion
+         */
         public function getSharedMemoryRegion(): ?\Cefloom\SharedMemoryRegion {}
+        /**
+         * Create a new CefProcessMessage object with the specified name.
+         *
+         * @see CefProcessMessage::Create
+         */
         public static function create(string $name): ?\Cefloom\ProcessMessage {}
     }
 
+    /**
+     * Interface the client can implement to provide a custom stream reader. The methods of this class may be
+     * called on any thread.
+     *
+     * @see CefReadHandler
+     */
     abstract class ReadHandler {
+        /**
+         * Read raw binary data.
+         *
+         * @see CefReadHandler::Read
+         */
         public abstract function read(\Cefloom\Buffer $ptr, int $size): int ;
+        /**
+         * Seek to the specified offset position. |whence| may be any one of SEEK_CUR, SEEK_END or SEEK_SET.
+         * Return zero on success and non-zero on failure.
+         *
+         * @see CefReadHandler::Seek
+         */
         public abstract function seek(int $offset, int $whence): int ;
+        /**
+         * Return the current offset position.
+         *
+         * @see CefReadHandler::Tell
+         */
         public abstract function tell(): int ;
+        /**
+         * Return non-zero if at end of file.
+         *
+         * @see CefReadHandler::Eof
+         */
         public abstract function eof(): int ;
+        /**
+         * Return true if this handler performs work like accessing the file system which may block. Used as a
+         * hint for determining the thread to access the handler from.
+         *
+         * @see CefReadHandler::MayBlock
+         */
         public abstract function mayBlock(): bool ;
     }
 
+    /**
+     * Generic callback interface used for managing the lifespan of a registration.
+     *
+     * @see CefRegistration
+     */
     final class Registration {
+        /** Instances are created by CEF only. */
         private function __construct() {}
     }
 
+    /**
+     * Implement this interface to handle events when window rendering is disabled. The methods of this class
+     * will be called on the UI thread.
+     *
+     * @see CefRenderHandler
+     */
     abstract class RenderHandler {
+        /**
+         * Return the handler for accessibility notifications. If no handler is provided the default
+         * implementation will be used.
+         *
+         * @see CefRenderHandler::GetAccessibilityHandler
+         */
         public function getAccessibilityHandler(): ?\Cefloom\AccessibilityHandler {}
+        /**
+         * Called to retrieve the root window rectangle in screen DIP coordinates. Return true if the
+         * rectangle was provided. If this method returns false the rectangle from GetViewRect will be used.
+         *
+         * @see CefRenderHandler::GetRootScreenRect
+         */
         public function getRootScreenRect(\Cefloom\Browser $browser): array {}
+        /**
+         * Called to retrieve the view rectangle in screen DIP coordinates. This method must always provide a
+         * non-empty rectangle.
+         *
+         * @see CefRenderHandler::GetViewRect
+         */
         public abstract function getViewRect(\Cefloom\Browser $browser): \Cefloom\Rect ;
+        /**
+         * Called to retrieve the translation from view DIP coordinates to screen coordinates. Windows/Linux
+         * should provide screen device (pixel) coordinates and MacOS should provide screen DIP coordinates.
+         * Return true if the requested coordinates were provided.
+         *
+         * @see CefRenderHandler::GetScreenPoint
+         */
         public function getScreenPoint(\Cefloom\Browser $browser, int $viewX, int $viewY): array {}
+        /**
+         * Called to allow the client to fill in the CefScreenInfo object with appropriate values. Return true
+         * if the |screen_info| structure has been modified.
+         *
+         * If the screen info rectangle is left empty the rectangle from GetViewRect will be used. If the
+         * rectangle is still empty or invalid popups may not be drawn correctly.
+         *
+         * @see CefRenderHandler::GetScreenInfo
+         */
         public function getScreenInfo(\Cefloom\Browser $browser): array {}
+        /**
+         * Called when the browser wants to show or hide the popup widget. The popup should be shown if |show|
+         * is true and hidden if |show| is false.
+         *
+         * @see CefRenderHandler::OnPopupShow
+         */
         public function onPopupShow(\Cefloom\Browser $browser, bool $show): void {}
+        /**
+         * Called when the browser wants to move or resize the popup widget. |rect| contains the new location
+         * and size in view coordinates.
+         *
+         * @see CefRenderHandler::OnPopupSize
+         */
         public function onPopupSize(\Cefloom\Browser $browser, \Cefloom\Rect $rect): void {}
+        /**
+         * Called when an element should be painted. Pixel values passed to this method are scaled relative to
+         * view coordinates based on the value of CefScreenInfo.device_scale_factor returned from
+         * GetScreenInfo. |type| indicates whether the element is the view or the popup widget. |buffer|
+         * contains the pixel data for the whole image. |dirtyRects| contains the set of rectangles in pixel
+         * coordinates that need to be repainted. |buffer| will be |width|*|height|*4 bytes in size and
+         * represents a BGRA image with an upper-left origin. This method is only called when
+         * CefWindowInfo::shared_texture_enabled is set to false.
+         *
+         * @see CefRenderHandler::OnPaint
+         */
         public abstract function onPaint(\Cefloom\Browser $browser, int $type, array $dirtyRects, \Cefloom\Buffer $buffer, int $width, int $height): void ;
+        /**
+         * Called to retrieve the size of the touch handle for the specified |orientation|.
+         *
+         * @see CefRenderHandler::GetTouchHandleSize
+         */
         public function getTouchHandleSize(\Cefloom\Browser $browser, int $orientation): \Cefloom\Size {}
+        /**
+         * Called when touch handle state is updated. The client is responsible for rendering the touch
+         * handles.
+         *
+         * @see CefRenderHandler::OnTouchHandleStateChanged
+         */
         public function onTouchHandleStateChanged(\Cefloom\Browser $browser, \Cefloom\TouchHandleState $state): void {}
+        /**
+         * Called when the user starts dragging content in the web view. Contextual information about the
+         * dragged content is supplied by |drag_data|. (|x|, |y|) is the drag start location in screen
+         * coordinates. OS APIs that run a system message loop may be used within the StartDragging call.
+         *
+         * Return false to abort the drag operation. Don't call any of CefBrowserHost::DragSource*Ended*
+         * methods after returning false.
+         *
+         * Return true to handle the drag operation. Call CefBrowserHost::DragSourceEndedAt and
+         * DragSourceSystemDragEnded either synchronously or asynchronously to inform the web view that the
+         * drag operation has ended.
+         *
+         * @see CefRenderHandler::StartDragging
+         */
         public function startDragging(\Cefloom\Browser $browser, \Cefloom\DragData $dragData, int $allowedOps, int $x, int $y): bool {}
+        /**
+         * Called when the web view wants to update the mouse cursor during a drag & drop operation.
+         * |operation| describes the allowed operation (none, move, copy, link).
+         *
+         * @see CefRenderHandler::UpdateDragCursor
+         */
         public function updateDragCursor(\Cefloom\Browser $browser, int $operation): void {}
+        /**
+         * Called when the scroll offset has changed.
+         *
+         * @see CefRenderHandler::OnScrollOffsetChanged
+         */
         public function onScrollOffsetChanged(\Cefloom\Browser $browser, float $x, float $y): void {}
+        /**
+         * Called when the IME composition range has changed. |selected_range| is the range of characters that
+         * have been selected. |character_bounds| is the bounds of each character in view coordinates.
+         *
+         * @see CefRenderHandler::OnImeCompositionRangeChanged
+         */
         public function onImeCompositionRangeChanged(\Cefloom\Browser $browser, \Cefloom\Range $selectedRange, array $characterBounds): void {}
+        /**
+         * Called when text selection has changed for the specified |browser|. |selected_text| is the
+         * currently selected text and |selected_range| is the character range.
+         *
+         * @see CefRenderHandler::OnTextSelectionChanged
+         */
         public function onTextSelectionChanged(\Cefloom\Browser $browser, string $selectedText, \Cefloom\Range $selectedRange): void {}
+        /**
+         * Called when an on-screen keyboard should be shown or hidden for the specified |browser|.
+         * |input_mode| specifies what kind of keyboard should be opened. If |input_mode| is
+         * CEF_TEXT_INPUT_MODE_NONE, any existing keyboard for this browser should be hidden.
+         *
+         * @see CefRenderHandler::OnVirtualKeyboardRequested
+         */
         public function onVirtualKeyboardRequested(\Cefloom\Browser $browser, int $inputMode): void {}
     }
 
+    /**
+     * Class used to represent a web request. The methods of this class may be called on any thread.
+     *
+     * @see CefRequest
+     */
     final class Request {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is read-only.
+         *
+         * @see CefRequest::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Get the fully qualified URL.
+         *
+         * @see CefRequest::GetURL
+         */
         public function getURL(): string {}
+        /**
+         * Set the fully qualified URL.
+         *
+         * @see CefRequest::SetURL
+         */
         public function setURL(string $url): void {}
+        /**
+         * Get the request method type. The value will default to POST if post data is provided and GET
+         * otherwise.
+         *
+         * @see CefRequest::GetMethod
+         */
         public function getMethod(): string {}
+        /**
+         * Set the request method type.
+         *
+         * @see CefRequest::SetMethod
+         */
         public function setMethod(string $method): void {}
+        /**
+         * Set the referrer URL and policy. If non-empty the referrer URL must be fully qualified with an HTTP
+         * or HTTPS scheme component. Any username, password or ref component will be removed.
+         *
+         * @see CefRequest::SetReferrer
+         */
         public function setReferrer(string $referrerUrl, int $policy): void {}
+        /**
+         * Get the referrer URL.
+         *
+         * @see CefRequest::GetReferrerURL
+         */
         public function getReferrerURL(): string {}
+        /**
+         * Get the referrer policy.
+         *
+         * @see CefRequest::GetReferrerPolicy
+         */
         public function getReferrerPolicy(): int {}
+        /**
+         * Get the post data.
+         *
+         * @see CefRequest::GetPostData
+         */
         public function getPostData(): ?\Cefloom\PostData {}
+        /**
+         * Set the post data.
+         *
+         * @see CefRequest::SetPostData
+         */
         public function setPostData(\Cefloom\PostData $postData): void {}
+        /**
+         * Get the header values. Will not include the Referer value if any.
+         *
+         * @see CefRequest::GetHeaderMap
+         */
         public function getHeaderMap(): array {}
+        /**
+         * Set the header values. If a Referer value exists in the header map it will be removed and ignored.
+         *
+         * @see CefRequest::SetHeaderMap
+         */
         public function setHeaderMap(array $headerMap): void {}
+        /**
+         * Returns the first header value for |name| or an empty string if not found. Will not return the
+         * Referer value if any. Use GetHeaderMap instead if |name| might have multiple values.
+         *
+         * @see CefRequest::GetHeaderByName
+         */
         public function getHeaderByName(string $name): string {}
+        /**
+         * Set the header |name| to |value|. If |overwrite| is true any existing values will be replaced with
+         * the new value. If |overwrite| is false any existing values will not be overwritten. The Referer
+         * value cannot be set using this method.
+         *
+         * @see CefRequest::SetHeaderByName
+         */
         public function setHeaderByName(string $name, string $value, bool $overwrite): void {}
+        /**
+         * Set all values at one time.
+         *
+         * @see CefRequest::Set
+         */
         public function set(string $url, string $method, ?\Cefloom\PostData $postData, array $headerMap): void {}
+        /**
+         * Get the flags used in combination with CefURLRequest. See cef_urlrequest_flags_t for supported
+         * values.
+         *
+         * @see CefRequest::GetFlags
+         */
         public function getFlags(): int {}
+        /**
+         * Set the flags used in combination with CefURLRequest.  See cef_urlrequest_flags_t for supported
+         * values.
+         *
+         * @see CefRequest::SetFlags
+         */
         public function setFlags(int $flags): void {}
+        /**
+         * Get the URL to the first party for cookies used in combination with CefURLRequest.
+         *
+         * @see CefRequest::GetFirstPartyForCookies
+         */
         public function getFirstPartyForCookies(): string {}
+        /**
+         * Set the URL to the first party for cookies used in combination with CefURLRequest.
+         *
+         * @see CefRequest::SetFirstPartyForCookies
+         */
         public function setFirstPartyForCookies(string $url): void {}
+        /**
+         * Get the resource type for this request. Only available in the browser process.
+         *
+         * @see CefRequest::GetResourceType
+         */
         public function getResourceType(): int {}
+        /**
+         * Get the transition type for this request. Only available in the browser process and only applies to
+         * requests that represent a main frame or sub-frame navigation.
+         *
+         * @see CefRequest::GetTransitionType
+         */
         public function getTransitionType(): int {}
+        /**
+         * Returns the globally unique identifier for this request or 0 if not specified. Can be used by
+         * CefResourceRequestHandler implementations in the browser process to track a single request across
+         * multiple callbacks.
+         *
+         * @see CefRequest::GetIdentifier
+         */
         public function getIdentifier(): int {}
+        /**
+         * Create a new CefRequest object.
+         *
+         * @see CefRequest::Create
+         */
         public static function create(): ?\Cefloom\Request {}
     }
 
+    /**
+     * A request context provides request handling for a set of related browser or URL request objects. A
+     * request context can be specified when creating a new browser via the CefBrowserHost static factory
+     * methods or when creating a new URL request via the CefURLRequest static factory methods. Browser
+     * objects with different request contexts will never be hosted in the same render process. Browser
+     * objects with the same request context may or may not be hosted in the same render process depending on
+     * the process model. Browser objects created indirectly via the JavaScript window.open function or
+     * targeted links will share the same render process and the same request context as the source browser.
+     * When running in single-process mode there is only a single render process (the main process) and so all
+     * browsers created in single-process mode will share the same request context. This will be the first
+     * request context passed into a CefBrowserHost static factory method and all other request context
+     * objects will be ignored.
+     *
+     * @see CefRequestContext
+     */
     final class RequestContext extends PreferenceManager {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is pointing to the same context as |that| object.
+         *
+         * @see CefRequestContext::IsSame
+         */
         public function isSame(\Cefloom\RequestContext $other): bool {}
+        /**
+         * Returns true if this object is sharing the same storage as |that| object.
+         *
+         * @see CefRequestContext::IsSharingWith
+         */
         public function isSharingWith(\Cefloom\RequestContext $other): bool {}
+        /**
+         * Returns true if this object is the global context. The global context is used by default when
+         * creating a browser or URL request with a NULL context argument.
+         *
+         * @see CefRequestContext::IsGlobal
+         */
         public function isGlobal(): bool {}
+        /**
+         * Returns the handler for this context if any.
+         *
+         * @see CefRequestContext::GetHandler
+         */
         public function getHandler(): ?\Cefloom\RequestContextHandler {}
+        /**
+         * Returns the cache path for this object. If empty an "incognito mode" in-memory cache is being used.
+         *
+         * @see CefRequestContext::GetCachePath
+         */
         public function getCachePath(): string {}
+        /**
+         * Returns the cookie manager for this object. If |callback| is non-NULL it will be executed
+         * asnychronously on the UI thread after the manager's storage has been initialized.
+         *
+         * @see CefRequestContext::GetCookieManager
+         */
         public function getCookieManager(?\Cefloom\CompletionCallback $callback): ?\Cefloom\CookieManager {}
+        /**
+         * Register a scheme handler factory for the specified |scheme_name| and optional |domain_name|. An
+         * empty |domain_name| value for a standard scheme will cause the factory to match all domain names.
+         * The |domain_name| value will be ignored for non-standard schemes. If |scheme_name| is a built-in
+         * scheme and no handler is returned by |factory| then the built-in scheme handler factory will be
+         * called. If |scheme_name| is a custom scheme then you must also implement the
+         * CefApp::OnRegisterCustomSchemes() method in all processes. This function may be called multiple
+         * times to change or remove the factory that matches the specified |scheme_name| and optional
+         * |domain_name|. Returns false if an error occurs. This function may be called on any thread in the
+         * browser process.
+         *
+         * @see CefRequestContext::RegisterSchemeHandlerFactory
+         */
         public function registerSchemeHandlerFactory(string $schemeName, string $domainName, ?\Cefloom\SchemeHandlerFactory $factory): bool {}
+        /**
+         * Clear all registered scheme handler factories. Returns false on error. This function may be called
+         * on any thread in the browser process.
+         *
+         * @see CefRequestContext::ClearSchemeHandlerFactories
+         */
         public function clearSchemeHandlerFactories(): bool {}
+        /**
+         * Clears all certificate exceptions that were added as part of handling
+         * CefRequestHandler::OnCertificateError(). If you call this it is recommended that you also call
+         * CloseAllConnections() or you risk not being prompted again for server certificates if you reconnect
+         * quickly. If |callback| is non-NULL it will be executed on the UI thread after completion.
+         *
+         * @see CefRequestContext::ClearCertificateExceptions
+         */
         public function clearCertificateExceptions(?\Cefloom\CompletionCallback $callback): void {}
+        /**
+         * Clears the HTTP cache. If |callback| is non-NULL it will be executed on the UI thread after
+         * completion.
+         *
+         * @see CefRequestContext::ClearHttpCache
+         */
         public function clearHttpCache(?\Cefloom\CompletionCallback $callback): void {}
+        /**
+         * Clears all HTTP authentication credentials that were added as part of handling GetAuthCredentials.
+         * If |callback| is non-NULL it will be executed on the UI thread after completion.
+         *
+         * @see CefRequestContext::ClearHttpAuthCredentials
+         */
         public function clearHttpAuthCredentials(?\Cefloom\CompletionCallback $callback): void {}
+        /**
+         * Clears all active and idle connections that Chromium currently has. This is only recommended if you
+         * have released all other CEF objects but don't yet want to call CefShutdown(). If |callback| is non-
+         * NULL it will be executed on the UI thread after completion.
+         *
+         * @see CefRequestContext::CloseAllConnections
+         */
         public function closeAllConnections(?\Cefloom\CompletionCallback $callback): void {}
+        /**
+         * Attempts to resolve |origin| to a list of associated IP addresses. |callback| will be executed on
+         * the UI thread after completion.
+         *
+         * @see CefRequestContext::ResolveHost
+         */
         public function resolveHost(string $origin, \Cefloom\ResolveCallback $callback): void {}
+        /**
+         * Returns the MediaRouter object associated with this context.  If |callback| is non-NULL it will be
+         * executed asnychronously on the UI thread after the manager's context has been initialized.
+         *
+         * @see CefRequestContext::GetMediaRouter
+         */
         public function getMediaRouter(?\Cefloom\CompletionCallback $callback): ?\Cefloom\MediaRouter {}
+        /**
+         * Returns the current value for |content_type| that applies for the specified URLs. If both URLs are
+         * empty the default value will be returned. Returns nullptr if no value is configured. Must be called
+         * on the browser process UI thread.
+         *
+         * @see CefRequestContext::GetWebsiteSetting
+         */
         public function getWebsiteSetting(string $requestingUrl, string $topLevelUrl, int $contentType): ?\Cefloom\Value {}
+        /**
+         * Sets the current value for |content_type| for the specified URLs in the default scope. If both URLs
+         * are empty, and the context is not incognito, the default value will be set. Pass nullptr for
+         * |value| to remove the default value for this content type.
+         *
+         * WARNING: Incorrect usage of this method may cause instability or security issues in Chromium. Make
+         * sure that you first understand the potential impact of any changes to |content_type| by reviewing
+         * the related source code in Chromium. For example, if you plan to modify
+         * CEF_CONTENT_SETTING_TYPE_POPUPS, first review and understand the usage of
+         * ContentSettingsType::POPUPS in Chromium:
+         * https://source.chromium.org/search?q=ContentSettingsType::POPUPS
+         *
+         * @see CefRequestContext::SetWebsiteSetting
+         */
         public function setWebsiteSetting(string $requestingUrl, string $topLevelUrl, int $contentType, ?\Cefloom\Value $value): void {}
+        /**
+         * Returns the current value for |content_type| that applies for the specified URLs. If both URLs are
+         * empty the default value will be returned. Returns CEF_CONTENT_SETTING_VALUE_DEFAULT if no value is
+         * configured. Must be called on the browser process UI thread.
+         *
+         * @see CefRequestContext::GetContentSetting
+         */
         public function getContentSetting(string $requestingUrl, string $topLevelUrl, int $contentType): int {}
+        /**
+         * Sets the current value for |content_type| for the specified URLs in the default scope. If both URLs
+         * are empty, and the context is not incognito, the default value will be set. Pass
+         * CEF_CONTENT_SETTING_VALUE_DEFAULT for |value| to use the default value for this content type.
+         *
+         * WARNING: Incorrect usage of this method may cause instability or security issues in Chromium. Make
+         * sure that you first understand the potential impact of any changes to |content_type| by reviewing
+         * the related source code in Chromium. For example, if you plan to modify
+         * CEF_CONTENT_SETTING_TYPE_POPUPS, first review and understand the usage of
+         * ContentSettingsType::POPUPS in Chromium:
+         * https://source.chromium.org/search?q=ContentSettingsType::POPUPS
+         *
+         * @see CefRequestContext::SetContentSetting
+         */
         public function setContentSetting(string $requestingUrl, string $topLevelUrl, int $contentType, int $value): void {}
+        /**
+         * Add an observer for content and website setting changes. The observer will remain registered until
+         * the returned Registration object is destroyed. This method must be called on the browser process UI
+         * thread.
+         *
+         * @see CefRequestContext::AddSettingObserver
+         */
         public function addSettingObserver(\Cefloom\SettingObserver $observer): ?\Cefloom\Registration {}
+        /**
+         * Sets the Chrome color scheme for all browsers that share this request context. |variant| values of
+         * SYSTEM, LIGHT and DARK change the underlying color mode (e.g. light vs dark). Other |variant|
+         * values determine how |user_color| will be applied in the current color mode. If |user_color| is
+         * transparent (0) the default color will be used.
+         *
+         * @see CefRequestContext::SetChromeColorScheme
+         */
         public function setChromeColorScheme(int $variant, int $userColor): void {}
+        /**
+         * Returns the current Chrome color scheme mode (SYSTEM, LIGHT or DARK). Must be called on the browser
+         * process UI thread.
+         *
+         * @see CefRequestContext::GetChromeColorSchemeMode
+         */
         public function getChromeColorSchemeMode(): int {}
+        /**
+         * Returns the current Chrome color scheme color, or transparent (0) for the default color. Must be
+         * called on the browser process UI thread.
+         *
+         * @see CefRequestContext::GetChromeColorSchemeColor
+         */
         public function getChromeColorSchemeColor(): int {}
+        /**
+         * Returns the current Chrome color scheme variant. Must be called on the browser process UI thread.
+         *
+         * @see CefRequestContext::GetChromeColorSchemeVariant
+         */
         public function getChromeColorSchemeVariant(): int {}
+        /**
+         * Returns the global context object.
+         *
+         * @see CefRequestContext::GetGlobalContext
+         */
         public static function getGlobalContext(): ?\Cefloom\RequestContext {}
+        /**
+         * Creates a new context object with the specified |settings| and optional |handler|.
+         *
+         * @see CefRequestContext::CreateContext
+         */
         public static function createContext(\Cefloom\RequestContextSettings $settings, ?\Cefloom\RequestContextHandler $handler): ?\Cefloom\RequestContext {}
     }
 
+    /**
+     * Implement this interface to provide handler implementations. The handler instance will not be released
+     * until all objects related to the context have been destroyed.
+     *
+     * @see CefRequestContextHandler
+     */
     class RequestContextHandler {
+        /**
+         * Called on the browser process UI thread immediately after the request context has been initialized.
+         *
+         * @see CefRequestContextHandler::OnRequestContextInitialized
+         */
         public function onRequestContextInitialized(\Cefloom\RequestContext $requestContext): void {}
+        /**
+         * Called on the browser process IO thread before a resource request is initiated. The |browser| and
+         * |frame| values represent the source of the request, and may be NULL for requests originating from
+         * service workers or CefURLRequest. |request| represents the request contents and cannot be modified
+         * in this callback. |is_navigation| will be true if the resource request is a navigation.
+         * |is_download| will be true if the resource request is a download. |request_initiator| is the origin
+         * (scheme + domain) of the page that initiated the request. Set |disable_default_handling| to true to
+         * disable default handling of the request, in which case it will need to be handled via
+         * CefResourceRequestHandler::GetResourceHandler or it will be canceled. To allow the resource load to
+         * proceed with default handling return NULL. To specify a handler for the resource return a
+         * CefResourceRequestHandler object. This method will not be called if the client associated with
+         * |browser| returns a non-NULL value from CefRequestHandler::GetResourceRequestHandler for the same
+         * request (identified by CefRequest::GetIdentifier). For worker requests without an associated frame
+         * or process handler, an arbitrary non-NULL handler from the contexts sharing the same storage will
+         * be used.
+         *
+         * @see CefRequestContextHandler::GetResourceRequestHandler
+         */
         public function getResourceRequestHandler(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request, bool $isNavigation, bool $isDownload, string $requestInitiator): array {}
     }
 
+    /**
+     * Implement this interface to handle events related to browser requests. The methods of this class will
+     * be called on the thread indicated.
+     *
+     * @see CefRequestHandler
+     */
     class RequestHandler {
+        /**
+         * Called on the UI thread before browser navigation. Return true to cancel the navigation or false to
+         * allow the navigation to proceed. The |request| object cannot be modified in this callback.
+         * CefLoadHandler::OnLoadingStateChange will be called twice in all cases. If the navigation is
+         * allowed CefLoadHandler::OnLoadStart and CefLoadHandler::OnLoadEnd will be called. If the navigation
+         * is canceled CefLoadHandler::OnLoadError will be called with an |errorCode| value of ERR_ABORTED.
+         * The |user_gesture| value will be true if the browser navigated via explicit user gesture (e.g.
+         * clicking a link) or false if it navigated automatically (e.g. via the DomContentLoaded event).
+         *
+         * @see CefRequestHandler::OnBeforeBrowse
+         */
         public function onBeforeBrowse(\Cefloom\Browser $browser, \Cefloom\Frame $frame, \Cefloom\Request $request, bool $userGesture, bool $isRedirect): bool {}
+        /**
+         * Called on the UI thread before OnBeforeBrowse in certain limited cases where navigating a new or
+         * different browser might be desirable. This includes user-initiated navigation that might open in a
+         * special way (e.g. links clicked via middle-click or ctrl + left-click) and certain types of cross-
+         * origin navigation initiated from the renderer process (e.g. navigating the top-level frame to/from
+         * a file URL). The |browser| and |frame| values represent the source of the navigation. The
+         * |target_disposition| value indicates where the user intended to navigate the browser based on
+         * standard Chromium behaviors (e.g. current tab, new tab, etc). The |user_gesture| value will be true
+         * if the browser navigated via explicit user gesture (e.g. clicking a link) or false if it navigated
+         * automatically (e.g. via the DomContentLoaded event). Return true to cancel the navigation or false
+         * to allow the navigation to proceed in the source browser's top-level frame.
+         *
+         * @see CefRequestHandler::OnOpenURLFromTab
+         */
         public function onOpenURLFromTab(\Cefloom\Browser $browser, \Cefloom\Frame $frame, string $targetUrl, int $targetDisposition, bool $userGesture): bool {}
+        /**
+         * Called on the browser process IO thread before a resource request is initiated. The |browser| and
+         * |frame| values represent the source of the request. |request| represents the request contents and
+         * cannot be modified in this callback. |is_navigation| will be true if the resource request is a
+         * navigation. |is_download| will be true if the resource request is a download. |request_initiator|
+         * is the origin (scheme + domain) of the page that initiated the request. Set
+         * |disable_default_handling| to true to disable default handling of the request, in which case it
+         * will need to be handled via CefResourceRequestHandler::GetResourceHandler or it will be canceled.
+         * To allow the resource load to proceed with default handling return NULL. To specify a handler for
+         * the resource return a CefResourceRequestHandler object. If this callback returns NULL the same
+         * method will be called on the associated CefRequestContextHandler, if any.
+         *
+         * @see CefRequestHandler::GetResourceRequestHandler
+         */
         public function getResourceRequestHandler(\Cefloom\Browser $browser, \Cefloom\Frame $frame, \Cefloom\Request $request, bool $isNavigation, bool $isDownload, string $requestInitiator): array {}
+        /**
+         * Called on the IO thread when the browser needs credentials from the user. |origin_url| is the
+         * origin making this authentication request. |isProxy| indicates whether the host is a proxy server.
+         * |host| contains the hostname and |port| contains the port number. |realm| is the realm of the
+         * challenge and may be empty. |scheme| is the authentication scheme used, such as "basic" or
+         * "digest", and will be empty if the source of the request is an FTP server. Return true to continue
+         * the request and call CefAuthCallback::Continue() either in this method or at a later time when the
+         * authentication information is available. Return false to cancel the request immediately.
+         *
+         * @see CefRequestHandler::GetAuthCredentials
+         */
         public function getAuthCredentials(\Cefloom\Browser $browser, string $originUrl, bool $isProxy, string $host, int $port, string $realm, string $scheme, \Cefloom\AuthCallback $callback): bool {}
+        /**
+         * Called on the UI thread to handle requests for URLs with an invalid SSL certificate. Return true
+         * and call CefCallback methods either in this method or at a later time to continue or cancel the
+         * request. Return false to cancel the request immediately. If
+         * cef_settings_t.ignore_certificate_errors is set all invalid certificates will be accepted without
+         * calling this method.
+         *
+         * @see CefRequestHandler::OnCertificateError
+         */
         public function onCertificateError(\Cefloom\Browser $browser, int $certError, string $requestUrl, \Cefloom\SSLInfo $sslInfo, \Cefloom\Callback $callback): bool {}
+        /**
+         * Called on the UI thread when a client certificate is being requested for authentication. Return
+         * false to use the default behavior.  If the |certificates| list is not empty the default behavior
+         * will be to display a dialog for certificate selection. If the |certificates| list is empty then the
+         * default behavior will be not to show a dialog and it will continue without using any certificate.
+         * Return true and call CefSelectClientCertificateCallback::Select either in this method or at a later
+         * time to select a certificate. Do not call Select or call it with NULL to continue without using any
+         * certificate. |isProxy| indicates whether the host is an HTTPS proxy or the origin server. |host|
+         * and |port| contains the hostname and port of the SSL server. |certificates| is the list of
+         * certificates to choose from; this list has already been pruned by Chromium so that it only contains
+         * certificates from issuers that the server trusts.
+         *
+         * @see CefRequestHandler::OnSelectClientCertificate
+         */
         public function onSelectClientCertificate(\Cefloom\Browser $browser, bool $isProxy, string $host, int $port, array $certificates, \Cefloom\SelectClientCertificateCallback $callback): bool {}
+        /**
+         * Called on the browser process UI thread when the render view associated with |browser| is ready to
+         * receive/handle IPC messages in the render process.
+         *
+         * @see CefRequestHandler::OnRenderViewReady
+         */
         public function onRenderViewReady(\Cefloom\Browser $browser): void {}
+        /**
+         * Called on the browser process UI thread when the render process is unresponsive as indicated by a
+         * lack of input event processing for at least 15 seconds. Return false for the default behavior which
+         * is to continue waiting with Alloy style or display of the "Page unresponsive" dialog with Chrome
+         * style. Return true and don't execute the callback to continue waiting without display of the Chrome
+         * style dialog. Return true and call CefUnresponsiveProcessCallback::Wait either in this method or at
+         * a later time to reset the wait timer. In cases where you continue waiting there may be another call
+         * to this method if the process remains unresponsive. Return true and call
+         * CefUnresponsiveProcessCallback::Terminate either in this method or at a later time to terminate the
+         * unresponsive process, resulting in a call to OnRenderProcessTerminated. OnRenderProcessResponsive
+         * will be called if the process becomes responsive after this method is called. This functionality
+         * depends on the hang monitor which can be disabled by passing the `--disable-hang-monitor` command-
+         * line flag.
+         *
+         * @see CefRequestHandler::OnRenderProcessUnresponsive
+         */
         public function onRenderProcessUnresponsive(\Cefloom\Browser $browser, \Cefloom\UnresponsiveProcessCallback $callback): bool {}
+        /**
+         * Called on the browser process UI thread when the render process becomes responsive after previously
+         * being unresponsive. See documentation on OnRenderProcessUnresponsive.
+         *
+         * @see CefRequestHandler::OnRenderProcessResponsive
+         */
         public function onRenderProcessResponsive(\Cefloom\Browser $browser): void {}
+        /**
+         * Called on the browser process UI thread when the render process terminates unexpectedly. |status|
+         * indicates how the process terminated. |error_code| and |error_string| represent the error that
+         * would be displayed in Chrome's "Aw, Snap!" view. Possible |error_code| values include
+         * cef_resultcode_t non-normal exit values and platform-specific crash values (for example, a Posix
+         * signal or Windows hardware exception).
+         *
+         * @see CefRequestHandler::OnRenderProcessTerminated
+         */
         public function onRenderProcessTerminated(\Cefloom\Browser $browser, int $status, int $errorCode, string $errorString): void {}
+        /**
+         * Called on the browser process UI thread when the window.document object of the main frame has been
+         * created.
+         *
+         * @see CefRequestHandler::OnDocumentAvailableInMainFrame
+         */
         public function onDocumentAvailableInMainFrame(\Cefloom\Browser $browser): void {}
     }
 
+    /**
+     * Callback interface for CefRequestContext::ResolveHost.
+     *
+     * @see CefResolveCallback
+     */
     abstract class ResolveCallback {
+        /**
+         * Called on the UI thread after the ResolveHost request has completed. |result| will be the result
+         * code. |resolved_ips| will be the list of resolved IP addresses or empty if the resolution failed.
+         *
+         * @see CefResolveCallback::OnResolveCompleted
+         */
         public abstract function onResolveCompleted(int $result, array $resolvedIps): void ;
     }
 
+    /**
+     * Class used for retrieving resources from the resource bundle (*.pak) files loaded by CEF during startup
+     * or via the CefResourceBundleHandler returned from CefApp::GetResourceBundleHandler. See CefSettings for
+     * additional options related to resource bundle loading. The methods of this class may be called on any
+     * thread unless otherwise indicated.
+     *
+     * @see CefResourceBundle
+     */
     final class ResourceBundle {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the localized string for the specified |string_id| or an empty string if the value is not
+         * found. Use the cef_id_for_pack_string_name() function for version-safe mapping of string IDS names
+         * from cef_pack_strings.h to version-specific numerical |string_id| values.
+         *
+         * @see CefResourceBundle::GetLocalizedString
+         */
         public function getLocalizedString(int $stringId): string {}
+        /**
+         * Returns a CefBinaryValue containing the decompressed contents of the specified scale independent
+         * |resource_id| or NULL if not found. Use the cef_id_for_pack_resource_name() function for version-
+         * safe mapping of resource IDR names from cef_pack_resources.h to version-specific numerical
+         * |resource_id| values.
+         *
+         * @see CefResourceBundle::GetDataResource
+         */
         public function getDataResource(int $resourceId): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns a CefBinaryValue containing the decompressed contents of the specified |resource_id|
+         * nearest the scale factor |scale_factor| or NULL if not found. Use a |scale_factor| value of
+         * SCALE_FACTOR_NONE for scale independent resources or call GetDataResource instead. Use the
+         * cef_id_for_pack_resource_name() function for version-safe mapping of resource IDR names from
+         * cef_pack_resources.h to version-specific numerical |resource_id| values.
+         *
+         * @see CefResourceBundle::GetDataResourceForScale
+         */
         public function getDataResourceForScale(int $resourceId, int $scaleFactor): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns the global resource bundle instance.
+         *
+         * @see CefResourceBundle::GetGlobal
+         */
         public static function getGlobal(): ?\Cefloom\ResourceBundle {}
     }
 
+    /**
+     * Class used to implement a custom resource bundle interface. See CefSettings for additional options
+     * related to resource bundle loading. The methods of this class may be called on multiple threads.
+     *
+     * @see CefResourceBundleHandler
+     */
     abstract class ResourceBundleHandler {
+        /**
+         * Called to retrieve a localized translation for the specified |string_id|. To provide the
+         * translation set |string| to the translation string and return true. To use the default translation
+         * return false. Use the cef_id_for_pack_string_name() function for version-safe mapping of string IDS
+         * names from cef_pack_strings.h to version-specific numerical |string_id| values.
+         *
+         * @see CefResourceBundleHandler::GetLocalizedString
+         */
         public abstract function getLocalizedString(int $stringId): array ;
     }
 
+    /**
+     * Class used to implement a custom request handler interface. The methods of this class will be called on
+     * the IO thread unless otherwise indicated.
+     *
+     * @see CefResourceHandler
+     */
     abstract class ResourceHandler {
+        /**
+         * Open the response stream. To handle the request immediately set |handle_request| to true and return
+         * true. To decide at a later time set |handle_request| to false, return true, and execute |callback|
+         * to continue or cancel the request. To cancel the request immediately set |handle_request| to true
+         * and return false. This method will be called in sequence but not from a dedicated thread. For
+         * backwards compatibility set |handle_request| to false and return false and the ProcessRequest
+         * method will be called.
+         *
+         * @see CefResourceHandler::Open
+         */
         public function open(\Cefloom\Request $request, \Cefloom\Callback $callback): array {}
+        /**
+         * Begin processing the request. To handle the request return true and call CefCallback::Continue()
+         * once the response header information is available (CefCallback::Continue() can also be called from
+         * inside this method if header information is available immediately). To cancel the request return
+         * false.
+         *
+         * WARNING: This method is deprecated. Use Open instead.
+         *
+         * @see CefResourceHandler::ProcessRequest
+         */
         public function processRequest(\Cefloom\Request $request, \Cefloom\Callback $callback): bool {}
+        /**
+         * Retrieve response header information. If the response length is not known set |response_length| to
+         * -1 and ReadResponse() will be called until it returns false. If the response length is known set
+         * |response_length| to a positive value and ReadResponse() will be called until it returns false or
+         * the specified number of bytes have been read. Use the |response| object to set the mime type, http
+         * status code and other optional header values. To redirect the request to a new URL set
+         * |redirectUrl| to the new URL. |redirectUrl| can be either a relative or fully qualified URL. It is
+         * also possible to set |response| to a redirect http status code and pass the new URL via a Location
+         * header. Likewise with |redirectUrl| it is valid to set a relative or fully qualified URL as the
+         * Location header value. If an error occured while setting up the request you can call SetError() on
+         * |response| to indicate the error condition.
+         *
+         * @see CefResourceHandler::GetResponseHeaders
+         */
         public abstract function getResponseHeaders(\Cefloom\Response $response): array ;
+        /**
+         * Skip response data when requested by a Range header. Skip over and discard |bytes_to_skip| bytes of
+         * response data. If data is available immediately set |bytes_skipped| to the number of bytes skipped
+         * and return true. To read the data at a later time set |bytes_skipped| to 0, return true and execute
+         * |callback| when the data is available. To indicate failure set |bytes_skipped| to < 0 (e.g. -2 for
+         * ERR_FAILED) and return false. This method will be called in sequence but not from a dedicated
+         * thread.
+         *
+         * @see CefResourceHandler::Skip
+         */
         public function skip(int $bytesToSkip, \Cefloom\ResourceSkipCallback $callback): array {}
+        /**
+         * Read response data. If data is available immediately copy up to |bytes_to_read| bytes into
+         * |data_out|, set |bytes_read| to the number of bytes copied, and return true. To read the data at a
+         * later time keep a pointer to |data_out|, set |bytes_read| to 0, return true and execute |callback|
+         * when the data is available (|data_out| will remain valid until the callback is executed). To
+         * indicate response completion set |bytes_read| to 0 and return false. To indicate failure set
+         * |bytes_read| to < 0 (e.g. -2 for ERR_FAILED) and return false. This method will be called in
+         * sequence but not from a dedicated thread. For backwards compatibility set |bytes_read| to -1 and
+         * return false and the ReadResponse method will be called.
+         *
+         * @see CefResourceHandler::Read
+         */
         public function read(\Cefloom\Buffer $dataOut, \Cefloom\ResourceReadCallback $callback): array {}
+        /**
+         * Read response data. If data is available immediately copy up to |bytes_to_read| bytes into
+         * |data_out|, set |bytes_read| to the number of bytes copied, and return true. To read the data at a
+         * later time set |bytes_read| to 0, return true and call CefCallback::Continue() when the data is
+         * available. To indicate response completion return false.
+         *
+         * WARNING: This method is deprecated. Use Skip and Read instead.
+         *
+         * @see CefResourceHandler::ReadResponse
+         */
         public function readResponse(\Cefloom\Buffer $dataOut, \Cefloom\Callback $callback): array {}
+        /**
+         * Request processing has been canceled.
+         *
+         * @see CefResourceHandler::Cancel
+         */
         public abstract function cancel(): void ;
     }
 
+    /**
+     * Callback for asynchronous continuation of CefResourceHandler::Read().
+     *
+     * @see CefResourceReadCallback
+     */
     final class ResourceReadCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Callback for asynchronous continuation of Read(). If |bytes_read| == 0 the response will be
+         * considered complete. If |bytes_read| > 0 then Read() will be called again until the request is
+         * complete (based on either the result or the expected content length). If |bytes_read| < 0 then the
+         * request will fail and the |bytes_read| value will be treated as the error code.
+         *
+         * @see CefResourceReadCallback::Continue
+         */
         public function continue(int $bytesRead): void {}
     }
 
+    /**
+     * Implement this interface to handle events related to browser requests. The methods of this class will
+     * be called on the IO thread unless otherwise indicated.
+     *
+     * @see CefResourceRequestHandler
+     */
     class ResourceRequestHandler {
+        /**
+         * Called on the IO thread before a resource request is loaded. The |browser| and |frame| values
+         * represent the source of the request, and may be NULL for requests originating from service workers
+         * or CefURLRequest. To optionally filter cookies for the request return a CefCookieAccessFilter
+         * object. The |request| object cannot not be modified in this callback.
+         *
+         * @see CefResourceRequestHandler::GetCookieAccessFilter
+         */
         public function getCookieAccessFilter(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request): ?\Cefloom\CookieAccessFilter {}
+        /**
+         * Called on the IO thread before a resource request is loaded. The |browser| and |frame| values
+         * represent the source of the request, and may be NULL for requests originating from service workers
+         * or CefURLRequest. To redirect or change the resource load optionally modify |request|. Modification
+         * of the request URL will be treated as a redirect. Return RV_CONTINUE to continue the request
+         * immediately. Return RV_CONTINUE_ASYNC and call CefCallback methods at a later time to continue or
+         * cancel the request asynchronously. Return RV_CANCEL to cancel the request immediately.
+         *
+         * @see CefResourceRequestHandler::OnBeforeResourceLoad
+         */
         public function onBeforeResourceLoad(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request, \Cefloom\Callback $callback): int {}
+        /**
+         * Called on the IO thread before a resource is loaded. The |browser| and |frame| values represent the
+         * source of the request, and may be NULL for requests originating from service workers or
+         * CefURLRequest. To allow the resource to load using the default network loader return NULL. To
+         * specify a handler for the resource return a CefResourceHandler object. The |request| object cannot
+         * not be modified in this callback.
+         *
+         * @see CefResourceRequestHandler::GetResourceHandler
+         */
         public function getResourceHandler(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request): ?\Cefloom\ResourceHandler {}
+        /**
+         * Called on the IO thread when a resource load is redirected. The |browser| and |frame| values
+         * represent the source of the request, and may be NULL for requests originating from service workers
+         * or CefURLRequest. The |request| parameter will contain the old URL and other request-related
+         * information. The |response| parameter will contain the response that resulted in the redirect. The
+         * |new_url| parameter will contain the new URL and can be changed if desired. The |request| and
+         * |response| objects cannot be modified in this callback.
+         *
+         * @see CefResourceRequestHandler::OnResourceRedirect
+         */
         public function onResourceRedirect(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request, \Cefloom\Response $response, string $newUrl): string {}
+        /**
+         * Called on the IO thread when a resource response is received. The |browser| and |frame| values
+         * represent the source of the request, and may be NULL for requests originating from service workers
+         * or CefURLRequest. To allow the resource load to proceed without modification return false. To
+         * redirect or retry the resource load optionally modify |request| and return true. Modification of
+         * the request URL will be treated as a redirect. Requests handled using the default network loader
+         * cannot be redirected in this callback. The |response| object cannot be modified in this callback.
+         *
+         * WARNING: Redirecting using this method is deprecated. Use OnBeforeResourceLoad or
+         * GetResourceHandler to perform redirects.
+         *
+         * @see CefResourceRequestHandler::OnResourceResponse
+         */
         public function onResourceResponse(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request, \Cefloom\Response $response): bool {}
+        /**
+         * Called on the IO thread to optionally filter resource response content. The |browser| and |frame|
+         * values represent the source of the request, and may be NULL for requests originating from service
+         * workers or CefURLRequest. |request| and |response| represent the request and response respectively
+         * and cannot be modified in this callback.
+         *
+         * @see CefResourceRequestHandler::GetResourceResponseFilter
+         */
         public function getResourceResponseFilter(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request, \Cefloom\Response $response): ?\Cefloom\ResponseFilter {}
+        /**
+         * Called on the IO thread when a resource load has completed. The |browser| and |frame| values
+         * represent the source of the request, and may be NULL for requests originating from service workers
+         * or CefURLRequest. |request| and |response| represent the request and response respectively and
+         * cannot be modified in this callback. |status| indicates the load completion status.
+         * |received_content_length| is the number of response bytes actually read. This method will be called
+         * for all requests, including requests that are aborted due to CEF shutdown or destruction of the
+         * associated browser. In cases where the associated browser is destroyed this callback may arrive
+         * after the CefLifeSpanHandler::OnBeforeClose callback for that browser. The CefFrame::IsValid method
+         * can be used to test for this situation, and care should be taken not to call |browser| or |frame|
+         * methods that modify state (like LoadURL, SendProcessMessage, etc.) if the frame is invalid.
+         *
+         * @see CefResourceRequestHandler::OnResourceLoadComplete
+         */
         public function onResourceLoadComplete(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request, \Cefloom\Response $response, int $status, int $receivedContentLength): void {}
+        /**
+         * Called on the IO thread to handle requests for URLs with an unknown protocol component. The
+         * |browser| and |frame| values represent the source of the request, and may be NULL for requests
+         * originating from service workers or CefURLRequest. |request| cannot be modified in this callback.
+         * Set |allow_os_execution| to true to attempt execution via the registered OS protocol handler, if
+         * any. SECURITY WARNING: YOU SHOULD USE THIS METHOD TO ENFORCE RESTRICTIONS BASED ON SCHEME, HOST OR
+         * OTHER URL ANALYSIS BEFORE ALLOWING OS EXECUTION.
+         *
+         * @see CefResourceRequestHandler::OnProtocolExecution
+         */
         public function onProtocolExecution(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, \Cefloom\Request $request): bool {}
     }
 
+    /**
+     * Callback for asynchronous continuation of CefResourceHandler::Skip().
+     *
+     * @see CefResourceSkipCallback
+     */
     final class ResourceSkipCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Callback for asynchronous continuation of Skip(). If |bytes_skipped| > 0 then either Skip() will be
+         * called again until the requested number of bytes have been skipped or the request will proceed. If
+         * |bytes_skipped| <= 0 the request will fail with ERR_REQUEST_RANGE_NOT_SATISFIABLE.
+         *
+         * @see CefResourceSkipCallback::Continue
+         */
         public function continue(int $bytesSkipped): void {}
     }
 
+    /**
+     * Class used to represent a web response. The methods of this class may be called on any thread.
+     *
+     * @see CefResponse
+     */
     final class Response {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is read-only.
+         *
+         * @see CefResponse::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Get the response error code. Returns ERR_NONE if there was no error.
+         *
+         * @see CefResponse::GetError
+         */
         public function getError(): int {}
+        /**
+         * Set the response error code. This can be used by custom scheme handlers to return errors during
+         * initial request processing.
+         *
+         * @see CefResponse::SetError
+         */
         public function setError(int $error): void {}
+        /**
+         * Get the response status code.
+         *
+         * @see CefResponse::GetStatus
+         */
         public function getStatus(): int {}
+        /**
+         * Set the response status code.
+         *
+         * @see CefResponse::SetStatus
+         */
         public function setStatus(int $status): void {}
+        /**
+         * Get the response status text.
+         *
+         * @see CefResponse::GetStatusText
+         */
         public function getStatusText(): string {}
+        /**
+         * Set the response status text.
+         *
+         * @see CefResponse::SetStatusText
+         */
         public function setStatusText(string $statusText): void {}
+        /**
+         * Get the response mime type.
+         *
+         * @see CefResponse::GetMimeType
+         */
         public function getMimeType(): string {}
+        /**
+         * Set the response mime type.
+         *
+         * @see CefResponse::SetMimeType
+         */
         public function setMimeType(string $mimeType): void {}
+        /**
+         * Get the response charset.
+         *
+         * @see CefResponse::GetCharset
+         */
         public function getCharset(): string {}
+        /**
+         * Set the response charset.
+         *
+         * @see CefResponse::SetCharset
+         */
         public function setCharset(string $charset): void {}
+        /**
+         * Get the value for the specified response header field.
+         *
+         * @see CefResponse::GetHeaderByName
+         */
         public function getHeaderByName(string $name): string {}
+        /**
+         * Set the header |name| to |value|. If |overwrite| is true any existing values will be replaced with
+         * the new value. If |overwrite| is false any existing values will not be overwritten.
+         *
+         * @see CefResponse::SetHeaderByName
+         */
         public function setHeaderByName(string $name, string $value, bool $overwrite): void {}
+        /**
+         * Get all response header fields.
+         *
+         * @see CefResponse::GetHeaderMap
+         */
         public function getHeaderMap(): array {}
+        /**
+         * Set all response header fields.
+         *
+         * @see CefResponse::SetHeaderMap
+         */
         public function setHeaderMap(array $headerMap): void {}
+        /**
+         * Get the resolved URL after redirects or changed as a result of HSTS.
+         *
+         * @see CefResponse::GetURL
+         */
         public function getURL(): string {}
+        /**
+         * Set the resolved URL after redirects or changed as a result of HSTS.
+         *
+         * @see CefResponse::SetURL
+         */
         public function setURL(string $url): void {}
+        /**
+         * Create a new CefResponse object.
+         *
+         * @see CefResponse::Create
+         */
         public static function create(): ?\Cefloom\Response {}
     }
 
+    /**
+     * Implement this interface to filter resource response content. The methods of this class will be called
+     * on the browser process IO thread.
+     *
+     * @see CefResponseFilter
+     */
     abstract class ResponseFilter {
+        /**
+         * Initialize the response filter. Will only be called a single time. The filter will not be installed
+         * if this method returns false.
+         *
+         * @see CefResponseFilter::InitFilter
+         */
         public abstract function initFilter(): bool ;
+        /**
+         * Called to filter a chunk of data. Expected usage is as follows:
+         *
+         * 1. Read input data from |data_in| and set |data_in_read| to the number of bytes that were read up
+         * to a maximum of |data_in_size|. |data_in| will be NULL if |data_in_size| is zero. 2. Write filtered
+         * output data to |data_out| and set |data_out_written| to the number of bytes that were written up to
+         * a maximum of |data_out_size|. If no output data was written then all data must be read from
+         * |data_in| (user must set |data_in_read| = |data_in_size|). 3. Return RESPONSE_FILTER_DONE if all
+         * output data was written or RESPONSE_FILTER_NEED_MORE_DATA if output data is still pending.
+         *
+         * This method will be called repeatedly until the input buffer has been fully read (user sets
+         * |data_in_read| = |data_in_size|) and there is no more input data to filter (the resource response
+         * is complete). This method may then be called an additional time with an empty input buffer if the
+         * user filled the output buffer (set |data_out_written| = |data_out_size|) and returned
+         * RESPONSE_FILTER_NEED_MORE_DATA to indicate that output data is still pending.
+         *
+         * Calls to this method will stop when one of the following conditions is met:
+         *
+         * 1. There is no more input data to filter (the resource response is complete) and the user sets
+         * |data_out_written| = 0 or returns RESPONSE_FILTER_DONE to indicate that all data has been written,
+         * or; 2. The user returns RESPONSE_FILTER_ERROR to indicate an error.
+         *
+         * Do not keep a reference to the buffers passed to this method.
+         *
+         * @see CefResponseFilter::Filter
+         */
         public abstract function filter(?\Cefloom\Buffer $dataIn, \Cefloom\Buffer $dataOut): array ;
     }
 
+    /**
+     * Callback interface used for continuation of custom context menu display.
+     *
+     * @see CefRunContextMenuCallback
+     */
     final class RunContextMenuCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Complete context menu display by selecting the specified |command_id| and |event_flags|.
+         *
+         * @see CefRunContextMenuCallback::Continue
+         */
         public function continue(int $commandId, int $eventFlags): void {}
+        /**
+         * Cancel context menu display.
+         *
+         * @see CefRunContextMenuCallback::Cancel
+         */
         public function cancel(): void {}
     }
 
+    /**
+     * Callback interface for CefBrowserHost::RunFileDialog. The methods of this class will be called on the
+     * browser process UI thread.
+     *
+     * @see CefRunFileDialogCallback
+     */
     abstract class RunFileDialogCallback {
+        /**
+         * Called asynchronously after the file dialog is dismissed. |file_paths| will be a single value or a
+         * list of values depending on the dialog mode. If the selection was cancelled |file_paths| will be
+         * empty.
+         *
+         * @see CefRunFileDialogCallback::OnFileDialogDismissed
+         */
         public abstract function onFileDialogDismissed(array $filePaths): void ;
     }
 
+    /**
+     * Callback interface used for continuation of custom quick menu display.
+     *
+     * @see CefRunQuickMenuCallback
+     */
     final class RunQuickMenuCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Complete quick menu display by selecting the specified |command_id| and |event_flags|.
+         *
+         * @see CefRunQuickMenuCallback::Continue
+         */
         public function continue(int $commandId, int $eventFlags): void {}
+        /**
+         * Cancel quick menu display.
+         *
+         * @see CefRunQuickMenuCallback::Cancel
+         */
         public function cancel(): void {}
     }
 
+    /**
+     * Class representing SSL information.
+     *
+     * @see CefSSLInfo
+     */
     final class SSLInfo {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns a bitmask containing any and all problems verifying the server certificate.
+         *
+         * @see CefSSLInfo::GetCertStatus
+         */
         public function getCertStatus(): int {}
+        /**
+         * Returns the X.509 certificate.
+         *
+         * @see CefSSLInfo::GetX509Certificate
+         */
         public function getX509Certificate(): ?\Cefloom\X509Certificate {}
     }
 
+    /**
+     * Class representing the SSL information for a navigation entry.
+     *
+     * @see CefSSLStatus
+     */
     final class SSLStatus {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if the status is related to a secure SSL/TLS connection.
+         *
+         * @see CefSSLStatus::IsSecureConnection
+         */
         public function isSecureConnection(): bool {}
+        /**
+         * Returns a bitmask containing any and all problems verifying the server certificate.
+         *
+         * @see CefSSLStatus::GetCertStatus
+         */
         public function getCertStatus(): int {}
+        /**
+         * Returns the SSL version used for the SSL connection.
+         *
+         * @see CefSSLStatus::GetSSLVersion
+         */
         public function getSSLVersion(): int {}
+        /**
+         * Returns a bitmask containing the page security content status.
+         *
+         * @see CefSSLStatus::GetContentStatus
+         */
         public function getContentStatus(): int {}
+        /**
+         * Returns the X.509 certificate.
+         *
+         * @see CefSSLStatus::GetX509Certificate
+         */
         public function getX509Certificate(): ?\Cefloom\X509Certificate {}
     }
 
+    /**
+     * Class that creates CefResourceHandler instances for handling scheme requests. The methods of this class
+     * will always be called on the IO thread.
+     *
+     * @see CefSchemeHandlerFactory
+     */
     abstract class SchemeHandlerFactory {
+        /**
+         * Return a new resource handler instance to handle the request or an empty reference to allow default
+         * handling of the request. |browser| and |frame| will be the browser window and frame respectively
+         * that originated the request or NULL if the request did not originate from a browser window (for
+         * example, if the request came from CefURLRequest). The |request| object passed to this method cannot
+         * be modified.
+         *
+         * @see CefSchemeHandlerFactory::Create
+         */
         public abstract function create(?\Cefloom\Browser $browser, ?\Cefloom\Frame $frame, string $schemeName, \Cefloom\Request $request): ?\Cefloom\ResourceHandler ;
     }
 
+    /**
+     * A ScrollView will show horizontal and/or vertical scrollbars when necessary based on the size of the
+     * attached content view. Methods must be called on the browser process UI thread unless otherwise
+     * indicated.
+     *
+     * @see CefScrollView
+     */
     final class ScrollView extends View {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Set the content View. The content View must have a specified size (e.g. via CefView::SetBounds or
+         * CefViewDelegate::GetPreferredSize).
+         *
+         * @see CefScrollView::SetContentView
+         */
         public function setContentView(\Cefloom\View $view): void {}
+        /**
+         * Returns the content View.
+         *
+         * @see CefScrollView::GetContentView
+         */
         public function getContentView(): ?\Cefloom\View {}
+        /**
+         * Returns the visible region of the content View.
+         *
+         * @see CefScrollView::GetVisibleContentRect
+         */
         public function getVisibleContentRect(): \Cefloom\Rect {}
+        /**
+         * Returns true if the horizontal scrollbar is currently showing.
+         *
+         * @see CefScrollView::HasHorizontalScrollbar
+         */
         public function hasHorizontalScrollbar(): bool {}
+        /**
+         * Returns the height of the horizontal scrollbar.
+         *
+         * @see CefScrollView::GetHorizontalScrollbarHeight
+         */
         public function getHorizontalScrollbarHeight(): int {}
+        /**
+         * Returns true if the vertical scrollbar is currently showing.
+         *
+         * @see CefScrollView::HasVerticalScrollbar
+         */
         public function hasVerticalScrollbar(): bool {}
+        /**
+         * Returns the width of the vertical scrollbar.
+         *
+         * @see CefScrollView::GetVerticalScrollbarWidth
+         */
         public function getVerticalScrollbarWidth(): int {}
+        /**
+         * Create a new ScrollView.
+         *
+         * @see CefScrollView::CreateScrollView
+         */
         public static function createScrollView(?\Cefloom\ViewDelegate $delegate): ?\Cefloom\ScrollView {}
     }
 
+    /**
+     * Callback interface used to select a client certificate for authentication.
+     *
+     * @see CefSelectClientCertificateCallback
+     */
     final class SelectClientCertificateCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Chooses the specified certificate for client certificate authentication. NULL value means that no
+         * client certificate should be used.
+         *
+         * @see CefSelectClientCertificateCallback::Select
+         */
         public function select(?\Cefloom\X509Certificate $cert): void {}
     }
 
+    /**
+     * Class representing a server that supports HTTP and WebSocket requests. Server capacity is limited and
+     * is intended to handle only a small number of simultaneous connections (e.g. for communicating between
+     * applications on localhost). The methods of this class are safe to call from any thread in the brower
+     * process unless otherwise indicated.
+     *
+     * @see CefServer
+     */
     final class Server {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the task runner for the dedicated server thread.
+         *
+         * @see CefServer::GetTaskRunner
+         */
         public function getTaskRunner(): ?\Cefloom\TaskRunner {}
+        /**
+         * Stop the server and shut down the dedicated server thread. See CefServerHandler::OnServerCreated
+         * documentation for a description of server lifespan.
+         *
+         * @see CefServer::Shutdown
+         */
         public function shutdown(): void {}
+        /**
+         * Returns true if the server is currently running and accepting incoming connections. See
+         * CefServerHandler::OnServerCreated documentation for a description of server lifespan. This method
+         * must be called on the dedicated server thread.
+         *
+         * @see CefServer::IsRunning
+         */
         public function isRunning(): bool {}
+        /**
+         * Returns the server address including the port number.
+         *
+         * @see CefServer::GetAddress
+         */
         public function getAddress(): string {}
+        /**
+         * Returns true if the server currently has a connection. This method must be called on the dedicated
+         * server thread.
+         *
+         * @see CefServer::HasConnection
+         */
         public function hasConnection(): bool {}
+        /**
+         * Returns true if |connection_id| represents a valid connection. This method must be called on the
+         * dedicated server thread.
+         *
+         * @see CefServer::IsValidConnection
+         */
         public function isValidConnection(int $connectionId): bool {}
+        /**
+         * Send an HTTP 200 "OK" response to the connection identified by |connection_id|. |content_type| is
+         * the response content type (e.g. "text/html"), |data| is the response content, and |data_size| is
+         * the size of |data| in bytes. The contents of |data| will be copied. The connection will be closed
+         * automatically after the response is sent.
+         *
+         * @see CefServer::SendHttp200Response
+         */
         public function sendHttp200Response(int $connectionId, string $contentType, string $data): void {}
+        /**
+         * Send an HTTP 404 "Not Found" response to the connection identified by |connection_id|. The
+         * connection will be closed automatically after the response is sent.
+         *
+         * @see CefServer::SendHttp404Response
+         */
         public function sendHttp404Response(int $connectionId): void {}
+        /**
+         * Send an HTTP 500 "Internal Server Error" response to the connection identified by |connection_id|.
+         * |error_message| is the associated error message. The connection will be closed automatically after
+         * the response is sent.
+         *
+         * @see CefServer::SendHttp500Response
+         */
         public function sendHttp500Response(int $connectionId, string $errorMessage): void {}
+        /**
+         * Send a custom HTTP response to the connection identified by |connection_id|. |response_code| is the
+         * HTTP response code sent in the status line (e.g. 200), |content_type| is the response content type
+         * sent as the "Content-Type" header (e.g. "text/html"), |content_length| is the expected content
+         * length, and |extra_headers| is the map of extra response headers. If |content_length| is >= 0 then
+         * the "Content-Length" header will be sent. If |content_length| is 0 then no content is expected and
+         * the connection will be closed automatically after the response is sent. If |content_length| is < 0
+         * then no "Content-Length" header will be sent and the client will continue reading until the
+         * connection is closed. Use the SendRawData method to send the content, if applicable, and call
+         * CloseConnection after all content has been sent.
+         *
+         * @see CefServer::SendHttpResponse
+         */
         public function sendHttpResponse(int $connectionId, int $responseCode, string $contentType, int $contentLength, array $extraHeaders): void {}
+        /**
+         * Send raw data directly to the connection identified by |connection_id|. |data| is the raw data and
+         * |data_size| is the size of |data| in bytes. The contents of |data| will be copied. No validation of
+         * |data| is performed internally so the client should be careful to send the amount indicated by the
+         * "Content-Length" header, if specified. See SendHttpResponse documentation for intended usage.
+         *
+         * @see CefServer::SendRawData
+         */
         public function sendRawData(int $connectionId, string $data): void {}
+        /**
+         * Close the connection identified by |connection_id|. See SendHttpResponse documentation for intended
+         * usage.
+         *
+         * @see CefServer::CloseConnection
+         */
         public function closeConnection(int $connectionId): void {}
+        /**
+         * Send a WebSocket message to the connection identified by |connection_id|. |data| is the response
+         * content and |data_size| is the size of |data| in bytes. The contents of |data| will be copied. See
+         * CefServerHandler::OnWebSocketRequest documentation for intended usage.
+         *
+         * @see CefServer::SendWebSocketMessage
+         */
         public function sendWebSocketMessage(int $connectionId, string $data): void {}
+        /**
+         * Create a new server that binds to |address| and |port|. |address| must be a valid IPv4 or IPv6
+         * address (e.g. 127.0.0.1 or ::1) and |port| must be a port number outside of the reserved range
+         * (e.g. between 1025 and 65535 on most platforms). |backlog| is the maximum number of pending
+         * connections. A new thread will be created for each CreateServer call (the "dedicated server
+         * thread"). It is therefore recommended to use a different CefServerHandler instance for each
+         * CreateServer call to avoid thread safety issues in the CefServerHandler implementation. The
+         * CefServerHandler::OnServerCreated method will be called on the dedicated server thread to report
+         * success or failure. See CefServerHandler::OnServerCreated documentation for a description of server
+         * lifespan.
+         *
+         * @see CefServer::CreateServer
+         */
         public static function create(string $address, int $port, int $backlog, \Cefloom\ServerHandler $handler): void {}
     }
 
+    /**
+     * Implement this interface to handle HTTP server requests. A new thread will be created for each
+     * CefServer::CreateServer call (the "dedicated server thread"), and the methods of this class will be
+     * called on that thread. It is therefore recommended to use a different CefServerHandler instance for
+     * each CefServer::CreateServer call to avoid thread safety issues in the CefServerHandler implementation.
+     *
+     * @see CefServerHandler
+     */
     abstract class ServerHandler {
+        /**
+         * Called when |server| is created. If the server was started successfully then CefServer::IsRunning
+         * will return true. The server will continue running until CefServer::Shutdown is called, after which
+         * time OnServerDestroyed will be called. If the server failed to start then OnServerDestroyed will be
+         * called immediately after this method returns.
+         *
+         * @see CefServerHandler::OnServerCreated
+         */
         public abstract function onServerCreated(\Cefloom\Server $server): void ;
+        /**
+         * Called when |server| is destroyed. The server thread will be stopped after this method returns. The
+         * client should release any references to |server| when this method is called. See OnServerCreated
+         * documentation for a description of server lifespan.
+         *
+         * @see CefServerHandler::OnServerDestroyed
+         */
         public abstract function onServerDestroyed(\Cefloom\Server $server): void ;
+        /**
+         * Called when a client connects to |server|. |connection_id| uniquely identifies the connection. Each
+         * call to this method will have a matching call to OnClientDisconnected.
+         *
+         * @see CefServerHandler::OnClientConnected
+         */
         public abstract function onClientConnected(\Cefloom\Server $server, int $connectionId): void ;
+        /**
+         * Called when a client disconnects from |server|. |connection_id| uniquely identifies the connection.
+         * The client should release any data associated with |connection_id| when this method is called and
+         * |connection_id| should no longer be passed to CefServer methods. Disconnects can originate from
+         * either the client or the server. For example, the server will disconnect automatically after a
+         * CefServer::SendHttpXXXResponse method is called.
+         *
+         * @see CefServerHandler::OnClientDisconnected
+         */
         public abstract function onClientDisconnected(\Cefloom\Server $server, int $connectionId): void ;
+        /**
+         * Called when |server| receives an HTTP request. |connection_id| uniquely identifies the connection,
+         * |client_address| is the requesting IPv4 or IPv6 client address including port number, and |request|
+         * contains the request contents (URL, method, headers and optional POST data). Call CefServer methods
+         * either synchronously or asynchronusly to send a response.
+         *
+         * @see CefServerHandler::OnHttpRequest
+         */
         public abstract function onHttpRequest(\Cefloom\Server $server, int $connectionId, string $clientAddress, \Cefloom\Request $request): void ;
+        /**
+         * Called when |server| receives a WebSocket request. |connection_id| uniquely identifies the
+         * connection, |client_address| is the requesting IPv4 or IPv6 client address including port number,
+         * and |request| contains the request contents (URL, method, headers and optional POST data). Execute
+         * |callback| either synchronously or asynchronously to accept or decline the WebSocket connection. If
+         * the request is accepted then OnWebSocketConnected will be called after the WebSocket has connected
+         * and incoming messages will be delivered to the OnWebSocketMessage callback. If the request is
+         * declined then the client will be disconnected and OnClientDisconnected will be called. Call the
+         * CefServer::SendWebSocketMessage method after receiving the OnWebSocketConnected callback to respond
+         * with WebSocket messages.
+         *
+         * @see CefServerHandler::OnWebSocketRequest
+         */
         public abstract function onWebSocketRequest(\Cefloom\Server $server, int $connectionId, string $clientAddress, \Cefloom\Request $request, \Cefloom\Callback $callback): void ;
+        /**
+         * Called after the client has accepted the WebSocket connection for |server| and |connection_id| via
+         * the OnWebSocketRequest callback. See OnWebSocketRequest documentation for intended usage.
+         *
+         * @see CefServerHandler::OnWebSocketConnected
+         */
         public abstract function onWebSocketConnected(\Cefloom\Server $server, int $connectionId): void ;
+        /**
+         * Called when |server| receives an WebSocket message. |connection_id| uniquely identifies the
+         * connection, |data| is the message content and |data_size| is the size of |data| in bytes. Do not
+         * keep a reference to |data| outside of this method. See OnWebSocketRequest documentation for
+         * intended usage.
+         *
+         * @see CefServerHandler::OnWebSocketMessage
+         */
         public abstract function onWebSocketMessage(\Cefloom\Server $server, int $connectionId, \Cefloom\Buffer $data): void ;
     }
 
+    /**
+     * Interface to implement to be notified of asynchronous completion via CefCookieManager::SetCookie().
+     *
+     * @see CefSetCookieCallback
+     */
     abstract class SetCookieCallback {
+        /**
+         * Method that will be called upon completion. |success| will be true if the cookie was set
+         * successfully.
+         *
+         * @see CefSetCookieCallback::OnComplete
+         */
         public abstract function onComplete(bool $success): void ;
     }
 
+    /**
+     * Implemented by the client to observe content and website setting changes and registered via
+     * CefRequestContext::AddSettingObserver. The methods of this class will be called on the browser process
+     * UI thread.
+     *
+     * @see CefSettingObserver
+     */
     abstract class SettingObserver {
+        /**
+         * Called when a content or website setting has changed. The new value can be retrieved using
+         * CefRequestContext::GetContentSetting or CefRequestContext::GetWebsiteSetting.
+         *
+         * @see CefSettingObserver::OnSettingChanged
+         */
         public abstract function onSettingChanged(string $requestingUrl, string $topLevelUrl, int $contentType): void ;
     }
 
+    /**
+     * Class that wraps platform-dependent share memory region mapping.
+     *
+     * @see CefSharedMemoryRegion
+     */
     final class SharedMemoryRegion {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if the mapping is valid.
+         *
+         * @see CefSharedMemoryRegion::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns the size of the mapping in bytes. Returns 0 for invalid instances.
+         *
+         * @see CefSharedMemoryRegion::Size
+         */
         public function size(): int {}
     }
 
+    /**
+     * Class that builds a CefProcessMessage containing a shared memory region. This class is not thread-safe
+     * but may be used exclusively on a different thread from the one which constructed it.
+     *
+     * @see CefSharedProcessMessageBuilder
+     */
     final class SharedProcessMessageBuilder {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if the builder is valid.
+         *
+         * @see CefSharedProcessMessageBuilder::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns the size of the shared memory region in bytes. Returns 0 for invalid instances.
+         *
+         * @see CefSharedProcessMessageBuilder::Size
+         */
         public function size(): int {}
+        /**
+         * Creates a new CefProcessMessage from the data provided to the builder. Returns nullptr for invalid
+         * instances. Invalidates the builder instance.
+         *
+         * @see CefSharedProcessMessageBuilder::Build
+         */
         public function build(): ?\Cefloom\ProcessMessage {}
+        /**
+         * Creates a new CefSharedProcessMessageBuilder with the specified |name| and shared memory region of
+         * specified |byte_size|.
+         *
+         * @see CefSharedProcessMessageBuilder::Create
+         */
         public static function create(string $name, int $byteSize): ?\Cefloom\SharedProcessMessageBuilder {}
     }
 
+    /**
+     * Class used to read data from a stream. The methods of this class may be called on any thread.
+     *
+     * @see CefStreamReader
+     */
     final class StreamReader {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Read raw binary data.
+         *
+         * @see CefStreamReader::Read
+         */
         public function read(int $n, int $size): string {}
+        /**
+         * Seek to the specified offset position. |whence| may be any one of SEEK_CUR, SEEK_END or SEEK_SET.
+         * Returns zero on success and non-zero on failure.
+         *
+         * @see CefStreamReader::Seek
+         */
         public function seek(int $offset, int $whence): int {}
+        /**
+         * Return the current offset position.
+         *
+         * @see CefStreamReader::Tell
+         */
         public function tell(): int {}
+        /**
+         * Return non-zero if at end of file.
+         *
+         * @see CefStreamReader::Eof
+         */
         public function eof(): int {}
+        /**
+         * Returns true if this reader performs work like accessing the file system which may block. Used as a
+         * hint for determining the thread to access the reader from.
+         *
+         * @see CefStreamReader::MayBlock
+         */
         public function mayBlock(): bool {}
+        /**
+         * Create a new CefStreamReader object from a file.
+         *
+         * @see CefStreamReader::CreateForFile
+         */
         public static function createForFile(string $fileName): ?\Cefloom\StreamReader {}
+        /**
+         * Create a new CefStreamReader object from data.
+         *
+         * @see CefStreamReader::CreateForData
+         */
         public static function createForData(string $data): ?\Cefloom\StreamReader {}
+        /**
+         * Create a new CefStreamReader object from a custom handler.
+         *
+         * @see CefStreamReader::CreateForHandler
+         */
         public static function createForHandler(\Cefloom\ReadHandler $handler): ?\Cefloom\StreamReader {}
     }
 
+    /**
+     * Class used to write data to a stream. The methods of this class may be called on any thread.
+     *
+     * @see CefStreamWriter
+     */
     final class StreamWriter {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Write raw binary data.
+         *
+         * @see CefStreamWriter::Write
+         */
         public function write(string $data, int $size): int {}
+        /**
+         * Seek to the specified offset position. |whence| may be any one of SEEK_CUR, SEEK_END or SEEK_SET.
+         * Returns zero on success and non-zero on failure.
+         *
+         * @see CefStreamWriter::Seek
+         */
         public function seek(int $offset, int $whence): int {}
+        /**
+         * Return the current offset position.
+         *
+         * @see CefStreamWriter::Tell
+         */
         public function tell(): int {}
+        /**
+         * Flush the stream.
+         *
+         * @see CefStreamWriter::Flush
+         */
         public function flush(): int {}
+        /**
+         * Returns true if this writer performs work like accessing the file system which may block. Used as a
+         * hint for determining the thread to access the writer from.
+         *
+         * @see CefStreamWriter::MayBlock
+         */
         public function mayBlock(): bool {}
+        /**
+         * Create a new CefStreamWriter object for a file.
+         *
+         * @see CefStreamWriter::CreateForFile
+         */
         public static function createForFile(string $fileName): ?\Cefloom\StreamWriter {}
+        /**
+         * Create a new CefStreamWriter object for a custom handler.
+         *
+         * @see CefStreamWriter::CreateForHandler
+         */
         public static function createForHandler(\Cefloom\WriteHandler $handler): ?\Cefloom\StreamWriter {}
     }
 
+    /**
+     * Implement this interface to receive string values asynchronously.
+     *
+     * @see CefStringVisitor
+     */
     abstract class StringVisitor {
+        /**
+         * Method that will be executed.
+         *
+         * @see CefStringVisitor::Visit
+         */
         public abstract function visit(string $string): void ;
     }
 
+    /**
+     * Implement this interface for asynchronous task execution. If the task is posted successfully and if the
+     * associated message loop is still running then the Execute() method will be called on the target thread.
+     * If the task fails to post then the task object may be destroyed on the source thread instead of the
+     * target thread. For this reason be cautious when performing work in the task object destructor.
+     *
+     * @see CefTask
+     */
     abstract class Task {
+        /**
+         * Method that will be executed on the target thread.
+         *
+         * @see CefTask::Execute
+         */
         public abstract function execute(): void ;
     }
 
+    /**
+     * Class that facilitates managing the browser-related tasks. The methods of this class may only be called
+     * on the UI thread.
+     *
+     * @see CefTaskManager
+     */
     final class TaskManager {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the number of tasks currently tracked by the task manager. Returns 0 if the method was
+         * called from the incorrect thread.
+         *
+         * @see CefTaskManager::GetTasksCount
+         */
         public function getTasksCount(): int {}
+        /**
+         * Gets the list of task IDs currently tracked by the task manager. Tasks that share the same process
+         * id will always be consecutive. The list will be sorted in a way that reflects the process tree: the
+         * browser process will be first, followed by the gpu process if it exists. Related processes (e.g., a
+         * subframe process and its parent) will be kept together if possible. Callers can expect this
+         * ordering to be stable when a process is added or removed. The task IDs are unique within the
+         * application lifespan. Returns false if the method was called from the incorrect thread.
+         *
+         * @see CefTaskManager::GetTaskIdsList
+         */
         public function getTaskIdsList(): ?array {}
+        /**
+         * Gets information about the task with |task_id|. Returns true if the information about the task was
+         * successfully retrieved and false if the |task_id| is invalid or the method was called from the
+         * incorrect thread.
+         *
+         * @see CefTaskManager::GetTaskInfo
+         */
         public function getTaskInfo(int $taskId, \Cefloom\TaskInfo $info): ?\Cefloom\TaskInfo {}
+        /**
+         * Attempts to terminate a task with |task_id|. Returns false if the |task_id| is invalid, the call is
+         * made from an incorrect thread, or if the task cannot be terminated.
+         *
+         * @see CefTaskManager::KillTask
+         */
         public function killTask(int $taskId): bool {}
+        /**
+         * Returns the task ID associated with the main task for |browser_id| (value from
+         * CefBrowser::GetIdentifier). Returns -1 if |browser_id| is invalid, does not currently have an
+         * associated task, or the method was called from the incorrect thread.
+         *
+         * @see CefTaskManager::GetTaskIdForBrowserId
+         */
         public function getTaskIdForBrowserId(int $browserId): int {}
+        /**
+         * Returns the global task manager object. Returns nullptr if the method was called from the incorrect
+         * thread.
+         *
+         * @see CefTaskManager::GetTaskManager
+         */
         public static function getTaskManager(): ?\Cefloom\TaskManager {}
     }
 
+    /**
+     * Class that asynchronously executes tasks on the associated thread. It is safe to call the methods of
+     * this class on any thread.
+     *
+     * CEF maintains multiple internal threads that are used for handling different types of tasks in
+     * different processes. The cef_thread_id_t definitions in cef_types.h list the common CEF threads. Task
+     * runners are also available for other CEF threads as appropriate (for example, V8 WebWorker threads).
+     *
+     * @see CefTaskRunner
+     */
     final class TaskRunner {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if this object is pointing to the same task runner as |that| object.
+         *
+         * @see CefTaskRunner::IsSame
+         */
         public function isSame(\Cefloom\TaskRunner $that): bool {}
+        /**
+         * Returns true if this task runner belongs to the current thread.
+         *
+         * @see CefTaskRunner::BelongsToCurrentThread
+         */
         public function belongsToCurrentThread(): bool {}
+        /**
+         * Returns true if this task runner is for the specified CEF thread.
+         *
+         * @see CefTaskRunner::BelongsToThread
+         */
         public function belongsToThread(int $threadId): bool {}
+        /**
+         * Post a task for execution on the thread associated with this task runner. Execution will occur
+         * asynchronously.
+         *
+         * @see CefTaskRunner::PostTask
+         */
         public function postTask(\Cefloom\Task $task): bool {}
+        /**
+         * Post a task for delayed execution on the thread associated with this task runner. Execution will
+         * occur asynchronously. Delayed tasks are not supported on V8 WebWorker threads and will be executed
+         * without the specified delay.
+         *
+         * @see CefTaskRunner::PostDelayedTask
+         */
         public function postDelayedTask(\Cefloom\Task $task, int $delayMs): bool {}
+        /**
+         * Returns the task runner for the current thread. Only CEF threads will have task runners. An empty
+         * reference will be returned if this method is called on an invalid thread.
+         *
+         * @see CefTaskRunner::GetForCurrentThread
+         */
         public static function getForCurrentThread(): ?\Cefloom\TaskRunner {}
+        /**
+         * Returns the task runner for the specified CEF thread.
+         *
+         * @see CefTaskRunner::GetForThread
+         */
         public static function getForThread(int $threadId): ?\Cefloom\TaskRunner {}
     }
 
+    /**
+     * A Textfield supports editing of text. This control is custom rendered with no platform-specific code.
+     * Methods must be called on the browser process UI thread unless otherwise indicated.
+     *
+     * @see CefTextfield
+     */
     final class Textfield extends View {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Sets whether the text will be displayed as asterisks.
+         *
+         * @see CefTextfield::SetPasswordInput
+         */
         public function setPasswordInput(bool $passwordInput): void {}
+        /**
+         * Returns true if the text will be displayed as asterisks.
+         *
+         * @see CefTextfield::IsPasswordInput
+         */
         public function isPasswordInput(): bool {}
+        /**
+         * Sets whether the text will read-only.
+         *
+         * @see CefTextfield::SetReadOnly
+         */
         public function setReadOnly(bool $readOnly): void {}
+        /**
+         * Returns true if the text is read-only.
+         *
+         * @see CefTextfield::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Returns the currently displayed text.
+         *
+         * @see CefTextfield::GetText
+         */
         public function getText(): string {}
+        /**
+         * Sets the contents to |text|. The cursor will be moved to end of the text if the current position is
+         * outside of the text range.
+         *
+         * @see CefTextfield::SetText
+         */
         public function setText(string $text): void {}
+        /**
+         * Appends |text| to the previously-existing text.
+         *
+         * @see CefTextfield::AppendText
+         */
         public function appendText(string $text): void {}
+        /**
+         * Inserts |text| at the current cursor position replacing any selected text.
+         *
+         * @see CefTextfield::InsertOrReplaceText
+         */
         public function insertOrReplaceText(string $text): void {}
+        /**
+         * Returns true if there is any selected text.
+         *
+         * @see CefTextfield::HasSelection
+         */
         public function hasSelection(): bool {}
+        /**
+         * Returns the currently selected text.
+         *
+         * @see CefTextfield::GetSelectedText
+         */
         public function getSelectedText(): string {}
+        /**
+         * Selects all text. If |reversed| is true the range will end at the logical beginning of the text;
+         * this generally shows the leading portion of text that overflows its display area.
+         *
+         * @see CefTextfield::SelectAll
+         */
         public function selectAll(bool $reversed): void {}
+        /**
+         * Clears the text selection and sets the caret to the end.
+         *
+         * @see CefTextfield::ClearSelection
+         */
         public function clearSelection(): void {}
+        /**
+         * Returns the selected logical text range.
+         *
+         * @see CefTextfield::GetSelectedRange
+         */
         public function getSelectedRange(): \Cefloom\Range {}
+        /**
+         * Selects the specified logical text range.
+         *
+         * @see CefTextfield::SelectRange
+         */
         public function selectRange(\Cefloom\Range $range): void {}
+        /**
+         * Returns the current cursor position.
+         *
+         * @see CefTextfield::GetCursorPosition
+         */
         public function getCursorPosition(): int {}
+        /**
+         * Sets the font list. The format is "<FONT_FAMILY_LIST>,[STYLES] <SIZE>", where: - FONT_FAMILY_LIST
+         * is a comma-separated list of font family names, - STYLES is an optional space-separated list of
+         * style names (case-sensitive "Bold" and "Italic" are supported), and - SIZE is an integer font size
+         * in pixels with the suffix "px".
+         *
+         * Here are examples of valid font description strings: - "Arial, Helvetica, Bold Italic 14px" -
+         * "Arial, 14px"
+         *
+         * @see CefTextfield::SetFontList
+         */
         public function setFontList(string $fontList): void {}
+        /**
+         * Applies |color| to the specified |range| without changing the default color. If |range| is empty
+         * the color will be set on the complete text contents.
+         *
+         * @see CefTextfield::ApplyTextColor
+         */
         public function applyTextColor(int $color, \Cefloom\Range $range): void {}
+        /**
+         * Applies |style| to the specified |range| without changing the default style. If |add| is true the
+         * style will be added, otherwise the style will be removed. If |range| is empty the style will be set
+         * on the complete text contents.
+         *
+         * @see CefTextfield::ApplyTextStyle
+         */
         public function applyTextStyle(int $style, bool $add, \Cefloom\Range $range): void {}
+        /**
+         * Returns true if the action associated with the specified command id is enabled. See additional
+         * comments on ExecuteCommand().
+         *
+         * @see CefTextfield::IsCommandEnabled
+         */
         public function isCommandEnabled(int $commandId): bool {}
+        /**
+         * Performs the action associated with the specified command id.
+         *
+         * @see CefTextfield::ExecuteCommand
+         */
         public function executeCommand(int $commandId): void {}
+        /**
+         * Clears Edit history.
+         *
+         * @see CefTextfield::ClearEditHistory
+         */
         public function clearEditHistory(): void {}
+        /**
+         * Sets the placeholder text that will be displayed when the Textfield is empty.
+         *
+         * @see CefTextfield::SetPlaceholderText
+         */
         public function setPlaceholderText(string $text): void {}
+        /**
+         * Returns the placeholder text that will be displayed when the Textfield is empty.
+         *
+         * @see CefTextfield::GetPlaceholderText
+         */
         public function getPlaceholderText(): string {}
+        /**
+         * Set the accessible name that will be exposed to assistive technology (AT).
+         *
+         * @see CefTextfield::SetAccessibleName
+         */
         public function setAccessibleName(string $name): void {}
+        /**
+         * Create a new Textfield.
+         *
+         * @see CefTextfield::CreateTextfield
+         */
         public static function createTextfield(?\Cefloom\TextfieldDelegate $delegate): ?\Cefloom\Textfield {}
     }
 
+    /**
+     * Implement this interface to handle Textfield events. The methods of this class will be called on the
+     * browser process UI thread unless otherwise indicated.
+     *
+     * @see CefTextfieldDelegate
+     */
     class TextfieldDelegate {
+        /**
+         * Return the preferred size for |view|. The Layout will use this information to determine the display
+         * size.
+         *
+         * @see CefTextfieldDelegate::GetPreferredSize
+         */
         public function getPreferredSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the minimum size for |view|.
+         *
+         * @see CefTextfieldDelegate::GetMinimumSize
+         */
         public function getMinimumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the maximum size for |view|.
+         *
+         * @see CefTextfieldDelegate::GetMaximumSize
+         */
         public function getMaximumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the height necessary to display |view| with the provided |width|. If not specified the
+         * result of GetPreferredSize().height will be used by default. Override if |view|'s preferred height
+         * depends upon the width (for example, with Labels).
+         *
+         * @see CefTextfieldDelegate::GetHeightForWidth
+         */
         public function getHeightForWidth(\Cefloom\View $view, int $width): int {}
+        /**
+         * Called when the parent of |view| has changed. If |view| is being added to |parent| then |added|
+         * will be true. If |view| is being removed from |parent| then |added| will be false. If |view| is
+         * being reparented the remove notification will be sent before the add notification. Do not modify
+         * the view hierarchy in this callback.
+         *
+         * @see CefTextfieldDelegate::OnParentViewChanged
+         */
         public function onParentViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $parent): void {}
+        /**
+         * Called when a child of |view| has changed. If |child| is being added to |view| then |added| will be
+         * true. If |child| is being removed from |view| then |added| will be false. If |child| is being
+         * reparented the remove notification will be sent to the old parent before the add notification is
+         * sent to the new parent. Do not modify the view hierarchy in this callback.
+         *
+         * @see CefTextfieldDelegate::OnChildViewChanged
+         */
         public function onChildViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $child): void {}
+        /**
+         * Called when |view| is added or removed from the CefWindow.
+         *
+         * @see CefTextfieldDelegate::OnWindowChanged
+         */
         public function onWindowChanged(\Cefloom\View $view, bool $added): void {}
+        /**
+         * Called when the layout of |view| has changed.
+         *
+         * @see CefTextfieldDelegate::OnLayoutChanged
+         */
         public function onLayoutChanged(\Cefloom\View $view, \Cefloom\Rect $newBounds): void {}
+        /**
+         * Called when |view| gains focus.
+         *
+         * @see CefTextfieldDelegate::OnFocus
+         */
         public function onFocus(\Cefloom\View $view): void {}
+        /**
+         * Called when |view| loses focus.
+         *
+         * @see CefTextfieldDelegate::OnBlur
+         */
         public function onBlur(\Cefloom\View $view): void {}
+        /**
+         * Called when the theme for |view| has changed, after the new theme colors have already been applied.
+         * Views are notified via the component hierarchy in depth-first reverse order (children before
+         * parents).
+         *
+         * This will be called in the following cases:
+         *
+         * 1. When |view|, or a parent of |view|, is added to a Window. 2. When the native/OS or Chrome theme
+         * changes for the Window that contains |view|. See CefWindowDelegate::OnThemeColorsChanged
+         * documentation. 3. When the client explicitly calls CefWindow::ThemeChanged on the Window that
+         * contains |view|.
+         *
+         * Optionally use this callback to override the new per-View theme colors by calling
+         * CefView::SetBackgroundColor or the appropriate component-specific method. See
+         * CefWindow::SetThemeColor documentation for how to customize additional Window theme colors.
+         *
+         * @see CefTextfieldDelegate::OnThemeChanged
+         */
         public function onThemeChanged(\Cefloom\View $view): void {}
+        /**
+         * Called when |textfield| receives a keyboard event. |event| contains information about the keyboard
+         * event. Return true if the keyboard event was handled or false otherwise for default handling.
+         *
+         * @see CefTextfieldDelegate::OnKeyEvent
+         */
         public function onKeyEvent(\Cefloom\Textfield $textfield, \Cefloom\KeyEvent $event): bool {}
+        /**
+         * Called after performing a user action that may change |textfield|.
+         *
+         * @see CefTextfieldDelegate::OnAfterUserAction
+         */
         public function onAfterUserAction(\Cefloom\Textfield $textfield): void {}
     }
 
+    /**
+     * A simple thread abstraction that establishes a message loop on a new thread. The consumer uses
+     * CefTaskRunner to execute code on the thread's message loop. The thread is terminated when the CefThread
+     * object is destroyed or Stop() is called. All pending tasks queued on the thread's message loop will run
+     * to completion before the thread is terminated. CreateThread() can be called on any valid CEF thread in
+     * either the browser or render process. This class should only be used for tasks that require a dedicated
+     * thread. In most cases you can post tasks to an existing CEF thread instead of creating a new one; see
+     * cef_task.h for details.
+     *
+     * @see CefThread
+     */
     final class Thread {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the CefTaskRunner that will execute code on this thread's message loop. This method is safe
+         * to call from any thread.
+         *
+         * @see CefThread::GetTaskRunner
+         */
         public function getTaskRunner(): ?\Cefloom\TaskRunner {}
+        /**
+         * Stop and join the thread. This method must be called from the same thread that called
+         * CreateThread(). Do not call this method if CreateThread() was called with a |stoppable| value of
+         * false.
+         *
+         * @see CefThread::Stop
+         */
         public function stop(): void {}
+        /**
+         * Returns true if the thread is currently running. This method must be called from the same thread
+         * that called CreateThread().
+         *
+         * @see CefThread::IsRunning
+         */
         public function isRunning(): bool {}
+        /**
+         * Create and start a new thread. This method does not block waiting for the thread to run
+         * initialization. |display_name| is the name that will be used to identify the thread. |priority| is
+         * the thread execution priority. |message_loop_type| indicates the set of asynchronous events that
+         * the thread can process. If |stoppable| is true the thread will stopped and joined on destruction or
+         * when Stop() is called; otherwise, the thread cannot be stopped and will be leaked on shutdown. On
+         * Windows the |com_init_mode| value specifies how COM will be initialized for the thread. If
+         * |com_init_mode| is set to COM_INIT_MODE_STA then |message_loop_type| must be set to ML_TYPE_UI.
+         *
+         * @see CefThread::CreateThread
+         */
         public static function create(string $displayName, int $priority, int $messageLoopType, bool $stoppable, int $comInitMode): ?\Cefloom\Thread {}
     }
 
+    /**
+     * Class used to make a URL request. URL requests are not associated with a browser instance so no
+     * CefClient callbacks will be executed. URL requests can be created on any valid CEF thread in either the
+     * browser or render process. Once created the methods of the URL request object must be accessed on the
+     * same thread that created it.
+     *
+     * @see CefURLRequest
+     */
     final class URLRequest {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the request object used to create this URL request. The returned object is read-only and
+         * should not be modified.
+         *
+         * @see CefURLRequest::GetRequest
+         */
         public function getRequest(): ?\Cefloom\Request {}
+        /**
+         * Returns the client.
+         *
+         * @see CefURLRequest::GetClient
+         */
         public function getClient(): ?\Cefloom\URLRequestClient {}
+        /**
+         * Returns the request status.
+         *
+         * @see CefURLRequest::GetRequestStatus
+         */
         public function getRequestStatus(): int {}
+        /**
+         * Returns the request error if status is UR_CANCELED or UR_FAILED, or 0 otherwise.
+         *
+         * @see CefURLRequest::GetRequestError
+         */
         public function getRequestError(): int {}
+        /**
+         * Returns the response, or NULL if no response information is available. Response information will
+         * only be available after the upload has completed. The returned object is read-only and should not
+         * be modified.
+         *
+         * @see CefURLRequest::GetResponse
+         */
         public function getResponse(): ?\Cefloom\Response {}
+        /**
+         * Returns true if the response body was served from the cache. This includes responses for which
+         * revalidation was required.
+         *
+         * @see CefURLRequest::ResponseWasCached
+         */
         public function responseWasCached(): bool {}
+        /**
+         * Cancel the request.
+         *
+         * @see CefURLRequest::Cancel
+         */
         public function cancel(): void {}
+        /**
+         * Create a new URL request that is not associated with a specific browser or frame. Use
+         * CefFrame::CreateURLRequest instead if you want the request to have this association, in which case
+         * it may be handled differently (see documentation on that method). A request created with this
+         * method may only originate from the browser process, and will behave as follows: - It may be
+         * intercepted by the client via CefResourceRequestHandler or CefSchemeHandlerFactory. - POST data may
+         * only contain only a single element of type PDE_TYPE_FILE or PDE_TYPE_BYTES. - If |request_context|
+         * is empty the global request context will be used.
+         *
+         * The |request| object will be marked as read-only after calling this method.
+         *
+         * @see CefURLRequest::Create
+         */
         public static function create(\Cefloom\Request $request, \Cefloom\URLRequestClient $client, ?\Cefloom\RequestContext $requestContext): ?\Cefloom\URLRequest {}
     }
 
+    /**
+     * Interface that should be implemented by the CefURLRequest client. The methods of this class will be
+     * called on the same thread that created the request unless otherwise documented.
+     *
+     * @see CefURLRequestClient
+     */
     abstract class URLRequestClient {
+        /**
+         * Notifies the client that the request has completed. Use the CefURLRequest::GetRequestStatus method
+         * to determine if the request was successful or not.
+         *
+         * @see CefURLRequestClient::OnRequestComplete
+         */
         public abstract function onRequestComplete(\Cefloom\URLRequest $request): void ;
+        /**
+         * Notifies the client of upload progress. |current| denotes the number of bytes sent so far and
+         * |total| is the total size of uploading data (or -1 if chunked upload is enabled). This method will
+         * only be called if the UR_FLAG_REPORT_UPLOAD_PROGRESS flag is set on the request.
+         *
+         * @see CefURLRequestClient::OnUploadProgress
+         */
         public abstract function onUploadProgress(\Cefloom\URLRequest $request, int $current, int $total): void ;
+        /**
+         * Notifies the client of download progress. |current| denotes the number of bytes received up to the
+         * call and |total| is the expected total size of the response (or -1 if not determined).
+         *
+         * @see CefURLRequestClient::OnDownloadProgress
+         */
         public abstract function onDownloadProgress(\Cefloom\URLRequest $request, int $current, int $total): void ;
+        /**
+         * Called when some part of the response is read. |data| contains the current bytes received since the
+         * last call. This method will not be called if the UR_FLAG_NO_DOWNLOAD_DATA flag is set on the
+         * request.
+         *
+         * @see CefURLRequestClient::OnDownloadData
+         */
         public abstract function onDownloadData(\Cefloom\URLRequest $request, \Cefloom\Buffer $data): void ;
+        /**
+         * Called on the IO thread when the browser needs credentials from the user. |isProxy| indicates
+         * whether the host is a proxy server. |host| contains the hostname and |port| contains the port
+         * number. Return true to continue the request and call CefAuthCallback::Continue() when the
+         * authentication information is available. If the request has an associated browser/frame then
+         * returning false will result in a call to GetAuthCredentials on the CefRequestHandler associated
+         * with that browser, if any. Otherwise, returning false will cancel the request immediately. This
+         * method will only be called for requests initiated from the browser process.
+         *
+         * @see CefURLRequestClient::GetAuthCredentials
+         */
         public abstract function getAuthCredentials(bool $isProxy, string $host, int $port, string $realm, string $scheme, \Cefloom\AuthCallback $callback): bool ;
     }
 
+    /**
+     * Callback interface for asynchronous handling of an unresponsive process.
+     *
+     * @see CefUnresponsiveProcessCallback
+     */
     final class UnresponsiveProcessCallback {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Reset the timeout for the unresponsive process.
+         *
+         * @see CefUnresponsiveProcessCallback::Wait
+         */
         public function wait(): void {}
+        /**
+         * Terminate the unresponsive process.
+         *
+         * @see CefUnresponsiveProcessCallback::Terminate
+         */
         public function terminate(): void {}
     }
 
+    /**
+     * Class that wraps other data value types. Complex types (binary, dictionary and list) will be referenced
+     * but not owned by this object. Can be used on any process and thread.
+     *
+     * @see CefValue
+     */
     final class Value {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns true if the underlying data is valid. This will always be true for simple types. For
+         * complex types (binary, dictionary and list) the underlying data may become invalid if owned by
+         * another object (e.g. list or dictionary) and that other object is then modified or destroyed. This
+         * value object can be re-used by calling Set*() even if the underlying data is invalid.
+         *
+         * @see CefValue::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if the underlying data is owned by another object.
+         *
+         * @see CefValue::IsOwned
+         */
         public function isOwned(): bool {}
+        /**
+         * Returns true if the underlying data is read-only. Some APIs may expose read-only objects.
+         *
+         * @see CefValue::IsReadOnly
+         */
         public function isReadOnly(): bool {}
+        /**
+         * Returns true if this object and |that| object have the same underlying data. If true modifications
+         * to this object will also affect |that| object and vice-versa.
+         *
+         * @see CefValue::IsSame
+         */
         public function isSame(\Cefloom\Value $that): bool {}
+        /**
+         * Returns true if this object and |that| object have an equivalent underlying value but are not
+         * necessarily the same object.
+         *
+         * @see CefValue::IsEqual
+         */
         public function isEqual(\Cefloom\Value $that): bool {}
+        /**
+         * Returns a copy of this object. The underlying data will also be copied.
+         *
+         * @see CefValue::Copy
+         */
         public function copy(): ?\Cefloom\Value {}
+        /**
+         * Returns the underlying value type.
+         *
+         * @see CefValue::GetType
+         */
         public function getType(): int {}
+        /**
+         * Returns the underlying value as type bool.
+         *
+         * @see CefValue::GetBool
+         */
         public function getBool(): bool {}
+        /**
+         * Returns the underlying value as type int.
+         *
+         * @see CefValue::GetInt
+         */
         public function getInt(): int {}
+        /**
+         * Returns the underlying value as type double.
+         *
+         * @see CefValue::GetDouble
+         */
         public function getDouble(): float {}
+        /**
+         * Returns the underlying value as type string.
+         *
+         * @see CefValue::GetString
+         */
         public function getString(): string {}
+        /**
+         * Returns the underlying value as type binary. The returned reference may become invalid if the value
+         * is owned by another object or if ownership is transferred to another object in the future. To
+         * maintain a reference to the value after assigning ownership to a dictionary or list pass this
+         * object to the SetValue() method instead of passing the returned reference to SetBinary().
+         *
+         * @see CefValue::GetBinary
+         */
         public function getBinary(): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns the underlying value as type dictionary. The returned reference may become invalid if the
+         * value is owned by another object or if ownership is transferred to another object in the future. To
+         * maintain a reference to the value after assigning ownership to a dictionary or list pass this
+         * object to the SetValue() method instead of passing the returned reference to SetDictionary().
+         *
+         * @see CefValue::GetDictionary
+         */
         public function getDictionary(): ?\Cefloom\DictionaryValue {}
+        /**
+         * Returns the underlying value as type list. The returned reference may become invalid if the value
+         * is owned by another object or if ownership is transferred to another object in the future. To
+         * maintain a reference to the value after assigning ownership to a dictionary or list pass this
+         * object to the SetValue() method instead of passing the returned reference to SetList().
+         *
+         * @see CefValue::GetList
+         */
         public function getList(): ?\Cefloom\ListValue {}
+        /**
+         * Sets the underlying value as type null. Returns true if the value was set successfully.
+         *
+         * @see CefValue::SetNull
+         */
         public function setNull(): bool {}
+        /**
+         * Sets the underlying value as type bool. Returns true if the value was set successfully.
+         *
+         * @see CefValue::SetBool
+         */
         public function setBool(bool $value): bool {}
+        /**
+         * Sets the underlying value as type int. Returns true if the value was set successfully.
+         *
+         * @see CefValue::SetInt
+         */
         public function setInt(int $value): bool {}
+        /**
+         * Sets the underlying value as type double. Returns true if the value was set successfully.
+         *
+         * @see CefValue::SetDouble
+         */
         public function setDouble(float $value): bool {}
+        /**
+         * Sets the underlying value as type string. Returns true if the value was set successfully.
+         *
+         * @see CefValue::SetString
+         */
         public function setString(string $value): bool {}
+        /**
+         * Sets the underlying value as type binary. Returns true if the value was set successfully. This
+         * object keeps a reference to |value| and ownership of the underlying data remains unchanged.
+         *
+         * @see CefValue::SetBinary
+         */
         public function setBinary(\Cefloom\BinaryValue $value): bool {}
+        /**
+         * Sets the underlying value as type dict. Returns true if the value was set successfully. This object
+         * keeps a reference to |value| and ownership of the underlying data remains unchanged.
+         *
+         * @see CefValue::SetDictionary
+         */
         public function setDictionary(\Cefloom\DictionaryValue $value): bool {}
+        /**
+         * Sets the underlying value as type list. Returns true if the value was set successfully. This object
+         * keeps a reference to |value| and ownership of the underlying data remains unchanged.
+         *
+         * @see CefValue::SetList
+         */
         public function setList(\Cefloom\ListValue $value): bool {}
+        /**
+         * Creates a new object.
+         *
+         * @see CefValue::Create
+         */
         public static function create(): ?\Cefloom\Value {}
     }
 
+    /**
+     * A View is a rectangle within the views View hierarchy. It is the base class for all Views. All size and
+     * position values are in density independent pixels (DIP) unless otherwise indicated. Methods must be
+     * called on the browser process UI thread unless otherwise indicated.
+     *
+     * @see CefView
+     */
     class View {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns this View as a BrowserView or NULL if this is not a BrowserView.
+         *
+         * @see CefView::AsBrowserView
+         */
         public function asBrowserView(): ?\Cefloom\BrowserView {}
+        /**
+         * Returns this View as a Button or NULL if this is not a Button.
+         *
+         * @see CefView::AsButton
+         */
         public function asButton(): ?\Cefloom\Button {}
+        /**
+         * Returns this View as a Panel or NULL if this is not a Panel.
+         *
+         * @see CefView::AsPanel
+         */
         public function asPanel(): ?\Cefloom\Panel {}
+        /**
+         * Returns this View as a ScrollView or NULL if this is not a ScrollView.
+         *
+         * @see CefView::AsScrollView
+         */
         public function asScrollView(): ?\Cefloom\ScrollView {}
+        /**
+         * Returns this View as a Textfield or NULL if this is not a Textfield.
+         *
+         * @see CefView::AsTextfield
+         */
         public function asTextfield(): ?\Cefloom\Textfield {}
+        /**
+         * Returns the type of this View as a string. Used primarily for testing purposes.
+         *
+         * @see CefView::GetTypeString
+         */
         public function getTypeString(): string {}
+        /**
+         * Returns a string representation of this View which includes the type and various type-specific
+         * identifying attributes. If |include_children| is true any child Views will also be included. Used
+         * primarily for testing purposes.
+         *
+         * @see CefView::ToString
+         */
         public function toString(bool $includeChildren): string {}
+        /**
+         * Returns true if this View is valid.
+         *
+         * @see CefView::IsValid
+         */
         public function isValid(): bool {}
+        /**
+         * Returns true if this View is currently attached to another View. A View can only be attached to one
+         * View at a time.
+         *
+         * @see CefView::IsAttached
+         */
         public function isAttached(): bool {}
+        /**
+         * Returns true if this View is the same as |that| View.
+         *
+         * @see CefView::IsSame
+         */
         public function isSame(\Cefloom\View $that): bool {}
+        /**
+         * Returns the delegate associated with this View, if any.
+         *
+         * @see CefView::GetDelegate
+         */
         public function getDelegate(): ?\Cefloom\ViewDelegate {}
+        /**
+         * Returns the top-level Window hosting this View, if any.
+         *
+         * @see CefView::GetWindow
+         */
         public function getWindow(): ?\Cefloom\Window {}
+        /**
+         * Returns the ID for this View.
+         *
+         * @see CefView::GetID
+         */
         public function getID(): int {}
+        /**
+         * Sets the ID for this View. ID should be unique within the subtree that you intend to search for it.
+         * 0 is the default ID for views.
+         *
+         * @see CefView::SetID
+         */
         public function setID(int $id): void {}
+        /**
+         * Returns the group id of this View, or -1 if not set.
+         *
+         * @see CefView::GetGroupID
+         */
         public function getGroupID(): int {}
+        /**
+         * A group id is used to tag Views which are part of the same logical group. Focus can be moved
+         * between views with the same group using the arrow keys. The group id is immutable once it's set.
+         *
+         * @see CefView::SetGroupID
+         */
         public function setGroupID(int $groupId): void {}
+        /**
+         * Returns the View that contains this View, if any.
+         *
+         * @see CefView::GetParentView
+         */
         public function getParentView(): ?\Cefloom\View {}
+        /**
+         * Recursively descends the view tree starting at this View, and returns the first child that it
+         * encounters with the given ID. Returns NULL if no matching child view is found.
+         *
+         * @see CefView::GetViewForID
+         */
         public function getViewForID(int $id): ?\Cefloom\View {}
+        /**
+         * Sets the bounds (size and position) of this View. |bounds| is in parent coordinates, or DIP screen
+         * coordinates if there is no parent.
+         *
+         * @see CefView::SetBounds
+         */
         public function setBounds(\Cefloom\Rect $bounds): void {}
+        /**
+         * Returns the bounds (size and position) of this View in parent coordinates, or DIP screen
+         * coordinates if there is no parent.
+         *
+         * @see CefView::GetBounds
+         */
         public function getBounds(): \Cefloom\Rect {}
+        /**
+         * Returns the bounds (size and position) of this View in DIP screen coordinates.
+         *
+         * @see CefView::GetBoundsInScreen
+         */
         public function getBoundsInScreen(): \Cefloom\Rect {}
+        /**
+         * Sets the size of this View without changing the position. |size| in parent coordinates, or DIP
+         * screen coordinates if there is no parent.
+         *
+         * @see CefView::SetSize
+         */
         public function setSize(\Cefloom\Size $size): void {}
+        /**
+         * Returns the size of this View in parent coordinates, or DIP screen coordinates if there is no
+         * parent.
+         *
+         * @see CefView::GetSize
+         */
         public function getSize(): \Cefloom\Size {}
+        /**
+         * Sets the position of this View without changing the size. |position| is in parent coordinates, or
+         * DIP screen coordinates if there is no parent.
+         *
+         * @see CefView::SetPosition
+         */
         public function setPosition(\Cefloom\Point $position): void {}
+        /**
+         * Returns the position of this View. Position is in parent coordinates, or DIP screen coordinates if
+         * there is no parent.
+         *
+         * @see CefView::GetPosition
+         */
         public function getPosition(): \Cefloom\Point {}
+        /**
+         * Sets the insets for this View. |insets| is in parent coordinates, or DIP screen coordinates if
+         * there is no parent.
+         *
+         * @see CefView::SetInsets
+         */
         public function setInsets(\Cefloom\Insets $insets): void {}
+        /**
+         * Returns the insets for this View in parent coordinates, or DIP screen coordinates if there is no
+         * parent.
+         *
+         * @see CefView::GetInsets
+         */
         public function getInsets(): \Cefloom\Insets {}
+        /**
+         * Returns the size this View would like to be if enough space is available. Size is in parent
+         * coordinates, or DIP screen coordinates if there is no parent.
+         *
+         * @see CefView::GetPreferredSize
+         */
         public function getPreferredSize(): \Cefloom\Size {}
+        /**
+         * Size this View to its preferred size. Size is in parent coordinates, or DIP screen coordinates if
+         * there is no parent.
+         *
+         * @see CefView::SizeToPreferredSize
+         */
         public function sizeToPreferredSize(): void {}
+        /**
+         * Returns the minimum size for this View. Size is in parent coordinates, or DIP screen coordinates if
+         * there is no parent.
+         *
+         * @see CefView::GetMinimumSize
+         */
         public function getMinimumSize(): \Cefloom\Size {}
+        /**
+         * Returns the maximum size for this View. Size is in parent coordinates, or DIP screen coordinates if
+         * there is no parent.
+         *
+         * @see CefView::GetMaximumSize
+         */
         public function getMaximumSize(): \Cefloom\Size {}
+        /**
+         * Returns the height necessary to display this View with the provided width.
+         *
+         * @see CefView::GetHeightForWidth
+         */
         public function getHeightForWidth(int $width): int {}
+        /**
+         * Indicate that this View and all parent Views require a re-layout. This ensures the next call to
+         * Layout() will propagate to this View even if the bounds of parent Views do not change.
+         *
+         * @see CefView::InvalidateLayout
+         */
         public function invalidateLayout(): void {}
+        /**
+         * Sets whether this View is visible. Windows are hidden by default and other views are visible by
+         * default. This View and any parent views must be set as visible for this View to be drawn in a
+         * Window. If this View is set as hidden then it and any child views will not be drawn and, if any of
+         * those views currently have focus, then focus will also be cleared. Painting is scheduled as needed.
+         * If this View is a Window then calling this method is equivalent to calling the Window Show() and
+         * Hide() methods.
+         *
+         * @see CefView::SetVisible
+         */
         public function setVisible(bool $visible): void {}
+        /**
+         * Returns whether this View is visible. A view may be visible but still not drawn in a Window if any
+         * parent views are hidden. If this View is a Window then a return value of true indicates that this
+         * Window is currently visible to the user on-screen. If this View is not a Window then call IsDrawn()
+         * to determine whether this View and all parent views are visible and will be drawn.
+         *
+         * @see CefView::IsVisible
+         */
         public function isVisible(): bool {}
+        /**
+         * Returns whether this View is visible and drawn in a Window. A view is drawn if it and all parent
+         * views are visible. If this View is a Window then calling this method is equivalent to calling
+         * IsVisible(). Otherwise, to determine if the containing Window is visible to the user on-screen call
+         * IsVisible() on the Window.
+         *
+         * @see CefView::IsDrawn
+         */
         public function isDrawn(): bool {}
+        /**
+         * Set whether this View is enabled. A disabled View does not receive keyboard or mouse inputs. If
+         * |enabled| differs from the current value the View will be repainted. Also, clears focus if the
+         * focused View is disabled.
+         *
+         * @see CefView::SetEnabled
+         */
         public function setEnabled(bool $enabled): void {}
+        /**
+         * Returns whether this View is enabled.
+         *
+         * @see CefView::IsEnabled
+         */
         public function isEnabled(): bool {}
+        /**
+         * Sets whether this View is capable of taking focus. It will clear focus if the focused View is set
+         * to be non-focusable. This is false by default so that a View used as a container does not get the
+         * focus.
+         *
+         * @see CefView::SetFocusable
+         */
         public function setFocusable(bool $focusable): void {}
+        /**
+         * Returns true if this View is focusable, enabled and drawn.
+         *
+         * @see CefView::IsFocusable
+         */
         public function isFocusable(): bool {}
+        /**
+         * Return whether this View is focusable when the user requires full keyboard access, even though it
+         * may not be normally focusable.
+         *
+         * @see CefView::IsAccessibilityFocusable
+         */
         public function isAccessibilityFocusable(): bool {}
+        /**
+         * Returns true if this View has focus in the context of the containing Window. Check both this method
+         * and CefWindow::IsActive to determine global keyboard focus.
+         *
+         * @see CefView::HasFocus
+         */
         public function hasFocus(): bool {}
+        /**
+         * Request focus for this View in the context of the containing Window. If this View is focusable it
+         * will become the focused View. Any focus changes while a Window is not active may be applied after
+         * that Window next becomes active.
+         *
+         * @see CefView::RequestFocus
+         */
         public function requestFocus(): void {}
+        /**
+         * Sets the background color for this View. The background color will be automatically reset when
+         * CefViewDelegate::OnThemeChanged is called.
+         *
+         * @see CefView::SetBackgroundColor
+         */
         public function setBackgroundColor(int $color): void {}
+        /**
+         * Returns the background color for this View. If the background color is unset then the current
+         * `GetThemeColor(CEF_ColorPrimaryBackground)` value will be returned. If this View belongs to an
+         * overlay (created with CefWindow::AddOverlayView), and the background color is unset, then a value
+         * of transparent (0) will be returned.
+         *
+         * @see CefView::GetBackgroundColor
+         */
         public function getBackgroundColor(): int {}
+        /**
+         * Returns the current theme color associated with |color_id|, or the placeholder color (red) if
+         * unset. See cef_color_ids.h for standard ID values. Standard colors can be overridden and custom
+         * colors can be added using CefWindow::SetThemeColor.
+         *
+         * @see CefView::GetThemeColor
+         */
         public function getThemeColor(int $colorId): int {}
+        /**
+         * Convert |point| from this View's coordinate system to DIP screen coordinates. This View must belong
+         * to a Window when calling this method. Returns true if the conversion is successful or false
+         * otherwise. Use CefDisplay::ConvertPointToPixels() after calling this method if further conversion
+         * to display-specific pixel coordinates is desired.
+         *
+         * @see CefView::ConvertPointToScreen
+         */
         public function convertPointToScreen(\Cefloom\Point $point): ?\Cefloom\Point {}
+        /**
+         * Convert |point| to this View's coordinate system from DIP screen coordinates. This View must belong
+         * to a Window when calling this method. Returns true if the conversion is successful or false
+         * otherwise. Use CefDisplay::ConvertPointFromPixels() before calling this method if conversion from
+         * display-specific pixel coordinates is necessary.
+         *
+         * @see CefView::ConvertPointFromScreen
+         */
         public function convertPointFromScreen(\Cefloom\Point $point): ?\Cefloom\Point {}
+        /**
+         * Convert |point| from this View's coordinate system to that of the Window. This View must belong to
+         * a Window when calling this method. Returns true if the conversion is successful or false otherwise.
+         *
+         * @see CefView::ConvertPointToWindow
+         */
         public function convertPointToWindow(\Cefloom\Point $point): ?\Cefloom\Point {}
+        /**
+         * Convert |point| to this View's coordinate system from that of the Window. This View must belong to
+         * a Window when calling this method. Returns true if the conversion is successful or false otherwise.
+         *
+         * @see CefView::ConvertPointFromWindow
+         */
         public function convertPointFromWindow(\Cefloom\Point $point): ?\Cefloom\Point {}
+        /**
+         * Convert |point| from this View's coordinate system to that of |view|. |view| needs to be in the
+         * same Window but not necessarily the same view hierarchy. Returns true if the conversion is
+         * successful or false otherwise.
+         *
+         * @see CefView::ConvertPointToView
+         */
         public function convertPointToView(\Cefloom\View $view, \Cefloom\Point $point): ?\Cefloom\Point {}
+        /**
+         * Convert |point| to this View's coordinate system from that |view|. |view| needs to be in the same
+         * Window but not necessarily the same view hierarchy. Returns true if the conversion is successful or
+         * false otherwise.
+         *
+         * @see CefView::ConvertPointFromView
+         */
         public function convertPointFromView(\Cefloom\View $view, \Cefloom\Point $point): ?\Cefloom\Point {}
     }
 
+    /**
+     * Implement this interface to handle view events. All size and position values are in density independent
+     * pixels (DIP) unless otherwise indicated. The methods of this class will be called on the browser
+     * process UI thread unless otherwise indicated.
+     *
+     * @see CefViewDelegate
+     */
     class ViewDelegate {
+        /**
+         * Return the preferred size for |view|. The Layout will use this information to determine the display
+         * size.
+         *
+         * @see CefViewDelegate::GetPreferredSize
+         */
         public function getPreferredSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the minimum size for |view|.
+         *
+         * @see CefViewDelegate::GetMinimumSize
+         */
         public function getMinimumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the maximum size for |view|.
+         *
+         * @see CefViewDelegate::GetMaximumSize
+         */
         public function getMaximumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the height necessary to display |view| with the provided |width|. If not specified the
+         * result of GetPreferredSize().height will be used by default. Override if |view|'s preferred height
+         * depends upon the width (for example, with Labels).
+         *
+         * @see CefViewDelegate::GetHeightForWidth
+         */
         public function getHeightForWidth(\Cefloom\View $view, int $width): int {}
+        /**
+         * Called when the parent of |view| has changed. If |view| is being added to |parent| then |added|
+         * will be true. If |view| is being removed from |parent| then |added| will be false. If |view| is
+         * being reparented the remove notification will be sent before the add notification. Do not modify
+         * the view hierarchy in this callback.
+         *
+         * @see CefViewDelegate::OnParentViewChanged
+         */
         public function onParentViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $parent): void {}
+        /**
+         * Called when a child of |view| has changed. If |child| is being added to |view| then |added| will be
+         * true. If |child| is being removed from |view| then |added| will be false. If |child| is being
+         * reparented the remove notification will be sent to the old parent before the add notification is
+         * sent to the new parent. Do not modify the view hierarchy in this callback.
+         *
+         * @see CefViewDelegate::OnChildViewChanged
+         */
         public function onChildViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $child): void {}
+        /**
+         * Called when |view| is added or removed from the CefWindow.
+         *
+         * @see CefViewDelegate::OnWindowChanged
+         */
         public function onWindowChanged(\Cefloom\View $view, bool $added): void {}
+        /**
+         * Called when the layout of |view| has changed.
+         *
+         * @see CefViewDelegate::OnLayoutChanged
+         */
         public function onLayoutChanged(\Cefloom\View $view, \Cefloom\Rect $newBounds): void {}
+        /**
+         * Called when |view| gains focus.
+         *
+         * @see CefViewDelegate::OnFocus
+         */
         public function onFocus(\Cefloom\View $view): void {}
+        /**
+         * Called when |view| loses focus.
+         *
+         * @see CefViewDelegate::OnBlur
+         */
         public function onBlur(\Cefloom\View $view): void {}
+        /**
+         * Called when the theme for |view| has changed, after the new theme colors have already been applied.
+         * Views are notified via the component hierarchy in depth-first reverse order (children before
+         * parents).
+         *
+         * This will be called in the following cases:
+         *
+         * 1. When |view|, or a parent of |view|, is added to a Window. 2. When the native/OS or Chrome theme
+         * changes for the Window that contains |view|. See CefWindowDelegate::OnThemeColorsChanged
+         * documentation. 3. When the client explicitly calls CefWindow::ThemeChanged on the Window that
+         * contains |view|.
+         *
+         * Optionally use this callback to override the new per-View theme colors by calling
+         * CefView::SetBackgroundColor or the appropriate component-specific method. See
+         * CefWindow::SetThemeColor documentation for how to customize additional Window theme colors.
+         *
+         * @see CefViewDelegate::OnThemeChanged
+         */
         public function onThemeChanged(\Cefloom\View $view): void {}
     }
 
+    /**
+     * WaitableEvent is a thread synchronization tool that allows one thread to wait for another thread to
+     * finish some work. This is equivalent to using a Lock+ConditionVariable to protect a simple boolean
+     * value. However, using WaitableEvent in conjunction with a Lock to wait for a more complex state change
+     * (e.g., for an item to be added to a queue) is not recommended. In that case consider using a
+     * ConditionVariable instead of a WaitableEvent. It is safe to create and/or signal a WaitableEvent from
+     * any thread. Blocking on a WaitableEvent by calling the *Wait() methods is not allowed on the browser
+     * process UI or IO threads.
+     *
+     * @see CefWaitableEvent
+     */
     final class WaitableEvent {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Put the event in the un-signaled state.
+         *
+         * @see CefWaitableEvent::Reset
+         */
         public function reset(): void {}
+        /**
+         * Put the event in the signaled state. This causes any thread blocked on Wait to be woken up.
+         *
+         * @see CefWaitableEvent::Signal
+         */
         public function signal(): void {}
+        /**
+         * Returns true if the event is in the signaled state, else false. If the event was created with
+         * |automatic_reset| set to true then calling this method will also cause a reset.
+         *
+         * @see CefWaitableEvent::IsSignaled
+         */
         public function isSignaled(): bool {}
+        /**
+         * Wait indefinitely for the event to be signaled. This method will not return until after the call to
+         * Signal() has completed. This method cannot be called on the browser process UI or IO threads.
+         *
+         * @see CefWaitableEvent::Wait
+         */
         public function wait(): void {}
+        /**
+         * Wait up to |max_ms| milliseconds for the event to be signaled. Returns true if the event was
+         * signaled. A return value of false does not necessarily mean that |max_ms| was exceeded. This method
+         * will not return until after the call to Signal() has completed. This method cannot be called on the
+         * browser process UI or IO threads.
+         *
+         * @see CefWaitableEvent::TimedWait
+         */
         public function timedWait(int $maxMs): bool {}
+        /**
+         * Create a new waitable event. If |automatic_reset| is true then the event state is automatically
+         * reset to un-signaled after a single waiting thread has been released; otherwise, the state remains
+         * signaled until Reset() is called manually. If |initially_signaled| is true then the event will
+         * start in the signaled state.
+         *
+         * @see CefWaitableEvent::CreateWaitableEvent
+         */
         public static function create(bool $automaticReset, bool $initiallySignaled): ?\Cefloom\WaitableEvent {}
     }
 
+    /**
+     * A Window is a top-level Window/widget in the Views hierarchy. By default it will have a non-client area
+     * with title bar, icon and buttons that supports moving and resizing. All size and position values are in
+     * density independent pixels (DIP) unless otherwise indicated. Methods must be called on the browser
+     * process UI thread unless otherwise indicated.
+     *
+     * @see CefWindow
+     */
     final class Window extends Panel {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Show the Window.
+         *
+         * @see CefWindow::Show
+         */
         public function show(): void {}
+        /**
+         * Show the Window as a browser modal dialog relative to |browser_view|. A parent Window must be
+         * returned via CefWindowDelegate::GetParentWindow() and |browser_view| must belong to that parent
+         * Window. While this Window is visible, |browser_view| will be disabled while other controls in the
+         * parent Window remain enabled. Navigating or destroying the |browser_view| will close this Window
+         * automatically. Alternately, use Show() and return true from
+         * CefWindowDelegate::IsWindowModalDialog() for a window modal dialog where all controls in the parent
+         * Window are disabled.
+         *
+         * @see CefWindow::ShowAsBrowserModalDialog
+         */
         public function showAsBrowserModalDialog(\Cefloom\BrowserView $browserView): void {}
+        /**
+         * Hide the Window.
+         *
+         * @see CefWindow::Hide
+         */
         public function hide(): void {}
+        /**
+         * Sizes the Window to |size| and centers it in the current display.
+         *
+         * @see CefWindow::CenterWindow
+         */
         public function centerWindow(\Cefloom\Size $size): void {}
+        /**
+         * Close the Window.
+         *
+         * @see CefWindow::Close
+         */
         public function close(): void {}
+        /**
+         * Returns true if the Window has been closed.
+         *
+         * @see CefWindow::IsClosed
+         */
         public function isClosed(): bool {}
+        /**
+         * Activate the Window, assuming it already exists and is visible.
+         *
+         * @see CefWindow::Activate
+         */
         public function activate(): void {}
+        /**
+         * Deactivate the Window, making the next Window in the Z order the active Window.
+         *
+         * @see CefWindow::Deactivate
+         */
         public function deactivate(): void {}
+        /**
+         * Returns whether the Window is the currently active Window.
+         *
+         * @see CefWindow::IsActive
+         */
         public function isActive(): bool {}
+        /**
+         * Bring this Window to the top of other Windows in the Windowing system.
+         *
+         * @see CefWindow::BringToTop
+         */
         public function bringToTop(): void {}
+        /**
+         * Set the Window to be on top of other Windows in the Windowing system.
+         *
+         * @see CefWindow::SetAlwaysOnTop
+         */
         public function setAlwaysOnTop(bool $onTop): void {}
+        /**
+         * Returns whether the Window has been set to be on top of other Windows in the Windowing system.
+         *
+         * @see CefWindow::IsAlwaysOnTop
+         */
         public function isAlwaysOnTop(): bool {}
+        /**
+         * Maximize the Window.
+         *
+         * @see CefWindow::Maximize
+         */
         public function maximize(): void {}
+        /**
+         * Minimize the Window.
+         *
+         * @see CefWindow::Minimize
+         */
         public function minimize(): void {}
+        /**
+         * Restore the Window.
+         *
+         * @see CefWindow::Restore
+         */
         public function restore(): void {}
+        /**
+         * Set fullscreen Window state. The CefWindowDelegate::OnWindowFullscreenTransition method will be
+         * called during the fullscreen transition for notification purposes.
+         *
+         * @see CefWindow::SetFullscreen
+         */
         public function setFullscreen(bool $fullscreen): void {}
+        /**
+         * Returns true if the Window is maximized.
+         *
+         * @see CefWindow::IsMaximized
+         */
         public function isMaximized(): bool {}
+        /**
+         * Returns true if the Window is minimized.
+         *
+         * @see CefWindow::IsMinimized
+         */
         public function isMinimized(): bool {}
+        /**
+         * Returns true if the Window is fullscreen.
+         *
+         * @see CefWindow::IsFullscreen
+         */
         public function isFullscreen(): bool {}
+        /**
+         * Returns the View that currently has focus in this Window, or nullptr if no View currently has
+         * focus. A Window may have a focused View even if it is not currently active. Any focus changes while
+         * a Window is not active may be applied after that Window next becomes active.
+         *
+         * @see CefWindow::GetFocusedView
+         */
         public function getFocusedView(): ?\Cefloom\View {}
+        /**
+         * Set the Window title.
+         *
+         * @see CefWindow::SetTitle
+         */
         public function setTitle(string $title): void {}
+        /**
+         * Get the Window title.
+         *
+         * @see CefWindow::GetTitle
+         */
         public function getTitle(): string {}
+        /**
+         * Set the Window icon. This should be a 16x16 icon suitable for use in the Windows's title bar.
+         *
+         * @see CefWindow::SetWindowIcon
+         */
         public function setWindowIcon(\Cefloom\Image $image): void {}
+        /**
+         * Get the Window icon.
+         *
+         * @see CefWindow::GetWindowIcon
+         */
         public function getWindowIcon(): ?\Cefloom\Image {}
+        /**
+         * Set the Window App icon. This should be a larger icon for use in the host environment app switching
+         * UI. On Windows, this is the ICON_BIG used in Alt-Tab list and Windows taskbar. The Window icon will
+         * be used by default if no Window App icon is specified.
+         *
+         * @see CefWindow::SetWindowAppIcon
+         */
         public function setWindowAppIcon(\Cefloom\Image $image): void {}
+        /**
+         * Get the Window App icon.
+         *
+         * @see CefWindow::GetWindowAppIcon
+         */
         public function getWindowAppIcon(): ?\Cefloom\Image {}
+        /**
+         * Add a View that will be overlayed on the Window contents with absolute positioning and high
+         * z-order. Positioning is controlled by |docking_mode| as described below. Setting |can_activate| to
+         * true will allow the overlay view to receive input focus. The returned CefOverlayController object
+         * is used to control the overlay. Overlays are hidden by default.
+         *
+         * With CEF_DOCKING_MODE_CUSTOM: 1. The overlay is initially hidden, sized to |view|'s preferred size,
+         * and positioned in the top-left corner. 2. Optionally change the overlay position and/or size by
+         * calling CefOverlayController methods. 3. Call CefOverlayController::SetVisible(true) to show the
+         * overlay. 4. The overlay will be automatically re-sized if |view|'s layout changes. Optionally
+         * change the overlay position and/or size when OnLayoutChanged is called on the Window's delegate to
+         * indicate a change in Window bounds.
+         *
+         * With other docking modes: 1. The overlay is initially hidden, sized to |view|'s preferred size, and
+         * positioned based on |docking_mode|. 2. Call CefOverlayController::SetVisible(true) to show the
+         * overlay. 3. The overlay will be automatically re-sized if |view|'s layout changes and re-positioned
+         * as appropriate when the Window resizes.
+         *
+         * Overlays created by this method will receive a higher z-order then any child Views added
+         * previously. It is therefore recommended to call this method last after all other child Views have
+         * been added so that the overlay displays as the top-most child of the Window.
+         *
+         * @see CefWindow::AddOverlayView
+         */
         public function addOverlayView(\Cefloom\View $view, int $dockingMode, bool $canActivate): ?\Cefloom\OverlayController {}
+        /**
+         * Show a menu with contents |menu_model|. |screen_point| specifies the menu position in screen
+         * coordinates. |anchor_position| specifies how the menu will be anchored relative to |screen_point|.
+         *
+         * @see CefWindow::ShowMenu
+         */
         public function showMenu(\Cefloom\MenuModel $menuModel, \Cefloom\Point $screenPoint, int $anchorPosition): void {}
+        /**
+         * Cancel the menu that is currently showing, if any.
+         *
+         * @see CefWindow::CancelMenu
+         */
         public function cancelMenu(): void {}
+        /**
+         * Returns the Display that most closely intersects the bounds of this Window. May return NULL if this
+         * Window is not currently displayed.
+         *
+         * @see CefWindow::GetDisplay
+         */
         public function getDisplay(): ?\Cefloom\Display {}
+        /**
+         * Returns the bounds (size and position) of this Window's client area. Position is in screen
+         * coordinates.
+         *
+         * @see CefWindow::GetClientAreaBoundsInScreen
+         */
         public function getClientAreaBoundsInScreen(): \Cefloom\Rect {}
+        /**
+         * Set the regions where mouse events will be intercepted by this Window to support drag operations.
+         * Call this method with an empty vector to clear the draggable regions. The draggable region bounds
+         * should be in window coordinates.
+         *
+         * @see CefWindow::SetDraggableRegions
+         */
         public function setDraggableRegions(array $regions): void {}
+        /**
+         * Retrieve the platform window handle for this Window.
+         *
+         * @see CefWindow::GetWindowHandle
+         */
         public function getWindowHandle(): int {}
+        /**
+         * Simulate a key press. |key_code| is the VKEY_* value from Chromium's
+         * ui/events/keycodes/keyboard_codes.h header (VK_* values on Windows). |event_flags| is some
+         * combination of EVENTFLAG_SHIFT_DOWN, EVENTFLAG_CONTROL_DOWN and/or EVENTFLAG_ALT_DOWN. This method
+         * is exposed primarily for testing purposes.
+         *
+         * @see CefWindow::SendKeyPress
+         */
         public function sendKeyPress(int $keyCode, int $eventFlags): void {}
+        /**
+         * Simulate a mouse move. The mouse cursor will be moved to the specified (screen_x, screen_y)
+         * position. This method is exposed primarily for testing purposes.
+         *
+         * @see CefWindow::SendMouseMove
+         */
         public function sendMouseMove(int $screenX, int $screenY): void {}
+        /**
+         * Simulate mouse down and/or mouse up events. |button| is the mouse button type. If |mouse_down| is
+         * true a mouse down event will be sent. If |mouse_up| is true a mouse up event will be sent. If both
+         * are true a mouse down event will be sent followed by a mouse up event (equivalent to clicking the
+         * mouse button). The events will be sent using the current cursor position so make sure to call
+         * SendMouseMove() first to position the mouse. This method is exposed primarily for testing purposes.
+         *
+         * @see CefWindow::SendMouseEvents
+         */
         public function sendMouseEvents(int $button, bool $mouseDown, bool $mouseUp): void {}
+        /**
+         * Set the keyboard accelerator for the specified |command_id|. |key_code| can be any virtual key or
+         * character value. Required modifier keys are specified by |shift_pressed|, |ctrl_pressed| and/or
+         * |alt_pressed|. CefWindowDelegate::OnAccelerator will be called if the keyboard combination is
+         * triggered while this window has focus.
+         *
+         * The |high_priority| value will be considered if a child CefBrowserView has focus when the keyboard
+         * combination is triggered. If |high_priority| is true then the key event will not be forwarded to
+         * the web content (`keydown` event handler) or CefKeyboardHandler first. If |high_priority| is false
+         * then the behavior will depend on the CefBrowserView::SetPreferAccelerators configuration.
+         *
+         * @see CefWindow::SetAccelerator
+         */
         public function setAccelerator(int $commandId, int $keyCode, bool $shiftPressed, bool $ctrlPressed, bool $altPressed, bool $highPriority): void {}
+        /**
+         * Remove the keyboard accelerator for the specified |command_id|.
+         *
+         * @see CefWindow::RemoveAccelerator
+         */
         public function removeAccelerator(int $commandId): void {}
+        /**
+         * Remove all keyboard accelerators.
+         *
+         * @see CefWindow::RemoveAllAccelerators
+         */
         public function removeAllAccelerators(): void {}
+        /**
+         * Override a standard theme color or add a custom color associated with |color_id|. See
+         * cef_color_ids.h for standard ID values. Recommended usage is as follows:
+         *
+         * 1. Customize the default native/OS theme by calling SetThemeColor before showing the first Window.
+         * When done setting colors call CefWindow::ThemeChanged to trigger CefViewDelegate::OnThemeChanged
+         * notifications. 2. Customize the current native/OS or Chrome theme after it changes by calling
+         * SetThemeColor from the CefWindowDelegate::OnThemeColorsChanged callback.
+         * CefViewDelegate::OnThemeChanged notifications will then be triggered automatically.
+         *
+         * The configured color will be available immediately via CefView::GetThemeColor and will be applied
+         * to each View in this Window's component hierarchy when CefViewDelegate::OnThemeChanged is called.
+         * See OnThemeColorsChanged documentation for additional details.
+         *
+         * Clients wishing to add custom colors should use |color_id| values >= CEF_ChromeColorsEnd.
+         *
+         * @see CefWindow::SetThemeColor
+         */
         public function setThemeColor(int $colorId, int $color): void {}
+        /**
+         * Trigger CefViewDelegate::OnThemeChanged callbacks for each View in this Window's component
+         * hierarchy. Unlike a native/OS or Chrome theme change this method does not reset theme colors to
+         * standard values and does not result in a call to CefWindowDelegate::OnThemeColorsChanged.
+         *
+         * Do not call this method from CefWindowDelegate::OnThemeColorsChanged or
+         * CefViewDelegate::OnThemeChanged.
+         *
+         * @see CefWindow::ThemeChanged
+         */
         public function themeChanged(): void {}
+        /**
+         * Returns the runtime style for this Window (ALLOY or CHROME). See cef_runtime_style_t documentation
+         * for details.
+         *
+         * @see CefWindow::GetRuntimeStyle
+         */
         public function getRuntimeStyle(): int {}
+        /**
+         * Create a new Window.
+         *
+         * @see CefWindow::CreateTopLevelWindow
+         */
         public static function createTopLevelWindow(?\Cefloom\WindowDelegate $delegate): ?\Cefloom\Window {}
     }
 
+    /**
+     * Implement this interface to handle window events. The methods of this class will be called on the
+     * browser process UI thread unless otherwise indicated.
+     *
+     * @see CefWindowDelegate
+     */
     class WindowDelegate {
+        /**
+         * Return the preferred size for |view|. The Layout will use this information to determine the display
+         * size.
+         *
+         * @see CefWindowDelegate::GetPreferredSize
+         */
         public function getPreferredSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the minimum size for |view|.
+         *
+         * @see CefWindowDelegate::GetMinimumSize
+         */
         public function getMinimumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the maximum size for |view|.
+         *
+         * @see CefWindowDelegate::GetMaximumSize
+         */
         public function getMaximumSize(\Cefloom\View $view): \Cefloom\Size {}
+        /**
+         * Return the height necessary to display |view| with the provided |width|. If not specified the
+         * result of GetPreferredSize().height will be used by default. Override if |view|'s preferred height
+         * depends upon the width (for example, with Labels).
+         *
+         * @see CefWindowDelegate::GetHeightForWidth
+         */
         public function getHeightForWidth(\Cefloom\View $view, int $width): int {}
+        /**
+         * Called when the parent of |view| has changed. If |view| is being added to |parent| then |added|
+         * will be true. If |view| is being removed from |parent| then |added| will be false. If |view| is
+         * being reparented the remove notification will be sent before the add notification. Do not modify
+         * the view hierarchy in this callback.
+         *
+         * @see CefWindowDelegate::OnParentViewChanged
+         */
         public function onParentViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $parent): void {}
+        /**
+         * Called when a child of |view| has changed. If |child| is being added to |view| then |added| will be
+         * true. If |child| is being removed from |view| then |added| will be false. If |child| is being
+         * reparented the remove notification will be sent to the old parent before the add notification is
+         * sent to the new parent. Do not modify the view hierarchy in this callback.
+         *
+         * @see CefWindowDelegate::OnChildViewChanged
+         */
         public function onChildViewChanged(\Cefloom\View $view, bool $added, \Cefloom\View $child): void {}
+        /**
+         * Called when |view| is added or removed from the CefWindow.
+         *
+         * @see CefWindowDelegate::OnWindowChanged
+         */
         public function onWindowChanged(\Cefloom\View $view, bool $added): void {}
+        /**
+         * Called when the layout of |view| has changed.
+         *
+         * @see CefWindowDelegate::OnLayoutChanged
+         */
         public function onLayoutChanged(\Cefloom\View $view, \Cefloom\Rect $newBounds): void {}
+        /**
+         * Called when |view| gains focus.
+         *
+         * @see CefWindowDelegate::OnFocus
+         */
         public function onFocus(\Cefloom\View $view): void {}
+        /**
+         * Called when |view| loses focus.
+         *
+         * @see CefWindowDelegate::OnBlur
+         */
         public function onBlur(\Cefloom\View $view): void {}
+        /**
+         * Called when the theme for |view| has changed, after the new theme colors have already been applied.
+         * Views are notified via the component hierarchy in depth-first reverse order (children before
+         * parents).
+         *
+         * This will be called in the following cases:
+         *
+         * 1. When |view|, or a parent of |view|, is added to a Window. 2. When the native/OS or Chrome theme
+         * changes for the Window that contains |view|. See CefWindowDelegate::OnThemeColorsChanged
+         * documentation. 3. When the client explicitly calls CefWindow::ThemeChanged on the Window that
+         * contains |view|.
+         *
+         * Optionally use this callback to override the new per-View theme colors by calling
+         * CefView::SetBackgroundColor or the appropriate component-specific method. See
+         * CefWindow::SetThemeColor documentation for how to customize additional Window theme colors.
+         *
+         * @see CefWindowDelegate::OnThemeChanged
+         */
         public function onThemeChanged(\Cefloom\View $view): void {}
+        /**
+         * Called when |window| is created.
+         *
+         * @see CefWindowDelegate::OnWindowCreated
+         */
         public function onWindowCreated(\Cefloom\Window $window): void {}
+        /**
+         * Called when |window| is closing.
+         *
+         * @see CefWindowDelegate::OnWindowClosing
+         */
         public function onWindowClosing(\Cefloom\Window $window): void {}
+        /**
+         * Called when |window| is destroyed. Release all references to |window| and do not attempt to execute
+         * any methods on |window| after this callback returns.
+         *
+         * @see CefWindowDelegate::OnWindowDestroyed
+         */
         public function onWindowDestroyed(\Cefloom\Window $window): void {}
+        /**
+         * Called when |window| is activated or deactivated.
+         *
+         * @see CefWindowDelegate::OnWindowActivationChanged
+         */
         public function onWindowActivationChanged(\Cefloom\Window $window, bool $active): void {}
+        /**
+         * Called when |window| bounds have changed. |new_bounds| will be in DIP screen coordinates.
+         *
+         * @see CefWindowDelegate::OnWindowBoundsChanged
+         */
         public function onWindowBoundsChanged(\Cefloom\Window $window, \Cefloom\Rect $newBounds): void {}
+        /**
+         * Called when |window| is transitioning to or from fullscreen mode. On MacOS the transition occurs
+         * asynchronously with |is_competed| set to false when the transition starts and true after the
+         * transition completes. On other platforms the transition occurs synchronously with |is_completed|
+         * set to true after the transition completes. With Alloy style you must also implement
+         * CefDisplayHandler::OnFullscreenModeChange to handle fullscreen transitions initiated by browser
+         * content.
+         *
+         * @see CefWindowDelegate::OnWindowFullscreenTransition
+         */
         public function onWindowFullscreenTransition(\Cefloom\Window $window, bool $isCompleted): void {}
+        /**
+         * Return the parent for |window| or NULL if the |window| does not have a parent. Windows with parents
+         * will not get a taskbar button. Set |is_menu| to true if |window| will be displayed as a menu, in
+         * which case it will not be clipped to the parent window bounds. Set |can_activate_menu| to false if
+         * |is_menu| is true and |window| should not be activated (given keyboard focus) when displayed.
+         *
+         * @see CefWindowDelegate::GetParentWindow
+         */
         public function getParentWindow(\Cefloom\Window $window): array {}
+        /**
+         * Return true if |window| should be created as a window modal dialog. Only called when a Window is
+         * returned via GetParentWindow() with |is_menu| set to false. All controls in the parent Window will
+         * be disabled while |window| is visible. This functionality is not supported by all Linux window
+         * managers. Alternately, use CefWindow::ShowAsBrowserModalDialog() for a browser modal dialog that
+         * works on all platforms.
+         *
+         * @see CefWindowDelegate::IsWindowModalDialog
+         */
         public function isWindowModalDialog(\Cefloom\Window $window): bool {}
+        /**
+         * Return the initial bounds for |window| in density independent pixel (DIP) coordinates. If this
+         * method returns an empty CefRect then GetPreferredSize() will be called to retrieve the size, and
+         * the window will be placed on the screen with origin (0,0). This method can be used in combination
+         * with CefView::GetBoundsInScreen() to restore the previous window bounds.
+         *
+         * @see CefWindowDelegate::GetInitialBounds
+         */
         public function getInitialBounds(\Cefloom\Window $window): \Cefloom\Rect {}
+        /**
+         * Return the initial show state for |window|.
+         *
+         * @see CefWindowDelegate::GetInitialShowState
+         */
         public function getInitialShowState(\Cefloom\Window $window): int {}
+        /**
+         * Return true if |window| should be created without a frame or title bar. The window will be
+         * resizable if CanResize() returns true. Use CefWindow::SetDraggableRegions() to specify draggable
+         * regions.
+         *
+         * @see CefWindowDelegate::IsFrameless
+         */
         public function isFrameless(\Cefloom\Window $window): bool {}
+        /**
+         * Return true if |window| should be created with standard window buttons like close, minimize and
+         * zoom. This method is only supported on macOS.
+         *
+         * @see CefWindowDelegate::WithStandardWindowButtons
+         */
         public function withStandardWindowButtons(\Cefloom\Window $window): bool {}
+        /**
+         * Return whether the titlebar height should be overridden, and sets the height of the titlebar in
+         * |titlebar_height|. On macOS, it can also be used to adjust the vertical position of the traffic
+         * light buttons in frameless windows. The buttons will be positioned halfway down the titlebar at a
+         * height of |titlebar_height| / 2.
+         *
+         * @see CefWindowDelegate::GetTitlebarHeight
+         */
         public function getTitlebarHeight(\Cefloom\Window $window): array {}
+        /**
+         * Return whether the view should accept the initial mouse-down event, allowing it to respond to
+         * click-through behavior. If STATE_ENABLED is returned, the view will be sent a mouseDown: message
+         * for an initial mouse-down event, activating the view with one click, instead of clicking first to
+         * make the window active and then clicking the view.
+         *
+         * This method is only supported on macOS. For more details, refer to the documentation of
+         * acceptsFirstMouse.
+         *
+         * @see CefWindowDelegate::AcceptsFirstMouse
+         */
         public function acceptsFirstMouse(\Cefloom\Window $window): int {}
+        /**
+         * Return true if |window| can be resized.
+         *
+         * @see CefWindowDelegate::CanResize
+         */
         public function canResize(\Cefloom\Window $window): bool {}
+        /**
+         * Return true if |window| can be maximized.
+         *
+         * @see CefWindowDelegate::CanMaximize
+         */
         public function canMaximize(\Cefloom\Window $window): bool {}
+        /**
+         * Return true if |window| can be minimized.
+         *
+         * @see CefWindowDelegate::CanMinimize
+         */
         public function canMinimize(\Cefloom\Window $window): bool {}
+        /**
+         * Return true if |window| can be closed. This will be called for user- initiated window close actions
+         * and when CefWindow::Close() is called.
+         *
+         * @see CefWindowDelegate::CanClose
+         */
         public function canClose(\Cefloom\Window $window): bool {}
+        /**
+         * Called when a keyboard accelerator registered with CefWindow::SetAccelerator is triggered. Return
+         * true if the accelerator was handled or false otherwise.
+         *
+         * @see CefWindowDelegate::OnAccelerator
+         */
         public function onAccelerator(\Cefloom\Window $window, int $commandId): bool {}
+        /**
+         * Called after all other controls in the window have had a chance to handle the event. |event|
+         * contains information about the keyboard event. Return true if the keyboard event was handled or
+         * false otherwise.
+         *
+         * @see CefWindowDelegate::OnKeyEvent
+         */
         public function onKeyEvent(\Cefloom\Window $window, \Cefloom\KeyEvent $event): bool {}
+        /**
+         * Called after the native/OS or Chrome theme for |window| has changed. |chrome_theme| will be true if
+         * the notification is for a Chrome theme.
+         *
+         * Native/OS theme colors are configured globally and do not need to be customized for each Window
+         * individually. An example of a native/OS theme change that triggers this callback is when the user
+         * switches between dark and light mode during application lifespan. Native/OS theme changes can be
+         * disabled by passing the `--force-dark-mode` or `--force-light-mode` command-line flag.
+         *
+         * Chrome theme colors will be applied and this callback will be triggered if/when a BrowserView is
+         * added to the Window's component hierarchy. Chrome theme colors can be configured on a per-
+         * RequestContext basis using CefRequestContext::SetChromeColorScheme or (Chrome style only) by
+         * visiting chrome://settings/manageProfile. Any theme changes using those mechanisms will also
+         * trigger this callback. Chrome theme colors will be persisted and restored from disk cache.
+         *
+         * This callback is not triggered on Window creation so clients that wish to customize the initial
+         * native/OS theme must call CefWindow::SetThemeColor and CefWindow::ThemeChanged before showing the
+         * first Window.
+         *
+         * Theme colors will be reset to standard values before this callback is called for the first affected
+         * Window. Call CefWindow::SetThemeColor from inside this callback to override a standard color or add
+         * a custom color. CefViewDelegate::OnThemeChanged will be called after this callback for the complete
+         * |window| component hierarchy.
+         *
+         * @see CefWindowDelegate::OnThemeColorsChanged
+         */
         public function onThemeColorsChanged(\Cefloom\Window $window, bool $chromeTheme): void {}
+        /**
+         * Optionally change the runtime style for this Window. See cef_runtime_style_t documentation for
+         * details.
+         *
+         * @see CefWindowDelegate::GetWindowRuntimeStyle
+         */
         public function getWindowRuntimeStyle(): int {}
+        /**
+         * Return Linux-specific window properties for correctly handling by window managers
+         *
+         * @see CefWindowDelegate::GetLinuxWindowProperties
+         */
         public function getLinuxWindowProperties(\Cefloom\Window $window): array {}
     }
 
+    /**
+     * Interface the client can implement to provide a custom stream writer. The methods of this class may be
+     * called on any thread.
+     *
+     * @see CefWriteHandler
+     */
     abstract class WriteHandler {
+        /**
+         * Write raw binary data.
+         *
+         * @see CefWriteHandler::Write
+         */
         public abstract function write(\Cefloom\Buffer $ptr, int $size): int ;
+        /**
+         * Seek to the specified offset position. |whence| may be any one of SEEK_CUR, SEEK_END or SEEK_SET.
+         * Return zero on success and non-zero on failure.
+         *
+         * @see CefWriteHandler::Seek
+         */
         public abstract function seek(int $offset, int $whence): int ;
+        /**
+         * Return the current offset position.
+         *
+         * @see CefWriteHandler::Tell
+         */
         public abstract function tell(): int ;
+        /**
+         * Flush the stream.
+         *
+         * @see CefWriteHandler::Flush
+         */
         public abstract function flush(): int ;
+        /**
+         * Return true if this handler performs work like accessing the file system which may block. Used as a
+         * hint for determining the thread to access the handler from.
+         *
+         * @see CefWriteHandler::MayBlock
+         */
         public abstract function mayBlock(): bool ;
     }
 
+    /**
+     * Class representing the issuer or subject field of an X.509 certificate.
+     *
+     * @see CefX509CertPrincipal
+     */
     final class X509CertPrincipal {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns a name that can be used to represent the issuer. It tries in this order: Common Name (CN),
+         * Organization Name (O) and Organizational Unit Name (OU) and returns the first non-empty one found.
+         *
+         * @see CefX509CertPrincipal::GetDisplayName
+         */
         public function getDisplayName(): string {}
+        /**
+         * Returns the common name.
+         *
+         * @see CefX509CertPrincipal::GetCommonName
+         */
         public function getCommonName(): string {}
+        /**
+         * Returns the locality name.
+         *
+         * @see CefX509CertPrincipal::GetLocalityName
+         */
         public function getLocalityName(): string {}
+        /**
+         * Returns the state or province name.
+         *
+         * @see CefX509CertPrincipal::GetStateOrProvinceName
+         */
         public function getStateOrProvinceName(): string {}
+        /**
+         * Returns the country name.
+         *
+         * @see CefX509CertPrincipal::GetCountryName
+         */
         public function getCountryName(): string {}
+        /**
+         * Retrieve the list of organization names.
+         *
+         * @see CefX509CertPrincipal::GetOrganizationNames
+         */
         public function getOrganizationNames(): array {}
+        /**
+         * Retrieve the list of organization unit names.
+         *
+         * @see CefX509CertPrincipal::GetOrganizationUnitNames
+         */
         public function getOrganizationUnitNames(): array {}
     }
 
+    /**
+     * Class representing a X.509 certificate.
+     *
+     * @see CefX509Certificate
+     */
     final class X509Certificate {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Returns the subject of the X.509 certificate. For HTTPS server certificates this represents the web
+         * server.  The common name of the subject should match the host name of the web server.
+         *
+         * @see CefX509Certificate::GetSubject
+         */
         public function getSubject(): ?\Cefloom\X509CertPrincipal {}
+        /**
+         * Returns the issuer of the X.509 certificate.
+         *
+         * @see CefX509Certificate::GetIssuer
+         */
         public function getIssuer(): ?\Cefloom\X509CertPrincipal {}
+        /**
+         * Returns the DER encoded serial number for the X.509 certificate. The value possibly includes a
+         * leading 00 byte.
+         *
+         * @see CefX509Certificate::GetSerialNumber
+         */
         public function getSerialNumber(): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns the date before which the X.509 certificate is invalid. CefBaseTime.GetTimeT() will return
+         * 0 if no date was specified.
+         *
+         * @see CefX509Certificate::GetValidStart
+         */
         public function getValidStart(): ?\DateTimeImmutable {}
+        /**
+         * Returns the date after which the X.509 certificate is invalid. CefBaseTime.GetTimeT() will return 0
+         * if no date was specified.
+         *
+         * @see CefX509Certificate::GetValidExpiry
+         */
         public function getValidExpiry(): ?\DateTimeImmutable {}
+        /**
+         * Returns the DER encoded data for the X.509 certificate.
+         *
+         * @see CefX509Certificate::GetDEREncoded
+         */
         public function getDEREncoded(): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns the PEM encoded data for the X.509 certificate.
+         *
+         * @see CefX509Certificate::GetPEMEncoded
+         */
         public function getPEMEncoded(): ?\Cefloom\BinaryValue {}
+        /**
+         * Returns the number of certificates in the issuer chain. If 0, the certificate is self-signed.
+         *
+         * @see CefX509Certificate::GetIssuerChainSize
+         */
         public function getIssuerChainSize(): int {}
+        /**
+         * Returns the DER encoded data for the certificate issuer chain. If we failed to encode a certificate
+         * in the chain it is still present in the array but is an empty string.
+         *
+         * @see CefX509Certificate::GetDEREncodedIssuerChain
+         */
         public function getDEREncodedIssuerChain(): array {}
+        /**
+         * Returns the PEM encoded data for the certificate issuer chain. If we failed to encode a certificate
+         * in the chain it is still present in the array but is an empty string.
+         *
+         * @see CefX509Certificate::GetPEMEncodedIssuerChain
+         */
         public function getPEMEncodedIssuerChain(): array {}
     }
 
+    /**
+     * Class that supports the reading of XML data via the libxml streaming API. The methods of this class
+     * should only be called on the thread that creates the object.
+     *
+     * @see CefXmlReader
+     */
     final class XmlReader {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Moves the cursor to the next node in the document. This method must be called at least once to set
+         * the current cursor position. Returns true if the cursor position was set successfully.
+         *
+         * @see CefXmlReader::MoveToNextNode
+         */
         public function moveToNextNode(): bool {}
+        /**
+         * Close the document. This should be called directly to ensure that cleanup occurs on the correct
+         * thread.
+         *
+         * @see CefXmlReader::Close
+         */
         public function close(): bool {}
+        /**
+         * Returns true if an error has been reported by the XML parser.
+         *
+         * @see CefXmlReader::HasError
+         */
         public function hasError(): bool {}
+        /**
+         * Returns the error string.
+         *
+         * @see CefXmlReader::GetError
+         */
         public function getError(): string {}
+        /**
+         * Returns the node type.
+         *
+         * @see CefXmlReader::GetType
+         */
         public function getType(): int {}
+        /**
+         * Returns the node depth. Depth starts at 0 for the root node.
+         *
+         * @see CefXmlReader::GetDepth
+         */
         public function getDepth(): int {}
+        /**
+         * Returns the local name. See http://www.w3.org/TR/REC-xml-names/#NT-LocalPart for additional
+         * details.
+         *
+         * @see CefXmlReader::GetLocalName
+         */
         public function getLocalName(): string {}
+        /**
+         * Returns the namespace prefix. See http://www.w3.org/TR/REC-xml-names/ for additional details.
+         *
+         * @see CefXmlReader::GetPrefix
+         */
         public function getPrefix(): string {}
+        /**
+         * Returns the qualified name, equal to (Prefix:)LocalName. See http://www.w3.org/TR/REC-xml-
+         * names/#ns-qualnames for additional details.
+         *
+         * @see CefXmlReader::GetQualifiedName
+         */
         public function getQualifiedName(): string {}
+        /**
+         * Returns the URI defining the namespace associated with the node. See http://www.w3.org/TR/REC-xml-
+         * names/ for additional details.
+         *
+         * @see CefXmlReader::GetNamespaceURI
+         */
         public function getNamespaceURI(): string {}
+        /**
+         * Returns the base URI of the node. See http://www.w3.org/TR/xmlbase/ for additional details.
+         *
+         * @see CefXmlReader::GetBaseURI
+         */
         public function getBaseURI(): string {}
+        /**
+         * Returns the xml:lang scope within which the node resides. See http://www.w3.org/TR/REC-xml/#sec-
+         * lang-tag for additional details.
+         *
+         * @see CefXmlReader::GetXmlLang
+         */
         public function getXmlLang(): string {}
+        /**
+         * Returns true if the node represents an empty element. "<a/>" is considered empty but "<a></a>" is
+         * not.
+         *
+         * @see CefXmlReader::IsEmptyElement
+         */
         public function isEmptyElement(): bool {}
+        /**
+         * Returns true if the node has a text value.
+         *
+         * @see CefXmlReader::HasValue
+         */
         public function hasValue(): bool {}
+        /**
+         * Returns the text value.
+         *
+         * @see CefXmlReader::GetValue
+         */
         public function getValue(): string {}
+        /**
+         * Returns true if the node has attributes.
+         *
+         * @see CefXmlReader::HasAttributes
+         */
         public function hasAttributes(): bool {}
+        /**
+         * Returns the number of attributes.
+         *
+         * @see CefXmlReader::GetAttributeCount
+         */
         public function getAttributeCount(): int {}
+        /**
+         * Returns the value of the attribute at the specified 0-based index.
+         *
+         * @see CefXmlReader::GetAttribute
+         */
         public function getAttribute(int $index): string {}
+        /**
+         * Returns an XML representation of the current node's children.
+         *
+         * @see CefXmlReader::GetInnerXml
+         */
         public function getInnerXml(): string {}
+        /**
+         * Returns an XML representation of the current node including its children.
+         *
+         * @see CefXmlReader::GetOuterXml
+         */
         public function getOuterXml(): string {}
+        /**
+         * Returns the line number for the current node.
+         *
+         * @see CefXmlReader::GetLineNumber
+         */
         public function getLineNumber(): int {}
+        /**
+         * Moves the cursor to the attribute at the specified 0-based index. Returns true if the cursor
+         * position was set successfully.
+         *
+         * @see CefXmlReader::MoveToAttribute
+         */
         public function moveToAttribute(int $index): bool {}
+        /**
+         * Moves the cursor to the first attribute in the current element. Returns true if the cursor position
+         * was set successfully.
+         *
+         * @see CefXmlReader::MoveToFirstAttribute
+         */
         public function moveToFirstAttribute(): bool {}
+        /**
+         * Moves the cursor to the next attribute in the current element. Returns true if the cursor position
+         * was set successfully.
+         *
+         * @see CefXmlReader::MoveToNextAttribute
+         */
         public function moveToNextAttribute(): bool {}
+        /**
+         * Moves the cursor back to the carrying element. Returns true if the cursor position was set
+         * successfully.
+         *
+         * @see CefXmlReader::MoveToCarryingElement
+         */
         public function moveToCarryingElement(): bool {}
+        /**
+         * Create a new CefXmlReader object. The returned object's methods can only be called from the thread
+         * that created the object.
+         *
+         * @see CefXmlReader::Create
+         */
         public static function create(\Cefloom\StreamReader $stream, int $encodingType, string $URI): ?\Cefloom\XmlReader {}
     }
 
+    /**
+     * Class that supports the reading of zip archives via the zlib unzip API. The methods of this class
+     * should only be called on the thread that creates the object.
+     *
+     * @see CefZipReader
+     */
     final class ZipReader {
+        /** Instances are created by CEF only. */
         private function __construct() {}
+        /**
+         * Moves the cursor to the first file in the archive. Returns true if the cursor position was set
+         * successfully.
+         *
+         * @see CefZipReader::MoveToFirstFile
+         */
         public function moveToFirstFile(): bool {}
+        /**
+         * Moves the cursor to the next file in the archive. Returns true if the cursor position was set
+         * successfully.
+         *
+         * @see CefZipReader::MoveToNextFile
+         */
         public function moveToNextFile(): bool {}
+        /**
+         * Moves the cursor to the specified file in the archive. If |caseSensitive| is true then the search
+         * will be case sensitive. Returns true if the cursor position was set successfully.
+         *
+         * @see CefZipReader::MoveToFile
+         */
         public function moveToFile(string $fileName, bool $caseSensitive): bool {}
+        /**
+         * Closes the archive. This should be called directly to ensure that cleanup occurs on the correct
+         * thread.
+         *
+         * @see CefZipReader::Close
+         */
         public function close(): bool {}
+        /**
+         * Returns the name of the file.
+         *
+         * @see CefZipReader::GetFileName
+         */
         public function getFileName(): string {}
+        /**
+         * Returns the uncompressed size of the file.
+         *
+         * @see CefZipReader::GetFileSize
+         */
         public function getFileSize(): int {}
+        /**
+         * Returns the last modified timestamp for the file.
+         *
+         * @see CefZipReader::GetFileLastModified
+         */
         public function getFileLastModified(): ?\DateTimeImmutable {}
+        /**
+         * Opens the file for reading of uncompressed data. A read password may optionally be specified.
+         *
+         * @see CefZipReader::OpenFile
+         */
         public function openFile(string $password): bool {}
+        /**
+         * Closes the file.
+         *
+         * @see CefZipReader::CloseFile
+         */
         public function closeFile(): bool {}
+        /**
+         * Read uncompressed file contents into the specified buffer. Returns < 0 if an error occurred, 0 if
+         * at the end of file, or the number of bytes read.
+         *
+         * @see CefZipReader::ReadFile
+         */
         public function readFile(int $size): string {}
+        /**
+         * Returns the current offset in the uncompressed file contents.
+         *
+         * @see CefZipReader::Tell
+         */
         public function tell(): int {}
+        /**
+         * Returns true if at end of the file contents.
+         *
+         * @see CefZipReader::Eof
+         */
         public function eof(): bool {}
+        /**
+         * Create a new CefZipReader object. The returned object's methods can only be called from the thread
+         * that created the object.
+         *
+         * @see CefZipReader::Create
+         */
         public static function create(\Cefloom\StreamReader $stream): ?\Cefloom\ZipReader {}
     }
 
+    /** @see CefInitialize and the other global functions of CEF */
     final class Cef {
+        /**
+         * Add an entry to the cross-origin access whitelist.
+         *
+         * The same-origin policy restricts how scripts hosted from different origins (scheme + domain + port)
+         * can communicate. By default, scripts can only access resources with the same origin. Scripts hosted
+         * on the HTTP and HTTPS schemes (but no other schemes) can use the "Access-Control-Allow-Origin"
+         * header to allow cross-origin requests. For example, https://source.example.com can make
+         * XMLHttpRequest requests on http://target.example.com if the http://target.example.com request
+         * returns an "Access-Control-Allow-Origin: https://source.example.com" response header.
+         *
+         * Scripts in separate frames or iframes and hosted from the same protocol and domain suffix can
+         * execute cross-origin JavaScript if both pages set the document.domain value to the same domain
+         * suffix. For example, scheme://foo.example.com and scheme://bar.example.com can communicate using
+         * JavaScript if both domains set document.domain="example.com".
+         *
+         * This method is used to allow access to origins that would otherwise violate the same-origin policy.
+         * Scripts hosted underneath the fully qualified |source_origin| URL (like http://www.example.com)
+         * will be allowed access to all resources hosted on the specified |target_protocol| and
+         * |target_domain|. If |target_domain| is non-empty and |allow_target_subdomains| is false only exact
+         * domain matches will be allowed. If |target_domain| contains a top- level domain component (like
+         * "example.com") and |allow_target_subdomains| is true sub-domain matches will be allowed. If
+         * |target_domain| is empty and |allow_target_subdomains| if true all domains and IP addresses will be
+         * allowed.
+         *
+         * This method cannot be used to bypass the restrictions on local or display isolated schemes. See the
+         * comments on CefRegisterCustomScheme for more information.
+         *
+         * This function may be called on any thread. Returns false if |source_origin| is invalid or the
+         * whitelist cannot be accessed.
+         *
+         * @see CefAddCrossOriginWhitelistEntry
+         */
         public static function addCrossOriginWhitelistEntry(string $sourceOrigin, string $targetProtocol, string $targetDomain, bool $allowTargetSubdomains): bool {}
+        /**
+         * Decodes the base64 encoded string |data|. The returned value will be NULL if the decoding fails.
+         *
+         * @see CefBase64Decode
+         */
         public static function base64Decode(string $data): ?\Cefloom\BinaryValue {}
+        /**
+         * Encodes |data| as a base64 string.
+         *
+         * @see CefBase64Encode
+         */
         public static function base64Encode(string $data): string {}
+        /**
+         * Start tracing events on all processes. Tracing is initialized asynchronously and |callback| will be
+         * executed on the UI thread after initialization is complete.
+         *
+         * If CefBeginTracing was called previously, or if a CefEndTracingAsync call is pending,
+         * CefBeginTracing will fail and return false.
+         *
+         * |categories| is a comma-delimited list of category wildcards. A category can have an optional '-'
+         * prefix to make it an excluded category. Having both included and excluded categories in the same
+         * list is not supported.
+         *
+         * Examples: - "test_MyTest*" - "test_MyTest*,test_OtherStuff" -
+         * "-excluded_category1,-excluded_category2"
+         *
+         * This function must be called on the browser process UI thread.
+         *
+         * @see CefBeginTracing
+         */
         public static function beginTracing(string $categories, ?\Cefloom\CompletionCallback $callback): bool {}
+        /**
+         * Remove all entries from the cross-origin access whitelist. Returns false if the whitelist cannot be
+         * accessed.
+         *
+         * @see CefClearCrossOriginWhitelist
+         */
         public static function clearCrossOriginWhitelist(): bool {}
+        /**
+         * Clear all scheme handler factories registered with the global request context. Returns false on
+         * error. This function may be called on any thread in the browser process. Using this function is
+         * equivalent to calling CefRequestContext::GetGlobalContext()->ClearSchemeHandlerFactories().
+         *
+         * @see CefClearSchemeHandlerFactories
+         */
         public static function clearSchemeHandlerFactories(): bool {}
+        /**
+         * Crash reporting is configured using an INI-style config file named "crash_reporter.cfg". On Windows
+         * and Linux this file must be placed next to the main application executable. On macOS this file must
+         * be placed in the top-level app bundle Resources directory (e.g.
+         * "<appname>.app/Contents/Resources"). File contents are as follows:
+         *
+         * <pre> # Comments start with a hash character and must be on their own line.
+         *
+         * [Config] ProductName=<Value of the "prod" crash key; defaults to "cef"> ProductVersion=<Value of
+         * the "ver" crash key; defaults to the CEF version> AppName=<Windows only; App-specific folder name
+         * component for storing crash information; default to "CEF"> ExternalHandler=<Windows only; Name of
+         * the external handler exe to use instead of re-launching the main exe; default to empty>
+         * BrowserCrashForwardingEnabled=<macOS only; True if browser process crashes should be forwarded to
+         * the system crash reporter; default to false> ServerURL=<crash server URL; default to empty>
+         * RateLimitEnabled=<True if uploads should be rate limited; default to true> MaxUploadsPerDay=<Max
+         * uploads per 24 hours, used if rate limit is enabled; default to 5> MaxDatabaseSizeInMb=<Total crash
+         * report disk usage greater than this value will cause older reports to be deleted; default to 20>
+         * MaxDatabaseAgeInDays=<Crash reports older than this value will be deleted; default to 5>
+         *
+         * [CrashKeys] my_key1=<small|medium|large> my_key2=<small|medium|large> </pre>
+         *
+         * <b>Config section:</b>
+         *
+         * If "ProductName" and/or "ProductVersion" are set then the specified values will be included in the
+         * crash dump metadata. On macOS if these values are set to empty then they will be retrieved from the
+         * Info.plist file using the "CFBundleName" and "CFBundleShortVersionString" keys respectively.
+         *
+         * If "AppName" is set on Windows then crash report information (metrics, database and dumps) will be
+         * stored locally on disk under the "C:\Users\[CurrentUser]\AppData\Local\[AppName]\User Data" folder.
+         * On other platforms the cef_settings_t.root_cache_path value will be used.
+         *
+         * If "ExternalHandler" is set on Windows then the specified exe will be launched as the crashpad-
+         * handler instead of re-launching the main process exe. The value can be an absolute path or a path
+         * relative to the main exe directory. On Linux the cef_settings_t.browser_subprocess_path value will
+         * be used. On macOS the existing subprocess app bundle will be used.
+         *
+         * If "BrowserCrashForwardingEnabled" is set to true on macOS then browser process crashes will be
+         * forwarded to the system crash reporter. This results in the crash UI dialog being displayed to the
+         * user and crash reports being logged under "~/Library/Logs/DiagnosticReports". Forwarding of crash
+         * reports from non-browser processes and Debug builds is always disabled.
+         *
+         * If "ServerURL" is set then crashes will be uploaded as a multi-part POST request to the specified
+         * URL. Otherwise, reports will only be stored locally on disk.
+         *
+         * If "RateLimitEnabled" is set to true then crash report uploads will be rate limited as follows: 1.
+         * If "MaxUploadsPerDay" is set to a positive value then at most the specified number of crashes will
+         * be uploaded in each 24 hour period. 2. If crash upload fails due to a network or server error then
+         * an incremental backoff delay up to a maximum of 24 hours will be applied for retries. 3. If a
+         * backoff delay is applied and "MaxUploadsPerDay" is > 1 then the "MaxUploadsPerDay" value will be
+         * reduced to 1 until the client is restarted. This helps to avoid an upload flood when the network or
+         * server error is resolved. Rate limiting is not supported on Linux.
+         *
+         * If "MaxDatabaseSizeInMb" is set to a positive value then crash report storage on disk will be
+         * limited to that size in megabytes. For example, on Windows each dump is about 600KB so a
+         * "MaxDatabaseSizeInMb" value of 20 equates to about 34 crash reports stored on disk. Not supported
+         * on Linux.
+         *
+         * If "MaxDatabaseAgeInDays" is set to a positive value then crash reports older than the specified
+         * age in days will be deleted. Not supported on Linux.
+         *
+         * <b>CrashKeys section:</b>
+         *
+         * A maximum of 26 crash keys of each size can be specified for use by the application. Crash key
+         * values will be truncated based on the specified size (small = 64 bytes, medium = 256 bytes, large =
+         * 1024 bytes). The value of crash keys can be set from any thread or process using the
+         * CefSetCrashKeyValue function. These key/value pairs will be sent to the crash server along with the
+         * crash dump file.
+         *
+         * @see CefCrashReportingEnabled
+         */
         public static function crashReportingEnabled(): bool {}
+        /**
+         * Creates a directory and all parent directories if they don't already exist. Returns true on
+         * successful creation or if the directory already exists. The directory is only readable by the
+         * current user. Calling this function on the browser process UI or IO threads is not allowed.
+         *
+         * @see CefCreateDirectory
+         */
         public static function createDirectory(string $fullPath): bool {}
+        /**
+         * Creates a new directory. On Windows if |prefix| is provided the new directory name is in the format
+         * of "prefixyyyy". Returns true on success and sets |new_temp_path| to the full path of the directory
+         * that was created. The directory is only readable by the current user. Calling this function on the
+         * browser process UI or IO threads is not allowed.
+         *
+         * @see CefCreateNewTempDirectory
+         */
         public static function createNewTempDirectory(string $prefix): ?string {}
+        /**
+         * Creates a directory within another directory. Extra characters will be appended to |prefix| to
+         * ensure that the new directory does not have the same name as an existing directory. Returns true on
+         * success and sets |new_dir| to the full path of the directory that was created. The directory is
+         * only readable by the current user. Calling this function on the browser process UI or IO threads is
+         * not allowed.
+         *
+         * @see CefCreateTempDirectoryInDirectory
+         */
         public static function createTempDirectoryInDirectory(string $baseDir, string $prefix): ?string {}
+        /**
+         * Creates a URL from the specified |parts|, which must contain a non-empty spec or a non-empty host
+         * and path (at a minimum), but not both. Returns false if |parts| isn't initialized as described.
+         *
+         * @see CefCreateURL
+         */
         public static function createURL(\Cefloom\URLParts $parts): ?string {}
+        /**
+         * Returns true if called on the specified thread. Equivalent to using
+         * CefTaskRunner::GetForThread(threadId)->BelongsToCurrentThread().
+         *
+         * @see CefCurrentlyOn
+         */
         public static function currentlyOn(int $threadId): bool {}
+        /**
+         * Deletes the given path whether it's a file or a directory. If |path| is a directory all contents
+         * will be deleted.  If |recursive| is true any sub- directories and their contents will also be
+         * deleted (equivalent to executing "rm -rf", so use with caution). On POSIX environments if |path| is
+         * a symbolic link then only the symlink will be deleted. Returns true on successful deletion or if
+         * |path| does not exist. Calling this function on the browser process UI or IO threads is not
+         * allowed.
+         *
+         * @see CefDeleteFile
+         */
         public static function deleteFile(string $path, bool $recursive): bool {}
+        /**
+         * Returns true if the given path exists and is a directory. Calling this function on the browser
+         * process UI or IO threads is not allowed.
+         *
+         * @see CefDirectoryExists
+         */
         public static function directoryExists(string $path): bool {}
+        /**
+         * Stop tracing events on all processes.
+         *
+         * This function will fail and return false if a previous call to CefEndTracingAsync is already
+         * pending or if CefBeginTracing was not called.
+         *
+         * |tracing_file| is the path at which tracing data will be written and |callback| is the callback
+         * that will be executed once all processes have sent their trace data. If |tracing_file| is empty a
+         * new temporary file path will be used. If |callback| is empty no trace data will be written.
+         *
+         * This function must be called on the browser process UI thread.
+         *
+         * @see CefEndTracing
+         */
         public static function endTracing(string $tracingFile, ?\Cefloom\EndTracingCallback $callback): bool {}
+        /**
+         * This is a convenience function for formatting a URL in a concise and human- friendly way to help
+         * users make security-related decisions (or in other circumstances when people need to distinguish
+         * sites, origins, or otherwise- simplified URLs from each other). Internationalized domain names
+         * (IDN) may be presented in Unicode if the conversion is considered safe. The returned value will (a)
+         * omit the path for standard schemes, excepting file and filesystem, and (b) omit the port if it is
+         * the default for the scheme. Do not use this for URLs which will be parsed or sent to other
+         * applications.
+         *
+         * @see CefFormatUrlForSecurityDisplay
+         */
         public static function formatUrlForSecurityDisplay(string $originUrl): string {}
+        /**
+         * This function can optionally be called on the main application thread after CefInitialize to
+         * retrieve the initialization exit code. When CefInitialize returns true the exit code will be 0
+         * (CEF_RESULT_CODE_NORMAL_EXIT). Otherwise, see cef_resultcode_t for possible exit code values
+         * including browser process initialization errors and normal early exit conditions (such as
+         * CEF_RESULT_CODE_NORMAL_EXIT_PROCESS_NOTIFIED for process singleton relaunch behavior).
+         *
+         * @see CefGetExitCode
+         */
         public static function getExitCode(): int {}
+        /**
+         * Get the extensions associated with the given mime type. This should be passed in lower case. There
+         * could be multiple extensions for a given mime type, like "html,htm" for "text/html", or
+         * "txt,text,html,..." for "text/*". Any existing elements in the provided vector will not be erased.
+         *
+         * @see CefGetExtensionsForMimeType
+         */
         public static function getExtensionsForMimeType(string $mimeType): array {}
+        /**
+         * Returns the mime type for the specified file extension or an empty string if unknown.
+         *
+         * @see CefGetMimeType
+         */
         public static function getMimeType(string $extension): string {}
+        /**
+         * Retrieve the path associated with the specified |key|. Returns true on success. Can be called on
+         * any thread in the browser process.
+         *
+         * @see CefGetPath
+         */
         public static function getPath(int $key): ?string {}
+        /**
+         * Get the temporary directory provided by the system.
+         *
+         * WARNING: In general, you should use the temp directory variants below instead of this function.
+         * Those variants will ensure that the proper permissions are set so that other users on the system
+         * can't edit them while they're open (which could lead to security issues).
+         *
+         * @see CefGetTempDirectory
+         */
         public static function getTempDirectory(): ?string {}
+        /**
+         * Returns true if the certificate status represents an error.
+         *
+         * @see CefIsCertStatusError
+         */
         public static function isCertStatusError(int $status): bool {}
+        /**
+         * Returns true if the application text direction is right-to-left.
+         *
+         * @see CefIsRTL
+         */
         public static function isRTL(): bool {}
+        /**
+         * Launches the process specified via |command_line|. Returns true upon success. Must be called on the
+         * browser process TID_PROCESS_LAUNCHER thread.
+         *
+         * Unix-specific notes: - All file descriptors open in the parent process will be closed in the child
+         * process except for stdin, stdout, and stderr. - If the first argument on the command line does not
+         * contain a slash, PATH will be searched. (See man execvp.)
+         *
+         * @see CefLaunchProcess
+         */
         public static function launchProcess(\Cefloom\CommandLine $commandLine): bool {}
+        /**
+         * Loads the existing "Certificate Revocation Lists" file that is managed by Google Chrome. This file
+         * can generally be found in Chrome's User Data directory (e.g.
+         * "C:\Users\[User]\AppData\Local\Google\Chrome\User Data\" on Windows) and is updated periodically by
+         * Chrome's component updater service. Must be called in the browser process after the context has
+         * been initialized. See https://dev.chromium.org/Home/chromium-security/crlsets for background.
+         *
+         * @see CefLoadCRLSetsFile
+         */
         public static function loadCRLSetsFile(string $path): void {}
+        /**
+         * Returns the current system trace time or, if none is defined, the current high-res time. Can be
+         * used by clients to synchronize with the time information in trace events.
+         *
+         * @see CefNowFromSystemTraceTime
+         */
         public static function nowFromSystemTraceTime(): int {}
+        /**
+         * Parses the specified UTF8-encoded |json| buffer of size |json_size| and returns a dictionary or
+         * list representation. If JSON parsing fails this method returns NULL.
+         *
+         * @see CefParseJSON
+         */
         public static function parseJSON(string $json, int $options): ?\Cefloom\Value {}
+        /**
+         * Parses the specified |json_string| and returns a dictionary or list representation. If JSON parsing
+         * fails this method returns NULL and populates |error_msg_out| with a formatted error message.
+         *
+         * @see CefParseJSONAndReturnError
+         */
         public static function parseJSONAndReturnError(string $jsonString, int $options): array {}
+        /**
+         * Parse the specified |url| into its component parts. Returns false if the URL is empty or invalid.
+         *
+         * @see CefParseURL
+         */
         public static function parseURL(string $url, \Cefloom\URLParts $parts): ?\Cefloom\URLParts {}
+        /**
+         * Post a task for delayed execution on the specified thread. Equivalent to using
+         * CefTaskRunner::GetForThread(threadId)->PostDelayedTask(task, delay_ms).
+         *
+         * @see CefPostDelayedTask
+         */
         public static function postDelayedTask(int $threadId, \Cefloom\Task $task, int $delayMs): bool {}
+        /**
+         * Post a task for execution on the specified thread. Equivalent to using
+         * CefTaskRunner::GetForThread(threadId)->PostTask(task).
+         *
+         * @see CefPostTask
+         */
         public static function postTask(int $threadId, \Cefloom\Task $task): bool {}
+        /**
+         * Register a scheme handler factory with the global request context. An empty |domain_name| value for
+         * a standard scheme will cause the factory to match all domain names. The |domain_name| value will be
+         * ignored for non-standard schemes. If |scheme_name| is a built-in scheme and no handler is returned
+         * by |factory| then the built-in scheme handler factory will be called. If |scheme_name| is a custom
+         * scheme then you must also implement the CefApp::OnRegisterCustomSchemes() method in all processes.
+         * This function may be called multiple times to change or remove the factory that matches the
+         * specified |scheme_name| and optional |domain_name|. Returns false if an error occurs. This function
+         * may be called on any thread in the browser process. Using this function is equivalent to calling
+         * CefRequestContext::GetGlobalContext()->RegisterSchemeHandlerFactory().
+         *
+         * @see CefRegisterSchemeHandlerFactory
+         */
         public static function registerSchemeHandlerFactory(string $schemeName, string $domainName, ?\Cefloom\SchemeHandlerFactory $factory): bool {}
+        /**
+         * Remove an entry from the cross-origin access whitelist. Returns false if |source_origin| is invalid
+         * or the whitelist cannot be accessed.
+         *
+         * @see CefRemoveCrossOriginWhitelistEntry
+         */
         public static function removeCrossOriginWhitelistEntry(string $sourceOrigin, string $targetProtocol, string $targetDomain, bool $allowTargetSubdomains): bool {}
+        /**
+         * Combines specified |base_url| and |relative_url| into |resolved_url|. Returns false if one of the
+         * URLs is empty or invalid.
+         *
+         * @see CefResolveURL
+         */
         public static function resolveURL(string $baseUrl, string $relativeUrl): ?string {}
+        /**
+         * Sets or clears a specific key-value pair from the crash metadata.
+         *
+         * @see CefSetCrashKeyValue
+         */
         public static function setCrashKeyValue(string $key, string $value): void {}
+        /**
+         * Unescapes |text| and returns the result. Unescaping consists of looking for the exact pattern "%XX"
+         * where each X is a hex digit and converting to the character with the numerical value of those
+         * digits (e.g. "i%20=%203%3b" unescapes to "i = 3;"). If |convert_to_utf8| is true this function will
+         * attempt to interpret the initial decoded result as UTF-8. If the result is convertable into UTF-8
+         * it will be returned as converted. Otherwise the initial decoded result will be returned.  The
+         * |unescape_rule| parameter supports further customization the decoding process.
+         *
+         * @see CefURIDecode
+         */
         public static function uRIDecode(string $text, bool $convertToUtf8, int $unescapeRule): string {}
+        /**
+         * Escapes characters in |text| which are unsuitable for use as a query parameter value. Everything
+         * except alphanumerics and -_.!~*'() will be converted to "%XX". If |use_plus| is true spaces will
+         * change to "+". The result is basically the same as encodeURIComponent in Javacript.
+         *
+         * @see CefURIEncode
+         */
         public static function uRIEncode(string $text, bool $usePlus): string {}
+        /**
+         * Generates a JSON string from the specified root |node| which should be a dictionary or list value.
+         * Returns an empty string on failure. This method requires exclusive access to |node| including any
+         * underlying data.
+         *
+         * @see CefWriteJSON
+         */
         public static function writeJSON(\Cefloom\Value $node, int $options): string {}
+        /**
+         * Writes the contents of |src_dir| into a zip archive at |dest_file|. If |include_hidden_files| is
+         * true files starting with "." will be included. Returns true on success.  Calling this function on
+         * the browser process UI or IO threads is not allowed.
+         *
+         * @see CefZipDirectory
+         */
         public static function zipDirectory(string $srcDir, string $destFile, bool $includeHiddenFiles): bool {}
 
         /** Start CEF in this process (the PHP process is the CEF browser process). */
@@ -2072,6 +11367,7 @@ namespace Cefloom {
         public static function quit(): void {}
         /** Close the browsers and shut CEF down. Drop every reference to CEF objects first. */
         public static function shutdown(): void {}
+        /** Return true from a successful initialize() until shutdown(). */
         public static function isRunning(): bool {}
         /** The version of CEF this module was built against. The runtime must be the same. */
         public static function cefVersion(): string {}
@@ -2091,20 +11387,27 @@ namespace Cefloom {
 
     /** A window on memory CEF owns, valid during the callback that received it. */
     final class Buffer {
+        /** Return the size of the memory window in bytes. */
         public function getSize(): int {}
+        /** Return false once the callback that received the buffer has returned. */
         public function isValid(): bool {}
+        /** Return true if write() may be used. */
         public function isWritable(): bool {}
+        /** Copy $length bytes from $offset (to the end if null) out of the buffer. */
         public function read(int $offset = 0, ?int $length = null): string {}
+        /** Copy $data into the buffer at $offset and return the number of bytes written. */
         public function write(string $data, int $offset = 0): int {}
     }
 }
 
 namespace Cefloom\Types {
+    /** @see cef_alpha_type_t */
     final class AlphaType {
         public const OPAQUE = 0;
         public const PREMULTIPLIED = 1;
         public const POSTMULTIPLIED = 2;
     }
+    /** @see cef_axis_alignment_t */
     final class AxisAlignment {
         public const START = 0;
         public const CENTER = 1;
@@ -2112,6 +11415,7 @@ namespace Cefloom\Types {
         public const STRETCH = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_button_state_t */
     final class ButtonState {
         public const NORMAL = 0;
         public const HOVERED = 1;
@@ -2119,6 +11423,7 @@ namespace Cefloom\Types {
         public const DISABLED = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_cert_status_t */
     final class CertStatus {
         public const NONE = 0;
         public const COMMON_NAME_INVALID = 1;
@@ -2139,6 +11444,7 @@ namespace Cefloom\Types {
         public const SHA1_SIGNATURE_PRESENT = 524288;
         public const CT_COMPLIANCE_FAILED = 1048576;
     }
+    /** @see cef_channel_layout_t */
     final class ChannelLayout {
         public const LAYOUT_NONE = 0;
         public const LAYOUT_UNSUPPORTED = 1;
@@ -2180,6 +11486,7 @@ namespace Cefloom\Types {
         public const LAYOUT_7_1_4 = 37;
         public const NUM_VALUES = 38;
     }
+    /** @see cef_chrome_page_action_icon_type_t */
     final class ChromePageActionIconType {
         public const BOOKMARK_STAR = 0;
         public const CLICK_TO_CALL = 1;
@@ -2233,6 +11540,7 @@ namespace Cefloom\Types {
         public const WALLET_REMINDER_NOTICE = 49;
         public const NUM_VALUES = 50;
     }
+    /** @see cef_chrome_toolbar_button_type_t */
     final class ChromeToolbarButtonType {
         public const CAST_DEPRECATED = 0;
         public const DOWNLOAD_DEPRECATED = 1;
@@ -2244,6 +11552,7 @@ namespace Cefloom\Types {
         public const AVATAR = 7;
         public const NUM_VALUES = 8;
     }
+    /** @see cef_chrome_toolbar_type_t */
     final class ChromeToolbarType {
         public const UNKNOWN = 0;
         public const NONE = 1;
@@ -2251,6 +11560,7 @@ namespace Cefloom\Types {
         public const LOCATION = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_color_model_t */
     final class ColorModel {
         public const UNKNOWN = 0;
         public const GRAY = 1;
@@ -2275,11 +11585,13 @@ namespace Cefloom\Types {
         public const PROCESSCOLORMODEL_RGB = 20;
         public const NUM_VALUES = 21;
     }
+    /** @see cef_color_type_t */
     final class ColorType {
         public const RGBA_8888 = 0;
         public const BGRA_8888 = 1;
         public const NUM_VALUES = 2;
     }
+    /** @see cef_color_variant_t */
     final class ColorVariant {
         public const SYSTEM = 0;
         public const LIGHT = 1;
@@ -2290,11 +11602,13 @@ namespace Cefloom\Types {
         public const EXPRESSIVE = 6;
         public const NUM_VALUES = 7;
     }
+    /** @see cef_com_init_mode_t */
     final class ComInitMode {
         public const NONE = 0;
         public const STA = 1;
         public const MTA = 2;
     }
+    /** @see cef_component_state_t */
     final class ComponentState {
         public const NEW = 0;
         public const CHECKING = 1;
@@ -2308,6 +11622,7 @@ namespace Cefloom\Types {
         public const UPDATE_ERROR = 9;
         public const RUN = 10;
     }
+    /** @see cef_component_update_error_t */
     final class ComponentUpdateError {
         public const NONE = 0;
         public const UPDATE_IN_PROGRESS = 1;
@@ -2319,10 +11634,12 @@ namespace Cefloom\Types {
         public const INVALID_ARGUMENT = 7;
         public const BAD_CRX_DATA_CALLBACK = 8;
     }
+    /** @see cef_component_update_priority_t */
     final class ComponentUpdatePriority {
         public const BACKGROUND = 0;
         public const FOREGROUND = 1;
     }
+    /** @see cef_composition_underline_style_t */
     final class CompositionUnderlineStyle {
         public const SOLID = 0;
         public const DOT = 1;
@@ -2330,6 +11647,7 @@ namespace Cefloom\Types {
         public const NONE = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_content_setting_types_t */
     final class ContentSettingTypes {
         public const COOKIES = 0;
         public const IMAGES = 1;
@@ -2465,6 +11783,7 @@ namespace Cefloom\Types {
         public const SUSPICIOUS_SITE_WARNING_DATA = 131;
         public const NUM_VALUES = 132;
     }
+    /** @see cef_content_setting_values_t */
     final class ContentSettingValues {
         public const DEFAULT = 0;
         public const ALLOW = 1;
@@ -2474,6 +11793,7 @@ namespace Cefloom\Types {
         public const DETECT_IMPORTANT_CONTENT_DEPRECATED = 5;
         public const NUM_VALUES = 6;
     }
+    /** @see cef_context_menu_edit_state_flags_t */
     final class ContextMenuEditStateFlags {
         public const NONE = 0;
         public const CAN_UNDO = 1;
@@ -2486,6 +11806,7 @@ namespace Cefloom\Types {
         public const CAN_TRANSLATE = 128;
         public const CAN_EDIT_RICHLY = 256;
     }
+    /** @see cef_context_menu_media_state_flags_t */
     final class ContextMenuMediaStateFlags {
         public const NONE = 0;
         public const IN_ERROR = 1;
@@ -2502,6 +11823,7 @@ namespace Cefloom\Types {
         public const PICTURE_IN_PICTURE = 2048;
         public const CAN_LOOP = 4096;
     }
+    /** @see cef_context_menu_media_type_t */
     final class ContextMenuMediaType {
         public const NONE = 0;
         public const IMAGE = 1;
@@ -2512,6 +11834,7 @@ namespace Cefloom\Types {
         public const PLUGIN = 6;
         public const NUM_VALUES = 7;
     }
+    /** @see cef_context_menu_type_flags_t */
     final class ContextMenuTypeFlags {
         public const NONE = 0;
         public const PAGE = 1;
@@ -2521,11 +11844,13 @@ namespace Cefloom\Types {
         public const SELECTION = 16;
         public const EDITABLE = 32;
     }
+    /** @see cef_cookie_priority_t */
     final class CookiePriority {
         public const LOW = -1;
         public const MEDIUM = 0;
         public const HIGH = 1;
     }
+    /** @see cef_cookie_same_site_t */
     final class CookieSameSite {
         public const UNSPECIFIED = 0;
         public const NO_RESTRICTION = 1;
@@ -2533,6 +11858,7 @@ namespace Cefloom\Types {
         public const STRICT_MODE = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_cursor_type_t */
     final class CursorType {
         public const POINTER = 0;
         public const CROSS = 1;
@@ -2586,6 +11912,7 @@ namespace Cefloom\Types {
         public const DND_LINK = 49;
         public const NUM_VALUES = 50;
     }
+    /** @see cef_docking_mode_t */
     final class DockingMode {
         public const TOP_LEFT = 0;
         public const TOP_RIGHT = 1;
@@ -2594,6 +11921,7 @@ namespace Cefloom\Types {
         public const CUSTOM = 4;
         public const NUM_VALUES = 5;
     }
+    /** @see cef_dom_document_type_t */
     final class DomDocumentType {
         public const UNKNOWN = 0;
         public const HTML = 1;
@@ -2601,6 +11929,7 @@ namespace Cefloom\Types {
         public const PLUGIN = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_dom_event_category_t */
     final class DomEventCategory {
         public const UNKNOWN = 0;
         public const UI = 1;
@@ -2620,6 +11949,7 @@ namespace Cefloom\Types {
         public const PROGRESS = 16384;
         public const XMLHTTPREQUEST_PROGRESS = 32768;
     }
+    /** @see cef_dom_event_phase_t */
     final class DomEventPhase {
         public const UNKNOWN = 0;
         public const CAPTURING = 1;
@@ -2627,6 +11957,7 @@ namespace Cefloom\Types {
         public const BUBBLING = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_dom_form_control_type_t */
     final class DomFormControlType {
         public const UNSUPPORTED = 0;
         public const BUTTON_BUTTON = 1;
@@ -2662,6 +11993,7 @@ namespace Cefloom\Types {
         public const TEXT_AREA = 31;
         public const NUM_VALUES = 32;
     }
+    /** @see cef_dom_node_type_t */
     final class DomNodeType {
         public const UNSUPPORTED = 0;
         public const ELEMENT = 1;
@@ -2675,6 +12007,7 @@ namespace Cefloom\Types {
         public const DOCUMENT_FRAGMENT = 9;
         public const NUM_VALUES = 10;
     }
+    /** @see cef_download_interrupt_reason_t */
     final class DownloadInterruptReason {
         public const NONE = 0;
         public const FILE_FAILED = 1;
@@ -2707,6 +12040,7 @@ namespace Cefloom\Types {
         public const USER_SHUTDOWN = 41;
         public const CRASH = 50;
     }
+    /** @see cef_drag_operations_mask_t */
     final class DragOperationsMask {
         public const NONE = 0;
         public const COPY = 1;
@@ -2717,6 +12051,7 @@ namespace Cefloom\Types {
         public const DELETE = 32;
         public const EVERY = 4294967295;
     }
+    /** @see cef_duplex_mode_t */
     final class DuplexMode {
         public const UNKNOWN = -1;
         public const SIMPLEX = 0;
@@ -2724,6 +12059,7 @@ namespace Cefloom\Types {
         public const SHORT_EDGE = 2;
         public const NUM_VALUES = 3;
     }
+    /** @see cef_errorcode_t */
     final class ErrorCode {
         public const NONE = 0;
         public const IO_PENDING = -1;
@@ -2976,6 +12312,7 @@ namespace Cefloom\Types {
         public const BLOB_REFERENCED_BLOB_BROKEN = -905;
         public const BLOB_REFERENCED_FILE_UNAVAILABLE = -906;
     }
+    /** @see cef_event_flags_t */
     final class EventFlags {
         public const NONE = 0;
         public const CAPS_LOCK_ON = 1;
@@ -2995,6 +12332,7 @@ namespace Cefloom\Types {
         public const PRECISION_SCROLLING_DELTA = 16384;
         public const SCROLL_BY_PAGE = 32768;
     }
+    /** @see cef_file_dialog_mode_t */
     final class FileDialogMode {
         public const OPEN = 0;
         public const OPEN_MULTIPLE = 1;
@@ -3002,42 +12340,50 @@ namespace Cefloom\Types {
         public const SAVE = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_focus_source_t */
     final class FocusSource {
         public const NAVIGATION = 0;
         public const SYSTEM = 1;
         public const NUM_VALUES = 2;
     }
+    /** @see cef_gesture_command_t */
     final class GestureCommand {
         public const BACK = 0;
         public const FORWARD = 1;
     }
+    /** @see cef_horizontal_alignment_t */
     final class HorizontalAlignment {
         public const LEFT = 0;
         public const CENTER = 1;
         public const RIGHT = 2;
     }
+    /** @see cef_jsdialog_type_t */
     final class JSDialogType {
         public const ALERT = 0;
         public const CONFIRM = 1;
         public const PROMPT = 2;
         public const NUM_VALUES = 3;
     }
+    /** @see cef_json_parser_options_t */
     final class JsonParserOptions {
         public const RFC = 0;
         public const ALLOW_TRAILING_COMMAS = 1;
     }
+    /** @see cef_json_writer_options_t */
     final class JsonWriterOptions {
         public const DEFAULT = 0;
         public const OMIT_BINARY_VALUES = 1;
         public const OMIT_DOUBLE_TYPE_PRESERVATION = 2;
         public const PRETTY_PRINT = 4;
     }
+    /** @see cef_key_event_type_t */
     final class KeyEventType {
         public const RAWKEYDOWN = 0;
         public const KEYDOWN = 1;
         public const KEYUP = 2;
         public const CHAR = 3;
     }
+    /** @see cef_log_items_t */
     final class LogItems {
         public const DEFAULT = 0;
         public const NONE = 1;
@@ -3046,6 +12392,7 @@ namespace Cefloom\Types {
         public const FLAG_TIME_STAMP = 8;
         public const FLAG_TICK_COUNT = 16;
     }
+    /** @see cef_log_severity_t */
     final class LogSeverity {
         public const DEFAULT = 0;
         public const VERBOSE = 1;
@@ -3056,6 +12403,7 @@ namespace Cefloom\Types {
         public const FATAL = 5;
         public const DISABLE = 99;
     }
+    /** @see cef_media_access_permission_types_t */
     final class MediaAccessPermissionTypes {
         public const NONE = 0;
         public const DEVICE_AUDIO_CAPTURE = 1;
@@ -3063,6 +12411,7 @@ namespace Cefloom\Types {
         public const DESKTOP_AUDIO_CAPTURE = 4;
         public const DESKTOP_VIDEO_CAPTURE = 8;
     }
+    /** @see cef_media_route_connection_state_t */
     final class MediaRouteConnectionState {
         public const UNKNOWN = -1;
         public const CONNECTING = 0;
@@ -3071,6 +12420,7 @@ namespace Cefloom\Types {
         public const TERMINATED = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_media_route_create_result_t */
     final class MediaRouteCreateResult {
         public const UNKNOWN_ERROR = 0;
         public const OK = 1;
@@ -3089,6 +12439,7 @@ namespace Cefloom\Types {
         public const NOTIFICATION_DISABLED = 14;
         public const NUM_VALUES = 15;
     }
+    /** @see cef_media_sink_icon_type_t */
     final class MediaSinkIconType {
         public const CAST = 0;
         public const CAST_AUDIO_GROUP = 1;
@@ -3100,12 +12451,14 @@ namespace Cefloom\Types {
         public const GENERIC = 7;
         public const NUM_VALUES = 8;
     }
+    /** @see cef_menu_anchor_position_t */
     final class MenuAnchorPosition {
         public const TOPLEFT = 0;
         public const TOPRIGHT = 1;
         public const BOTTOMCENTER = 2;
         public const NUM_VALUES = 3;
     }
+    /** @see cef_menu_color_type_t */
     final class MenuColorType {
         public const TEXT = 0;
         public const TEXT_HOVERED = 1;
@@ -3115,6 +12468,7 @@ namespace Cefloom\Types {
         public const BACKGROUND_HOVERED = 5;
         public const NUM_VALUES = 6;
     }
+    /** @see cef_menu_id_t */
     final class MenuId {
         public const BACK = 100;
         public const FORWARD = 101;
@@ -3145,6 +12499,7 @@ namespace Cefloom\Types {
         public const USER_FIRST = 26500;
         public const USER_LAST = 28500;
     }
+    /** @see cef_menu_item_type_t */
     final class MenuItemType {
         public const NONE = 0;
         public const COMMAND = 1;
@@ -3153,17 +12508,20 @@ namespace Cefloom\Types {
         public const SEPARATOR = 4;
         public const SUBMENU = 5;
     }
+    /** @see cef_message_loop_type_t */
     final class MessageLoopType {
         public const TYPE_DEFAULT = 0;
         public const TYPE_UI = 1;
         public const TYPE_IO = 2;
         public const NUM_VALUES = 3;
     }
+    /** @see cef_mouse_button_type_t */
     final class MouseButtonType {
         public const LEFT = 0;
         public const MIDDLE = 1;
         public const RIGHT = 2;
     }
+    /** @see cef_navigation_type_t */
     final class NavigationType {
         public const LINK_CLICKED = 0;
         public const FORM_SUBMITTED = 1;
@@ -3173,10 +12531,12 @@ namespace Cefloom\Types {
         public const OTHER = 5;
         public const NUM_VALUES = 6;
     }
+    /** @see cef_paint_element_type_t */
     final class PaintElementType {
         public const VIEW = 0;
         public const POPUP = 1;
     }
+    /** @see cef_path_key_t */
     final class PathKey {
         public const DIR_CURRENT = 0;
         public const DIR_EXE = 1;
@@ -3189,11 +12549,13 @@ namespace Cefloom\Types {
         public const DIR_RESOURCES = 8;
         public const NUM_VALUES = 9;
     }
+    /** @see cef_pdf_print_margin_type_t */
     final class PdfPrintMarginType {
         public const DEFAULT = 0;
         public const NONE = 1;
         public const CUSTOM = 2;
     }
+    /** @see cef_permission_request_result_t */
     final class PermissionRequestResult {
         public const ACCEPT = 0;
         public const DENY = 1;
@@ -3201,6 +12563,7 @@ namespace Cefloom\Types {
         public const IGNORE = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_permission_request_types_t */
     final class PermissionRequestTypes {
         public const NONE = 0;
         public const AR_SESSION = 1;
@@ -3233,6 +12596,7 @@ namespace Cefloom\Types {
         public const LOOPBACK_NETWORK = 134217728;
         public const SENSORS = 268435456;
     }
+    /** @see cef_pointer_type_t */
     final class PointerType {
         public const TOUCH = 0;
         public const MOUSE = 1;
@@ -3240,21 +12604,25 @@ namespace Cefloom\Types {
         public const ERASER = 3;
         public const UNKNOWN = 4;
     }
+    /** @see cef_postdataelement_type_t */
     final class PostdataelementType {
         public const EMPTY = 0;
         public const BYTES = 1;
         public const FILE = 2;
         public const NUM_VALUES = 3;
     }
+    /** @see cef_preferences_type_t */
     final class PreferencesType {
         public const GLOBAL = 0;
         public const REQUEST_CONTEXT = 1;
         public const NUM_VALUES = 2;
     }
+    /** @see cef_process_id_t */
     final class ProcessId {
         public const BROWSER = 0;
         public const RENDERER = 1;
     }
+    /** @see cef_quick_menu_edit_state_flags_t */
     final class QuickMenuEditStateFlags {
         public const NONE = 0;
         public const CAN_ELLIPSIS = 1;
@@ -3262,6 +12630,7 @@ namespace Cefloom\Types {
         public const CAN_COPY = 4;
         public const CAN_PASTE = 8;
     }
+    /** @see cef_referrer_policy_t */
     final class ReferrerPolicy {
         public const CLEAR_REFERRER_ON_TRANSITION_FROM_SECURE_TO_INSECURE = 0;
         public const DEFAULT = 0;
@@ -3274,6 +12643,7 @@ namespace Cefloom\Types {
         public const NO_REFERRER = 7;
         public const NUM_VALUES = 8;
     }
+    /** @see cef_resource_type_t */
     final class ResourceType {
         public const MAIN_FRAME = 0;
         public const SUB_FRAME = 1;
@@ -3297,11 +12667,13 @@ namespace Cefloom\Types {
         public const NAVIGATION_PRELOAD_SUB_FRAME = 20;
         public const NUM_VALUES = 21;
     }
+    /** @see cef_response_filter_status_t */
     final class ResponseFilterStatus {
         public const NEED_MORE_DATA = 0;
         public const DONE = 1;
         public const ERROR = 2;
     }
+    /** @see cef_resultcode_t */
     final class Resultcode {
         public const NORMAL_EXIT = 0;
         public const KILLED = 1;
@@ -3337,16 +12709,19 @@ namespace Cefloom\Types {
         public const SANDBOX_FATAL_LAST = 7015;
         public const NUM_VALUES = 7016;
     }
+    /** @see cef_return_value_t */
     final class ReturnValue {
         public const CANCEL = 0;
         public const CONTINUE = 1;
         public const CONTINUE_ASYNC = 2;
     }
+    /** @see cef_runtime_style_t */
     final class RuntimeStyle {
         public const DEFAULT = 0;
         public const CHROME = 1;
         public const ALLOY = 2;
     }
+    /** @see cef_scale_factor_t */
     final class ScaleFactor {
         public const NONE = 0;
         public const _100P = 1;
@@ -3360,6 +12735,7 @@ namespace Cefloom\Types {
         public const _300P = 9;
         public const NUM_VALUES = 10;
     }
+    /** @see cef_scheme_options_t */
     final class SchemeOptions {
         public const NONE = 0;
         public const STANDARD = 1;
@@ -3370,6 +12746,7 @@ namespace Cefloom\Types {
         public const CSP_BYPASSING = 32;
         public const FETCH_ENABLED = 64;
     }
+    /** @see cef_show_state_t */
     final class ShowState {
         public const NORMAL = 0;
         public const MINIMIZED = 1;
@@ -3378,11 +12755,13 @@ namespace Cefloom\Types {
         public const HIDDEN = 4;
         public const NUM_VALUES = 5;
     }
+    /** @see cef_ssl_content_status_t */
     final class SslContentStatus {
         public const NORMAL_CONTENT = 0;
         public const DISPLAYED_INSECURE_CONTENT = 1;
         public const RAN_INSECURE_CONTENT = 2;
     }
+    /** @see cef_ssl_version_t */
     final class SslVersion {
         public const UNKNOWN = 0;
         public const SSL2 = 1;
@@ -3394,15 +12773,18 @@ namespace Cefloom\Types {
         public const QUIC = 7;
         public const NUM_VALUES = 8;
     }
+    /** @see cef_state_t */
     final class State {
         public const DEFAULT = 0;
         public const ENABLED = 1;
         public const DISABLED = 2;
     }
+    /** @see cef_storage_type_t */
     final class StorageType {
         public const LOCALSTORAGE = 0;
         public const SESSIONSTORAGE = 1;
     }
+    /** @see cef_task_type_t */
     final class TaskType {
         public const UNKNOWN = 0;
         public const BROWSER = 1;
@@ -3419,6 +12801,7 @@ namespace Cefloom\Types {
         public const SERVICE_WORKER = 12;
         public const NUM_VALUES = 13;
     }
+    /** @see cef_termination_status_t */
     final class TerminationStatus {
         public const ABNORMAL_TERMINATION = 0;
         public const PROCESS_WAS_KILLED = 1;
@@ -3428,12 +12811,14 @@ namespace Cefloom\Types {
         public const INTEGRITY_FAILURE = 5;
         public const NUM_VALUES = 6;
     }
+    /** @see cef_test_cert_type_t */
     final class TestCertType {
         public const OK_IP = 0;
         public const OK_DOMAIN = 1;
         public const EXPIRED = 2;
         public const NUM_VALUES = 3;
     }
+    /** @see cef_text_field_commands_t */
     final class TextFieldCommands {
         public const UNKNOWN = 0;
         public const CUT = 1;
@@ -3445,6 +12830,7 @@ namespace Cefloom\Types {
         public const DELETE = 7;
         public const NUM_VALUES = 8;
     }
+    /** @see cef_text_input_mode_t */
     final class TextInputMode {
         public const DEFAULT = 0;
         public const NONE = 1;
@@ -3457,6 +12843,7 @@ namespace Cefloom\Types {
         public const SEARCH = 8;
         public const NUM_VALUES = 9;
     }
+    /** @see cef_text_style_t */
     final class TextStyle {
         public const BOLD = 0;
         public const ITALIC = 1;
@@ -3465,6 +12852,7 @@ namespace Cefloom\Types {
         public const UNDERLINE = 4;
         public const NUM_VALUES = 5;
     }
+    /** @see cef_thread_id_t */
     final class ThreadId {
         public const UI = 0;
         public const FILE_BACKGROUND = 1;
@@ -3475,6 +12863,7 @@ namespace Cefloom\Types {
         public const RENDERER = 6;
         public const NUM_VALUES = 7;
     }
+    /** @see cef_thread_priority_t */
     final class ThreadPriority {
         public const BACKGROUND = 0;
         public const NORMAL = 1;
@@ -3482,12 +12871,14 @@ namespace Cefloom\Types {
         public const REALTIME_AUDIO = 3;
         public const NUM_VALUES = 4;
     }
+    /** @see cef_touch_event_type_t */
     final class TouchEventType {
         public const RELEASED = 0;
         public const PRESSED = 1;
         public const MOVED = 2;
         public const CANCELLED = 3;
     }
+    /** @see cef_touch_handle_state_flags_t */
     final class TouchHandleStateFlags {
         public const NONE = 0;
         public const ENABLED = 1;
@@ -3495,6 +12886,7 @@ namespace Cefloom\Types {
         public const ORIGIN = 4;
         public const ALPHA = 8;
     }
+    /** @see cef_transition_type_t */
     final class TransitionType {
         public const LINK = 0;
         public const EXPLICIT = 1;
@@ -3521,6 +12913,7 @@ namespace Cefloom\Types {
         public const IS_REDIRECT_MASK = 3221225472;
         public const QUALIFIER_MASK = 4294967040;
     }
+    /** @see cef_uri_unescape_rule_t */
     final class UriUnescapeRule {
         public const NONE = 0;
         public const NORMAL = 1;
@@ -3529,6 +12922,7 @@ namespace Cefloom\Types {
         public const URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS = 8;
         public const REPLACE_PLUS_WITH_SPACE = 16;
     }
+    /** @see cef_urlrequest_flags_t */
     final class UrlrequestFlags {
         public const NONE = 0;
         public const SKIP_CACHE = 1;
@@ -3540,6 +12934,7 @@ namespace Cefloom\Types {
         public const NO_RETRY_ON_5XX = 64;
         public const STOP_ON_REDIRECT = 128;
     }
+    /** @see cef_urlrequest_status_t */
     final class URLRequestStatus {
         public const UNKNOWN = 0;
         public const SUCCESS = 1;
@@ -3548,12 +12943,14 @@ namespace Cefloom\Types {
         public const FAILED = 4;
         public const NUM_VALUES = 5;
     }
+    /** @see cef_v8_propertyattribute_t */
     final class V8Propertyattribute {
         public const NONE = 0;
         public const READONLY = 1;
         public const DONTENUM = 2;
         public const DONTDELETE = 4;
     }
+    /** @see cef_value_type_t */
     final class ValueType {
         public const INVALID = 0;
         public const NULL = 1;
@@ -3566,6 +12963,7 @@ namespace Cefloom\Types {
         public const LIST = 8;
         public const NUM_VALUES = 9;
     }
+    /** @see cef_window_open_disposition_t */
     final class WindowOpenDisposition {
         public const UNKNOWN = 0;
         public const CURRENT_TAB = 1;
@@ -3582,6 +12980,7 @@ namespace Cefloom\Types {
         public const NEW_SPLIT_VIEW = 12;
         public const NUM_VALUES = 13;
     }
+    /** @see cef_xml_encoding_type_t */
     final class XmlEncodingType {
         public const NONE = 0;
         public const UTF8 = 1;
@@ -3590,6 +12989,7 @@ namespace Cefloom\Types {
         public const ASCII = 4;
         public const NUM_VALUES = 5;
     }
+    /** @see cef_xml_node_type_t */
     final class XmlNodeType {
         public const UNSUPPORTED = 0;
         public const PROCESSING_INSTRUCTION = 1;
@@ -3604,6 +13004,7 @@ namespace Cefloom\Types {
         public const COMMENT = 10;
         public const NUM_VALUES = 11;
     }
+    /** @see cef_zoom_command_t */
     final class ZoomCommand {
         public const OUT = 0;
         public const RESET = 1;

@@ -179,3 +179,14 @@
 - K43의 원인을 찾아 고쳤습니다: 외부 펌프 모드에서 GLib 기본 메인 컨텍스트(X11 연결)를 돌리는 곳이 없었습니다. `core.cc`가 컨텍스트를 한 바퀴 돌리고 대기에 그 fd를 포함합니다. 입력이 안 오던 문제(F19, D14)와 K41도 같은 원인이었고, 입력 시험이 두 모드에서 돕니다. 전체 61개 시험이 두 모드에서 통과합니다(예상된 실패 2개).
 - K42의 남은 제약(살아 있는 브라우저의 `BrowserView`를 떼면 나중에 닫을 때 `SIGTRAP`)은 CEF 쪽 동작이라 `Panel::removeChildView()`, `removeAllChildViews()`가 `Error`를 던져 막도록 했습니다(`BEFORE_CALL`).
 
+
+## [2026-10-12] ingest | 코드 주석 정비
+
+- 나중에 Sphinx로 API 문서를 만들 수 있도록 손으로 쓴 코드(`ext/src`, `ext/runtime`, `subprocess`)에 Doxygen 주석을, 생성기(`tools/gen`)에 reST docstring을, PHP 보조 파일(`tests/support.php`, `bin/cefloom-runtime`)에 phpDocumentor 주석을 영어로 달았습니다.
+- 생성 스텁 `php/cefloom.stub.php`는 생성기가 CEF 헤더의 설명을 phpdoc으로 옮겨 씁니다(모든 클래스, 메서드, 구조체, 열거형). 헤더에 설명이 없는 항목에는 `@see`로 C++ 선언을 답니다.
+- 누락을 기계적으로 찾는 `tools/check-comments.py`를 추가했습니다(처음 약 3,400건, 지금 0건). 규칙과 범위, 진행 대장은 [코드 주석 작성 규칙과 점검 절차](pages/procedures/code-comments.md)에 있습니다.
+
+## [2026-10-12] lint | 주석의 사실 확인
+
+- 첫 작성본의 주석에 추정이 섞여 있어, 코드와 CEF 헤더(스레드 문장)에 대조해 다시 확인했습니다. 틀리거나 근거 없는 주장 약 85곳을 고치거나 지웠습니다(C++ 12곳, Python과 PHP 약 75곳).
+- 확인하지 못한 항목: 인증 흐름의 `Fetcher`와 HTTPS 서버(CEF 실행이 필요), `cefloom-runtime install`의 압축 파일 구성(실제 런타임 압축 파일 필요). 규칙은 [코드 주석 작성 규칙과 점검 절차](pages/procedures/code-comments.md)의 "사실 확인"에 추가했습니다.

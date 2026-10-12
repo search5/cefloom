@@ -1,8 +1,12 @@
 """Emit the value structs (Cefloom\\Rect, Cefloom\\Settings, ...) and the enumerations (Cefloom\\Types\\...).
 
 A struct is a final PHP class with typed public properties and a constructor in which every argument is
-optional, plus two C++ functions that convert it from and to the C struct. An enumeration is a final class
+optional, plus three C++ functions (``cl_to_zval_*``, ``cl_from_zval_*``, ``cl_default_*``). An enumeration is a final class
 of integer constants (flags are combined as integers).
+
+Pipeline role: emitter of the data side. ``generate.py`` calls :meth:`DataEmitter.emit_structs` and
+:meth:`DataEmitter.emit_enums` for ``structs.cc`` and ``enums.cc``; the classes themselves come from
+``emit_lib`` and ``emit_client``.
 """
 
 import re
@@ -13,7 +17,8 @@ PHP_RESERVED_CONSTANTS = {"class"}
 
 
 def _prop_type(field):
-    """(zend type expression, PHP default expression for arginfo, default zval statement, ZPP kind)."""
+    """Return ``(kind, default)`` for a struct field: ``kind`` is "string", "time", "struct", "bool", "float" or "int"
+    (enums are "int"); ``default`` is the arginfo default value as a C string literal (only the "string" case uses it)."""
     if field.string:
         return "string", '"\\"\\""'
     if field.time:
@@ -30,13 +35,18 @@ def _prop_type(field):
 
 
 class DataEmitter:
+    """Generates ``structs.cc`` and ``enums.cc`` from the value structs and enumerations of the model."""
     def __init__(self, model, names):
+        """:param model: the parsed headers.
+        :param names: the :class:`emit_common.Names` of the run.
+        """
         self.model = model
         self.names = names
 
     # -- structs -----------------------------------------------------------------------------------------
 
     def struct_functions(self, si):
+        """Return the lines of the three conversion functions of struct ``si``: ``cl_to_zval_*``, ``cl_from_zval_*`` and ``cl_default_*``."""
         cname = si.cname
         L = []
         L.append("void cl_to_zval_%s(zval* zv, const %s& s) {" % (cname, cname))
@@ -92,6 +102,7 @@ class DataEmitter:
         return L
 
     def struct_constructor(self, si):
+        """Return the lines of the arginfo table and the ``__construct`` method of struct ``si``; every argument is optional."""
         cls = si.cls
         L = ["ZEND_BEGIN_ARG_INFO_EX(arginfo_%s___construct, 0, 0, 0)" % cls]
         for f in si.fields:
@@ -164,6 +175,7 @@ class DataEmitter:
         return L
 
     def struct_registration(self, si):
+        """Return the lines of ``register_<Class>()``, which declares the final class and its typed public properties."""
         cls = si.cls
         L = ["static void register_%s() {" % cls,
              "  static const zend_function_entry methods[] = {",
@@ -206,6 +218,7 @@ class DataEmitter:
         return L
 
     def emit_structs(self):
+        """Return the text of ``structs.cc`` for every struct of the model."""
         structs = [self.model.structs[k] for k in sorted(self.model.structs)]
         L = ['#include "cl_gen.h"', "", "#include <cstring>", ""]
         for si in structs:
@@ -226,6 +239,7 @@ class DataEmitter:
     # -- enumerations ------------------------------------------------------------------------------------
 
     def emit_enums(self):
+        """Return the text of ``enums.cc``: one final class of integer constants per enumeration."""
         L = ['#include "cl_gen.h"', "", "void cl_register_enums() {", "  zend_class_entry ce;",
              "  zend_class_entry* c;"]
         for cname in sorted(self.model.enum_defs):

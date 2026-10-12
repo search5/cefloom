@@ -2,14 +2,20 @@
 
 For every client class of CEF this makes
   * a PHP class (Cefloom\\LoadHandler) the user extends. A method the user does not override is not called
-    from C++: CEF behaves as if no handler method existed;
+    from C++: the proxy does what CEF does by default (calls the CEF base-class method, or returns a
+    value-initialized result for a pure virtual one);
   * a C++ proxy (CefLoadHandler implemented by Proxy_CefLoadHandler) that calls the methods of the PHP
-    object. It runs PHP on the PHP thread (cl::run_on_php_thread), so CEF may call it from any thread;
+    object. It runs PHP on the PHP thread (cl::run_on_php_thread), so CEF may call it from any thread (the
+    methods in ``ASYNC_METHODS`` and the classes in ``CUSTOM_PROXY`` are handled differently, see scope.py);
   * a forwarder (Fwd_CefLoadHandler) for hand written handlers that observe an event and pass it on.
 
-What a PHP handler method gets and returns: the inputs of the C++ method in order (outputs are not passed,
-an in/out value is), and it returns the C++ return value followed by the outputs: nothing for none, the value
+What a PHP handler method gets and returns: the inputs of the C++ method in order (outputs and ignored
+parameters are not passed, an in/out value is), and it returns the C++ return value followed by the outputs: nothing for none, the value
 itself for one, an array for several.
+
+Pipeline role: emitter of the client side. ``generate.py`` calls :meth:`ClientEmitter.emit_class` for every
+client class (``client_<Class>.cc``) and :meth:`ClientEmitter.forwarder` for ``forwarders.h``, giving the plans
+made by ``typesys``. The library side is ``emit_lib``.
 """
 
 import re
@@ -36,6 +42,7 @@ def declaration(param):
 
 
 def call_arguments(plan):
+    """Return the C++ names to pass on when calling the CEF method of ``plan`` (a buffer or planes add the size name)."""
     names = []
     for param in plan.params:
         if param.is_return:
@@ -47,6 +54,7 @@ def call_arguments(plan):
 
 
 def default_return(plan):
+    """Return the ``return`` statement that gives the value-initialized result of ``plan`` (``nullptr`` for objects)."""
     kind = plan.ret
     if isinstance(kind, Void) and not plan.void_return:
         return "return %s();" % plan.ret_spelled
@@ -58,7 +66,8 @@ def default_return(plan):
 
 
 def default_zval(names, kind, target, ind="  "):
-    """Lines that set |target| (a zval*) to the value a method of the PHP base class returns (the CEF default)."""
+    """Return the lines that set |target| (a zval*) to the value a method of the PHP base class returns: false, 0, 0.0,
+    "", a default-constructed struct object, an empty array, else null."""
     if isinstance(kind, Prim):
         return [ind + ("ZVAL_FALSE(%s);" if kind.py == "bool" else "ZVAL_DOUBLE(%s, 0.0);" if kind.py == "float"
                        else "ZVAL_LONG(%s, 0);") % target]
@@ -75,7 +84,11 @@ def default_zval(names, kind, target, ind="  "):
 
 
 class ClientEmitter:
+    """Generates the PHP class and the C++ proxy of each client class, and the forwarders."""
     def __init__(self, model, scope):
+        """:param model: the parsed headers.
+        :param scope: the classes and functions selected for the binding.
+        """
         self.model = model
         self.scope = scope
         self.names = Names(model, scope)
@@ -83,9 +96,11 @@ class ClientEmitter:
     # -- the PHP side ----------------------------------------------------------------------------------
 
     def php_inputs(self, plan):
+        """Return the parameters of ``plan`` that PHP receives: not output-only and not ignored."""
         return [p for p in plan.params if (not p.out or p.inout) and not isinstance(p.kind, Ignored)]
 
     def arginfo(self, cls, plan):
+        """Return ``(variable name, lines)`` of the tentative-return arginfo table of a handler method of ``cls``."""
         var = "arginfo_%s_%s" % (cls, plan.cef_name)
         ins = self.php_inputs(plan)
         results = [(n, k) for n, k in plan.results]
@@ -100,7 +115,7 @@ class ClientEmitter:
         return var, lines
 
     def stub_function(self, cls, plan):
-        """The default body of a method of the PHP base class: what CEF does without a handler."""
+        """Return the lines of the body of a method of the PHP base class: it returns the :func:`default_zval` of each result."""
         L = ["ZEND_METHOD(%s, %s) {" % (cls, plan.cef_name)]
         results = plan.results
         if not results:
@@ -119,6 +134,15 @@ class ClientEmitter:
     # -- the C++ proxy -----------------------------------------------------------------------------------
 
     def proxy_method(self, model_cls, plan, hook):
+        """Return the lines of the C++ override that calls PHP for ``plan``.
+
+        The override falls back to the CEF default when the PHP class does not override the method (``hooks_[hook]`` is null)
+        or PHP cannot run (``cl::run_on_php_thread`` returns false). Methods in ``ASYNC_METHODS`` hand the call to ``cl_async``.
+        A method in ``NATIVE_ONLY`` gets the C++ statement of that table and never calls PHP.
+
+        :param model_cls: the parsed CEF class.
+        :param hook: index of the method in the proxy's ``hooks_`` table.
+        """
         cls = model_cls.get_name()
         params = ", ".join(declaration(p) for p in plan.params if not p.is_return)
         const = " const" if plan.const_method else ""
@@ -215,8 +239,8 @@ class ClientEmitter:
         return L
 
     def unsupported_override(self, plan):
-        """A pure virtual method of CEF that PHP cannot implement (a type this binding does not have): the proxy still
-        has to override it, and does nothing."""
+        """Return the lines of an override, for a pure virtual method that PHP cannot implement, that returns a
+        value-initialized result without calling PHP."""
         def raw(argument):
             a = argument.get_type()
             return "%s%s%s%s %s" % ("const " if a.is_const() else "", a.get_type(), "&" if a.is_byref() else "",
@@ -232,6 +256,7 @@ class ClientEmitter:
         return L
 
     def out_local(self, p):
+        """Return the declaration of the local ``o_<name>`` that holds output parameter ``p`` while PHP runs."""
         name = p.cef_name
         if p.is_return:
             return "%s o_%s;" % (p.kind.cls, name)
@@ -267,7 +292,8 @@ class ClientEmitter:
         return to_zval(self.names, self.scope, k, expr, target, ind)
 
     def from_php(self, kind, spelled, target):
-        """Lines that read the zval |cl_r| the PHP method returned into the C++ value |target|."""
+        """Return the lines that read the zval |cl_r| the PHP method returned into the C++ value |target| (Prim, Str, Enum,
+        LibRef, ClientRef, Struct; no lines for other kinds)."""
         if isinstance(kind, Prim):
             conv = {"bool": "zend_is_true(cl_r)", "float": "zval_get_double(cl_r)"}.get(kind.py, "zval_get_long(cl_r)")
             if kind.py == "bool":
@@ -289,6 +315,13 @@ class ClientEmitter:
         return []
 
     def forwarder(self, model_cls, plans):
+        """Return the lines of ``Fwd_<Class>``, a C++ class that forwards every call to the handler in ``forward_``
+        (the CEF default if it is null).
+
+        Hand-written handlers derive from it (ext/src/core.cc does).
+
+        :param plans: the supported non-static plans of the class.
+        """
         cls = model_cls.get_name()
         member = "forward_"
         L = ["class Fwd_%s : public %s {" % (cls, cls), " protected:",
@@ -315,6 +348,11 @@ class ClientEmitter:
     # -- the file of a class ------------------------------------------------------------------------------
 
     def emit_class(self, model_cls, all_plans):
+        """Return ``(text, listing)`` for one client class: the text of ``client_<Class>.cc`` and the ``(plan, status)``
+        rows of the coverage report.
+
+        :param all_plans: every :class:`typesys.MethodPlan` of the class, supported or not.
+        """
         cls = model_cls.get_name()
         plans = [p for p in all_plans if p.supported and not p.static]
         listing = [(p, "generated") for p in plans] + [(p, "not generated: " + p.reason) for p in all_plans

@@ -2,11 +2,14 @@
 
 The parsing itself is done by CEF's own header parser (vendor/cef_parser.py), the
 same one CEF uses to generate its C API wrappers. This module adds what the
-generators need on top of it: PHP names, enumeration detection and pure virtual
-detection.
+generators need on top of it: PHP names, enumeration detection, value struct detection
+and pure virtual detection.
 
-Origin: copied from the cefweaver project (tools/gen/model.py, BSD 3-Clause, same
-author) on 2026-10-12 and adapted for PHP (names, CefSettings is a struct here).
+Pipeline role: first stage. ``generate.py`` builds one :class:`Model`; ``scope`` selects
+from it, ``typesys`` plans the methods against it and the emitters read its structs,
+enumerations and comments.
+
+Origin: adapted from tools/gen/model.py of the cefweaver checkout (../cefweaver_clone/cefweaver).
 """
 
 import ast
@@ -51,7 +54,7 @@ def snake_case(name):
 
 
 def _safe(name):
-    """PHP allows reserved words as method and parameter names, so the name is kept."""
+    """Return ``name`` unchanged (PHP allows reserved words as method and parameter names). Not called."""
     return name
 
 
@@ -83,10 +86,15 @@ _FIELD_TYPES = {
 
 @dataclass(frozen=True)
 class StructField:
+    """One member of a value struct: its C member, C type and the ``py`` annotation the emitters read.
+
+    The flags (``enum``, ``string``, ``time``, ``array``) are mutually exclusive and select the conversion the
+    emitters generate.
+    """
     cname: str  # the member of the C struct (may be a Python keyword)
-    name: str  # PEP 8 name in Python
+    name: str  # camelCase name (py_param_name), the PHP property
     cpp: str  # the C type
-    py: str  # annotation in Python: int, bool or float, or the class of a nested struct
+    py: str  # annotation: int, bool or float, or the class of a nested struct
     struct: str = ""  # the C++ class of a nested struct (CefRect in CefDraggableRegion), else ""
     enum: bool = False  # `py` is the Python enumeration of the member (`cpp` is its C name)
     string: bool = False  # a cef_string_t member (str)
@@ -97,13 +105,18 @@ class StructField:
 
 @dataclass(frozen=True)
 class StructInfo:
+    """A plain-data struct CEF passes by value (``CefRect``) and the fields it exposes to PHP.
+
+    ``raw`` marks a C struct without a C++ class.
+    """
     cls: str  # the C++ class CEF uses in signatures, e.g. CefRect
     cname: str  # the C struct it derives from, e.g. cef_rect_t
     fields: tuple
-    raw: bool = False  # a plain C struct that has no C++ class (Cython gets an alias with `cls`)
+    raw: bool = False  # a plain C struct that has no C++ class (`cls` is a name given to it, see RAW_STRUCTS)
 
 
 def _strip_comments(text):
+    """Return ``text`` without C block and line comments."""
     text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
     return re.sub(r"//[^\n]*", "", text)
 
@@ -153,8 +166,8 @@ def cpp_struct_name(cls):
 
 
 def _drop_conditionals(body):
-    """The body without the `#if ... #else ... #endif` blocks (and their directives). Such members
-    depend on the API version the code is compiled for, so they are not fields."""
+    """The body without the lines inside `#if ... #endif` blocks (the `#else` branch too) and without any line that
+    starts with `#`."""
     kept = []
     depth = 0
     for line in body.split("\n"):
@@ -169,12 +182,15 @@ def _drop_conditionals(body):
 
 
 def parse_struct_fields(body, nested=None, enums=None, constants=None):
-    """Fields of a C struct body, or None if any member is not plain data.
+    """Return the tuple of :class:`StructField` of a C struct body, or None if any member is not plain data or
+    there are no fields.
 
-    Plain data means a primitive type per member, an enumeration (`enums` maps the C name to
-    the Python class), or another plain struct (`nested` maps the C name `cef_rect_t` to its
-    C++ class `CefRect`): no pointers or arrays. A leading `size_t size` is the version
-    header of the C API; the C++ class sets it, so it is not a field.
+    Plain data means a primitive type per member, ``cef_string_t``, ``cef_basetime_t``, an enumeration (`enums` maps
+    the C name to the Python class name), or another plain struct (`nested` maps the C name `cef_rect_t` to its C++
+    class `CefRect`); an array of nested structs with a size that is a number or a name in `constants` is allowed
+    too; no pointers. A leading `size_t size` is the version header of the C API, not a field. `#if` blocks are
+    ignored. For an array `planes` (or `foo`) the int member `plane_count` (or `foo_count`), if present, is dropped
+    from the fields and named in `StructField.count`.
     """
     nested = nested or {}
     enums = enums or {}
@@ -230,6 +246,11 @@ def parse_struct_fields(body, nested=None, enums=None, constants=None):
 
 @dataclass(frozen=True)
 class EnumInfo:
+    """An enumeration read from the C headers.
+
+    ``members`` holds ``(name, value)`` pairs, the name without the prefix the enumerators share; ``doc`` is the
+    header comment above the enum joined into one line.
+    """
     cname: str  # the C enumeration, e.g. cef_mouse_button_type_t
     py_name: str  # the Python class, e.g. MouseButtonType
     members: tuple  # of (Python name, value)
@@ -245,12 +266,14 @@ _C_CONSTANTS = {"UINT_MAX": 0xFFFFFFFF, "INT_MAX": 0x7FFFFFFF}
 
 
 def _strip_c_comments(text):
+    """Return ``text`` without C block and line comments."""
     text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
     return re.sub(r"//[^\n]*", "", text)
 
 
 def _condition(expression):
-    """Whether an `#if` holds when the latest API is selected."""
+    """Return True for the `#if` conditions ``CEF_API_ADDED(...)`` and ``!defined(GENERATING_CEF_API_HASH)``; raise
+    :class:`EnumUnsupported` for any other."""
     expression = expression.strip()
     if re.fullmatch(r"CEF_API_ADDED\([^)]*\)", expression):
         return True
@@ -260,8 +283,9 @@ def _condition(expression):
 
 
 def _active_lines(body, cef_root):
-    """The lines of an enum body that are in effect: `#if` branches selected, the net error
-    list (`#define NET_ERROR(label, value) ERR_##label = value,` + `#include`) expanded."""
+    """The lines of an enum body that are in effect: `#if` branches selected by :func:`_condition`, the net error
+    list (`#define NET_ERROR(label, value) ERR_##label = value,` + `#include`) expanded. Raise
+    :class:`EnumUnsupported` for any other directive except `#undef`."""
     out, stack, macro = [], [], None
     for raw in _strip_c_comments(body).splitlines():
         line = raw.strip()
@@ -304,8 +328,9 @@ def _active_lines(body, cef_root):
 
 
 def _evaluate(expression, known):
-    """The value of an enumerator expression: integers, names of earlier enumerators and
-    the operators C programs use for flags."""
+    """The value of an enumerator expression (Python integer arithmetic): integers (with u/l suffixes), names of
+    earlier enumerators, UINT_MAX, INT_MAX, unary - ~ +, and the binary operators << >> | & + -. Raise
+    :class:`EnumUnsupported` otherwise."""
     expression = re.sub(r"\b(0[xX][0-9a-fA-F]+|\d+)[uUlL]+\b", r"\1", expression)
 
     def walk(node):
@@ -341,7 +366,8 @@ def _evaluate(expression, known):
 
 
 def parse_enum(body, cef_root):
-    """[(C name, value)] of an enum body."""
+    """Return ``[(C name, value)]`` of an enum body (an enumerator without ``=`` is the previous value plus one,
+    starting at 0). Raise :class:`EnumUnsupported` for an unreadable body or no enumerators."""
     members, known, value = [], {}, -1
     text = " ".join(_active_lines(body, cef_root))
     for item in (i.strip() for i in text.split(",")):
@@ -359,7 +385,9 @@ def parse_enum(body, cef_root):
 
 
 def _python_member_names(cnames):
-    """Strip the prefix all the enumerators share (`MBT_LEFT` -> `LEFT`)."""
+    """Return the names without the underscore-separated prefix all share (`MBT_LEFT` -> `LEFT`), keeping at least
+    one token per name; a name that starts with a digit gets a leading `_`; the C names unchanged if stripping would
+    make two names equal."""
     tokens = [name.split("_") for name in cnames]
     shared = 0
     while all(len(t) > shared + 1 and t[shared] == tokens[0][shared] for t in tokens):
@@ -372,11 +400,14 @@ def _python_member_names(cnames):
 
 
 def _camel_case(cname):
+    """Return the CamelCase form of a C type name (``cef_mouse_button_type_t`` -> ``MouseButtonType``)."""
     core = re.sub(r"^cef_|_t$", "", cname)
     return "".join(part.capitalize() for part in core.split("_"))
 
 
 def _is_flag(cname, values):
+    """Return True if the enumerator ``values`` are bit flags: for a name ending ``_flags_t`` or ``_mask_t`` at least
+    two single-bit values; otherwise at least three single-bit values and no other non-zero value."""
     single = [v for v in values if v > 0 and v & (v - 1) == 0]
     if cname.endswith(("_flags_t", "_mask_t")):
         return len(single) >= 2
@@ -391,6 +422,10 @@ class Model:
     """The parsed headers of one CEF distribution."""
 
     def __init__(self, cef_root):
+        """Parse the headers under ``cef_root`` (a CEF distribution directory) with CEF's own parser.
+
+        :param cef_root: directory that contains ``include/``.
+        """
         self.cef_root = os.path.abspath(cef_root)
         self._sources = {}
         header = cef_parser.obj_header()
@@ -408,13 +443,14 @@ class Model:
         self.structs = self._find_structs()
 
     def _read(self, path):
+        """Return the text of ``path``, reading each file once."""
         if path not in self._sources:
             with open(path, encoding="utf-8") as f:
                 self._sources[path] = f.read()
         return self._sources[path]
 
     def _find_enums(self):
-        """Names of the C enumerations: `typedef enum { ... } cef_x_t;`."""
+        """Return the set of names of the C enumerations (`typedef enum { ... } cef_x_t;`) in all headers under include/."""
         names = set()
         include = os.path.join(self.cef_root, "include")
         for dirpath, _, files in os.walk(include):
@@ -427,7 +463,7 @@ class Model:
         return names
 
     def _find_enum_aliases(self):
-        """`typedef cef_thread_id_t CefThreadId;`: the C++ names of enumerations, {CefThreadId: cef_thread_id_t}."""
+        """Return ``{CefThreadId: cef_thread_id_t}`` from the lines `typedef cef_thread_id_t CefThreadId;` whose C name is an enumeration."""
         aliases = {}
         include = os.path.join(self.cef_root, "include")
         for dirpath, _, files in os.walk(include):
@@ -440,7 +476,8 @@ class Model:
         return aliases
 
     def _read_enums(self):
-        """EnumInfo of every enumeration that can be read, and why the others cannot."""
+        """Return ``(defs, skipped)``: ``defs`` maps C names to :class:`EnumInfo` for every enumeration that can be read,
+        ``skipped`` maps the C names of the others to the reason."""
         include = os.path.join(self.cef_root, "include")
         aliases = {}  # C name -> the name the C++ headers give it (`ErrorCode`)
         found = {}
@@ -477,7 +514,9 @@ class Model:
         return defs, skipped
 
     def _find_structs(self):
-        """The plain data structs CEF passes by value: `class CefRect : public cef_rect_t`."""
+        """Return ``{C++ class name: StructInfo}``, sorted by name, of the plain data structs CEF passes by value
+        (`class CefRect : public cef_rect_t`, `CefStructBase` and `CefStructBaseSimple` forms, and ``RAW_STRUCTS``);
+        empty if include/internal/cef_types_wrappers.h is missing."""
         internal = os.path.join(self.cef_root, "include", "internal")
         wrappers = os.path.join(internal, "cef_types_wrappers.h")
         if not os.path.isfile(wrappers):
@@ -547,9 +586,8 @@ class Model:
         return dict(sorted(structs.items()))
 
     def virtual_funcs(self, cls, own_only=False):
-        """The virtual methods of a class that exist at the API version of the build, with those of its CEF
-        parents first (CefRequestContext inherits its preferences from CefPreferenceManager and is used as one
-        class), or only its own (a class that is a Python subclass of its parent: Scope.python_parent)."""
+        """The virtual methods of a class that exist at ``API_VERSION``, those of its CEF parents (recursively) first,
+        or with ``own_only`` only its own (for a class that is a PHP subclass of its parent: Scope.python_parent)."""
         parent = cls.get_parent_name() if hasattr(cls, "get_parent_name") else None
         inherited = []
         if parent in self.classes and not own_only:
@@ -557,16 +595,16 @@ class Model:
         return inherited + [f for f in cls.get_virtual_funcs() if f.exists_at_version(API_VERSION)]
 
     def static_funcs(self, cls):
-        """The static functions of a class that exist at the API version of the build. (The parser tells
-        it for virtual functions only: the same rule is applied to the attributes of a static one.)"""
+        """The static functions of a class that exist at ``API_VERSION`` (decided by :func:`_exists_at_api_version`)."""
         return [f for f in cls.get_static_funcs() if _exists_at_api_version(f)]
 
     def header_path(self, cls):
-        """`include/cef_x.h` as it is written in an #include line."""
+        """Return the header of ``cls`` as written in an #include line (`include/cef_x.h`)."""
         return "include/" + cls.get_file_name().replace("\\", "/").split("include/")[-1]
 
     def is_pure_virtual(self, cls, method):
-        """True for `virtual ... Name(...) = 0;` (the parser does not report it)."""
+        """Return True if the header declares ``method`` of ``cls`` as `virtual ... Name(...) = 0;`; a method not
+        declared in the class itself is looked up in its CEF parent. Raise RuntimeError if the class is not found in its header."""
         path = os.path.join(self.cef_root, self.header_path(cls))
         text = self._read(path)
         # Library-side classes are declared `class CEF_EXPORT Name`, client-side ones `class Name`.
@@ -586,7 +624,7 @@ class Model:
         return re.search(pattern, body, re.S) is not None
 
     def comment(self, node):
-        """The doc comment of a class or method as plain text lines."""
+        """The header comment of a class or method as a list of lines with the leading ``//`` removed; [] if the node has none."""
         try:
             lines = node.get_comment()
         except Exception:

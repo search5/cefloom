@@ -1,21 +1,28 @@
-// Handlers that CEF calls on its IO thread and that must not make that thread wait for PHP.
-//
-// The IO thread of the browser process also carries its IPC. While it waits for the PHP thread, the PHP thread can
-// wait inside CefDoMessageLoopWork() for an IPC reply (the compositor asks the GPU process synchronously), and
-// neither goes on (llm-wiki, verified-findings F14). Everything here therefore answers CEF at once, runs PHP later
-// on the PHP thread, and passes the result on through the callbacks CEF offers for this.
-//
-// Written by hand: CefResourceHandler and CefSchemeHandlerFactory (tools/gen/scope.py CUSTOM_PROXY), and the
-// functions in namespace cl_async that the generated proxies call (ASYNC_METHODS). The PHP side is unchanged.
+/**
+ * @file
+ * @brief Handlers that CEF calls on its IO thread and that must not make that thread wait for PHP.
+ *
+ * A hang was observed (llm-wiki, verified-findings F14) in which the IO thread waited for the PHP thread inside a
+ * handler while the PHP thread sat in CefDoMessageLoopWork() on a synchronous call to the GPU process (call stack of one
+ * hang). Why the IO thread could not answer that call is an interpretation that was not checked in the CEF sources.
+ * Everything here therefore answers CEF at once, runs PHP later on the PHP thread, and passes the result on through the
+ * callbacks CEF offers for this.
+ *
+ * Written by hand: CefResourceHandler and CefSchemeHandlerFactory (tools/gen/scope.py CUSTOM_PROXY), and the functions in
+ * namespace cl_async that the generated proxies call (ASYNC_METHODS). The PHP side is unchanged.
+ */
 #include "cl_gen.h"
 
 namespace {
 
 // ---- running PHP later ---------------------------------------------------------------------------------------
 
+/** CefTask that runs a function on the PHP thread, or a fallback if PHP is gone when it comes up. */
 class PhpTask : public CefTask {
  public:
+  /** Create a task that runs |run| if PHP is alive when it executes, else |dropped| (may be empty). */
   PhpTask(std::function<void()> run, std::function<void()> dropped) : run_(std::move(run)), dropped_(std::move(dropped)) {}
+  /** Run the function or the fallback. Thread: CEF UI (the PHP thread). */
   void Execute() override {
     if (cl::g_php_alive) {
       run_();
@@ -25,13 +32,19 @@ class PhpTask : public CefTask {
   }
 
  private:
+  /** Function to run on the PHP thread. */
   std::function<void()> run_;
+  /** Function to run instead if PHP is gone; may be empty. */
   std::function<void()> dropped_;
+  /** Thread-safe reference counting of CEF. */
   IMPLEMENT_REFCOUNTING(PhpTask);
 };
 
-// Queue |run| for the PHP thread without waiting. |dropped| runs instead if PHP is gone by then. Returns false (and
-// runs neither) if the task could not be queued.
+/**
+ * Queue |run| for the PHP thread without waiting. |dropped| runs instead if PHP is gone by then.
+ * @return false, and runs neither, if the task could not be queued (PHP or CEF not running).
+ * @note Thread: any.
+ */
 bool post_php(std::function<void()> run, std::function<void()> dropped = nullptr) {
   if (!cl::g_php_alive || !cl::g_cef_running) {
     return false;
@@ -39,7 +52,12 @@ bool post_php(std::function<void()> run, std::function<void()> dropped = nullptr
   return CefPostTask(TID_UI, new PhpTask(std::move(run), std::move(dropped)));
 }
 
-// Call a PHP method. Consumes |args|. The result stays in |rv| (the caller releases it).
+/**
+ * Call the PHP method |fn| of |obj| with |n| arguments in |args|, then invalidate the Buffers among them and free them.
+ * The result stays in |rv| (UNDEF if the call failed); the caller releases it with release().
+ * @return false if the call did not run or threw (see cl::call_method()).
+ * @note Thread: PHP.
+ */
 bool call_hook(zend_object* obj, zend_function* fn, zval* args, uint32_t n, zval* rv) {
   ZVAL_UNDEF(rv);
   bool ok = cl::call_method(obj, fn, n, args, rv);
@@ -50,23 +68,29 @@ bool call_hook(zend_object* obj, zend_function* fn, zval* args, uint32_t n, zval
   return ok;
 }
 
+/** Free the result |rv| of call_hook() unless it is UNDEF. */
 void release(zval* rv) {
   if (Z_TYPE_P(rv) != IS_UNDEF) {
     zval_ptr_dtor(rv);
   }
 }
 
+/** Result code of a failed read or skip, as in CEF's ERR_FAILED. */
 constexpr int kErrFailed = -2;
 
 // ---- a CefCallback handed to PHP -----------------------------------------------------------------------------
 
-// Stands for the callback of CEF. The first Continue() or Cancel() wins. |before_continue| runs on the PHP thread
-// right before Continue() is forwarded (the response headers are asked for then).
+/**
+ * CefCallback handed to PHP in place of the one of CEF. The first Continue() or Cancel() wins.
+ * |before_continue| runs on the PHP thread right before Continue() is forwarded (the response headers are asked for then).
+ */
 class StagedCallback : public CefCallback {
  public:
+  /** Wrap |real|; |before_continue| (may be empty) runs before a forwarded Continue(). */
   StagedCallback(CefRefPtr<CefCallback> real, std::function<void()> before_continue)
       : real_(std::move(real)), before_continue_(std::move(before_continue)) {}
 
+  /** Run the before-continue function and forward Continue() unless already done. Thread: PHP. */
   void Continue() override {
     if (done_.exchange(true)) {
       return;
@@ -76,6 +100,7 @@ class StagedCallback : public CefCallback {
     }
     real_->Continue();
   }
+  /** Forward Cancel() unless already done. Thread: PHP. */
   void Cancel() override {
     if (!done_.exchange(true)) {
       real_->Cancel();
@@ -83,20 +108,32 @@ class StagedCallback : public CefCallback {
   }
 
  private:
+  /** The callback of CEF. */
   CefRefPtr<CefCallback> real_;
+  /** Function to run before Continue() is forwarded; may be empty. */
   std::function<void()> before_continue_;
+  /** Set by the first Continue() or Cancel(). */
   std::atomic<bool> done_{false};
+  /** Thread-safe reference counting of CEF. */
   IMPLEMENT_REFCOUNTING(StagedCallback);
 };
 
 // ---- CefResourceHandler ----------------------------------------------------------------------------------------
 
+/** Indexes of the methods of a PHP ResourceHandler that AsyncResourceHandler may call; kHookCount is their number. */
 enum { kOpen, kProcessRequest, kGetResponseHeaders, kSkip, kRead, kReadResponse, kCancel, kHookCount };
+/** Lowercase names of the PHP methods, in the order of the enum above. */
 const char* const kResourceHooks[kHookCount] = {"open", "processrequest", "getresponseheaders", "skip",
                                                 "read", "readresponse", "cancel"};
 
+/**
+ * CefResourceHandler that stands for a PHP ResourceHandler.
+ * CEF calls the overrides on the IO thread; none of them waits for PHP, except the deprecated ReadResponse(). The PHP
+ * methods run later on the PHP thread. An unoverridden PHP method behaves as in CEF's default handler.
+ */
 class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
  public:
+  /** Create the proxy of PHP object |o| and find which handler methods its class overrides. */
   explicit AsyncResourceHandler(zend_object* o) : cl::ProxyBase(o) {
     register_as(static_cast<CefResourceHandler*>(this));
     for (size_t i = 0; i < kHookCount; ++i) {
@@ -106,6 +143,11 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
 
   // CEF calls these on the IO thread. None of them waits for PHP.
 
+  /**
+   * Queue run_open() for PHP and answer CEF at once (handle_request false: the callback decides later).
+   * @return true if queued; false with handle_request true if PHP is gone, so CEF cancels the request.
+   * @note Thread: CEF IO.
+   */
   bool Open(CefRefPtr<CefRequest> request, bool& handle_request, CefRefPtr<CefCallback> callback) override {
     if (!hooks_[kOpen]) {
       return CefResourceHandler::Open(request, handle_request, callback);  // CEF then tries ProcessRequest
@@ -120,6 +162,11 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     return true;
   }
 
+  /**
+   * Queue run_process_request() for PHP.
+   * @return true if queued; false if PHP does not override it or is gone.
+   * @note Thread: CEF IO.
+   */
   bool ProcessRequest(CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback) override {
     if (!hooks_[kProcessRequest]) {
       return false;
@@ -129,6 +176,10 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
                     [callback]() { callback->Cancel(); });
   }
 
+  /**
+   * Answer from the headers that prepare_headers() fetched from PHP. Sets ERR_FAILED if there are none.
+   * @note Thread: CEF IO. Never calls PHP.
+   */
   void GetResponseHeaders(CefRefPtr<CefResponse> response, int64_t& response_length, CefString& redirectUrl) override {
     std::lock_guard<std::mutex> lock(mutex_);
     if (!prepared_) {
@@ -147,6 +198,11 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     redirectUrl = redirect_;
   }
 
+  /**
+   * Queue run_skip() for PHP.
+   * @return true if queued; false with |bytes_skipped| set to an error if PHP is gone.
+   * @note Thread: CEF IO.
+   */
   bool Skip(int64_t bytes_to_skip, int64_t& bytes_skipped, CefRefPtr<CefResourceSkipCallback> callback) override {
     if (!hooks_[kSkip]) {
       return CefResourceHandler::Skip(bytes_to_skip, bytes_skipped, callback);
@@ -161,6 +217,11 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     return true;
   }
 
+  /**
+   * Queue run_read() for PHP.
+   * @return true if queued; false with |bytes_read| set to an error if PHP is gone.
+   * @note Thread: CEF IO.
+   */
   bool Read(void* data_out, int bytes_to_read, int& bytes_read, CefRefPtr<CefResourceReadCallback> callback) override {
     if (!hooks_[kRead]) {
       return CefResourceHandler::Read(data_out, bytes_to_read, bytes_read, callback);  // CEF then tries ReadResponse
@@ -175,7 +236,10 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     return true;
   }
 
-  // The deprecated read. Kept as it was: it waits for PHP.
+  /**
+   * Call the deprecated ReadResponse() of PHP and wait for it. Kept as it was: it waits for PHP.
+   * @note Thread: CEF IO; waits on the PHP thread through cl::run_on_php_thread() (F14 timeout fallback applies).
+   */
   bool ReadResponse(void* data_out, int bytes_to_read, int& bytes_read, CefRefPtr<CefCallback> callback) override {
     zend_function* fn = hooks_[kReadResponse];
     if (!fn) {
@@ -202,6 +266,7 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     return result;
   }
 
+  /** Queue the PHP cancel() method. Thread: CEF IO. */
   void Cancel() override {
     if (!hooks_[kCancel]) {
       return;
@@ -217,6 +282,10 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
  private:
   // ---- on the PHP thread
 
+  /**
+   * Call the PHP open(). Cancel the request if PHP declines; continue at once if it handled the request itself; else PHP
+   * continues or cancels later through the callback it got.
+   */
   void run_open(CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback) {
     CefRefPtr<AsyncResourceHandler> self(this);
     CefRefPtr<StagedCallback> staged = new StagedCallback(callback, [self]() { self->prepare_headers(); });
@@ -242,6 +311,7 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     }  // else PHP continues or cancels later through the callback it got
   }
 
+  /** Call the PHP processRequest(). Cancel the request unless PHP returned true. */
   void run_process_request(CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback) {
     CefRefPtr<AsyncResourceHandler> self(this);
     CefRefPtr<StagedCallback> staged = new StagedCallback(callback, [self]() { self->prepare_headers(); });
@@ -261,7 +331,10 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     }
   }
 
-  // Ask PHP for the response headers now, so that GetResponseHeaders() on the IO thread can answer from memory.
+  /**
+   * Fetch the response headers from PHP now, so that GetResponseHeaders() on the IO thread can answer from memory.
+   * Stores the response, length and redirect URL under the mutex; the response has ERR_FAILED if the call failed.
+   */
   void prepare_headers() {
     CefRefPtr<CefResponse> response = CefResponse::Create();
     int64_t length = -1;
@@ -289,6 +362,10 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     redirect_ = redirect;
   }
 
+  /**
+   * Call the PHP skip() and complete |callback| unless PHP will do so later.
+   * Completes with the bytes skipped, or an error if the call failed.
+   */
   void run_skip(int64_t bytes_to_skip, CefRefPtr<CefResourceSkipCallback> callback) {
     bool ok = false;
     int64_t skipped = kErrFailed;
@@ -311,6 +388,10 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     callback->Continue(ok && skipped > 0 ? skipped : (skipped < 0 ? skipped : kErrFailed));
   }
 
+  /**
+   * Call the PHP read() and complete |callback| unless PHP will do so later.
+   * The count is clamped to |bytes_to_read|; 0 ends the response, a negative value is an error.
+   */
   void run_read(void* data_out, int bytes_to_read, CefRefPtr<CefResourceReadCallback> callback) {
     bool ok = false;
     int read = kErrFailed;
@@ -337,12 +418,19 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
     callback->Continue(read);  // > 0: data, 0: the response is complete, < 0: an error
   }
 
+  /** Overriding PHP methods by hook index; null where not overridden. */
   zend_function* hooks_[kHookCount] = {};
+  /** Guards prepared_, length_ and redirect_ (written on the PHP thread, read on the IO thread). */
   std::mutex mutex_;
+  /** Response headers fetched by prepare_headers(), or null before. */
   CefRefPtr<CefResponse> prepared_;
+  /** Response length from PHP, -1 if unknown. */
   int64_t length_ = -1;
+  /** Redirect URL from PHP, empty for none. */
   CefString redirect_;
+  /** Thread-safe reference counting of CEF. */
   IMPLEMENT_REFCOUNTING(AsyncResourceHandler);
+  /** Copying is disallowed. */
   DISALLOW_COPY_AND_ASSIGN(AsyncResourceHandler);
 };
 
@@ -350,17 +438,30 @@ class AsyncResourceHandler : public CefResourceHandler, public cl::ProxyBase {
 
 class AsyncSchemeFactory;
 
-// What the factory returns at once. The PHP factory is asked for the real handler when CEF opens the resource.
+/**
+ * Handler a scheme factory returns at once; asks the PHP factory for the real handler when CEF opens the resource.
+ * Everything after Open() is passed to that handler.
+ */
 class DeferredResourceHandler : public CefResourceHandler {
  public:
+  /**
+   * Keep what the PHP factory needs to make the handler: |factory| (an AsyncSchemeFactory), the browser, frame and scheme.
+   */
   DeferredResourceHandler(CefRefPtr<CefSchemeHandlerFactory> factory, CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
                           const CefString& scheme)
       : factory_(std::move(factory)), browser_(std::move(browser)), frame_(std::move(frame)), scheme_(scheme) {}
 
+  /**
+   * Queue run_open() for PHP and answer CEF at once.
+   * @return true if queued; false with handle_request true if PHP is gone.
+   * @note Thread: CEF IO.
+   */
   bool Open(CefRefPtr<CefRequest> request, bool& handle_request, CefRefPtr<CefCallback> callback) override;
 
+  /** Return false: Open() is always used instead. */
   bool ProcessRequest(CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback) override { return false; }
 
+  /** Forward to the handler PHP made; set ERR_FAILED if there is none. Thread: CEF IO. */
   void GetResponseHeaders(CefRefPtr<CefResponse> response, int64_t& response_length, CefString& redirectUrl) override {
     CefRefPtr<CefResourceHandler> inner = inner_handler();
     if (inner) {
@@ -370,6 +471,7 @@ class DeferredResourceHandler : public CefResourceHandler {
     }
   }
 
+  /** Forward to the handler PHP made; fail with an error if there is none. Thread: CEF IO. */
   bool Skip(int64_t bytes_to_skip, int64_t& bytes_skipped, CefRefPtr<CefResourceSkipCallback> callback) override {
     CefRefPtr<CefResourceHandler> inner = inner_handler();
     if (!inner) {
@@ -379,6 +481,7 @@ class DeferredResourceHandler : public CefResourceHandler {
     return inner->Skip(bytes_to_skip, bytes_skipped, callback);
   }
 
+  /** Forward to the handler PHP made; fail with an error if there is none. Thread: CEF IO. */
   bool Read(void* data_out, int bytes_to_read, int& bytes_read, CefRefPtr<CefResourceReadCallback> callback) override {
     CefRefPtr<CefResourceHandler> inner = inner_handler();
     if (!inner) {
@@ -388,6 +491,7 @@ class DeferredResourceHandler : public CefResourceHandler {
     return inner->Read(data_out, bytes_to_read, bytes_read, callback);
   }
 
+  /** Forward to the handler PHP made; fail with an error if there is none. Thread: CEF IO. */
   bool ReadResponse(void* data_out, int bytes_to_read, int& bytes_read, CefRefPtr<CefCallback> callback) override {
     CefRefPtr<CefResourceHandler> inner = inner_handler();
     if (!inner) {
@@ -397,6 +501,7 @@ class DeferredResourceHandler : public CefResourceHandler {
     return inner->ReadResponse(data_out, bytes_to_read, bytes_read, callback);
   }
 
+  /** Forward to the handler PHP made, if any. Thread: CEF IO. */
   void Cancel() override {
     CefRefPtr<CefResourceHandler> inner = inner_handler();
     if (inner) {
@@ -405,30 +510,46 @@ class DeferredResourceHandler : public CefResourceHandler {
   }
 
  private:
+  /** Ask the PHP factory for the handler and open the request with it. Thread: PHP. */
   void run_open(CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback);
 
+  /** Return the handler PHP made, or null while there is none. Thread: any. */
   CefRefPtr<CefResourceHandler> inner_handler() {
     std::lock_guard<std::mutex> lock(mutex_);
     return inner_;
   }
 
+  /** The AsyncSchemeFactory that makes the handler. */
   CefRefPtr<CefSchemeHandlerFactory> factory_;  // an AsyncSchemeFactory
+  /** Browser of the request, passed to the PHP factory. */
   CefRefPtr<CefBrowser> browser_;
+  /** Frame of the request, passed to the PHP factory. */
   CefRefPtr<CefFrame> frame_;
+  /** Scheme name of the request, passed to the PHP factory. */
   CefString scheme_;
+  /** Guards inner_. */
   std::mutex mutex_;
+  /** The handler the PHP factory made; null until run_open() has stored it. */
   CefRefPtr<CefResourceHandler> inner_;
+  /** Thread-safe reference counting of CEF. */
   IMPLEMENT_REFCOUNTING(DeferredResourceHandler);
+  /** Copying is disallowed. */
   DISALLOW_COPY_AND_ASSIGN(DeferredResourceHandler);
 };
 
+/** CefSchemeHandlerFactory that stands for a PHP SchemeHandlerFactory; hands CEF a DeferredResourceHandler at once. */
 class AsyncSchemeFactory : public CefSchemeHandlerFactory, public cl::ProxyBase {
  public:
+  /** Create the proxy of PHP object |o| and find its create() method. */
   explicit AsyncSchemeFactory(zend_object* o) : cl::ProxyBase(o) {
     register_as(static_cast<CefSchemeHandlerFactory*>(this));
     hook_ = cl::find_override(o->ce, ce_CefSchemeHandlerFactory, "create");
   }
 
+  /**
+   * Return a DeferredResourceHandler, or null if the PHP class does not override create().
+   * @note Thread: CEF IO. Never calls PHP.
+   */
   CefRefPtr<CefResourceHandler> Create(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
                                        const CefString& scheme_name, CefRefPtr<CefRequest> request) override {
     if (!hook_) {
@@ -437,7 +558,10 @@ class AsyncSchemeFactory : public CefSchemeHandlerFactory, public cl::ProxyBase 
     return new DeferredResourceHandler(this, browser, frame, scheme_name);
   }
 
-  // On the PHP thread: the handler the PHP factory makes for this request (null if it makes none).
+  /**
+   * Return the handler the PHP create() makes for this request, or null if it makes none.
+   * @note Thread: PHP.
+   */
   CefRefPtr<CefResourceHandler> make_handler(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
                                              const CefString& scheme, CefRefPtr<CefRequest> request) {
     CefRefPtr<CefResourceHandler> handler;
@@ -459,11 +583,15 @@ class AsyncSchemeFactory : public CefSchemeHandlerFactory, public cl::ProxyBase 
   }
 
  private:
+  /** The overriding PHP create() method, or null. */
   zend_function* hook_ = nullptr;
+  /** Thread-safe reference counting of CEF. */
   IMPLEMENT_REFCOUNTING(AsyncSchemeFactory);
+  /** Copying is disallowed. */
   DISALLOW_COPY_AND_ASSIGN(AsyncSchemeFactory);
 };
 
+/** Queue run_open() for PHP; see the declaration. */
 bool DeferredResourceHandler::Open(CefRefPtr<CefRequest> request, bool& handle_request, CefRefPtr<CefCallback> callback) {
   handle_request = false;
   CefRefPtr<DeferredResourceHandler> self(this);
@@ -475,6 +603,10 @@ bool DeferredResourceHandler::Open(CefRefPtr<CefRequest> request, bool& handle_r
   return true;
 }
 
+/**
+ * Make the real handler on the PHP thread, store it, then open the request with it as if CEF had been given it directly.
+ * Cancels the request if the PHP factory makes no handler.
+ */
 void DeferredResourceHandler::run_open(CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback) {
   CefRefPtr<CefResourceHandler> inner =
       static_cast<AsyncSchemeFactory*>(factory_.get())->make_handler(browser_, frame_, scheme_, request);
@@ -502,8 +634,10 @@ void DeferredResourceHandler::run_open(CefRefPtr<CefRequest> request, CefRefPtr<
 
 }  // namespace
 
+/** Return the proxy of the PHP ResourceHandler |o|. Thread: PHP. */
 CefRefPtr<CefResourceHandler> cl_make_CefResourceHandler(zend_object* o) { return new AsyncResourceHandler(o); }
 
+/** Return the proxy of the PHP SchemeHandlerFactory |o|. Thread: PHP. */
 CefRefPtr<CefSchemeHandlerFactory> cl_make_CefSchemeHandlerFactory(zend_object* o) {
   return new AsyncSchemeFactory(o);
 }
@@ -512,6 +646,12 @@ CefRefPtr<CefSchemeHandlerFactory> cl_make_CefSchemeHandlerFactory(zend_object* 
 
 namespace cl_async {
 
+/**
+ * Queue the PHP onBeforeResourceLoad() and let the request wait for its verdict.
+ * The verdict (a cef_return_value_t) is applied to |callback| on the PHP thread; RV_CONTINUE_ASYNC leaves it to PHP.
+ * @return RV_CONTINUE_ASYNC if queued, else RV_CONTINUE (PHP gone).
+ * @note Thread: CEF IO.
+ */
 cef_return_value_t CefResourceRequestHandler_OnBeforeResourceLoad(CefRefPtr<CefResourceRequestHandler> self,
                                                                   zend_object* object, zend_function* fn,
                                                                   CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
@@ -542,6 +682,7 @@ cef_return_value_t CefResourceRequestHandler_OnBeforeResourceLoad(CefRefPtr<CefR
   return queued ? RV_CONTINUE_ASYNC : RV_CONTINUE;
 }
 
+/** Queue the PHP onResourceLoadComplete(). Thread: CEF IO. Dropped if PHP is gone. */
 void CefResourceRequestHandler_OnResourceLoadComplete(CefRefPtr<CefResourceRequestHandler> self, zend_object* object,
                                                       zend_function* fn, CefRefPtr<CefBrowser> browser,
                                                       CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request,
@@ -561,6 +702,12 @@ void CefResourceRequestHandler_OnResourceLoadComplete(CefRefPtr<CefResourceReque
   });
 }
 
+/**
+ * Queue the PHP getAuthCredentials() and announce the request as handled.
+ * PHP answers through the auth callback; if it declines or PHP is gone the callback is cancelled.
+ * @return true if queued, else false (CEF's default).
+ * @note Thread: CEF IO.
+ */
 bool CefRequestHandler_GetAuthCredentials(CefRefPtr<CefRequestHandler> self, zend_object* object, zend_function* fn,
                                           CefRefPtr<CefBrowser> browser, const CefString& origin_url, bool isProxy,
                                           const CefString& host, int port, const CefString& realm,
@@ -592,6 +739,7 @@ bool CefRequestHandler_GetAuthCredentials(CefRefPtr<CefRequestHandler> self, zen
       [callback]() { callback->Cancel(); });
 }
 
+/** Queue the PHP onAudioStreamStarted() with a copy of |params|. Thread: CEF audio capture thread. Dropped if PHP is gone. */
 void CefAudioHandler_OnAudioStreamStarted(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn,
                                           CefRefPtr<CefBrowser> browser, const CefAudioParameters& params, int channels) {
   CefAudioParameters copy = params;
@@ -606,6 +754,11 @@ void CefAudioHandler_OnAudioStreamStarted(CefRefPtr<CefAudioHandler> self, zend_
   });
 }
 
+/**
+ * Copy the packet and queue the PHP onAudioStreamPacket(), with one read-only Buffer per channel valid for that call.
+ * Packets are dropped while 200 are waiting for PHP.
+ * @note Thread: CEF audio stream thread. Never waits for PHP.
+ */
 void CefAudioHandler_OnAudioStreamPacket(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn,
                                          CefRefPtr<CefBrowser> browser, const float** data, int frames, int64_t pts,
                                          int channels) {
@@ -643,6 +796,7 @@ void CefAudioHandler_OnAudioStreamPacket(CefRefPtr<CefAudioHandler> self, zend_o
   }
 }
 
+/** Queue the PHP onAudioStreamError() with a copy of |message|. Thread: CEF UI (stream creation) or audio stream thread (capturing). Dropped if PHP is gone. */
 void CefAudioHandler_OnAudioStreamError(CefRefPtr<CefAudioHandler> self, zend_object* object, zend_function* fn,
                                         CefRefPtr<CefBrowser> browser, const CefString& message) {
   CefString text = message;

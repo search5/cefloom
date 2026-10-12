@@ -22,6 +22,7 @@
 
 - [PHP 개발 환경 준비](pages/procedures/setup-php-environment.md): 설치한 패키지와 제거 방법, 확인한 도구
 - [사전 검증 재현 절차](pages/procedures/run-ffi-precheck.md): run.sh 실행, 기대 결과, 실패할 때 확인할 것
+- [코드 주석 작성 규칙과 점검 절차](pages/procedures/code-comments.md): Sphinx용 영어 주석 형식(Doxygen, reST, phpDocumentor), 문체, `tools/check-comments.py`, 진행 대장
 - [패키징과 릴리스 절차](pages/procedures/package-and-release.md): PIE용 압축 파일과 런타임 압축 파일 만들기, 오프라인 시험, 릴리스 게시(미실행), 사용자 설치
 
 ## 참조 (reference)

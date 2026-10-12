@@ -1,9 +1,13 @@
-// The lifetime and the message loop of CEF in a PHP process.
-//
-// The PHP process is the browser process of CEF, and PHP's main thread is the CEF UI thread: CEF runs with
-// the external message pump and the script calls CefDoMessageLoopWork() (Cef::run does it in a loop). CEF asks
-// for work from any thread (OnScheduleMessagePumpWork), so that request is answered here with atomics and an
-// eventfd only and never touches PHP (cautions.md, rules 1 and 2).
+/**
+ * @file
+ * @brief Lifetime and message loop of CEF in a PHP process, and the hand-written methods of the PHP class Cef.
+ *
+ * The PHP process is the browser process of CEF and PHP's main thread is the CEF UI thread. The script drives CEF by
+ * calling CefDoMessageLoopWork() (Cef::run does it in a loop): every few milliseconds by default, or when CEF announces
+ * work (OnScheduleMessagePumpWork) if Settings::externalMessagePump is set. CEF asks for work from any thread; that
+ * request is answered with atomics and an eventfd only and never touches PHP
+ * (cautions.md, rules 1 and 2).
+ */
 #include <dlfcn.h>
 #include <poll.h>
 #include <sys/eventfd.h>
@@ -23,25 +27,37 @@ namespace {
 
 // -- the requests for work -----------------------------------------------------------------------------------
 
+/** Monotonic time in milliseconds at which CEF asked to run, or -1 for no request. Written by any thread. */
 std::atomic<int64_t> g_deadline_ms{-1};  // when CEF wants to run (monotonic milliseconds), -1 for no request
+/** True when CEF asked to run at once. Set by any thread, cleared by pump_once(). */
 std::atomic<bool> g_work_now{false};
-// True when the script asked for CEF's external message pump (Settings::externalMessagePump). CEF then runs only the work
-// it announced (OnScheduleMessagePumpWork) and does not read the X11 socket of the windows it owns itself, so a Views
-// window or a browser window made by CEF gets no mouse and keyboard input. The default is the polling loop CEF
-// recommends: Cef::doMessageLoopWork() at least every few milliseconds (verified-findings F19).
+/**
+ * True when the script asked for CEF's external message pump (Settings::externalMessagePump).
+ * CEF then runs only the work it announced (OnScheduleMessagePumpWork) and nothing else iterates GLib's default main
+ * context, which holds the X11 connection of the windows CEF owns: without it those windows get no input and a browser
+ * does not finish closing. pump_once() and wait_for_work() therefore iterate that context themselves (verified-findings
+ * F19, known-constraints K41 and K43). The default is the polling loop CEF recommends: Cef::doMessageLoopWork() at least
+ * every few milliseconds.
+ */
 std::atomic<bool> g_external_pump{false};
-// True once CefShutdown() has run: CEF cannot be initialized again in the same process (it crashes if tried).
+/** True once CefShutdown() has run. CEF is not initialized again in the same process (cautions.md, rule 7: the cefweaver record is a segmentation fault). */
 std::atomic<bool> g_was_shut_down{false};
+/** Longest wait of wait_for_work() in milliseconds when CEF announces no work (polling mode). */
 constexpr int kPollMs = 5;
+/** Eventfd that interrupts wait_for_work(), or -1 before Cef::initialize(). Written by wake() from any thread. */
 int g_wake_fd = -1;
+/** Set by Cef::quit() to end Cef::run(). PHP thread only. */
 bool g_quit = false;
+/** True from OnContextInitialized() until shutdown. PHP thread only. */
 bool g_context_ready = false;
 
+/** Return the steady clock in milliseconds. Thread: any. */
 int64_t now_ms() {
   return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch())
       .count();
 }
 
+/** Wake wait_for_work() through the eventfd. Thread: any. */
 void wake() {
   if (g_wake_fd >= 0) {
     uint64_t one = 1;
@@ -52,11 +68,15 @@ void wake() {
 
 // -- the application object CEF gets ----------------------------------------------------------------------------
 
+/** Command line switches added by Cef::addSwitch() as (name, value); an empty value is a bare switch. */
 std::vector<std::pair<std::string, std::string>> g_switches;
+/** Custom schemes registered by Cef::registerCustomScheme() as (name, cef_scheme_options_t). */
 std::vector<std::pair<std::string, int>> g_schemes;  // custom schemes: name and cef_scheme_options_t
 
-// The schemes go to the other processes on their command line ("name:options,name:options"), where
-// cefloomsubprocess registers them again: every process has to know a custom scheme.
+/**
+ * Return g_schemes as "name:options,name:options" for the command line of child processes.
+ * cefloomsubprocess registers the schemes again from it: every process has to know a custom scheme.
+ */
 std::string scheme_list() {
   std::string list;
   for (const auto& scheme : g_schemes) {
@@ -66,29 +86,45 @@ std::string scheme_list() {
   return list;
 }
 
+/**
+ * Browser process handler of the extension; passes every event on to the handler of the user's App.
+ * Adds the scheme list to the command line of child processes and feeds the message pump requests to
+ * cl_core_schedule_pump_work().
+ */
 class NativeBrowserProcessHandler : public Fwd_CefBrowserProcessHandler {
  public:
+  /** Forward CEF's request for message pump work to cl_core_schedule_pump_work(). Thread: any; never calls PHP. */
   void OnScheduleMessagePumpWork(int64_t delay_ms) override { cl_core_schedule_pump_work(delay_ms); }
+  /** Record that the CEF context is ready, then forward. Thread: CEF UI. */
   void OnContextInitialized() override {
     g_context_ready = true;
     Fwd_CefBrowserProcessHandler::OnContextInitialized();
   }
+  /** Append the --cefloom-schemes switch when custom schemes exist, then forward. */
   void OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) override {
     if (!g_schemes.empty()) {
       command_line->AppendSwitchWithValue("cefloom-schemes", scheme_list());
     }
     Fwd_CefBrowserProcessHandler::OnBeforeChildProcessLaunch(command_line);
   }
+  /** Set the user's handler that unhandled events are passed on to (null for none). */
   void set_forward(CefRefPtr<CefBrowserProcessHandler> next) { forward_ = next; }
 
  private:
+  /** Thread-safe reference counting of CEF. */
   IMPLEMENT_REFCOUNTING(NativeBrowserProcessHandler);
 };
 
+/** CefApp of the extension: applies the switches and schemes of the script, then passes everything on to the user's App. */
 class NativeApp : public Fwd_CefApp {
  public:
+  /** Wrap |user|, the CefApp made from the script's App (null for none). */
   explicit NativeApp(CefRefPtr<CefApp> user) : handler_(new NativeBrowserProcessHandler()) { forward_ = user; }
 
+  /**
+   * Append the switches of Cef::addSwitch() to the browser process command line, then forward.
+   * Also adds disable-chrome-login-prompt unless the script set it.
+   */
   void OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) override {
     if (process_type.empty()) {
       for (const auto& entry : g_switches) {
@@ -107,37 +143,48 @@ class NativeApp : public Fwd_CefApp {
     Fwd_CefApp::OnBeforeCommandLineProcessing(process_type, command_line);
   }
 
+  /** Register the schemes of Cef::registerCustomScheme(). Thread: runs in every CEF process. */
   void OnRegisterCustomSchemes(CefRawPtr<CefSchemeRegistrar> registrar) override {
     for (const auto& scheme : g_schemes) {
       registrar->AddCustomScheme(scheme.first, scheme.second);
     }
   }
 
+  /** Return the extension's browser process handler, chained to the user's. */
   CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() override {
     handler_->set_forward(forward_ ? forward_->GetBrowserProcessHandler() : nullptr);
     return handler_;
   }
 
  private:
+  /** Handler returned by GetBrowserProcessHandler(). */
   CefRefPtr<NativeBrowserProcessHandler> handler_;
+  /** Thread-safe reference counting of CEF. */
   IMPLEMENT_REFCOUNTING(NativeApp);
 };
 
+/** The CefApp passed to CefInitialize(); null before Cef::initialize() and after shutdown. PHP thread only. */
 CefRefPtr<NativeApp> g_app;
 
 // -- the browsers -------------------------------------------------------------------------------------------------
 
+/** Live browsers by identifier, kept by cl_core_note_browser(). Holds one reference each. PHP thread only. */
 std::map<int, CefRefPtr<CefBrowser>> g_browsers;
+/** True once a browser has been created since Cef::initialize(); lets Cef::run() quit when the last one closes. */
 bool g_browser_seen = false;
 
 // -- paths -------------------------------------------------------------------------------------------------------
 
-// The directory that holds the module, libcef.so and the CEF resources (the layout of a cefloom install).
+/** Return |path| resolved with realpath(), or |path| itself if it cannot be resolved. */
 std::string absolute_dir(const std::string& path) {
   char resolved[PATH_MAX];
   return realpath(path.c_str(), resolved) ? std::string(resolved) : path;
 }
 
+/**
+ * Return the directory that holds the module, libcef.so and the CEF resources (the layout of a cefloom install).
+ * Falls back to the working directory if the module path is unknown.
+ */
 std::string module_dir() {
   Dl_info info;
   if (dladdr(reinterpret_cast<void*>(&cl_core_register), &info) && info.dli_fname) {
@@ -152,8 +199,10 @@ std::string module_dir() {
   return absolute_dir(".");
 }
 
-// Where a runtime installed for the user lives: <data home>/cefloom/runtime/<CEF version>. The version is part of the
-// path because the module only works with the runtime it was built against.
+/**
+ * Return the directory where a runtime installed for the user lives: <data home>/cefloom/runtime/<CEF version>.
+ * The version is part of the path because the module only works with the runtime it was built against.
+ */
 std::string user_runtime_dir() {
   const char* xdg = getenv("XDG_DATA_HOME");
   const char* user_home = getenv("HOME");
@@ -162,10 +211,14 @@ std::string user_runtime_dir() {
          std::to_string(CEF_VERSION_PATCH);
 }
 
+/** Return whether |dir| holds a readable libcef.so. */
 bool has_runtime(const std::string& dir) { return access((dir + "/libcef.so").c_str(), R_OK) == 0; }
 
-// The directory of the CEF runtime (libcef.so, the resources, cefloomsubprocess): CEFLOOM_HOME if set, else the
-// directory of the module if the runtime is there (a build directory), else the user's runtime directory.
+/**
+ * Return the directory of the CEF runtime (libcef.so, the resources, cefloomsubprocess).
+ * CEFLOOM_HOME if set, else the directory of the module if the runtime is there (a build directory), else the user's
+ * runtime directory if it holds one, else the directory of the module.
+ */
 std::string home_dir() {
   const char* env = getenv("CEFLOOM_HOME");
   if (env && *env) {
@@ -183,15 +236,24 @@ std::string home_dir() {
 }
 
 #ifdef CEFLOOM_LAZY_LIBCEF
+/** Handle of the dlopen()ed libcef.so, or null while it is not loaded (CEFLOOM_LAZY_LIBCEF builds). */
 void* g_libcef = nullptr;
 #endif
 
 }  // namespace
 
 #ifdef CEFLOOM_LAZY_LIBCEF
+/** Hand the libcef.so handle to the lazy stubs (CEFLOOM_LAZY_LIBCEF builds). */
 void cl_lazy_set_libcef(void* handle);  // lazy_stubs.cc
 #endif
 
+/**
+ * Make libcef.so available and configure the CEF API version.
+ * A build with CEFLOOM_LAZY_LIBCEF loads libcef.so from home_dir() the first time it is needed; any other build has it linked.
+ * @param error Receives the reason on failure; may be null.
+ * @return true if CEF is usable.
+ * @note Thread: PHP.
+ */
 bool cl_core_load_cef(std::string* error) {
 #ifdef CEFLOOM_LAZY_LIBCEF
   if (g_libcef) {
@@ -228,12 +290,18 @@ bool cl_core_load_cef(std::string* error) {
 
 namespace {
 
+/** Set the CEF string |field| to |value| unless it already has a value. */
 void set_if_empty(cef_string_t* field, const std::string& value) {
   if (field->length == 0) {
     CefString(field).FromString(value);
   }
 }
 
+/**
+ * Fill the fields of |s| that the script left unset.
+ * Forces the external-pump-compatible loop (no multi-threaded loop) and no_sandbox, and points the subprocess, resources,
+ * locales and root cache paths at the runtime and the user's cache directory.
+ */
 void apply_defaults(CefSettings& s) {
   const std::string home = home_dir();
   s.multi_threaded_message_loop = false;   // PHP owns the loop; external_message_pump stays what the script chose
@@ -251,26 +319,43 @@ void apply_defaults(CefSettings& s) {
 
 // -- one step of the loop -----------------------------------------------------------------------------------
 
-// libcef links GLib; the X11 connection of its windows is a source of the default main context, and with the external message
-// pump nothing else would iterate that context (windows made by CEF then get no input, and a browser does not finish closing).
-// The functions are looked up in the process, so the extension does not need GLib to build.
+/** Layout of GLib's GPollFD, so that GLib's headers are not needed to build. */
 struct PollFd {  // GPollFD
+  /** File descriptor to poll. */
   int fd;
+  /** Requested events (POLLIN, ...). */
   unsigned short events;
+  /** Returned events. */
   unsigned short revents;
 };
+/**
+ * GLib main context functions looked up in the process with dlsym(), so the extension does not need GLib to build.
+ * libcef links GLib; the X11 connection of its windows is a source of the default main context, and with the external
+ * message pump nothing else would iterate that context (windows made by CEF then get no input, and a browser does not
+ * finish closing).
+ */
 struct Glib {
+  /** g_main_context_default(). */
   void* (*context_default)();
+  /** g_main_context_acquire(). */
   int (*acquire)(void*);
+  /** g_main_context_release(). */
   void (*release)(void*);
+  /** g_main_context_prepare(). */
   int (*prepare)(void*, int*);
+  /** g_main_context_query(). */
   int (*query)(void*, int, int*, PollFd*, int);
+  /** g_main_context_check(). */
   int (*check)(void*, int, PollFd*, int);
+  /** g_main_context_dispatch(). */
   void (*dispatch)(void*);
+  /** g_main_context_iteration(). */
   int (*iteration)(void*, int);
+  /** True when every function above was found. */
   bool ok = false;
 };
 
+/** Return the GLib functions of the process (looked up once; check Glib::ok). */
 const Glib& glib() {
   static Glib g = [] {
     Glib r;
@@ -288,6 +373,7 @@ const Glib& glib() {
   return g;
 }
 
+/** Run the pending sources of GLib's default main context without blocking (at most 100 iterations). */
 void iterate_glib() {
   const Glib& g = glib();
   if (g.ok) {
@@ -296,6 +382,11 @@ void iterate_glib() {
   }
 }
 
+/**
+ * Run one iteration of CEF's message loop (CefDoMessageLoopWork()) and the queued releases.
+ * Records the pump entry time in cl::g_pump_since_ms for the F14 timeout fallback of cl::run_on_php_thread().
+ * @note Thread: PHP.
+ */
 void pump_once() {
   cl::drain_releases();
   g_work_now = false;
@@ -312,7 +403,11 @@ void pump_once() {
   cl::drain_releases();
 }
 
-// Sleep until CEF asks for work, a wake up arrives, or |max_ms| have passed.
+/**
+ * Sleep until CEF asks for work, a wake up arrives, or |max_ms| have passed.
+ * In the external pump mode it also waits on GLib's sockets so that window input is not delayed.
+ * @note Thread: PHP.
+ */
 void wait_for_work(int max_ms) {
   if (g_work_now.load()) {
     return;
@@ -379,6 +474,12 @@ void wait_for_work(int max_ms) {
   }
 }
 
+/**
+ * Close the browsers, pump until they are gone (at most 5 s), release the library objects and call CefShutdown().
+ * @param from_script True when a PHP function called it: a pending exception then ends the wait for the browsers early.
+ * @return true (also if CEF was not running).
+ * @note Thread: PHP.
+ */
 bool do_shutdown(bool from_script) {
   if (!cl::g_cef_running) {
     return true;
@@ -419,6 +520,11 @@ bool do_shutdown(bool from_script) {
 
 // -- called by CEF on any thread -----------------------------------------------------------------------------------
 
+/**
+ * Record CEF's request for message pump work and wake the PHP thread.
+ * @param delay_ms Delay in milliseconds; 0 or less means at once.
+ * @note Thread: any. Never touches PHP (cautions.md, rules 1 and 2).
+ */
 void cl_core_schedule_pump_work(int64_t delay_ms) {
   if (delay_ms <= 0) {
     g_work_now = true;
@@ -431,8 +537,14 @@ void cl_core_schedule_pump_work(int64_t delay_ms) {
   wake();
 }
 
+/** Return the number of live browsers. Thread: PHP. */
 size_t cl_core_browser_count() { return g_browsers.size(); }
 
+/**
+ * Add or remove |browser| in the list of live browsers.
+ * @param created True after OnAfterCreated, false before the browser goes away.
+ * @note Thread: PHP.
+ */
 void cl_core_note_browser(const CefRefPtr<CefBrowser>& browser, bool created) {
   if (created) {
     g_browsers[browser->GetIdentifier()] = browser;
@@ -442,6 +554,7 @@ void cl_core_note_browser(const CefRefPtr<CefBrowser>& browser, bool created) {
   }
 }
 
+/** Return a snapshot of the live browsers. Thread: PHP. */
 std::vector<CefRefPtr<CefBrowser>> cl_core_browsers() {
   std::vector<CefRefPtr<CefBrowser>> list;
   for (auto& entry : g_browsers) {
@@ -480,6 +593,18 @@ ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
 ZEND_ARG_TYPE_INFO(0, function, IS_CALLABLE, 0)
 ZEND_END_ARG_INFO()
 
+/**
+ * Cef::initialize(?Settings $settings = null, ?App $app = null): bool
+ *
+ * Start CEF in this process (once per process). Settings left unset get defaults: subprocess, resources and locales
+ * beside the runtime, root cache path under $XDG_CACHE_HOME or ~/.cache (cefloom/), no sandbox.
+ * @param settings Settings of CEF, or null for the defaults.
+ * @param app Handler for the events of the CEF application, or null.
+ * @return true once CEF runs, false if CefInitialize() failed.
+ * @throws Error if CEF already runs or was shut down before, if the runtime cannot be loaded, or if the subprocess
+ *         executable does not exist.
+ * @note Thread: PHP main thread, which becomes the CEF UI thread.
+ */
 ZEND_METHOD(Cef, initialize) {
   zend_object* settings_object = nullptr;
   zend_object* app_object = nullptr;
@@ -546,6 +671,12 @@ ZEND_METHOD(Cef, initialize) {
   RETURN_TRUE;
 }
 
+/**
+ * Cef::doMessageLoopWork(): void
+ *
+ * Run one iteration of CEF's message loop. A pending exception of a PHP callback surfaces when it returns.
+ * @throws Error if CEF is not running.
+ */
 ZEND_METHOD(Cef, doMessageLoopWork) {
   ZEND_PARSE_PARAMETERS_NONE();
   if (!cl::g_cef_running) {
@@ -555,6 +686,16 @@ ZEND_METHOD(Cef, doMessageLoopWork) {
   pump_once();
 }
 
+/**
+ * Cef::run(?callable $tick = null, bool $quitWhenLastBrowserCloses = true): void
+ *
+ * Run the message loop until Cef::quit(), until |tick| returns false, until the last browser closes, or until CEF shuts down.
+ * @param tick Called after every iteration with no arguments; returning exactly false ends the loop.
+ * @param quitWhenLastBrowserCloses End the loop when the last browser closed (only after one has been created).
+ * @throws TypeError if |tick| is not callable.
+ * @throws Error if CEF is not running.
+ * @throws Throwable whatever a callback or |tick| leaves pending; the loop ends.
+ */
 ZEND_METHOD(Cef, run) {
   zval* tick = nullptr;
   bool quit_when_last_closes = true;
@@ -599,12 +740,24 @@ ZEND_METHOD(Cef, run) {
   }
 }
 
+/**
+ * Cef::quit(): void
+ *
+ * Ask Cef::run() to return after its current iteration.
+ * @note Thread: PHP.
+ */
 ZEND_METHOD(Cef, quit) {
   ZEND_PARSE_PARAMETERS_NONE();
   g_quit = true;
   wake();
 }
 
+/**
+ * Cef::wait(int $maxMilliseconds = 30): void
+ *
+ * Sleep until CEF asks for work or a wake up arrives, at most |maxMilliseconds| (clamped to 0..60000). Without
+ * Settings::externalMessagePump the wait is at most kPollMs (5 ms), because CEF announces no work then.
+ */
 ZEND_METHOD(Cef, wait) {
   zend_long max_ms = 30;
   ZEND_PARSE_PARAMETERS_START(0, 1)
@@ -614,6 +767,12 @@ ZEND_METHOD(Cef, wait) {
   wait_for_work(static_cast<int>(std::max<zend_long>(0, std::min<zend_long>(max_ms, 60000))));
 }
 
+/**
+ * Cef::shutdown(): void
+ *
+ * Close all browsers and shut CEF down. Library objects the script still holds lose their native object. CEF cannot be
+ * started again in this process. Does nothing if CEF is not running.
+ */
 ZEND_METHOD(Cef, shutdown) {
   ZEND_PARSE_PARAMETERS_NONE();
   do_shutdown(true);
@@ -622,30 +781,54 @@ ZEND_METHOD(Cef, shutdown) {
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Cef_string, 0, 0, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-// The version of CEF this module was built against; the runtime must be the same.
+/**
+ * Cef::cefVersion(): string
+ *
+ * Return the version of CEF this module was built against; the runtime must be the same.
+ */
 ZEND_METHOD(Cef, cefVersion) {
   ZEND_PARSE_PARAMETERS_NONE();
   RETURN_STRING(CEF_VERSION);
 }
 
-// The directory the module takes the CEF runtime from (where it looks first, see home_dir()).
+/**
+ * Cef::runtimeDirectory(): string
+ *
+ * Return the directory the module takes the CEF runtime from (CEFLOOM_HOME, beside the module, or the user's runtime
+ * directory; see home_dir()).
+ */
 ZEND_METHOD(Cef, runtimeDirectory) {
   ZEND_PARSE_PARAMETERS_NONE();
   { std::string dir = home_dir(); RETURN_STR(zend_string_init(dir.c_str(), dir.size(), 0)); }
 }
 
-// Where a runtime installed for the user goes (the cefloom-runtime tool installs there).
+/**
+ * Cef::userRuntimeDirectory(): string
+ *
+ * Return the directory where a runtime installed for the user goes (the cefloom-runtime tool installs there).
+ */
 ZEND_METHOD(Cef, userRuntimeDirectory) {
   ZEND_PARSE_PARAMETERS_NONE();
   std::string dir = user_runtime_dir();
   RETURN_STR(zend_string_init(dir.c_str(), dir.size(), 0));
 }
 
+/**
+ * Cef::isRunning(): bool
+ *
+ * Return whether CEF has been initialized and not yet shut down.
+ */
 ZEND_METHOD(Cef, isRunning) {
   ZEND_PARSE_PARAMETERS_NONE();
   RETURN_BOOL(cl::g_cef_running.load());
 }
 
+/**
+ * Cef::addSwitch(string $name, string $value = ""): void
+ *
+ * Add a command line switch for the browser process; an empty |value| adds a bare switch.
+ * @throws Error if CEF already runs: switches must be added before Cef::initialize().
+ */
 ZEND_METHOD(Cef, addSwitch) {
   zend_string* name;
   zend_string* value = ZSTR_EMPTY_ALLOC();
@@ -661,6 +844,15 @@ ZEND_METHOD(Cef, addSwitch) {
   g_switches.emplace_back(std::string(ZSTR_VAL(name), ZSTR_LEN(name)), std::string(ZSTR_VAL(value), ZSTR_LEN(value)));
 }
 
+/**
+ * Cef::registerCustomScheme(string $name, int $options = STANDARD | SECURE | CORS_ENABLED | FETCH_ENABLED): void
+ *
+ * Register a custom scheme in every CEF process. Registering a name again replaces its options.
+ * @param name Scheme name; must not be empty or contain ',' or ':'.
+ * @param options Combination of SchemeOptions constants.
+ * @throws Error if CEF already runs: schemes must be registered before Cef::initialize().
+ * @throws ValueError if |name| is not a valid scheme name.
+ */
 ZEND_METHOD(Cef, registerCustomScheme) {
   zend_string* name;
   zend_long options = CEF_SCHEME_OPTION_STANDARD | CEF_SCHEME_OPTION_SECURE | CEF_SCHEME_OPTION_CORS_ENABLED |
@@ -688,6 +880,13 @@ ZEND_METHOD(Cef, registerCustomScheme) {
   g_schemes.emplace_back(key, static_cast<int>(options));
 }
 
+/**
+ * Cef::expose(string $name, callable $function): void
+ *
+ * Make a PHP function callable from JavaScript as cefloom.call(name, ...args). The arguments and the result are JSON;
+ * an exception becomes a rejected Promise. Exposing a name again replaces the function.
+ * @throws TypeError if |function| is not callable.
+ */
 ZEND_METHOD(Cef, expose) {
   zend_string* name;
   zval* callable;
@@ -702,6 +901,7 @@ ZEND_METHOD(Cef, expose) {
   cl_bridge_expose(name, callable);
 }
 
+/** Methods of the class Cef that are written by hand, registered by cl_core_register(). */
 static const zend_function_entry core_methods[] = {
     ZEND_RAW_FENTRY("initialize", zim_Cef_initialize, arginfo_Cef_initialize, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
     ZEND_RAW_FENTRY("doMessageLoopWork", zim_Cef_doMessageLoopWork, arginfo_Cef_void, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
@@ -718,12 +918,18 @@ static const zend_function_entry core_methods[] = {
     ZEND_RAW_FENTRY("expose", zim_Cef_expose, arginfo_Cef_expose, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
     ZEND_FE_END};
 
+/** Register the hand-written methods in the class Cef. Thread: PHP, in MINIT. */
 void cl_core_register() {
   zend_register_functions(ce_Cef, core_methods, &ce_Cef->function_table, MODULE_PERSISTENT);
 }
 
+/** Run at request start. Nothing to do. Thread: PHP. */
 void cl_core_rinit() {}
 
+/**
+ * Shut CEF down at request end if the script did not, then release the bridge.
+ * @note Thread: PHP. A pending exception does not end the wait for the browsers to close (from_script is false).
+ */
 void cl_core_rshutdown() {
   if (cl::g_cef_running) {
     do_shutdown(false);

@@ -1,5 +1,10 @@
 """Emit the PHP classes that wrap the objects CEF implements (CefBrowser, CefFrame, ...), and the static
-methods of the class Cefloom\\Cef that stand for the global functions of CEF."""
+methods of the class Cefloom\\Cef that stand for the global functions of CEF.
+
+Pipeline role: emitter of the library side. ``generate.py`` calls :meth:`LibEmitter.emit_class` for every
+library class and :meth:`LibEmitter.emit_cef` for the global functions, giving the plans made by
+``typesys``; the result is ``lib_<Class>.cc`` and ``cef_functions.cc``. The client side is ``emit_client``.
+"""
 
 from emit_common import (NS, Names, arg_entry, begin_arginfo, ce_var, cstr, element_cpp, php_fqn_c, result_type,
                          to_zval, type_of, wrap_call)
@@ -25,6 +30,13 @@ class Input:
     """One PHP argument of a method."""
 
     def __init__(self, php_name, kind, nullable=None):
+        """:param php_name: parameter name in the arginfo.
+        :param kind: the :class:`typesys.Kind` of the argument.
+        :param nullable: overrides the nullability of the kind; None keeps it.
+
+        ``decl`` (list of C++ local declarations), ``zpp`` (the Zend parameter-parsing macro, a string) and ``conv``
+        (list of conversion statements) start empty and are filled by :func:`build`.
+        """
         self.php_name = php_name
         self.kind = kind
         self.nullable = nullable
@@ -34,11 +46,15 @@ class Input:
 
 
 def _optional(p):
+    """Return True if the header marks parameter plan ``p`` as ``optional_param``."""
     return bool(getattr(p, "optional", False))
 
 
 def build(names, scope, plan):
-    """Inputs, output locals, the call arguments and the results of one library method."""
+    """Return ``(inputs, call_args, outs, results, bytes_out)`` for one library method: the :class:`Input` list, the
+    C++ call arguments, the declarations of the output locals, the ``(label, kind, C++ expression)`` results, and
+    ``(buffer name, item size name or None)`` for a method whose output is a byte string (else None). Raise AssertionError for an ignored parameter or an
+    output kind that is not supported."""
     inputs = []
     call_args = []
     outs = []          # (declaration line)
@@ -203,6 +219,7 @@ def build(names, scope, plan):
 
 
 def _vector_in(names, kind, a, c):
+    """Return the lines that convert the PHP array ``a`` into the ``std::vector`` ``c`` of ``kind``."""
     element = kind.element
     lines = ["std::vector<%s> %s;" % (element_cpp(element), c),
              "{", "  zval* cl_v;",
@@ -225,6 +242,7 @@ def _vector_in(names, kind, a, c):
 
 
 def arginfo_lines(var, plan, inputs, results):
+    """Return the arginfo table named ``var`` for ``plan``, with one entry per PHP input."""
     required = len(inputs)
     lines = [begin_arginfo(var, required, [(n, k) for n, k, _ in results], False, nullable=success_flag(plan))]
     for inp in inputs:
@@ -234,8 +252,12 @@ def arginfo_lines(var, plan, inputs, results):
 
 
 def function_lines(names, scope, class_key, owner_cpp, plan, inputs, call_args, outs, results, bytes_out):
+    """Return the lines of ``ZEND_METHOD(class_key, CefName)``.
+
+    The method parses the arguments, converts them, calls CEF and converts the results; ``inputs``,
+    ``call_args``, ``outs``, ``results`` and ``bytes_out`` come from :func:`build`.
+    """
     depth = scope.depth(owner_cpp) if owner_cpp else 0
-    """The body of ZEND_METHOD(class_key, CefName)."""
     L = ["ZEND_METHOD(%s, %s) {" % (class_key, plan.cef_name)]
     for inp in inputs:
         L += ["  " + d for d in inp.decl]
@@ -314,18 +336,25 @@ def function_lines(names, scope, class_key, owner_cpp, plan, inputs, call_args, 
 
 
 def method_entry(php_name, class_key, cef_name, arginfo_var, static, handwritten=False):
+    """Return the ``ZEND_RAW_FENTRY`` line that registers a method."""
     flags = ACCESS + (" | ZEND_ACC_STATIC" if static else "")
     return '  ZEND_RAW_FENTRY(%s, zim_%s_%s, %s, %s, NULL, NULL)' % (cstr(php_name), class_key, cef_name, arginfo_var, flags)
 
 
 class LibEmitter:
+    """Generates the C++ of the classes CEF implements and of the ``Cefloom\\Cef`` functions."""
     def __init__(self, model, scope):
+        """:param model: the parsed headers.
+        :param scope: the classes and functions selected for the binding.
+        """
         self.model = model
         self.scope = scope
         self.names = Names(model, scope)
 
     def methods(self, class_key, owner_cpp, plans):
-        """(code lines, entries, listing) for the supported plans of a class."""
+        """Return ``(code lines, method entries, listing)`` for the plans of a class; the listing has a row for every plan
+        ("generated", "handwritten" or "not generated: <reason>"). Sets ``plan.name`` to ``create`` for ``Create<Class>``
+        statics of a class outside a hierarchy and to the lower-camel name without ``Cef`` for global functions."""
         code, entries, listing = [], [], []
         for plan in plans:
             if (owner_cpp and plan.static and plan.cef_name == "Create" + py_class_name(owner_cpp)
@@ -378,6 +407,11 @@ class LibEmitter:
         return L
 
     def emit_class(self, cls, plans):
+        """Return ``(text, listing)`` for the library class ``cls``: the text of ``lib_<Class>.cc`` and the
+        ``(plan, status)`` rows of the coverage report.
+
+        :param plans: the :class:`typesys.MethodPlan` list of the class.
+        """
         name = cls.get_name()
         parent = self.scope.python_parent(name)
         code, entries, listing = self.methods(name, name, plans)
@@ -402,7 +436,8 @@ class LibEmitter:
         return "\n".join(L), listing
 
     def emit_cef(self, plans):
-        """The global functions as static methods of Cefloom\\Cef (the hand written ones are added at runtime)."""
+        """Return ``(text, listing)`` for ``cef_functions.cc``: the global functions as static methods of Cefloom\\Cef (the hand
+        written ones are registered at module startup by ext/src/core.cc)."""
         code, entries, listing = self.methods("Cef", "", plans)
         L = ['#include "cl_gen.h"', "", "zend_class_entry* ce_Cef = nullptr;", ""]
         L += code

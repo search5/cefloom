@@ -1,6 +1,9 @@
 """Code snippets shared by the emitters: names, argument info, and the conversion of every kind of type
 between PHP values (zval) and C++ values.
 
+Pipeline role: shared layer of the emitters. ``emit_lib`` and ``emit_client`` build their C++ from the snippets
+here; ``emit_data`` uses ``NS``, ``cstr``, ``php_fqn_c`` and ``Names``; ``emit_stub`` uses ``NS``; ``generate`` uses ``Names``.
+
 Conventions of the generated code
   a_<i>   the i-th PHP argument as the Zend parser delivers it
   c_<i>   the same as a C++ value
@@ -16,6 +19,7 @@ NS = "Cefloom"
 
 
 def cstr(text):
+    """Return ``text`` as a C string literal, quotes and backslashes escaped."""
     return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
@@ -30,10 +34,12 @@ def php_fqn_c(cef_class):
 
 
 def ce_var(cef_class):
+    """Return the name of the ``zend_class_entry*`` variable of ``cef_class``."""
     return "ce_" + cef_class
 
 
 def lower(name):
+    """Return ``name`` in lower case."""
     return name.lower()
 
 
@@ -41,16 +47,20 @@ class Names:
     """Maps the C++ struct classes to the C structs the conversion functions are named after."""
 
     def __init__(self, model, scope):
+        """Bind the names to the parsed ``model`` and its ``scope``."""
         self.model = model
         self.scope = scope
 
     def struct_cname(self, cls):
+        """Return the C struct (``cef_rect_t``) behind the value struct class ``cls`` (``CefRect``)."""
         return self.model.structs[cls].cname
 
     def to_zval_fn(self, cls):
+        """Return the name of the generated function that converts a ``cls`` value to a PHP object."""
         return "cl_to_zval_" + self.struct_cname(cls)
 
     def from_zval_fn(self, cls):
+        """Return the name of the generated function that fills a ``cls`` value from a PHP object."""
         return "cl_from_zval_" + self.struct_cname(cls)
 
 
@@ -58,7 +68,8 @@ class Names:
 
 
 def type_of(kind):
-    """(Zend type code or None, class name or None, nullable) for a kind used as a parameter or result."""
+    """Return ``(Zend type code or None, class name as a C string literal body or None, nullable)`` for a kind used as a
+    parameter or result; raise AssertionError for a kind that has no PHP type (Void, Ignored, ItemBytes)."""
     if isinstance(kind, Prim):
         return ("_IS_BOOL" if kind.py == "bool" else "IS_DOUBLE" if kind.py == "float" else "IS_LONG"), None, False
     if isinstance(kind, (Str, Bytes)):
@@ -79,7 +90,8 @@ def type_of(kind):
 
 
 def arg_entry(name, kind, nullable_override=None):
-    """One ZEND_ARG_* line for an input."""
+    """Return one ``ZEND_ARG_*`` line for an input called ``name``: untyped (``ZEND_ARG_INFO``) for a time, an object
+    type for an object, else a scalar or array type. ``nullable_override`` replaces the nullability of the kind."""
     code, cls, nullable = type_of(kind)
     if nullable_override is not None:
         nullable = nullable_override
@@ -91,7 +103,8 @@ def arg_entry(name, kind, nullable_override=None):
 
 
 def result_type(results):
-    """The return type of the PHP method for a list of (label, kind): (code, class, nullable)."""
+    """Return ``(code, class, nullable)`` of the PHP return type for a list of ``(label, kind)``: void for none, array
+    for several, else the type of the one."""
     if not results:
         return "IS_VOID", None, False
     if len(results) > 1:
@@ -102,6 +115,13 @@ def result_type(results):
 
 
 def begin_arginfo(var, required, results, tentative, nullable=False):
+    """Return the ``ZEND_BEGIN_ARG_*`` line of an arginfo table named ``var``.
+
+    :param required: number of required parameters.
+    :param results: ``(label, kind)`` pairs the method returns, see :func:`result_type`.
+    :param tentative: emit the tentative-return-type form (``ZEND_BEGIN_ARG_WITH_TENTATIVE_RETURN_*``; emit_client uses it, emit_lib does not).
+    :param nullable: make the return type nullable even if the kind is not.
+    """
     code, cls, was_nullable = result_type(results)
     nullable = nullable or was_nullable
     if cls:
@@ -115,6 +135,7 @@ def begin_arginfo(var, required, results, tentative, nullable=False):
 
 
 def element_cpp(kind):
+    """Return the C++ element type of a ``std::vector`` whose elements are of ``kind``; raise AssertionError for a kind a vector cannot hold."""
     if isinstance(kind, Str):
         return "CefString"
     if isinstance(kind, Prim):
@@ -127,12 +148,12 @@ def element_cpp(kind):
 
 
 def wrap_call(scope, cls, target, pointer):
-    """Wrap the CEF object |pointer| (a raw pointer expression) of class |cls| into the zval |target|."""
+    """Return the statement ``cl_wrap_<cls>(target, pointer);`` that wraps the CEF object |pointer| (a raw pointer expression) in the zval |target|. ``scope`` is unused."""
     return "cl_wrap_%s(%s, %s);" % (cls, target, pointer)
 
 
 def to_zval(names, scope, kind, expr, target, ind="    "):
-    """Lines that put the C++ value |expr| into the zval pointer |target|."""
+    """Return the lines that put the C++ value |expr| into the zval pointer |target|; raise AssertionError for a kind that cannot be returned (Void, Ignored, Buffer, Planes, Bytes, ItemBytes). A ClientRef with no PHP object gives null."""
     if isinstance(kind, Prim):
         if kind.py == "bool":
             return [ind + "ZVAL_BOOL(%s, %s);" % (target, expr)]
@@ -170,8 +191,7 @@ def to_zval(names, scope, kind, expr, target, ind="    "):
 
 
 def from_zval(names, scope, kind, zv, spelled, ind="    "):
-    """An expression (as a string) for the C++ value of the zval pointer |zv|, for the simple kinds; None for
-    the kinds that need statements (see from_zval_stmt)."""
+    """Return an expression (a string) for the C++ value of the zval pointer |zv| for Prim, Str and Enum; None for every other kind. ``names``, ``scope`` and ``ind`` are unused."""
     if isinstance(kind, Prim):
         if kind.py == "bool":
             return "zend_is_true(%s)" % zv
@@ -189,9 +209,10 @@ def from_zval(names, scope, kind, zv, spelled, ind="    "):
 
 
 def php_name(plan):
+    """Return the PHP method name of ``plan``."""
     return plan.name
 
 
 def doc_signature(plan):
-    """A short human readable signature of the PHP method (for the stub and the report)."""
+    """Return ``plan.name`` (the name only, no parameters). Not called."""
     return plan.name

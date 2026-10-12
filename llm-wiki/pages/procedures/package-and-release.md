@@ -81,3 +81,4 @@ php bin/cefloom-runtime install --base-url=<릴리스 자산 디렉터리>
 - [실험으로 확인한 사실](../reference/verified-findings.md)
 - [알려진 제약과 미검증 항목](../reference/known-constraints.md)
 - [로드맵](../reference/roadmap.md)
+- [코드 주석 작성 규칙과 점검 절차](code-comments.md)

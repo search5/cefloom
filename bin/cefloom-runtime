@@ -2,18 +2,23 @@
 <?php
 declare(strict_types=1);
 
-// Installs the CEF runtime (libcef.so, its resources, cefloomsubprocess) that the cefloom extension loads.
-//
-//   php bin/cefloom-runtime install --base-url=https://.../releases/download/0.1.0
-//   php bin/cefloom-runtime install --url=/path/or/https-url/cefloom-runtime-154.0.34-linux-x86_64.tar.gz --sha256=<hex>
-//   php bin/cefloom-runtime status
-//   php bin/cefloom-runtime path
-//
-// The runtime goes to the directory the extension looks in (Cefloom\Cef::userRuntimeDirectory(), in the data
-// directory of the user), so no administrator rights are needed. It has to be the runtime the extension was
-// built against: the archive says which CEF version it holds, and install refuses another one.
-//
-// Needs the extensions cefloom, zlib and phar (a default PHP CLI has them besides cefloom). Needs no Composer.
+/**
+ * Installs the CEF runtime (libcef.so, its resources, cefloomsubprocess) that the cefloom extension loads.
+ *
+ *   php bin/cefloom-runtime install --base-url=https://.../releases/download/0.1.0
+ *   php bin/cefloom-runtime install --url=/path/or/https-url/cefloom-runtime-154.0.34-linux-x86_64.tar.gz --sha256=<hex>
+ *   php bin/cefloom-runtime status
+ *   php bin/cefloom-runtime path
+ *
+ * The runtime goes to Cefloom\Cef::userRuntimeDirectory() ($XDG_DATA_HOME or ~/.local/share, then cefloom/runtime/<major.minor.patch>),
+ * unless --dir is given. The archive's manifest (cefloom-runtime.json) has to name the CEF version of the module
+ * (Cef::cefVersion()); install refuses another one.
+ *
+ * Needs the extension cefloom; `install` also needs zlib and phar. Needs no Composer.
+ *
+ * Exit status: 0 on success (also for no command or `help`, which print the usage, and for a non-CLI SAPI), 1 on failure or
+ * when `status` finds no runtime, 2 for an unknown command.
+ */
 
 use Cefloom\Cef;
 
@@ -32,12 +37,19 @@ foreach (['phar', 'zlib'] as $needed) {
     }
 }
 
+/** Print "cefloom-runtime: $message" on stderr and exit with status 1. */
 function fail(string $message): never
 {
     fwrite(STDERR, "cefloom-runtime: $message\n");
     exit(1);
 }
 
+/**
+ * Parse `--name=value` and `--flag` arguments; any other argument is fatal.
+ *
+ * @param string[] $args Arguments after the command name.
+ * @return array{flags: array<string, true>, values: array<string, string>}
+ */
 function options(array $args): array
 {
     $result = ['flags' => [], 'values' => []];
@@ -53,6 +65,7 @@ function options(array $args): array
     return $result;
 }
 
+/** Return the architecture part of the archive name, "x86_64" or "arm64"; fatal on any other machine. */
 function architecture(): string
 {
     return match (php_uname('m')) {
@@ -62,7 +75,12 @@ function architecture(): string
     };
 }
 
-/** Copy a file from an https URL, an http URL or a path (also file://) to $to. Returns the number of bytes. */
+/**
+ * Copy a file from an https URL, an http URL or a path (also file://) to $to.
+ *
+ * @param bool $progress Print the megabytes copied on stderr every 16 MB.
+ * @return int The number of bytes copied; fatal if the source cannot be read.
+ */
 function fetch(string $source, string $to, bool $progress): int
 {
     if (str_starts_with($source, 'file://')) {
@@ -93,6 +111,7 @@ function fetch(string $source, string $to, bool $progress): int
     return $total;
 }
 
+/** Delete $path recursively; symbolic links are removed, not followed. A missing path is ignored. */
 function remove_tree(string $path): void
 {
     if (!file_exists($path) && !is_link($path)) {
@@ -110,6 +129,7 @@ function remove_tree(string $path): void
     }
 }
 
+/** Print the CEF version of the module, Cef::runtimeDirectory(), Cef::userRuntimeDirectory(), whether libcef.so is readable in the runtime directory, and the CEF version of its manifest if there is one. Returns 0 if libcef.so is readable, else 1. */
 function status(): int
 {
     $dir = Cef::runtimeDirectory();
@@ -126,6 +146,18 @@ function status(): int
     return $has ? 0 : 1;
 }
 
+/**
+ * Download, verify and unpack the runtime into the install directory.
+ *
+ * Checks the SHA-256 of the archive and that its manifest names the CEF version of the module, and installs
+ * through a temporary directory beside the target (<dir>.tmp-<pid>).
+ *
+ * The archive comes from --url, else $CEFLOOM_RUNTIME_URL, else --base-url (or $CEFLOOM_RUNTIME_BASE_URL) plus the archive name; the checksum from
+ * --sha256, else the first 64 characters of <archive URL>.sha256. A runtime already in the directory (libcef.so readable) is kept unless --force is given.
+ *
+ * @param array{flags: array<string, true>, values: array<string, string>} $o Parsed options: url, base-url, sha256, dir, force.
+ * @return int 0 on success and when a runtime is already installed; every failure exits with status 1 inside fail().
+ */
 function install(array $o): int
 {
     $cef = Cef::cefVersion();

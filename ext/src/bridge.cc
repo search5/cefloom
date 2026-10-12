@@ -1,13 +1,15 @@
-// The JS bridge and the client that carries it.
-//
-// JavaScript calls `cefloom.call(name, ...args)` (defined by cefloomsubprocess in every frame), which sends a
-// query through CEF's message router. This file answers it in the browser process: the query is JSON
-// {"name": ..., "args": [...]}, the PHP function exposed under that name is called on the PHP thread, and its
-// result goes back as JSON. A PHP exception becomes a rejected Promise in JavaScript.
-//
-// The router must see a few events of every browser (a closed browser, a navigation, a crashed renderer), so
-// every browser gets NativeClient, which handles those and passes everything else on to the client of the
-// PHP script.
+/**
+ * @file
+ * @brief The JS bridge and the client that carries it.
+ *
+ * JavaScript calls `cefloom.call(name, ...args)` (defined by cefloomsubprocess in every frame), which sends a query
+ * through CEF's message router. This file answers it in the browser process: the query is JSON
+ * {"name": ..., "args": [...]}, the PHP function exposed under that name is called on the PHP thread, and its result goes
+ * back as JSON. A PHP exception becomes a rejected Promise in JavaScript.
+ *
+ * The router must see a few events of every browser (a closed browser, a navigation, a crashed renderer), so every
+ * browser gets NativeClient, which handles those and passes everything else on to the client of the PHP script.
+ */
 #include "core.h"
 
 extern "C" {
@@ -16,9 +18,12 @@ extern "C" {
 
 namespace {
 
+/** PHP callables by name, set by Cef::expose(). Each entry owns one reference. PHP thread only. */
 std::map<std::string, zval> g_exposed;  // PHP callables by name
+/** Message router of the bridge; null outside cl_bridge_init() and cl_bridge_shutdown(). */
 CefRefPtr<CefMessageRouterBrowserSide> g_router;
 
+/** Return the message of exception |ex|, or "error" if it has none. */
 std::string exception_message(zend_object* ex) {
   zval rv;
   zval* message = zend_read_property_ex(zend_ce_exception, ex, ZSTR_KNOWN(ZEND_STR_MESSAGE), true, &rv);
@@ -28,8 +33,15 @@ std::string exception_message(zend_object* ex) {
   return "error";
 }
 
+/** Router handler that answers a JS query by calling the PHP function exposed under its name. */
 class Bridge : public CefMessageRouterBrowserSide::Handler {
  public:
+  /**
+   * Answer a query from JavaScript through handle() on the PHP thread.
+   * If PHP cannot run it (shutting down, or the F14 timeout fallback of cl::run_on_php_thread()) the query fails with 500, so
+   * the JavaScript promise never waits for ever.
+   * @return true: the query is always handled here.
+   */
   bool OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64_t query_id, const CefString& request,
                bool persistent, CefRefPtr<Callback> callback) override {
     std::string text = request.ToString();
@@ -40,6 +52,12 @@ class Bridge : public CefMessageRouterBrowserSide::Handler {
   }
 
  private:
+  /**
+   * Decode |text|, call the exposed function and answer |callback| with its JSON result.
+   * Fails the query with 400 (invalid request), 404 (unknown function) or 500 (PHP unavailable, the call threw, or the
+   * result is not JSON encodable); the message of a PHP exception is the failure text. An exit() stays pending.
+   * @note Thread: PHP.
+   */
   static void handle(const std::string& text, CefRefPtr<Callback> callback) {
     if (!cl::g_php_alive || EG(exception)) {
       callback->Failure(500, "PHP is not available");
@@ -117,27 +135,40 @@ class Bridge : public CefMessageRouterBrowserSide::Handler {
   }
 };
 
+/** The handler registered with the router. The router keeps a plain pointer: it is not reference counted. */
 std::unique_ptr<Bridge> g_bridge;  // the router keeps a plain pointer: the handler is not reference counted
 
+/**
+ * CefClient given to every browser: takes part in its life span and request events for the router, and passes
+ * everything to the client of the PHP script (which may be null).
+ */
 class NativeClient : public Fwd_CefClient, public Fwd_CefLifeSpanHandler, public Fwd_CefRequestHandler {
  public:
+  /**
+   * Wrap |user|, the CefClient made from the script's Client (null for none).
+   * CEF's getClient() answers with the script's client through the alias registered here.
+   */
   explicit NativeClient(CefRefPtr<CefClient> user) {
     Fwd_CefClient::forward_ = user;
     cl::ProxyBase::alias(static_cast<CefClient*>(this), user.get());
   }
+  /** Remove the alias of the script's client. */
   ~NativeClient() override { cl::ProxyBase::unalias(static_cast<CefClient*>(this)); }
 
   // Fwd_CefClient: the three handlers this class takes part in
+  /** Return this object as the life span handler, chained to the one of the user's client. */
   CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() override {
     CefRefPtr<CefClient> user = Fwd_CefClient::forward_;
     Fwd_CefLifeSpanHandler::forward_ = user ? user->GetLifeSpanHandler() : nullptr;
     return this;
   }
+  /** Return this object as the request handler, chained to the one of the user's client. */
   CefRefPtr<CefRequestHandler> GetRequestHandler() override {
     CefRefPtr<CefClient> user = Fwd_CefClient::forward_;
     Fwd_CefRequestHandler::forward_ = user ? user->GetRequestHandler() : nullptr;
     return this;
   }
+  /** Offer the message to the router first, then to the user's client. Return true if either handled it. */
   bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefProcessId source_process,
                                 CefRefPtr<CefProcessMessage> message) override {
     if (g_router && g_router->OnProcessMessageReceived(browser, frame, source_process, message)) {
@@ -147,10 +178,12 @@ class NativeClient : public Fwd_CefClient, public Fwd_CefLifeSpanHandler, public
   }
 
   // Fwd_CefLifeSpanHandler
+  /** Add the new browser to the list of live browsers, then forward. */
   void OnAfterCreated(CefRefPtr<CefBrowser> browser) override {
     cl_core_note_browser(browser, true);
     Fwd_CefLifeSpanHandler::OnAfterCreated(browser);
   }
+  /** Tell the router the browser closes, forward, then remove it from the list of live browsers. */
   void OnBeforeClose(CefRefPtr<CefBrowser> browser) override {
     if (g_router) {
       g_router->OnBeforeClose(browser);
@@ -160,6 +193,7 @@ class NativeClient : public Fwd_CefClient, public Fwd_CefLifeSpanHandler, public
   }
 
   // Fwd_CefRequestHandler
+  /** Tell the router about the navigation, then forward and return the user's answer. */
   bool OnBeforeBrowse(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request,
                       bool user_gesture, bool is_redirect) override {
     if (g_router) {
@@ -167,6 +201,7 @@ class NativeClient : public Fwd_CefClient, public Fwd_CefLifeSpanHandler, public
     }
     return Fwd_CefRequestHandler::OnBeforeBrowse(browser, frame, request, user_gesture, is_redirect);
   }
+  /** Tell the router the renderer is gone (it fails that browser's open queries), then forward. */
   void OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser, TerminationStatus status, int error_code,
                                  const CefString& error_string) override {
     if (g_router) {
@@ -176,13 +211,19 @@ class NativeClient : public Fwd_CefClient, public Fwd_CefLifeSpanHandler, public
   }
 
  private:
+  /** Thread-safe reference counting of CEF. */
   IMPLEMENT_REFCOUNTING(NativeClient);
 };
 
 }  // namespace
 
+/**
+ * Return the client every browser gets: a NativeClient in front of |user|.
+ * @param user The client made from the script's Client, or null.
+ */
 CefRefPtr<CefClient> cl_bridge_wrap_client(CefRefPtr<CefClient> user) { return new NativeClient(user); }
 
+/** Create the message router and register the bridge handler. Call after CefInitialize(). Thread: PHP. */
 void cl_bridge_init() {
   CefMessageRouterConfig config;
   g_router = CefMessageRouterBrowserSide::Create(config);
@@ -190,6 +231,11 @@ void cl_bridge_init() {
   g_router->AddHandler(g_bridge.get(), false);
 }
 
+/**
+ * Remove the bridge handler and drop the exposed functions.
+ * Call before CefShutdown(); safe to call twice. The callables are released only while PHP is alive.
+ * @note Thread: PHP.
+ */
 void cl_bridge_shutdown() {
   if (g_router && g_bridge) {
     g_router->RemoveHandler(g_bridge.get());
@@ -204,6 +250,11 @@ void cl_bridge_shutdown() {
   g_exposed.clear();
 }
 
+/**
+ * Expose the PHP |callable| to JavaScript under |name|, replacing a function exposed under the same name.
+ * Takes its own reference to |callable|.
+ * @note Thread: PHP.
+ */
 void cl_bridge_expose(zend_string* name, zval* callable) {
   std::string key(ZSTR_VAL(name), ZSTR_LEN(name));
   auto found = g_exposed.find(key);
@@ -220,16 +271,26 @@ void cl_bridge_expose(zend_string* name, zval* callable) {
 
 namespace {
 
+/** The six arguments of CefBrowserHost::CreateBrowser() converted from PHP, kept alive for the call. */
 struct BrowserArgs {
+  /** Window parameters. */
   CefWindowInfo window_info;
+  /** Browser settings. */
   CefBrowserSettings settings;
+  /** Initial URL. */
   CefString url;
+  /** The NativeClient wrapping the script's client. */
   CefRefPtr<CefClient> client;
+  /** Extra info for the render process, or null. */
   CefRefPtr<CefDictionaryValue> extra_info;
+  /** Request context, or null for the global one. */
   CefRefPtr<CefRequestContext> request_context;
 };
 
-// Parses the six arguments of both methods; false if PHP already has an exception.
+/**
+ * Parse the six arguments of CreateBrowser and CreateBrowserSync into |out|.
+ * @return false, with a PHP exception pending, if the arguments are wrong or CEF is not running.
+ */
 bool parse_browser_args(INTERNAL_FUNCTION_PARAMETERS, BrowserArgs* out) {
   zend_object *window_info, *client, *settings, *extra, *context;
   zend_string* url;
@@ -256,8 +317,11 @@ bool parse_browser_args(INTERNAL_FUNCTION_PARAMETERS, BrowserArgs* out) {
 
 }  // namespace
 
-// BrowserArgs holds C++ structs of CEF whose destructors call libcef: they must not exist while CEF is not running (the
-// library is not even loaded then), so the check comes before them.
+/**
+ * Throw Error and return false unless CEF is running.
+ * BrowserArgs holds C++ structs of CEF whose destructors call libcef: they must not exist while CEF is not running (the
+ * library is not even loaded then), so this check comes before them.
+ */
 static bool require_running() {
   if (!cl::g_cef_running) {
     zend_throw_error(nullptr, "CEF is not running; call Cef::initialize() first");
@@ -266,6 +330,16 @@ static bool require_running() {
   return true;
 }
 
+/**
+ * CefBrowserHost::CreateBrowser(WindowInfo $windowInfo, ?Client $client, string $url, BrowserSettings $settings,
+ * ?DictionaryValue $extraInfo, ?RequestContext $requestContext): bool
+ *
+ * Create a browser asynchronously; it appears in Client callbacks (OnAfterCreated).
+ * @return The value CefBrowserHost::CreateBrowser() returns.
+ * @throws Error if CEF is not running.
+ * @throws ArgumentCountError if the number of arguments is not six.
+ * @throws TypeError if an argument has the wrong type.
+ */
 ZEND_METHOD(CefBrowserHost, CreateBrowser) {
   if (!require_running()) {
     RETURN_THROWS();
@@ -278,6 +352,16 @@ ZEND_METHOD(CefBrowserHost, CreateBrowser) {
                                             args.extra_info, args.request_context));
 }
 
+/**
+ * CefBrowserHost::CreateBrowserSync(WindowInfo $windowInfo, ?Client $client, string $url, BrowserSettings $settings,
+ * ?DictionaryValue $extraInfo, ?RequestContext $requestContext): ?Browser
+ *
+ * Create a browser and return it before the call returns.
+ * @return The browser CefBrowserHost::CreateBrowserSync() returns, or null if it returns none.
+ * @throws Error if CEF is not running.
+ * @throws ArgumentCountError if the number of arguments is not six.
+ * @throws TypeError if an argument has the wrong type.
+ */
 ZEND_METHOD(CefBrowserHost, CreateBrowserSync) {
   if (!require_running()) {
     RETURN_THROWS();

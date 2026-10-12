@@ -1,14 +1,16 @@
 """Type handling of the generator.
 
 Every C++ type in a CEF method signature is classified into a *kind*. A kind is a
-small description (what the type is, how it looks in Python) that the emitters
-turn into C++, Cython and .pyi code. Types the generator cannot handle yet are
-reported with a reason instead of being skipped silently, so the coverage report
-shows exactly what is left to do.
+small description (what the type is, how it looks in PHP) that the emitters
+turn into C++ and the PHP stub. Types the generator cannot handle are recorded
+as ``MethodPlan.reason`` (raised as :class:`Unsupported`), and the coverage report lists them.
+
+Pipeline role: third stage. ``plan_class`` and ``plan_method`` turn the methods selected by ``scope`` into
+:class:`MethodPlan` objects that ``emit_lib``, ``emit_client`` and ``emit_stub`` render.
 
 To support a new kind of type:
   1. add a `Kind` subclass here and recognise it in `classify()`;
-  2. teach the emitters (emit_cpp.py, emit_cython.py, emit_pyi.py) how to convert it.
+  2. teach the emitters (emit_lib.py, emit_client.py, emit_stub.py) how to convert it.
 The method planning below does not need to change.
 """
 
@@ -27,50 +29,54 @@ class Unsupported(Exception):
 
 @dataclass(frozen=True)
 class Kind:
+    """Base class of the type kinds; a kind says how a C++ type crosses the PHP boundary."""
     pass
 
 
 @dataclass(frozen=True)
 class Void(Kind):
+    """``void``: no value."""
     pass
 
 
 @dataclass(frozen=True)
 class Prim(Kind):
+    """A number or ``bool`` that converts directly to a PHP scalar."""
     cpp: str  # the type as written in the header
-    py: str  # annotation in Python: int, bool or float
+    py: str  # "int", "bool" or "float"
 
 
 @dataclass(frozen=True)
 class Str(Kind):
-    """CefString (UTF-16 inside CEF, str in Python)."""
+    """CefString (UTF-16 inside CEF, a PHP string)."""
 
 
 @dataclass(frozen=True)
 class Enum(Kind):
+    """A C enumeration, passed to PHP as an int."""
     spelled: str  # as written where it is used, e.g. TransitionType
     cname: str  # the C enumeration, e.g. cef_transition_type_t
-    # The class in cefweaver.types ("" if the enumeration could not be read: then an int).
+    # EnumInfo.py_name, the class of the constants in Cefloom\Types ("" if the enumeration could not be read).
     py: str = field(default="", compare=False)
 
 
 @dataclass(frozen=True)
 class LibRef(Kind):
-    """CefRefPtr<T> of an object implemented by CEF (wrapped for Python)."""
+    """CefRefPtr<T> of an object implemented by CEF (a PHP object that wraps it)."""
 
     cls: str
 
 
 @dataclass(frozen=True)
 class ClientRef(Kind):
-    """CefRefPtr<T> of an object implemented by the application (proxied to Python)."""
+    """CefRefPtr<T> of an object implemented by the application (a PHP object; CEF gets a C++ proxy)."""
 
     cls: str
 
 
 @dataclass(frozen=True)
 class Struct(Kind):
-    """A plain data struct passed by value (CefRect, CefPoint, ...): a named tuple in Python."""
+    """A plain data struct passed by value (CefRect, CefPoint, ...): an object of the generated final PHP class."""
 
     cls: str  # the C++ class, e.g. CefRect
     fields: tuple  # of model.StructField
@@ -80,17 +86,17 @@ class Struct(Kind):
 
 @dataclass(frozen=True)
 class Vector(Kind):
-    """`std::vector<T>` (a list in Python). The element is a string, a number (not bool), a
-    value type struct or, from a library method, an object implemented by CEF."""
+    """`std::vector<T>` (a PHP array). The element is a string, a number (not bool), a
+    value type struct or an object implemented by CEF (not accepted as a parameter of a library method)."""
 
     element: Kind
 
 
 @dataclass(frozen=True)
 class Buffer(Kind):
-    """`void* data, <integer> size`: a writable memoryview in Python. A `const void*` of
-    which the header gives the size in words (OnPaint: width * height pixels) has no size
-    parameter: `size_expr` is the C++ expression of its size in bytes, and the memoryview is
+    """`void* data, <integer> size` of a client method: a ``Cefloom\\Buffer`` (writable unless `readonly`). A `const void*` of
+    which the header gives the size in a comment (OnPaint: width * height * 4 bytes) has no size
+    parameter: `size_expr` is the C++ expression of its size in bytes, and the buffer is
     read-only."""
 
     size_cpp: str  # type of the size parameter
@@ -100,8 +106,8 @@ class Buffer(Kind):
 
 @dataclass(frozen=True)
 class Planes(Kind):
-    """`const float** data, int frames`: a list of read-only float32 memoryviews in Python, one of `frames`
-    samples for every channel. The number of channels is no argument of the call: an earlier call told it
+    """`const float** data, int frames`: a PHP array of read-only ``Cefloom\\Buffer`` of `frames` floats, one for every
+    channel. The number of channels is no argument of the call: an earlier call told it
     (OnAudioStreamStarted) and the proxy remembers it in the member `count_member`."""
 
     count_member: str
@@ -110,30 +116,30 @@ class Planes(Kind):
 @dataclass(frozen=True)
 class StrMap(Kind):
     """`std::multimap<CefString, CefString>` (a header map) or `std::map<CefString, CefString>`
-    (the switches of a command line): a dict of str in Python, as a Map in java-cef. A key that
-    occurs twice in a multimap keeps its last value."""
+    (the switches of a command line): a PHP array of strings. A key that
+    occurs twice in a multimap keeps its last value (cl::ret_strmap)."""
 
     multi: bool
 
 
 @dataclass(frozen=True)
 class Time(Kind):
-    """`CefBaseTime`: microseconds since 1601-01-01 UTC (cef_time.h). A timezone-aware
-    `datetime` in Python; 0, CEF's null time, is None."""
+    """`CefBaseTime`: microseconds since 1601-01-01 (cl::ret_time). A ``DateTimeImmutable`` in PHP (null for 0);
+    as an input also a DateTimeInterface, an int or a float of Unix seconds (cl::time_from)."""
 
 
 @dataclass(frozen=True)
 class Ignored(Kind):
-    """A parameter of a handler method that is not given to Python: the platform's native
-    event (`CefEventHandle`, an XEvent* on Linux). java-cef does not pass it either."""
+    """A parameter of a handler method that is not given to PHP: a `CefEventHandle` (an XEvent* on Linux) or an
+    entry of ``IGNORED_PARAMS``."""
 
 
 @dataclass(frozen=True)
 class Bytes(Kind):
-    """`const void* data, size_t size` of a library method: any bytes-like object in Python.
+    """`const void* data, size_t size` of a library method: a PHP string.
     With `out` on its ParamPlan it is `void* buffer, size_t buffer_size` that CEF fills: the
-    Python method takes the size and returns `bytes` (the method's return value, the number of
-    bytes written, only trims them)."""
+    PHP method takes the size and returns a string (the method's return value, the number of
+    bytes written, only trims it)."""
 
     size_cpp: str  # type of the size parameter
     size_first: bool = False  # `size_t size, const void* bytes` (CefPostDataElement)
@@ -142,8 +148,8 @@ class Bytes(Kind):
 @dataclass(frozen=True)
 class ItemBytes(Kind):
     """`void* ptr, size_t size, size_t n` of a library method (fread/fwrite): `n` items of
-    `size` bytes. In Python `write(data, size=1)` takes bytes and returns the items written,
-    and `read(n, size=1)` returns the bytes read (`n * size` at most)."""
+    `size` bytes. In PHP `write(string $data, int $size)` returns the items written,
+    and `read(int $n, int $size)` returns the string read (`n * size` bytes at most)."""
 
     size_cpp: str
 
@@ -256,25 +262,30 @@ def classify(model, scope, analysis):
 
 @dataclass
 class ParamPlan:
+    """How one parameter of a method is passed: its kind, direction and the C++ names that go with it.
+
+    The ``out``, ``inout``, ``byref`` and ``byaddr`` flags select the conversion code the emitters generate.
+    """
     cef_name: str
-    name: str  # PEP 8 name in Python
+    name: str  # camelCase name (py_param_name)
     spelled: str  # the C++ type as written
     kind: Kind
-    out: bool = False  # filled by the callee and returned from the Python method
+    out: bool = False  # filled by the callee and returned from the PHP method
     # A library method that takes a struct by non-const reference reads and changes it
-    # (CefDisplay::ConvertPointToPixels): the Python method takes it and returns it.
+    # (CefDisplay::ConvertPointToPixels): the PHP method takes it and returns it.
     inout: bool = False
     const: bool = False
     byref: bool = False
     byaddr: bool = False  # `bool* flag`: an output the handler sets through a pointer
     is_return: bool = False  # the hidden output that carries a struct a handler method returns
     count_name: str = ""  # ItemBytes only: the C++ name of the item count parameter
-    optional: bool = False  # the header marks it optional_param: None is allowed
+    optional: bool = False  # the header marks it optional_param: null is allowed
     size_name: str = ""  # Buffer only: the C++ name of the size parameter
 
 
 @dataclass
 class MethodPlan:
+    """The decision for one method or global function: its parameters and return kind, or ``reason`` when it is not generated."""
     owner: str  # CEF class name, or "" for a global function
     cef_name: str
     name: str
@@ -290,10 +301,12 @@ class MethodPlan:
 
     @property
     def supported(self):
+        """True if the method is generated (``reason`` is empty)."""
         return not self.reason
 
     @property
     def outs(self):
+        """Parameters the callee fills; they are returned to PHP (library method) or by the PHP handler (client method)."""
         return [p for p in self.params if p.out]
 
     @property
@@ -303,12 +316,13 @@ class MethodPlan:
 
     @property
     def ins(self):
+        """Parameters PHP supplies: not output-only and not ignored."""
         return [p for p in self.params
                 if (not p.out or p.inout) and not isinstance(p.kind, Ignored)]
 
     @property
     def results(self):
-        """What the Python side of a client method returns, in order."""
+        """The ``(label, kind)`` pairs the PHP method returns, in order: the return value (``"return"``, unless void), then the outputs."""
         found = [] if isinstance(self.ret, Void) else [("return", self.ret)]
         return found + [(p.name, p.kind) for p in self.outs]
 
@@ -386,7 +400,11 @@ DELIBERATE_POINTERS = {
 
 
 def plan_method(model, scope, owner, method, *, client_side, static=False):
-    """Decide how one method or function is generated (or why it is not)."""
+    """Return the :class:`MethodPlan` of one method or function of class ``owner`` ("" for a global function).
+
+    A construct that cannot be generated sets ``plan.reason`` (from :class:`Unsupported`) instead of raising.
+    ``client_side`` is True for a method of a client class; ``static`` marks static methods and global functions.
+    """
     plan = MethodPlan(
         owner=owner,
         cef_name=method.get_name(),
@@ -541,10 +559,10 @@ def plan_method(model, scope, owner, method, *, client_side, static=False):
 
 
 def plan_class(model, scope, cls):
-    """The plans of all methods of a class (its parents' included, unless the class is a Python subclass of its
-    parent: see Scope.python_parent). Python has one attribute
-    per name, so of overloads (CefRequestContext::CreateContext has two) the first is
-    generated and the others say so."""
+    """The plans of the virtual methods, then the static functions, of a class (its CEF parents' included, unless the
+    class is a PHP subclass of its parent: see Scope.python_parent). PHP has one method
+    per name, so of several supported plans with the same name (overloads: CefRequestContext::CreateContext has two) the first is
+    generated and the others get a ``reason``."""
     client = cls.is_client_side()
     own_only = scope.python_parent(cls.get_name()) is not None      # the rest is inherited in Python
     plans = [plan_method(model, scope, cls.get_name(), m, client_side=client)
@@ -561,6 +579,7 @@ def plan_class(model, scope, cls):
 
 
 def _is_size_t(model, scope, argument):
+    """Return True if ``argument`` is a ``size_t`` parameter."""
     try:
         kind = classify(model, scope, argument.get_type())
     except Unsupported:
@@ -569,6 +588,7 @@ def _is_size_t(model, scope, argument):
 
 
 def _check_return(kind, client_side):
+    """Raise :class:`Unsupported` if a client method returns a ``Time``; nothing else is checked."""
     if client_side:
         if isinstance(kind, Time):
             raise Unsupported("a client method returning a time")

@@ -1,5 +1,12 @@
 <?php
-// Helpers of the cefloom tests. A test is a PHP script that prints "OK" as its last line and exits with 0.
+/**
+ * Helpers of the cefloom tests.
+ *
+ * A test is a PHP script that requires this file, makes checks with check()/same()/throws(), and ends with finish(),
+ * which prints "OK (N checks)" and exits with 0 (tests/run.sh passes a test whose output has such a line and no line starting
+ * with "FAIL"). The failure and check counters live in $GLOBALS['cl_failures'] and
+ * $GLOBALS['cl_checks'].
+ */
 declare(strict_types=1);
 
 use Cefloom\Cef;
@@ -7,6 +14,7 @@ use Cefloom\Cef;
 $GLOBALS['cl_failures'] = 0;
 $GLOBALS['cl_checks'] = 0;
 
+/** Count a check and report "FAIL: $what" on stderr when $condition is false; the test goes on. */
 function check(bool $condition, string $what): void
 {
     $GLOBALS['cl_checks']++;
@@ -16,11 +24,13 @@ function check(bool $condition, string $what): void
     }
 }
 
+/** Check that $expected === $actual; the failure message shows both values. */
 function same(mixed $expected, mixed $actual, string $what): void
 {
     check($expected === $actual, $what . ' (expected ' . var_export($expected, true) . ', got ' . var_export($actual, true) . ')');
 }
 
+/** Check that $fn() throws an instance of $class; a different or no exception fails. */
 function throws(callable $fn, string $class, string $what): void
 {
     try {
@@ -32,12 +42,18 @@ function throws(callable $fn, string $class, string $what): void
     check(false, "$what (nothing thrown)");
 }
 
-/** Start CEF in a way that works on a machine without a display (the tests run under xvfb-run). */
+/**
+ * Add the switches ozone-platform=x11 and disable-gpu, then call Cef::initialize().
+ * Sets externalMessagePump to 1 if $CEFLOOM_TEST_EXTERNAL_PUMP is set. Exits with status 1 when Cef::initialize() returns false.
+ *
+ * @param Cefloom\Settings|null $settings Settings to use; an empty rootCachePath is set to <$CEFLOOM_TEST_TMP or build/tmp>/cache-<pid>, removed at exit.
+ * @param Cefloom\App|null $app Application object passed to Cef::initialize().
+ */
 function start_cef(?Cefloom\Settings $settings = null, ?Cefloom\App $app = null): void
 {
     Cef::addSwitch('ozone-platform', 'x11');
     Cef::addSwitch('disable-gpu');
-    // Every test process gets its own cache directory: Chromium locks it, and tests run in parallel.
+    // Every test process gets its own cache directory: Chromium locks it.
     $settings ??= new Cefloom\Settings();
     if (getenv('CEFLOOM_TEST_EXTERNAL_PUMP')) {
         $settings->externalMessagePump = 1;   // run the tests in the event driven mode too (see run.sh)
@@ -57,7 +73,7 @@ function start_cef(?Cefloom\Settings $settings = null, ?Cefloom\App $app = null)
     }
 }
 
-/** Run the CEF loop for $seconds (the loop of a test that waits for something that is not a condition). */
+/** Run the CEF message loop for $seconds; for waiting on something that has no condition to poll. */
 function pump(float $seconds): void
 {
     $end = microtime(true) + $seconds;
@@ -67,7 +83,10 @@ function pump(float $seconds): void
     }
 }
 
-/** Make input on the display with xdotool (the XTEST extension of the X server): xdo('mousemove', '10', '20'). */
+/**
+ * Send input to the display with xdotool, e.g. xdo('mousemove', '10', '20').
+ * A failing xdotool is reported on stderr and does not fail the test.
+ */
 function xdo(string ...$args): void
 {
     exec('xdotool ' . implode(' ', array_map('escapeshellarg', $args)) . ' 2>&1', $out, $code);
@@ -76,14 +95,14 @@ function xdo(string ...$args): void
     }
 }
 
-/** True when xdotool and a display are there. */
+/** Return true when xdotool is installed and DISPLAY is set. */
 function can_make_input(): bool
 {
     exec('command -v xdotool', $found, $status);
     return $status === 0 && (bool) getenv('DISPLAY');
 }
 
-/** A new directory for this test, removed when the test ends. */
+/** Create a new directory under the system temp directory; it is removed recursively when the test ends. */
 function tmpdir(string $prefix = 'cefloom-test'): string
 {
     $dir = sys_get_temp_dir() . '/' . $prefix . '-' . getmypid() . '-' . bin2hex(random_bytes(3));
@@ -93,8 +112,14 @@ function tmpdir(string $prefix = 'cefloom-test'): string
 }
 
 /**
- * Run a PHP script of its own with the extension loaded (CEF starts once per process). Returns [exit code, output].
- * $module is the cefloom.so to load: CEFLOOM_DIST or the build directory.
+ * Run a PHP script in a separate process with the extension loaded, via `env ... timeout -k 5 $timeout php -d extension=$module`.
+ *
+ * @param string $script Path of the script.
+ * @param string[] $args Command line arguments of the script.
+ * @param array<string, string|null> $env Environment variables to set; a null value unsets the variable.
+ * @param int $timeout Seconds before `timeout` sends TERM (KILL follows 5 seconds later).
+ * @param string|null $module The cefloom.so to load; defaults to ($CEFLOOM_DIST or <repo>/build/dist)/cefloom.so.
+ * @return array{0: int, 1: string} Exit code (124 if `timeout` stopped the process) and the stdout+stderr lines joined by "\n", except lines that match /^\[\d+:\d+:\d+\/|ERROR:|WARNING:|INFO:/.
  */
 function run_php(string $script, array $args = [], array $env = [], int $timeout = 90, ?string $module = null): array
 {
@@ -122,7 +147,9 @@ function run_php(string $script, array $args = [], array $env = [], int $timeout
 
 /**
  * Start the local HTTP server of the tests (tests/fixtures/server.php) on a free port of 127.0.0.1.
- * Returns the base URL ("http://127.0.0.1:PORT"); the server is stopped when the test ends.
+ * The server is stopped when the test ends; exits with status 1 if it does not answer within about 5 seconds.
+ *
+ * @return string The base URL, "http://127.0.0.1:PORT".
  */
 function start_http_server(): string
 {
@@ -157,7 +184,13 @@ function start_http_server(): string
     exit(1);
 }
 
-/** Run the CEF loop until $condition() is true; fails the test after $timeoutMs. */
+/**
+ * Run the CEF message loop until $condition() returns true.
+ *
+ * @param string $what Description used in the failure message.
+ * @param int $timeoutMs Time limit; on expiry the check fails.
+ * @return bool True if the condition became true, false on timeout.
+ */
 function wait_until(callable $condition, string $what, int $timeoutMs = 20000): bool
 {
     $deadline = microtime(true) + $timeoutMs / 1000;
@@ -172,6 +205,7 @@ function wait_until(callable $condition, string $what, int $timeoutMs = 20000): 
     return false;
 }
 
+/** Print the result and exit: status 1 with a summary on stderr if any check failed, else "OK (N checks)" and status 0. */
 function finish(): never
 {
     if ($GLOBALS['cl_failures'] > 0) {
@@ -183,8 +217,9 @@ function finish(): never
 }
 
 /**
- * A URLRequestClient that collects what comes: the body, the progress, the status. Give $credentials = [user, password] to answer a
- * request for credentials, or leave it null to decline.
+ * A URLRequestClient that records what arrives: the body, the progress, the status and the response headers.
+ *
+ * With $credentials = [user, password] it answers requests for credentials, at most $maxAsks times; with null it declines.
  */
 final class Fetcher extends Cefloom\URLRequestClient
 {
@@ -199,7 +234,9 @@ final class Fetcher extends Cefloom\URLRequestClient
     public array $headers = [];
     public bool $cached = false;
     public int $maxAsks = 2;
+    /** @param array{0: string, 1: string}|null $credentials User and password for getAuthCredentials(), or null to decline. */
     public function __construct(public ?array $credentials = null) {}
+    /** Record the final status, error, HTTP status, headers and cache flag, and mark the fetch done. */
     public function onRequestComplete(Cefloom\URLRequest $request): void
     {
         $this->done = true;
@@ -212,9 +249,13 @@ final class Fetcher extends Cefloom\URLRequestClient
         }
         $this->cached = $request->responseWasCached();
     }
+    /** Append [$current, $total] to $up. */
     public function onUploadProgress(Cefloom\URLRequest $request, int $current, int $total): void { $this->up[] = [$current, $total]; }
+    /** Append [$current, $total] to $down. */
     public function onDownloadProgress(Cefloom\URLRequest $request, int $current, int $total): void { $this->down[] = [$current, $total]; }
+    /** Append the received bytes to $body. */
     public function onDownloadData(Cefloom\URLRequest $request, Cefloom\Buffer $data): void { $this->body .= $data->read(0, $data->getSize()); }
+    /** Record the request; answer with $credentials and return true, or return false when there are none or it has already been asked $maxAsks times. */
     public function getAuthCredentials(bool $isProxy, string $host, int $port, string $realm, string $scheme, Cefloom\AuthCallback $callback): bool
     {
         $this->asked[] = [$isProxy, $host, $realm, $scheme];
@@ -226,7 +267,15 @@ final class Fetcher extends Cefloom\URLRequestClient
     }
 }
 
-/** Start a request. Returns [the URLRequest, the Fetcher]; wait with wait_until(fn() => $f->done, ...). */
+/**
+ * Start a request without waiting for it; wait with wait_until(fn() => $fetcher->done, ...).
+ *
+ * @param array<string, string> $headers Request headers.
+ * @param string|null $body POST body; null sends none.
+ * @param array{0: string, 1: string}|null $credentials Passed to the Fetcher.
+ * @param int $flags Request flags (UR_FLAG_*).
+ * @return array{0: Cefloom\URLRequest, 1: Fetcher} The request and its client.
+ */
 function start_fetch(string $url, string $method = 'GET', array $headers = [], ?string $body = null, ?array $credentials = null, int $flags = 0, ?Cefloom\RequestContext $context = null): array
 {
     $request = Cefloom\Request::create();
@@ -247,7 +296,11 @@ function start_fetch(string $url, string $method = 'GET', array $headers = [], ?
     return [Cefloom\URLRequest::create($request, $fetcher, $context), $fetcher];
 }
 
-/** Fetch a URL and wait for it: the Fetcher with the result. */
+/**
+ * Fetch a URL and wait up to 20 seconds for it; parameters as for start_fetch().
+ *
+ * @return Fetcher The client holding the result; its $done is false on timeout.
+ */
 function fetch_url(string $url, string $method = 'GET', array $headers = [], ?string $body = null, ?array $credentials = null, int $flags = 0, ?Cefloom\RequestContext $context = null): Fetcher
 {
     [$request, $fetcher] = start_fetch($url, $method, $headers, $body, $credentials, $flags, $context);
@@ -257,7 +310,11 @@ function fetch_url(string $url, string $method = 'GET', array $headers = [], ?st
 
 /**
  * Make a self-signed certificate for 127.0.0.1 and localhost in a new directory and start fixtures/https_server.php on a free port with it.
- * Returns ['url' => 'https://127.0.0.1:PORT', 'dir' => the directory, 'cert' => path, 'key' => path]. The server stops when the test ends.
+ * The server stops when the test ends; exits with status 1 if openssl fails or the server does not report ready.
+ *
+ * @param string $commonName Subject CN of the certificate.
+ * @param bool $requireClientCertificate Make the server ask the client for a certificate.
+ * @return array{url: string, dir: string, cert: string, key: string, port: int} Base URL "https://127.0.0.1:PORT", the directory and the PEM paths.
  */
 function start_https_server(string $commonName = 'cefloom-test', bool $requireClientCertificate = false): array
 {
