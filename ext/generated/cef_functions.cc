@@ -175,7 +175,7 @@ ZEND_METHOD(Cef, CefCreateDirectory) {
   }
 #endif
   CefString c_0 = cl::to_cef(a_0);
-  auto cl_ret = CefCreateDirectory(c_0);
+  auto cl_ret = cl::off_ui_thread([&]() { return CefCreateDirectory(c_0); });
   ZVAL_BOOL(return_value, cl_ret);
 }
 
@@ -198,7 +198,7 @@ ZEND_METHOD(Cef, CefCreateNewTempDirectory) {
 #endif
   CefString c_0 = cl::to_cef(a_0);
   CefString o_1;
-  auto cl_ret = CefCreateNewTempDirectory(c_0, o_1);
+  auto cl_ret = cl::off_ui_thread([&]() { return CefCreateNewTempDirectory(c_0, o_1); });
   if (!cl_ret) { RETURN_NULL(); }
   cl::ret_str(return_value, o_1);
 }
@@ -226,7 +226,7 @@ ZEND_METHOD(Cef, CefCreateTempDirectoryInDirectory) {
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
   CefString o_2;
-  auto cl_ret = CefCreateTempDirectoryInDirectory(c_0, c_1, o_2);
+  auto cl_ret = cl::off_ui_thread([&]() { return CefCreateTempDirectoryInDirectory(c_0, c_1, o_2); });
   if (!cl_ret) { RETURN_NULL(); }
   cl::ret_str(return_value, o_2);
 }
@@ -298,7 +298,7 @@ ZEND_METHOD(Cef, CefDeleteFile) {
   }
 #endif
   CefString c_0 = cl::to_cef(a_0);
-  auto cl_ret = CefDeleteFile(c_0, a_1);
+  auto cl_ret = cl::off_ui_thread([&]() { return CefDeleteFile(c_0, a_1); });
   ZVAL_BOOL(return_value, cl_ret);
 }
 
@@ -320,7 +320,7 @@ ZEND_METHOD(Cef, CefDirectoryExists) {
   }
 #endif
   CefString c_0 = cl::to_cef(a_0);
-  auto cl_ret = CefDirectoryExists(c_0);
+  auto cl_ret = cl::off_ui_thread([&]() { return CefDirectoryExists(c_0); });
   ZVAL_BOOL(return_value, cl_ret);
 }
 
@@ -476,7 +476,7 @@ ZEND_METHOD(Cef, CefGetTempDirectory) {
   }
 #endif
   CefString o_0;
-  auto cl_ret = CefGetTempDirectory(o_0);
+  auto cl_ret = cl::off_ui_thread([&]() { return CefGetTempDirectory(o_0); });
   if (!cl_ret) { RETURN_NULL(); }
   cl::ret_str(return_value, o_0);
 }
@@ -945,7 +945,7 @@ ZEND_METHOD(Cef, CefZipDirectory) {
 #endif
   CefString c_0 = cl::to_cef(a_0);
   CefString c_1 = cl::to_cef(a_1);
-  auto cl_ret = CefZipDirectory(c_0, c_1, a_2);
+  auto cl_ret = cl::off_ui_thread([&]() { return CefZipDirectory(c_0, c_1, a_2); });
   ZVAL_BOOL(return_value, cl_ret);
 }
 

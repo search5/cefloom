@@ -57,6 +57,16 @@ ASYNC_METHODS = {
     ("CefRequestHandler", "GetAuthCredentials"),
 }
 
+# Functions and methods that CEF refuses on its UI and IO threads (they return false: CefDirectoryExists says false for a
+# directory that exists, WaitableEvent::TimedWait false for a signaled event), and PHP runs on the UI thread: the
+# generated code runs the call on a helper thread of its own and waits for it (cl::off_ui_thread). They do not call PHP.
+# {(class, method)}; "" is a global function.
+OFF_UI_THREAD = {
+    ("", "CefCreateDirectory"), ("", "CefGetTempDirectory"), ("", "CefCreateNewTempDirectory"),
+    ("", "CefCreateTempDirectoryInDirectory"), ("", "CefDirectoryExists"), ("", "CefDeleteFile"), ("", "CefZipDirectory"),
+    ("CefWaitableEvent", "Wait"), ("CefWaitableEvent", "TimedWait"),
+}
+
 # Static functions (and global functions) that end the process when CEF is not running: PHP gets a
 # RuntimeError instead. (Measured in cefweaver: CefImage::CreateImage and CefIsRTL.)
 NEEDS_CEF_RUNNING = {

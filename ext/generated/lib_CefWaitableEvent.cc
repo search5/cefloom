@@ -38,7 +38,7 @@ ZEND_METHOD(CefWaitableEvent, Wait) {
   ZEND_PARSE_PARAMETERS_NONE();
   CefWaitableEvent* cl_self = cl::self<CefWaitableEvent>(Z_OBJ_P(ZEND_THIS), 0);
   if (!cl_self) { RETURN_THROWS(); }
-  cl_self->Wait();
+  cl::off_ui_thread([&]() { cl_self->Wait(); return true; });
 }
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_CefWaitableEvent_TimedWait, 0, 1, _IS_BOOL, 0)
@@ -51,7 +51,7 @@ ZEND_METHOD(CefWaitableEvent, TimedWait) {
   ZEND_PARSE_PARAMETERS_END();
   CefWaitableEvent* cl_self = cl::self<CefWaitableEvent>(Z_OBJ_P(ZEND_THIS), 0);
   if (!cl_self) { RETURN_THROWS(); }
-  auto cl_ret = cl_self->TimedWait(static_cast<int64_t>(a_0));
+  auto cl_ret = cl::off_ui_thread([&]() { return cl_self->TimedWait(static_cast<int64_t>(a_0)); });
   ZVAL_BOOL(return_value, cl_ret);
 }
 

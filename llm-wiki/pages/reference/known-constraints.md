@@ -56,6 +56,8 @@ updated: 2026-10-12
 | K28 | 저장소의 라이선스 | 라이선스 파일이 없음(공개 저장소이므로 기본적으로 사용 권리가 없음). 소유자가 아직 정하지 않았고, K18과 K25에 따라 선택이 달라질 수 있음 | 소유자가 선택하고, 포함한 제3자 코드(`tools/gen/vendor/`), `cefweaver` 재사용분(K18), CEF 재배포 고지(K25)를 확인해 `LICENSE`를 추가 |
 | K29 | 테스트가 없는 구현 | 전체 메서드의 79.3%가 어떤 테스트에서도 실행되지 않고, 손으로 쓴 `async.cc`는 줄 커버리지 57.8%, 런타임 설치 도구와 패키징과 생성기에는 자동 시험이 없음([테스트 커버리지 분석](../analyses/test-coverage.md)) | [테스트 보강 계획](test-plan.md)의 A에서 D를 실행하고 `tools/coverage.sh`로 측정 |
 | K30 | `onResourceRedirect`가 돌려준 URL이 적용되지 않음 | 핸들러는 올바른 인자로 불리고 새 URL을 돌려주지만, 로드는 서버가 알려 준 원래 URL에서 끝납니다. CEF 래퍼의 cpptoc 함수(`resource_request_handler_cpptoc.cc`)가 `new_url`을 복사본으로 받고 되돌려 쓰지 않는 것이 유력한 원인입니다. `tests/t_redirect_change.php`가 기대 실패(xfail)로 기록하며, 고쳐지면 시험이 알려 줍니다. 우회: `onBeforeResourceLoad`에서 `Request::setURL()`로 바꿉니다(시험으로 확인). |
+| K31 | CEF가 UI 스레드에서 거부하는 호출 | `Cef::directoryExists()`와 파일 함수 일곱 개, `WaitableEvent::wait()`와 `timedWait()`는 CEF가 UI와 IO 스레드에서 거부하고 `false`를 돌려줍니다(존재하는 디렉터리에도 `false`). PHP는 UI 스레드에서 돌기 때문에 이 호출은 생성된 코드가 별도 스레드에서 실행하고 기다리도록 했습니다(`scope.py`의 `OFF_UI_THREAD`). PHP 콜백은 부르지 않으므로 교착은 없습니다. 같은 제약을 가진 호출이 더 있으면 이 목록에 추가합니다. |
+| K32 | `stoppable=false`인 스레드는 해제하면 프로세스가 죽음 | `Thread::create(..., stoppable: false, ...)`로 만든 스레드는 CEF가 합류(join)할 수 없어서, 객체가 해제되거나 `Cef::shutdown()`이 해제할 때 CEF의 검사에 걸려 `SIGTRAP`으로 끝납니다. 시험은 `stoppable: true`만 씁니다. 같은 이유로 `XmlReader`의 이름으로 찾는 오버로드(`getAttribute(string)` 등)는 같은 이름의 오버로드는 첫 번째만 만든다는 규칙 때문에 없습니다(인덱스 버전만 있음). |
 
 ## 문서와 소스의 불일치
 

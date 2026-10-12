@@ -113,3 +113,8 @@
 
 - `t_requests`(요청 콜백 21항목), `t_redirect_change`(기대 실패, [K30](pages/reference/known-constraints.md)), `t_runtime`(시간, 문자열 맵, Buffer, 객체 대응, 반복 생성과 종료 29항목)을 추가했습니다.
 - 시험이 찾아 고친 결함: (1) Chrome 런타임의 자체 로그인 창 때문에 `getAuthCredentials`가 호출되지 않던 것(`disable-chrome-login-prompt`를 기본으로 설정), (2) 선택적 버퍼 인자(`ResponseFilter::filter`의 `dataIn`)가 무효한 Buffer로 오던 것(이제 `null`, 스텁은 `?Buffer`), (3) 구조체 생성자의 시간 인자가 변환되지 않던 것(`DateTimeImmutable`로 정규화하고 잘못된 타입은 `TypeError`), (4) `BrowserHost::getClient()`가 `null`이던 것(CEF가 들고 있는 `NativeClient`를 사용자 클라이언트에 대응), (5) 종료 때 라이브러리 객체를 해제하다 자기 자신이 해제되어 힙이 손상되던 것(`release_all_lib_objects`).
+
+## [2026-10-12] ingest | B6에서 B10, C2 시험과 UI 스레드에서 거부되는 호출
+
+- `t_runtime_tool`(30), `t_bridge_more`(7), `t_package`(25), `t_generator`(생성기 단위 시험 30개), `t_build`(23), `t_lib_pure`(107)를 추가했습니다. 생성기 시험은 가짜 헤더 묶음(`tests/gen/mini`)과 실제 헤더를 함께 씁니다.
+- C2에서 CEF의 파일 함수와 `WaitableEvent` 대기가 UI 스레드에서 `false`만 돌려주는 것을 찾아, 생성된 코드가 별도 스레드에서 실행하도록 했습니다([K31](pages/reference/known-constraints.md)). 안 멈추는 스레드의 해제 문제와 `XmlReader` 오버로드는 [K32](pages/reference/known-constraints.md)에 적었습니다.

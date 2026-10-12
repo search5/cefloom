@@ -164,6 +164,16 @@ class WithHeaders(unittest.TestCase):
             self.assertIn(method, [m.get_name() for m in self.model.classes[cls].get_static_funcs()], (cls, method))
         for name in scope_module.HANDWRITTEN_FUNCTIONS:
             self.assertIn(name, self.model.functions)
+        for cls, method in scope_module.OFF_UI_THREAD:
+            if cls:
+                self.assertIn(method, [m.get_name() for m in self.model.classes[cls].get_virtual_funcs()], (cls, method))
+            else:
+                self.assertIn(method, self.model.functions)
+
+    def test_the_calls_that_cef_refuses_on_its_ui_thread_run_on_a_helper_thread(self):
+        text = self.files["cef_functions.cc"]
+        self.assertIn("cl::off_ui_thread([&]() { return CefDirectoryExists(", text)
+        self.assertIn("cl::off_ui_thread([&]() { cl_self->Wait(); return true; });", self.files["lib_CefWaitableEvent.cc"])
 
     def test_primitive_string_and_void(self):
         self.assertIsInstance(self.plan("CefBrowser", "GetIdentifier").ret, Prim)
