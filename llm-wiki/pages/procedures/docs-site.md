@@ -66,6 +66,14 @@ updated: 2026-10-13
 
 새 쪽의 문장은 서브에이전트가 소스와 직접 실행으로 확인해 썼고, 확인하지 못한 것은 쪽에 "not tried"로 적혀 있습니다. 새 쪽의 예제는 `docs/recipes/`(`context-menu.php`, `audio.php`, `media.php`, `gpu-probe.php`)에 있으며 각각 같은 출력을 3회 냈습니다. `t_docs`는 `cookbook.php`만 실행합니다.
 
+## GitHub Pages 배포
+
+`.github/workflows/docs.yml`이 `main`에 푸시될 때(`docs/`, 스텁, `tools/docs`, `tools/gen`, 워크플로 자신이 바뀐 경우)와 수동 실행으로 `make -C docs site`를 돌려 `docs/_build/html`을 Pages에 올립니다. `site` 대상은 영어와 한국어를 빌드하고 시작 페이지(`index.html`, `en/`으로 이동)를 씁니다. 사이트에 CEF 런타임이 필요하지 않아서(API 쪽은 스텁에서 생성) 일반 러너에서 빌드됩니다.
+
+- 확인한 것: `make -C docs site`가 이 컴퓨터에서 성공하고 워크플로의 YAML이 구문상 맞습니다.
+- 확인하지 못한 것: 워크플로를 GitHub에서 실행해 보지 않았습니다. 러너의 Python 3.13과 `pip install -r docs/requirements.txt`로 빌드가 되는지는 첫 실행에서 확인됩니다.
+- 켜야 할 설정: 저장소 Settings의 Pages에서 Source를 "GitHub Actions"로 바꿔야 합니다(2026-10-13 기준 cefloom은 Pages가 꺼져 있습니다). 푸시하고 설정을 켜면 공개 저장소의 사이트가 공개됩니다.
+
 ## 아직 하지 않은 것
 
 - C++(Doxygen) 주석을 사이트에 넣는 일: 이 컴퓨터에 `doxygen`이 없어서(`which doxygen`이 비어 있음) Breathe를 설정하지 않았습니다.

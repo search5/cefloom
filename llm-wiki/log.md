@@ -207,3 +207,6 @@
 
 - 사용자 요청으로 cefloom과 cefweaver의 가이드 주제를 맞췄습니다. cefloom에 컨텍스트 메뉴, 소리와 마이크와 카메라, Wayland와 GPU, 한계 4쪽을, cefweaver에 개념, 메시지 루프, JS 브리지, 인쇄, 구성, 문제 해결 6쪽을 더했습니다. 대응표는 [문서 사이트](pages/procedures/docs-site.md)에 있습니다.
 - 주장은 소스를 읽거나 실제 실행으로 확인했고, 확인하지 못한 항목은 쪽에 "not tried"로 적었습니다. 새 쪽의 한국어 번역도 더했습니다.
+
+## [2026-10-13] ingest | GitHub Pages 배포 준비
+`.github/workflows/docs.yml`과 `make -C docs site`를 더했다. 로컬에서 `site` 빌드가 성공했고 워크플로는 GitHub에서 아직 실행하지 않았다. 푸시와 Pages 설정은 사용자의 결정을 기다린다. 내용은 [문서 사이트](pages/procedures/docs-site.md).
