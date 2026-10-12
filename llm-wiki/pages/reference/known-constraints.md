@@ -67,6 +67,7 @@ updated: 2026-10-12
 | K39 | `BrowserHost::print()`가 `PrintHandler`를 부르지 않음 | 이 빌드의 Chrome 런타임은 인쇄를 Chrome의 인쇄 미리보기로 처리하고 `PrintHandler`에는 묻지 않습니다. `onPrintStart` 등은 불리지 않고 가짜 프린터로 흐름을 시험할 수 없습니다. 프로그램에서 인쇄하려면 `printToPDF()`를 씁니다. `PrintSettings`는 일반 객체로 쓸 수 있습니다. `t_print`가 현상을 고정하고, CEF가 바뀌어 핸들러를 부르면 시험이 실패해서 알려 줍니다. |
 | K40 | `RequestContextHandler::getResourceRequestHandler()`가 요청마다 대기 한도(기본 5초)를 채움 | 이 메서드는 CEF의 IO 스레드에서 동기로 불리는데, 컨텍스트를 만들고 첫 탐색이 진행되는 동안 UI 스레드가 그 스레드를 기다려서 PHP가 받지 못하고, 한도가 지나서야 CEF의 기본값으로 넘어갑니다(F14와 같은 구조). 콜백은 한도 뒤에 뒤늦게 실행됩니다. 같은 일을 하는 `RequestHandler::getResourceRequestHandler()`(브라우저 단위)는 정상이므로 그쪽을 쓰거나 `CEFLOOM_SYNC_WAIT_MS`를 줄입니다. `t_callbacks_more`는 한도를 300ms로 줄여서 확인합니다. |
 | K41 | 이벤트 구동 루프에서 붙여넣기 계열 명령 뒤의 입력이 멈춤 | 외부 펌프 모드에서 `Frame::paste()`, `undo()`, `redo()`, `pasteAndMatchStyle()`, `delete()`를 부른 뒤에는 IME와 드래그 앤 드롭 이벤트가 페이지에 도착하지 않습니다(폴링 모드는 정상). 클립보드 읽기와 관련이 있을 것으로 보지만 원인은 확인하지 못했습니다. `t_host_more`는 이 명령들을 마지막에 부릅니다. |
+| K42 | `BrowserView`의 팝업이 `BrowserViewDelegate`에 닿지 않음 | `target=_blank` 링크를 클릭해도 `getDelegateForPopupBrowserView()`가 불리지 않았고(클릭 위치와 페이지 크기를 맞춘 뒤에도), 그 시험을 넣었을 때 `t_views_rest`가 끝에서 `SIGSEGV`로 끝나기도 했습니다. 원인은 확인하지 못했고 시험에서 뺐습니다. 창 관리자가 없는 가상 화면의 한계일 수 있습니다. |
 
 ## 문서와 소스의 불일치
 
