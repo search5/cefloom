@@ -181,3 +181,76 @@ function finish(): never
     echo "OK ({$GLOBALS['cl_checks']} checks)\n";
     exit(0);
 }
+
+/**
+ * A URLRequestClient that collects what comes: the body, the progress, the status. Give $credentials = [user, password] to answer a
+ * request for credentials, or leave it null to decline.
+ */
+final class Fetcher extends Cefloom\URLRequestClient
+{
+    public string $body = '';
+    public bool $done = false;
+    public array $down = [];
+    public array $up = [];
+    public array $asked = [];
+    public ?int $status = null;
+    public ?int $error = null;
+    public ?int $httpStatus = null;
+    public array $headers = [];
+    public bool $cached = false;
+    public int $maxAsks = 2;
+    public function __construct(public ?array $credentials = null) {}
+    public function onRequestComplete(Cefloom\URLRequest $request): void
+    {
+        $this->done = true;
+        $this->status = $request->getRequestStatus();
+        $this->error = $request->getRequestError();
+        $response = $request->getResponse();
+        if ($response !== null) {
+            $this->httpStatus = $response->getStatus();
+            $this->headers = $response->getHeaderMap();
+        }
+        $this->cached = $request->responseWasCached();
+    }
+    public function onUploadProgress(Cefloom\URLRequest $request, int $current, int $total): void { $this->up[] = [$current, $total]; }
+    public function onDownloadProgress(Cefloom\URLRequest $request, int $current, int $total): void { $this->down[] = [$current, $total]; }
+    public function onDownloadData(Cefloom\URLRequest $request, Cefloom\Buffer $data): void { $this->body .= $data->read(0, $data->getSize()); }
+    public function getAuthCredentials(bool $isProxy, string $host, int $port, string $realm, string $scheme, Cefloom\AuthCallback $callback): bool
+    {
+        $this->asked[] = [$isProxy, $host, $realm, $scheme];
+        if ($this->credentials === null || count($this->asked) > $this->maxAsks) {
+            return false;       // after $maxAsks tries the client gives up: a server that keeps saying 401 would ask for ever
+        }
+        $callback->continue($this->credentials[0], $this->credentials[1]);
+        return true;
+    }
+}
+
+/** Start a request. Returns [the URLRequest, the Fetcher]; wait with wait_until(fn() => $f->done, ...). */
+function start_fetch(string $url, string $method = 'GET', array $headers = [], ?string $body = null, ?array $credentials = null, int $flags = 0, ?Cefloom\RequestContext $context = null): array
+{
+    $request = Cefloom\Request::create();
+    $request->setURL($url);
+    $request->setMethod($method);
+    if ($headers) {
+        $request->setHeaderMap($headers);
+    }
+    if ($body !== null) {
+        $post = Cefloom\PostData::create();
+        $element = Cefloom\PostDataElement::create();
+        $element->setToBytes($body);
+        $post->addElement($element);
+        $request->setPostData($post);
+    }
+    $request->setFlags($flags);
+    $fetcher = new Fetcher($credentials);
+    return [Cefloom\URLRequest::create($request, $fetcher, $context), $fetcher];
+}
+
+/** Fetch a URL and wait for it: the Fetcher with the result. */
+function fetch_url(string $url, string $method = 'GET', array $headers = [], ?string $body = null, ?array $credentials = null, int $flags = 0, ?Cefloom\RequestContext $context = null): Fetcher
+{
+    [$request, $fetcher] = start_fetch($url, $method, $headers, $body, $credentials, $flags, $context);
+    wait_until(fn() => $fetcher->done, "the request for $url", 20000);
+    return $fetcher;
+}
