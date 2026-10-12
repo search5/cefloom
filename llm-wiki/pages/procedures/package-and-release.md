@@ -7,6 +7,8 @@ sources:
   - cefloom/bin/cefloom-runtime
   - cefloom/tools/build.sh
   - cefloom/README.md
+  - cefloom/docs/installation.md
+  - cefloom/docs/development.md
   - https://github.com/php/pie/blob/1.6.x/docs/extension-maintainers.md
 updated: 2026-10-12
 ---
@@ -55,6 +57,10 @@ php bin/cefloom-runtime install --base-url=<릴리스 자산 디렉터리>
 ```
 
 런타임은 `~/.local/share/cefloom/runtime/<CEF 버전>`에 들어가며, 확장은 `CEFLOOM_HOME`, 모듈 옆, 이 디렉터리 순서로 찾습니다.
+
+## 사용자 문서
+
+배포 방식(PIE, 런타임 설치 도구)에 맞춘 사용자 문서는 `cefloom/docs/`에 영어로 있습니다(설치, 시작하기, 개념, 메시지 루프, 핸들러, JS 브리지, Views, 인쇄, Cast, 설정, 문제 해결, 개발). 문서의 코드는 예제와 테스트로 실행해 확인했고(스킴 예제와 브리지 예제는 문서에 쓴 그대로 실행), 링크와 참조 경로는 점검했습니다. 첫 릴리스를 게시하지 않았으므로 설치 문서의 `pie install` 명령과 패키지 이름은 예정된 형태입니다.
 
 ## 관련 페이지
 

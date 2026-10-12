@@ -2066,8 +2066,8 @@ namespace Cefloom {
         public static function initialize(?Settings $settings = null, ?App $app = null): bool {}
         /** Run one iteration of the CEF message loop. Raises the exception a handler left pending. */
         public static function doMessageLoopWork(): void {}
-        /** Run the message loop until quit() is called. $tick, if given, is called after every iteration. */
-        public static function run(?callable $tick = null): void {}
+        /** Run the message loop until quit() is called, $tick returns false, or (by default) the last browser has closed. $tick, if given, is called after every iteration. */
+        public static function run(?callable $tick = null, bool $quitWhenLastBrowserCloses = true): void {}
         /** Make run() return. */
         public static function quit(): void {}
         /** Close the browsers and shut CEF down. Drop every reference to CEF objects first. */

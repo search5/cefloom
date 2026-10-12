@@ -24,6 +24,10 @@ Run them with `php -d extension=build/dist/cefloom.so examples/<name>.php` (add 
 
 `tests/t_examples.php` runs them, so they keep working.
 
+## Documentation
+
+[`docs/`](docs/README.md): installation (PIE and the runtime tool), getting started, concepts, the message loop, handlers, the JavaScript bridge, Views, printing, Cast, configuration, troubleshooting and development.
+
 ## Install
 
 Three parts, because they travel differently:

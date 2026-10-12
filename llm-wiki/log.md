@@ -87,3 +87,8 @@
 
 - Views와 CEF 소유 창이 마우스와 키보드 입력을 받지 못하는 원인을 찾아 [F19](pages/reference/verified-findings.md)에 기록하고, 확장이 `external_message_pump`를 강제로 켜지 않도록 고쳤습니다([D14](pages/reference/design-decisions.md)). [K12와 K27](pages/reference/known-constraints.md)을 갱신했습니다.
 - `t_views_input`을 추가하고, 테스트를 외부 펌프 모드로도 실행하는 `CEFLOOM_TEST_EXTERNAL_PUMP`를 추가했습니다.
+
+## [2026-10-12] ingest | 사용자 문서 docs/
+
+- `docs/`에 PIE와 런타임 설치 도구에 맞춘 사용자 문서 13개를 영어로 작성했습니다. 문서를 쓰다가 스텁의 `Cef::run` 선언이 구현과 달랐던 것(두 번째 인자 `quitWhenLastBrowserCloses`와 `$tick`의 `false` 반환)을 찾아 고쳤습니다. 설명은 [패키징과 릴리스 절차](pages/procedures/package-and-release.md)에 있습니다.
+- Views 입력을 창 관리자 `twm`에서도 확인해 [F19](pages/reference/verified-findings.md)와 K12, K27을 갱신했습니다.
