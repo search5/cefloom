@@ -52,7 +52,9 @@ if [[ ! -f Makefile || "$here/ext/config.m4" -nt Makefile || "$here/ext/generate
   CEFLOOM_WRAPPER_LIB="$CEFLOOM_WRAPPER_LIB" CEFLOOM_LIBCEF_DIR="$CEFLOOM_RUNTIME" \
     ./configure --with-cefloom="$CEF_ROOT" >/dev/null
 fi
-make -j"$JOBS" 2>&1 | grep -E "error|Error|warning: unused|undefined reference|\*\*\*" || true
+# A failed compile must stop the build: an older cefloom.so from a previous run would otherwise be installed.
+make -j"$JOBS" > "$BUILD/make.log" 2>&1 || { grep -E "error|Error|undefined reference|\*\*\*" "$BUILD/make.log" | head -20; echo "build failed (see $BUILD/make.log)" >&2; exit 1; }
+grep -E "warning: unused" "$BUILD/make.log" || true
 test -f modules/cefloom.so
 
 # The install directory: the extension, the subprocess and the CEF runtime next to each other.

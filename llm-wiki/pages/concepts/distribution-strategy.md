@@ -8,6 +8,7 @@ sources:
   - https://root.packagist.org/packages/nativephp/laravel/stats
   - https://github.com/php/pie/blob/1.6.x/docs/extension-maintainers.md
   - cefloom/tools/build.sh
+  - cefloom/tools/package.sh
 updated: 2026-10-12
 ---
 
@@ -39,7 +40,7 @@ PIE 1.6.x의 확장 관리자용 문서(`docs/extension-maintainers.md`)를 읽�
 - 문서는 동적 라이브러리에 연결된 확장에는 미리 빌드한 바이너리를 쓰지 말라고 경고합니다. 사용자 시스템에 맞는 라이브러리가 없을 수 있기 때문입니다. cefloom은 `libcef.so`에 동적으로 연결됩니다(`readelf`로 확인: NEEDED `libcef.so`, RUNPATH `$ORIGIN`).
 - PIE가 설치하는 것은 확장 파일입니다. Windows가 아닌 환경에서 추가 파일(런타임 라이브러리 등)을 함께 배치하거나 설치 후 명령을 실행하는 기능은 문서에 없습니다. CEF 런타임(`libcef.so`, 리소스, `cefloomsubprocess`)은 PIE로 배치할 수 없습니다.
 - 소스 빌드(`composer-default`)는 사용할 수 없습니다. `config.m4`가 CEF 배포본의 헤더와 래퍼 라이브러리를 요구하기 때문입니다.
-- 판단(제안): 확장 바이너리는 PIE와 Packagist로, PHP 쪽 보조(스텁, 설치 보조 명령)는 `composer require`로, CEF 런타임은 별도 내려받기로 나눕니다. 이 구성은 구현하지 않았습니다.
+- 구성(구현됨, 2026-10-12): 확장 바이너리는 PIE와 Packagist로(`composer.json`, `tools/package.sh`), CEF 런타임은 설치 도구 `bin/cefloom-runtime`이 사용자 데이터 디렉터리에 내려받아 풉니다. PHP 쪽 보조 Composer 패키지(스텁 등)는 만들지 않았습니다. 절차와 시험은 [패키징과 릴리스 절차](../procedures/package-and-release.md)와 [F17](../reference/verified-findings.md)에 있습니다.
 - 해결됨(2026-10-12): 확장을 php.ini에 켜 두면 모든 PHP 프로세스가 `libcef.so`를 찾아야 하는 문제는 `libcef.so`를 필요할 때 불러오는 빌드(`CEFLOOM_LAZY_LIBCEF=1`)로 풀었습니다. 런타임이 없어도 모듈이 로드되고, 시작 시 메모리가 약 77MB에서 약 20.5MB로 줄었습니다([F16](../reference/verified-findings.md)). 이 빌드가 기본 빌드입니다([D13](../reference/design-decisions.md)).
 
 런타임 파일 배치에는 확인된 규칙이 있습니다. `cefweaver`의 시험으로 `icudtl.dat`는 `libcef.so`가 있는 디렉터리에서만 찾는다는 것이 확인되었습니다(`cefweaver_clone/cefweaver/llm-wiki/pages/concepts/runtime-layout.md`). 내려받는 구조를 설계할 때 파일들을 한 디렉터리에 두어야 합니다.

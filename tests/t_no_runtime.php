@@ -1,7 +1,8 @@
 <?php
 // A build that loads libcef.so when it is needed (CEFLOOM_LAZY_LIBCEF) must load without the CEF runtime, so that
 // `extension=cefloom.so` in php.ini does not break PHP where the runtime is not installed, and report the missing
-// runtime as a PHP error instead of ending the process. Other builds are skipped.
+// runtime as a PHP error instead of ending the process. It also finds a runtime in the user's data directory.
+// Other builds are skipped.
 require __DIR__ . '/support.php';
 
 $module = (getenv('CEFLOOM_DIST') ?: dirname(__DIR__) . '/build/dist') . '/cefloom.so';
@@ -25,7 +26,10 @@ $probe('struct', function () { $s = new Cefloom\Settings(); $s->locale = 'ko'; i
 echo json_encode($out);
 PHP);
 
-$command = escapeshellarg(PHP_BINARY) . ' -n -d extension=' . escapeshellarg($dir . '/cefloom.so') . ' ' . escapeshellarg($script) . ' 2>&1';
+// The probe runs with its own home and data directory, and without CEFLOOM_HOME, so that nothing of this machine leaks in.
+$environment = 'env -u CEFLOOM_HOME HOME=' . escapeshellarg($dir . '/home') . ' XDG_DATA_HOME=' . escapeshellarg($dir . '/data');
+mkdir($dir . '/home');
+$command = $environment . ' ' . escapeshellarg(PHP_BINARY) . ' -n -d extension=' . escapeshellarg($dir . '/cefloom.so') . ' ' . escapeshellarg($script) . ' 2>&1';
 exec($command, $lines, $code);
 $text = implode("\n", $lines);
 
@@ -44,4 +48,17 @@ foreach (['initialize', 'parseJSON', 'request'] as $name) {
     check(str_starts_with($result[$name] ?? '', 'Error: The CEF runtime was not found'), "$name reports the missing runtime (" . ($result[$name] ?? 'nothing') . ')');
 }
 same('Exception: struct ok', $result['struct'] ?? null, 'a settings struct works without the runtime');
+
+// The runtime in the data directory of the user: <data>/cefloom/runtime/<CEF version>/libcef.so is found.
+$userDir = trim((string) shell_exec($environment . ' ' . escapeshellarg(PHP_BINARY) . ' -n -d extension=' . escapeshellarg($dir . '/cefloom.so')
+    . ' -r ' . escapeshellarg('echo Cefloom\\Cef::userRuntimeDirectory();')));
+check(str_starts_with($userDir, $dir . '/data/cefloom/runtime/'), "the user runtime directory is inside XDG_DATA_HOME ($userDir)");
+$libcef = dirname($module) . '/libcef.so';
+if (is_readable($libcef) && str_starts_with($userDir, $dir)) {
+    mkdir($userDir, 0777, true);
+    symlink($libcef, $userDir . '/libcef.so');
+    $found = trim((string) shell_exec($environment . ' ' . escapeshellarg(PHP_BINARY) . ' -n -d extension=' . escapeshellarg($dir . '/cefloom.so')
+        . ' -r ' . escapeshellarg('echo Cefloom\\Cef::runtimeDirectory(), "|", json_encode(Cefloom\\Cef::parseJSON("[1]", 0)->getType() !== null);') . ' 2>&1'));
+    same($userDir . '|true', $found, 'a runtime in the user data directory is found and works');
+}
 finish();

@@ -20,6 +20,12 @@ CORE_STUB = '''
         /** Close the browsers and shut CEF down. Drop every reference to CEF objects first. */
         public static function shutdown(): void {}
         public static function isRunning(): bool {}
+        /** The version of CEF this module was built against. The runtime must be the same. */
+        public static function cefVersion(): string {}
+        /** The directory the module takes the CEF runtime from (CEFLOOM_HOME, the module directory, or the user directory). */
+        public static function runtimeDirectory(): string {}
+        /** The directory a runtime installed for the user goes into (the cefloom-runtime tool installs there). */
+        public static function userRuntimeDirectory(): string {}
         /** Register a custom scheme (before initialize()). Serve it with registerSchemeHandlerFactory(). */
         public static function registerCustomScheme(string $name, int $options = \\Cefloom\\Types\\SchemeOptions::STANDARD | \\Cefloom\\Types\\SchemeOptions::SECURE | \\Cefloom\\Types\\SchemeOptions::CORS_ENABLED | \\Cefloom\\Types\\SchemeOptions::FETCH_ENABLED): void {}
         /** Add a command line switch for CEF (before initialize()). */

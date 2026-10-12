@@ -68,3 +68,8 @@
 ## [2026-10-12] ingest | 지연 로딩을 기본 빌드로
 
 - `tools/build.sh`의 기본을 `libcef.so`를 필요할 때 불러오는 빌드로 바꾸었습니다([D13](pages/reference/design-decisions.md)). 링크하는 빌드는 `CEFLOOM_LAZY_LIBCEF=0`입니다.
+
+## [2026-10-12] ingest | 패키징과 런타임 설치 도구
+
+- PIE용 `composer.json`, `tools/package.sh`, 런타임 설치 도구 `bin/cefloom-runtime`, `README.md`를 만들고 [패키징과 릴리스 절차](pages/procedures/package-and-release.md)를 추가했습니다. 결과는 [F17](pages/reference/verified-findings.md)에, 확인하지 못한 항목은 [K24와 K25](pages/reference/known-constraints.md)에 기록했습니다.
+- 확장이 런타임을 찾는 위치에 사용자 데이터 디렉터리를 추가했고, 빌드가 컴파일 실패를 숨기지 않도록 고쳤습니다.

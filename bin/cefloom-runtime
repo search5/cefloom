@@ -1,0 +1,232 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+// Installs the CEF runtime (libcef.so, its resources, cefloomsubprocess) that the cefloom extension loads.
+//
+//   php bin/cefloom-runtime install --base-url=https://.../releases/download/0.1.0
+//   php bin/cefloom-runtime install --url=/path/or/https-url/cefloom-runtime-154.0.34-linux-x86_64.tar.gz --sha256=<hex>
+//   php bin/cefloom-runtime status
+//   php bin/cefloom-runtime path
+//
+// The runtime goes to the directory the extension looks in (Cefloom\Cef::userRuntimeDirectory(), in the data
+// directory of the user), so no administrator rights are needed. It has to be the runtime the extension was
+// built against: the archive says which CEF version it holds, and install refuses another one.
+//
+// Needs the extensions cefloom, zlib and phar (a default PHP CLI has them besides cefloom). Needs no Composer.
+
+use Cefloom\Cef;
+
+if (PHP_SAPI !== 'cli') {
+    exit("cefloom-runtime runs on the command line only\n");
+}
+if (!extension_loaded('cefloom')) {
+    fwrite(STDERR, "The cefloom extension is not loaded. Install it (pie install) or run: php -d extension=/path/to/cefloom.so " . $argv[0] . "\n");
+    exit(1);
+}
+
+foreach (['phar', 'zlib'] as $needed) {
+    if (!extension_loaded($needed) && ($argv[1] ?? '') === 'install') {
+        fwrite(STDERR, "cefloom-runtime: the PHP extension $needed is needed to unpack the runtime and is not loaded\n");
+        exit(1);
+    }
+}
+
+function fail(string $message): never
+{
+    fwrite(STDERR, "cefloom-runtime: $message\n");
+    exit(1);
+}
+
+function options(array $args): array
+{
+    $result = ['flags' => [], 'values' => []];
+    foreach ($args as $arg) {
+        if (preg_match('/^--([a-z0-9-]+)=(.*)$/s', $arg, $m)) {
+            $result['values'][$m[1]] = $m[2];
+        } elseif (str_starts_with($arg, '--')) {
+            $result['flags'][substr($arg, 2)] = true;
+        } else {
+            fail("unexpected argument: $arg");
+        }
+    }
+    return $result;
+}
+
+function architecture(): string
+{
+    return match (php_uname('m')) {
+        'x86_64', 'amd64' => 'x86_64',
+        'aarch64', 'arm64' => 'arm64',
+        default => fail('unsupported architecture: ' . php_uname('m')),
+    };
+}
+
+/** Copy a file from an https URL, an http URL or a path (also file://) to $to. Returns the number of bytes. */
+function fetch(string $source, string $to, bool $progress): int
+{
+    if (str_starts_with($source, 'file://')) {
+        $source = substr($source, 7);
+    }
+    $context = stream_context_create(['http' => ['timeout' => 60, 'follow_location' => 1, 'user_agent' => 'cefloom-runtime']]);
+    $in = @fopen($source, 'rb', false, $context);
+    if ($in === false) {
+        fail("cannot open $source");
+    }
+    $out = fopen($to, 'wb');
+    $total = 0;
+    $next = 16 << 20;
+    while (!feof($in)) {
+        $chunk = fread($in, 1 << 20);
+        if ($chunk === false) {
+            fail("reading $source failed");
+        }
+        fwrite($out, $chunk);
+        $total += strlen($chunk);
+        if ($progress && $total >= $next) {
+            fwrite(STDERR, sprintf("  %d MB\r", $total >> 20));
+            $next += 16 << 20;
+        }
+    }
+    fclose($in);
+    fclose($out);
+    return $total;
+}
+
+function remove_tree(string $path): void
+{
+    if (!file_exists($path) && !is_link($path)) {
+        return;
+    }
+    if (is_dir($path) && !is_link($path)) {
+        foreach (scandir($path) as $entry) {
+            if ($entry !== '.' && $entry !== '..') {
+                remove_tree($path . '/' . $entry);
+            }
+        }
+        rmdir($path);
+    } else {
+        unlink($path);
+    }
+}
+
+function status(): int
+{
+    $dir = Cef::runtimeDirectory();
+    $has = is_readable($dir . '/libcef.so');
+    echo "CEF version of the module: ", Cef::cefVersion(), "\n";
+    echo "runtime directory:         $dir\n";
+    echo "install directory:         ", Cef::userRuntimeDirectory(), "\n";
+    echo "runtime present:           ", $has ? 'yes' : 'no', "\n";
+    $manifest = $dir . '/cefloom-runtime.json';
+    if ($has && is_readable($manifest)) {
+        $data = json_decode((string) file_get_contents($manifest), true);
+        echo "runtime CEF version:       ", $data['cef'] ?? 'unknown', "\n";
+    }
+    return $has ? 0 : 1;
+}
+
+function install(array $o): int
+{
+    $cef = Cef::cefVersion();
+    $short = explode('+', $cef)[0];
+    $name = "cefloom-runtime-$short-linux-" . architecture() . '.tar.gz';
+
+    $url = $o['values']['url'] ?? getenv('CEFLOOM_RUNTIME_URL') ?: null;
+    if ($url === null) {
+        $base = $o['values']['base-url'] ?? getenv('CEFLOOM_RUNTIME_BASE_URL') ?: null;
+        if ($base === null) {
+            fail("say where the runtime is: --url=<archive> or --base-url=<directory of the release files> (the archive is called $name)");
+        }
+        $url = rtrim($base, '/') . '/' . $name;
+    }
+    $dir = $o['values']['dir'] ?? Cef::userRuntimeDirectory();
+    if (is_readable($dir . '/libcef.so') && !isset($o['flags']['force'])) {
+        echo "The runtime is already installed in $dir (use --force to install it again).\n";
+        return 0;
+    }
+
+    $expected = strtolower($o['values']['sha256'] ?? '');
+    if ($expected === '') {
+        $sidecar = tempnam(sys_get_temp_dir(), 'cefloom-sha');
+        fetch($url . '.sha256', $sidecar, false);
+        $expected = strtolower(substr(trim((string) file_get_contents($sidecar)), 0, 64));
+        unlink($sidecar);
+    }
+    if (!preg_match('/^[0-9a-f]{64}$/', $expected)) {
+        fail('no SHA-256 checksum: give --sha256=<hex> or publish <archive>.sha256 next to the archive');
+    }
+
+    $work = $dir . '.tmp-' . getmypid();
+    remove_tree($work);
+    if (!mkdir($work, 0755, true)) {
+        fail("cannot create $work");
+    }
+    $archive = $work . '/runtime.tar.gz';
+    echo "Downloading $url\n";
+    $bytes = fetch($url, $archive, true);
+    echo sprintf("  %.1f MB\n", $bytes / 1048576);
+
+    if (!hash_equals($expected, hash_file('sha256', $archive))) {
+        remove_tree($work);
+        fail('the SHA-256 checksum of the archive does not match: not installed');
+    }
+
+    echo "Unpacking\n";
+    $extracted = $work . '/files';
+    mkdir($extracted);
+    try {
+        (new PharData($archive))->extractTo($extracted, null, true);
+    } catch (Throwable $e) {
+        remove_tree($work);
+        fail('cannot unpack the archive: ' . $e->getMessage());
+    }
+    $manifest = json_decode((string) @file_get_contents($extracted . '/cefloom-runtime.json'), true);
+    if (!is_array($manifest) || ($manifest['cef'] ?? null) !== $cef) {
+        $found = is_array($manifest) ? (string) ($manifest['cef'] ?? 'unknown') : 'no manifest';
+        remove_tree($work);
+        fail("the archive holds CEF $found, the module needs $cef: not installed");
+    }
+    foreach (['cefloomsubprocess', 'libcef.so', 'libvk_swiftshader.so', 'libvulkan.so.1'] as $executable) {
+        if (is_file($extracted . '/' . $executable)) {
+            chmod($extracted . '/' . $executable, 0755);
+        }
+    }
+    foreach ($manifest['files'] ?? [] as $file) {
+        if (!is_file($extracted . '/' . $file)) {
+            remove_tree($work);
+            fail("the archive lacks $file: not installed");
+        }
+    }
+
+    unlink($archive);
+    if (file_exists($dir)) {
+        remove_tree($dir);
+    }
+    if (!is_dir(dirname($dir)) && !mkdir(dirname($dir), 0755, true)) {
+        remove_tree($work);
+        fail('cannot create ' . dirname($dir));
+    }
+    if (!rename($extracted, $dir)) {
+        remove_tree($work);
+        fail("cannot move the runtime to $dir");
+    }
+    remove_tree($work);
+    echo "Installed the CEF runtime in $dir\n";
+    return 0;
+}
+
+$command = $argv[1] ?? '';
+switch ($command) {
+    case 'install':
+        exit(install(options(array_slice($argv, 2))));
+    case 'status':
+        exit(status());
+    case 'path':
+        echo Cef::runtimeDirectory(), "\n";
+        exit(0);
+    default:
+        fwrite(STDERR, "usage: cefloom-runtime install [--url=<archive> | --base-url=<release directory>] [--sha256=<hex>] [--dir=<directory>] [--force]\n"
+            . "       cefloom-runtime status\n       cefloom-runtime path\n");
+        exit($command === '' || $command === 'help' ? 0 : 2);
+}

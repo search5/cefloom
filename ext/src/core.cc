@@ -17,6 +17,7 @@
 #include <map>
 
 #include "core.h"
+#include "include/cef_version.h"
 
 namespace {
 
@@ -124,11 +125,7 @@ std::string absolute_dir(const std::string& path) {
   return realpath(path.c_str(), resolved) ? std::string(resolved) : path;
 }
 
-std::string home_dir() {
-  const char* env = getenv("CEFLOOM_HOME");
-  if (env && *env) {
-    return absolute_dir(env);
-  }
+std::string module_dir() {
   Dl_info info;
   if (dladdr(reinterpret_cast<void*>(&cl_core_register), &info) && info.dli_fname) {
     // dli_fname is the path PHP loaded the module by: it can be relative to the working directory.
@@ -140,6 +137,36 @@ std::string home_dir() {
     }
   }
   return absolute_dir(".");
+}
+
+// Where a runtime installed for the user lives: <data home>/cefloom/runtime/<CEF version>. The version is part of the
+// path because the module only works with the runtime it was built against.
+std::string user_runtime_dir() {
+  const char* xdg = getenv("XDG_DATA_HOME");
+  const char* user_home = getenv("HOME");
+  std::string base = xdg && *xdg ? xdg : (user_home && *user_home ? std::string(user_home) + "/.local/share" : "/tmp");
+  return base + "/cefloom/runtime/" + std::to_string(CEF_VERSION_MAJOR) + "." + std::to_string(CEF_VERSION_MINOR) + "." +
+         std::to_string(CEF_VERSION_PATCH);
+}
+
+bool has_runtime(const std::string& dir) { return access((dir + "/libcef.so").c_str(), R_OK) == 0; }
+
+// The directory of the CEF runtime (libcef.so, the resources, cefloomsubprocess): CEFLOOM_HOME if set, else the
+// directory of the module if the runtime is there (a build directory), else the user's runtime directory.
+std::string home_dir() {
+  const char* env = getenv("CEFLOOM_HOME");
+  if (env && *env) {
+    return absolute_dir(env);
+  }
+  const std::string beside = module_dir();
+  if (has_runtime(beside)) {
+    return beside;
+  }
+  const std::string user = user_runtime_dir();
+  if (has_runtime(user)) {
+    return user;
+  }
+  return beside;
 }
 
 #ifdef CEFLOOM_LAZY_LIBCEF
@@ -157,11 +184,16 @@ bool cl_core_load_cef(std::string* error) {
   if (g_libcef) {
     return true;
   }
-  const std::string path = home_dir() + "/libcef.so";
+  const std::string dir = home_dir();
+  const std::string path = dir + "/libcef.so";
   if (access(path.c_str(), R_OK) != 0) {
     if (error) {
-      *error = "The CEF runtime was not found: " + path + " does not exist. Install the runtime next to cefloom.so or "
-               "set CEFLOOM_HOME to the directory that holds it.";
+      const char* env = getenv("CEFLOOM_HOME");
+      *error = "The CEF runtime was not found: " + path + " does not exist. ";
+      if (!(env && *env)) {
+        *error += "Looked next to the module (" + module_dir() + ") and in " + user_runtime_dir() + ". ";
+      }
+      *error += "Install the runtime with the cefloom-runtime tool, or set CEFLOOM_HOME to the directory that holds it.";
     }
     return false;
   }
@@ -479,6 +511,28 @@ ZEND_METHOD(Cef, shutdown) {
   do_shutdown(true);
 }
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_Cef_string, 0, 0, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+// The version of CEF this module was built against; the runtime must be the same.
+ZEND_METHOD(Cef, cefVersion) {
+  ZEND_PARSE_PARAMETERS_NONE();
+  RETURN_STRING(CEF_VERSION);
+}
+
+// The directory the module takes the CEF runtime from (where it looks first, see home_dir()).
+ZEND_METHOD(Cef, runtimeDirectory) {
+  ZEND_PARSE_PARAMETERS_NONE();
+  { std::string dir = home_dir(); RETURN_STR(zend_string_init(dir.c_str(), dir.size(), 0)); }
+}
+
+// Where a runtime installed for the user goes (the cefloom-runtime tool installs there).
+ZEND_METHOD(Cef, userRuntimeDirectory) {
+  ZEND_PARSE_PARAMETERS_NONE();
+  std::string dir = user_runtime_dir();
+  RETURN_STR(zend_string_init(dir.c_str(), dir.size(), 0));
+}
+
 ZEND_METHOD(Cef, isRunning) {
   ZEND_PARSE_PARAMETERS_NONE();
   RETURN_BOOL(cl::g_cef_running.load());
@@ -548,6 +602,9 @@ static const zend_function_entry core_methods[] = {
     ZEND_RAW_FENTRY("wait", zim_Cef_wait, arginfo_Cef_wait, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
     ZEND_RAW_FENTRY("shutdown", zim_Cef_shutdown, arginfo_Cef_void, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
     ZEND_RAW_FENTRY("isRunning", zim_Cef_isRunning, arginfo_Cef_bool, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
+    ZEND_RAW_FENTRY("cefVersion", zim_Cef_cefVersion, arginfo_Cef_string, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
+    ZEND_RAW_FENTRY("runtimeDirectory", zim_Cef_runtimeDirectory, arginfo_Cef_string, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
+    ZEND_RAW_FENTRY("userRuntimeDirectory", zim_Cef_userRuntimeDirectory, arginfo_Cef_string, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
     ZEND_RAW_FENTRY("addSwitch", zim_Cef_addSwitch, arginfo_Cef_addSwitch, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
     ZEND_RAW_FENTRY("registerCustomScheme", zim_Cef_registerCustomScheme, arginfo_Cef_registerCustomScheme, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)
     ZEND_RAW_FENTRY("expose", zim_Cef_expose, arginfo_Cef_expose, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC, NULL, NULL)

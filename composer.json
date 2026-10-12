@@ -1,0 +1,15 @@
+{
+    "name": "cefloom/cefloom",
+    "description": "Chromium Embedded Framework for PHP: windows and web pages controlled from PHP, with a JavaScript bridge",
+    "type": "php-ext",
+    "keywords": ["cef", "chromium", "browser", "desktop", "gui"],
+    "require": {
+        "php": ">=8.5"
+    },
+    "php-ext": {
+        "extension-name": "cefloom",
+        "support-zts": false,
+        "os-families": ["linux"],
+        "download-url-method": ["pre-packaged-binary"]
+    }
+}
