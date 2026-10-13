@@ -216,3 +216,6 @@
 
 ## [2026-10-13] ingest | 워크플로를 수동 실행으로, 액션을 Node 24로
 사용자 요청으로 docs 워크플로의 푸시 트리거를 없애고 `workflow_dispatch`만 남겼다. 액션을 Node 24 기반 최신 메이저로 올렸다. [문서 사이트](pages/procedures/docs-site.md) 갱신.
+
+## [2026-10-13] ingest | README 다시 쓰기와 Pages 링크
+사용자 요청으로 cefpython의 README 구성을 참고해 `README.md`를 다시 썼다(목차, 소개, 문서 사이트 링크, 지원 플랫폼 표, 설치, 예제, 관련 프로젝트, 라이선스). 요약 페이지 [README 요약](pages/summaries/readme.md)을 만들어 두 문서 사이트의 주소를 적었다. 라이선스는 정하지 않고 없다는 사실만 적었다(K28).

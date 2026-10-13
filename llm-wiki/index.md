@@ -40,6 +40,7 @@
 ## 요약 (summaries)
 
 - [llm-wiki 패턴 요약 (카파시)](pages/summaries/karpathy-llm-wiki.md): 세 층, ingest와 query와 lint, 이 프로젝트에서의 대응
+- [README 요약](pages/summaries/readme.md): README의 구성, 두 문서 사이트(GitHub Pages) 주소, 지원 플랫폼, 라이선스 상태
 
 ## 분석 (analyses)
 

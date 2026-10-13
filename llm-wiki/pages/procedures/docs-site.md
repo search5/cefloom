@@ -83,5 +83,6 @@ updated: 2026-10-13
 
 ## 관련 페이지
 
+- [README 요약](../summaries/readme.md)
 - [코드 주석 작성 규칙과 점검 절차](code-comments.md)
 - [패키징과 릴리스 절차](package-and-release.md)
